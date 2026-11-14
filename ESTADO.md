@@ -43,6 +43,22 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - 3 funciones del MVP: catálogo + enlace único · pedido por WhatsApp prellenado · panel de pedidos del vendedor
 - Reglas "nunca": no simular cobros/integraciones; no cobrar al terminar la prueba; no mostrar datos de un vendedor a otro; no publicar teléfono/ubicación sin consentimiento; no afirmar que el pedido está confirmado al enviar el mensaje
 
+## Gamificación y retención (pedido del usuario: crecimiento tipo Duolingo medido por ventas semana/mes)
+- Decisión: DOS mecánicas separadas, nunca mezcladas
+  1. RACHA SEMANAL de constancia (no diaria: un comercio no vende todos los días). Semana activa = el vendedor hizo ≥1 de: compartir su enlace, publicar/editar un producto, actualizar el estado de un pedido. Congelador semanal GANADO (no comprado). Reparación <48h. Nunca copy de culpa. Sube desde la semana 2.
+  2. PROGRESO DE VENTAS con meta propia, semanal y mensual: barra hacia la meta que fija el vendedor, "tu mejor semana/mes", comparación SOLO contra sí mismo (sin rankings). "Ventas" = suma de subtotales de pedidos que el vendedor marca como entregados; se etiqueta "según tus pedidos registrados". La racha NUNCA se rompe por vender poco.
+- Por qué: la app no ve pagos ni entregas (pago fuera de la app). Medir la racha en ventas la rompería por factores ajenos al vendedor y incentivaría marcar pedidos falsos. La racha premia lo que el vendedor controla; las ventas se celebran como progreso.
+- Registro del pedido: se guarda al pulsar "Enviar pedido por WhatsApp" (estado "solicitado", no confirmado), para que el panel tenga datos aunque el vendedor no los copie.
+- Plan: racha semanal + meta + récords en el plan Gratis (es el gancho); reportes de varios meses y estadísticas detalladas en planes de pago.
+- Loop: Gatillo = aviso semanal accionable (máx 1-2/semana) → Acción = compartir enlace / atender pedido → Recompensa = barra de meta, hito, récord → Inversión = catálogo y pedidos acumulados.
+- Pendiente para Sesión 4/5: validar con 24, 56 (momentos emocionales) y tabla de datos con permisos por vendedor.
+
+## Mejoras de producto aplicadas (desde el reporte de validación)
+- Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
+- Diferenciador 2: hecho para Ecuador (español cotidiano; el mensaje puede indicar formas de pago que el vendedor acepta: transferencia, efectivo, Deuna, tarjeta)
+- Plan Gratis permanente como gancho frente a Take App / catálogo gratis de WhatsApp
+- Validación con los primeros usuarios: medir cuántos activan tienda, comparten enlace y reciben un pedido en 7 días
+
 ## Secuencia maestra de construcción
 - Estado: ninguna etapa iniciada
 - Ruta: `/` → `/onboarding` → `/paywall` → `/login` → `/app`
