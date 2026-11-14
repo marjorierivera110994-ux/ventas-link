@@ -1,7 +1,7 @@
 # ESTADO — Tienda digital con pedidos por WhatsApp (nombre provisional)
 Última actualización: 2026-11-14 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: comparativa de 3 estilos (direcciones-abc.html) lista para que el usuario elija. / Siguiente acción exacta: usuario elige/combina/pide otras 3/ajusta; luego tour de la app y FICHA-ARTE.md.
+⏸️ CHECKPOINT — Última acción completada: estilo y funciones aprobados; FICHA-ARTE.md creada. / Siguiente acción exacta: Sesión 1 — preguntas del cliente ideal (FICHA-AVATAR), números de Ecuador (FICHA-MERCADO), app modelo (FICHA-MODELO), planes y precios, método de cobro en Ecuador, modelo de datos.
 
 ## Qué es esta app (3 líneas máximo)
 Plataforma web móvil: cada vendedor crea su tienda, comparte un enlace único y recibe pedidos armados por WhatsApp. El comprador no instala nada ni se registra. Para pequeños comercios de Ecuador (mercado inicial). Plan gratis permanente + planes mensuales (hipótesis).
@@ -29,7 +29,7 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - No simular cobros ni integraciones: todo botón visible funciona o se marca como demostración
 
 ## Dirección de Arte (Sesión 2)
-- FICHA-ARTE.md: NO existe (esperando elección del usuario)
+- FICHA-ARTE.md: EXISTE y APROBADA por el usuario el 2026-11-14 (cosa juzgada). Estilo = pistacho/amarillo verdoso/naranja/negro/beige de app-con-tus-colores.html. Funciones aprobadas: TODAS las de app-con-tus-colores (inicio con camino de éxito y meta, tienda pública, pedidos, logros con frases), tienda-demo (carrito + WhatsApp) y vista-pagina-ventas (cómo funciona, celebraciones, preguntas frecuentes, soporte con robot en planes de pago)
 - ¿Referencia visual del usuario?: NO — pidió "dame opciones" → Ruta de diseño: propuesta propia (3 estilos A/B/C)
 - Comparativa: direcciones-abc.html (kit abc-v2) — A "Tienda de confianza" (claro crema + esmeralda #0E6B4F, Figtree) · B "Meta y racha" (oscuro #0F1715 + #34D399 + racha ámbar #FBBF24, Nunito) · C "Cuaderno de pedidos" (claro #FAF8F4 + coral #C73E22, Bricolage Grotesque + Instrument Sans)
 - REFERENCIA DEL USUARIO (2026-11-14, CONTRATO de paleta): verde menta #A8DCC5 · amarillo verdoso #D5DF70 · beige #F2E9D8 · blanco #FFFFFF, más negro #131313 y coral #EF8767 de su misma captura (negro = botones y tarjeta de meta; coral = solo avisos). Capturas en docs/revisiones/referencia-paleta-1.jpg y -2.jpg. Aplicada en app-con-tus-colores.html (3 pantallas) y como estilo "D · Tus colores" en vista-pagina-ventas.html. Texto sobre menta/lima siempre negro (contraste). Pendiente: aprobación del usuario y FICHA-ARTE.md.
