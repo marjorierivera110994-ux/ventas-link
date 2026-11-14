@@ -111,6 +111,14 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Por definir en Sesión 1/2 con costos: límite de secciones y de productos por plan (NO inventado todavía; el usuario solo fijó 10 fotos/productos en el plan gratis); orden de las secciones (subir/bajar) y qué pasa con los productos al borrar una sección (pedir confirmar y moverlos a otra)
 - Implementado en demo: tienda-demo.html (8 productos en 4 secciones, filtro por chip, búsqueda, carrito de varias secciones) y pantalla 6 "Mis secciones" de app-con-tus-colores.html. Probado por script, sin errores
 
+## Marketing y persuasión para vendedores (idea del usuario 2026-11-14) — DECISIÓN: ofertas HONESTAS
+- El usuario pidió que la app, al poner un precio ($10), inventara automáticamente un "precio anterior" más alto (+30% = $13) para mostrar descuento. DECISIÓN: NO se construye. Un precio anterior que nunca existió es publicidad engañosa (la Ley Orgánica de Defensa del Consumidor de Ecuador define publicidad engañosa como la contraria a las condiciones reales del producto; verificar con abogado cómo aplica a precios) y arriesga multas y la confianza de los clientes del vendedor y de la app.
+- En su lugar (funciona igual de bien para persuadir): el vendedor elige un descuento real (10/15/20/30%) sobre su precio ACTUAL y la app calcula el nuevo precio; muestra "Antes" (gris, tachado, pequeño) + precio nuevo (grande, negro) + etiqueta naranja "-20%"; la oferta tiene fecha de fin real.
+- Regla técnica: la app guarda historial de precios y solo muestra "Antes $X" si $X estuvo publicado realmente (mínimo 7 días, valor a validar con abogado); no se puede escribir un "antes" a mano.
+- Otras herramientas de persuasión permitidas (futuras, solo con datos reales): "Quedan N" por stock real, cuenta regresiva a la fecha de fin real, "Lo más pedido" por pedidos reales, "Nuevo" por fecha de publicación, combos y envío gratis a partir de un monto, plantillas de textos y mensajes para compartir en redes.
+- Implementado en demo: tienda-demo.html (3 productos con "Antes" tachado, precio grande y etiqueta -%) y pantalla 7 "Poner en oferta" de app-con-tus-colores.html.
+- Pendiente: ubicar esto en un plan (¿premium?), definir límites y revisar con abogado/contador antes de lanzar.
+
 ## Mejoras de producto aplicadas (desde el reporte de validación)
 - Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
 - Diferenciador 2: hecho para Ecuador (español cotidiano; el mensaje puede indicar formas de pago que el vendedor acepta: transferencia, efectivo, Deuna, tarjeta)

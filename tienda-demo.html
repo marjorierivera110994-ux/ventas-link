@@ -53,6 +53,10 @@
   .sec-t { margin-top: 24px; font-size: 19px; font-weight: 800; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
   .sec-n { font-family: var(--f-b); font-size: 12px; font-weight: 600; color: var(--texto-2); }
   .seccion:first-child .sec-t { margin-top: 18px; }
+  .precio-box { display: flex; flex-direction: column; line-height: 1.1; }
+  .antes { font-size: 12px; font-weight: 500; color: #6f6a5d; text-decoration: line-through; }
+  .precio.oferta-p { color: var(--tinta); }
+  .oferta { position: absolute; top: 8px; right: 8px; background: var(--naranja); color: var(--tinta); font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
   .vacio { grid-column: 1 / -1; text-align: center; padding: 30px 10px; color: var(--texto-2); }
   .pie { margin-top: 22px; font-size: 12px; color: var(--texto-2); text-align: center; }
 
@@ -170,7 +174,7 @@
       verPedido: 'Ver mi pedido', cats: 'Categorías', todo: 'Todo', ropa: 'Ropa', accesorios: 'Accesorios', agotado: 'Agotado',
       agregar: 'Agregar {x}', agotadoAria: '{x} agotado', sinResultados: 'No encontramos productos con esa búsqueda. Prueba con otra palabra.',
       talla: 'Talla', color: 'Color', cantidad: 'Cantidad', agregarPedido: 'Agregar al pedido', mas1: 'Agregar una unidad', menos1: 'Quitar una unidad',
-      agregado: '{n} × {x} agregado', quedan: 'Quedan {n}', solo: 'Solo hay {n} disponibles', descripcion: 'Descripción', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
+      agregado: '{n} × {x} agregado', quedan: 'Quedan {n}', solo: 'Solo hay {n} disponibles', descripcion: 'Descripción', ofertaAria: 'Precio anterior {a}, precio actual {b}', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
       subtotal: 'Subtotal', envioNota: 'La entrega y el pago se coordinan por WhatsApp. El costo de envío, si aplica, te lo confirma el negocio.',
       continuar: 'Continuar', seguir: 'Seguir comprando', quitar: 'Quitar', coordina: 'Coordinemos tu pedido',
       aviso: 'Pulsa el botón verde y se abrirá WhatsApp con tu pedido listo. Allí acuerdas con el negocio la entrega y el pago.',
@@ -195,7 +199,7 @@
       verPedido: 'View my order', cats: 'Categories', todo: 'All', ropa: 'Clothing', accesorios: 'Accessories', agotado: 'Sold out',
       agregar: 'Add {x}', agotadoAria: '{x} sold out', sinResultados: 'No products match your search. Try another word.',
       talla: 'Size', color: 'Color', cantidad: 'Quantity', agregarPedido: 'Add to order', mas1: 'Add one unit', menos1: 'Remove one unit',
-      agregado: '{n} × {x} added', quedan: '{n} left', solo: 'Only {n} available', descripcion: 'Description', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
+      agregado: '{n} × {x} added', quedan: '{n} left', solo: 'Only {n} available', descripcion: 'Description', ofertaAria: 'Previous price {a}, current price {b}', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
       subtotal: 'Subtotal', envioNota: 'Delivery and payment are arranged on WhatsApp. If shipping applies, the shop will confirm its cost.',
       continuar: 'Continue', seguir: 'Keep shopping', quitar: 'Remove', coordina: 'Let’s arrange your order',
       aviso: 'Tap the green button and WhatsApp will open with your order ready. There you agree on delivery and payment with the shop.',
@@ -219,7 +223,7 @@
       verPedido: 'Ver meu pedido', cats: 'Categorias', todo: 'Tudo', ropa: 'Roupas', accesorios: 'Acessórios', agotado: 'Esgotado',
       agregar: 'Adicionar {x}', agotadoAria: '{x} esgotado', sinResultados: 'Não encontramos produtos com essa busca. Tente outra palavra.',
       talla: 'Tamanho', color: 'Cor', cantidad: 'Quantidade', agregarPedido: 'Adicionar ao pedido', mas1: 'Adicionar uma unidade', menos1: 'Remover uma unidade',
-      agregado: '{n} × {x} adicionado', quedan: 'Restam {n}', solo: 'Só há {n} disponíveis', descripcion: 'Descrição', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
+      agregado: '{n} × {x} adicionado', quedan: 'Restam {n}', solo: 'Só há {n} disponíveis', descripcion: 'Descrição', ofertaAria: 'Preço anterior {a}, preço atual {b}', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
       subtotal: 'Subtotal', envioNota: 'Entrega e pagamento são combinados pelo WhatsApp. Se houver frete, a loja confirma o valor.',
       continuar: 'Continuar', seguir: 'Continuar comprando', quitar: 'Remover', coordina: 'Vamos combinar seu pedido',
       aviso: 'Toque no botão verde e o WhatsApp abrirá com seu pedido pronto. Lá você combina a entrega e o pagamento com a loja.',
@@ -259,12 +263,12 @@
   /* stock: número = el vendedor controla el inventario (la tienda marca "Agotado" sola al llegar a 0);
      null = sin control de stock (opcional). */
   var PRODUCTOS = [
-    { id: 'camisa', n: { es: 'Camisa de lino', en: 'Linen shirt', pt: 'Camisa de linho' }, base: 24, cat: 'ropa', color: '#a5dc5b', arte: 'camisa', variantes: TALLAS, stock: 5,
+    { id: 'camisa', n: { es: 'Camisa de lino', en: 'Linen shirt', pt: 'Camisa de linho' }, base: 24, antes: 30, cat: 'ropa', color: '#a5dc5b', arte: 'camisa', variantes: TALLAS, stock: 5,
       desc: { es: 'Lino suave y fresco, de corte holgado. Lavar a mano. Ideal para días calurosos.', en: 'Soft, breathable linen with a relaxed fit. Hand wash. Great for warm days.', pt: 'Linho macio e fresco, de corte solto. Lavar à mão. Ideal para dias quentes.' } },
     { id: 'bolso', n: { es: 'Bolso tejido', en: 'Woven bag', pt: 'Bolsa tecida' }, base: 35, cat: 'otros', color: '#ffd84a', arte: 'bolso', stock: null,
       variantes: { clave: 'color', ops: [{ id: 'crudo', n: { es: 'Crudo', en: 'Natural', pt: 'Cru' } }, { id: 'mostaza', n: { es: 'Mostaza', en: 'Mustard', pt: 'Mostarda' } }] },
       desc: { es: 'Tejido a mano con fibra natural. Amplio, con asa corta y forro interior.', en: 'Handwoven from natural fiber. Roomy, with a short handle and inner lining.', pt: 'Tecida à mão com fibra natural. Espaçosa, com alça curta e forro interno.' } },
-    { id: 'aretes', n: { es: 'Aretes de plata', en: 'Silver earrings', pt: 'Brincos de prata' }, base: 28, cat: 'aretes', color: '#ff7a1a', arte: 'aretes', stock: 2,
+    { id: 'aretes', n: { es: 'Aretes de plata', en: 'Silver earrings', pt: 'Brincos de prata' }, base: 28, antes: 35, cat: 'aretes', color: '#ff7a1a', arte: 'aretes', stock: 2,
       desc: { es: 'Hechos a mano, livianos y con cierre de seguridad. Vienen en caja de regalo.', en: 'Handmade, lightweight, with a secure clasp. Comes in a gift box.', pt: 'Feitos à mão, leves e com fecho de segurança. Acompanham caixa de presente.' } },
     { id: 'pulsera', n: { es: 'Pulsera tejida', en: 'Woven bracelet', pt: 'Pulseira tecida' }, base: 9, cat: 'otros', color: '#e6ee4a', arte: 'pulsera', stock: 12,
       desc: { es: 'Hilo encerado en colores vivos. Ajustable, para toda ocasión.', en: 'Waxed thread in bright colors. Adjustable, for any occasion.', pt: 'Fio encerado em cores vivas. Ajustável, para qualquer ocasião.' } },
@@ -276,7 +280,7 @@
   PRODUCTOS.push(
     { id: 'aros', n: { es: 'Aretes de aro', en: 'Hoop earrings', pt: 'Argolas' }, base: 22, cat: 'aretes', color: '#e6ee4a', arte: 'aretes', stock: null,
       desc: { es: 'Aros medianos en acabado dorado. Livianos, ideales para todos los días.', en: 'Medium hoops in a gold finish. Lightweight, perfect for everyday wear.', pt: 'Argolas médias com acabamento dourado. Leves, ideais para o dia a dia.' } },
-    { id: 'semillas', n: { es: 'Collar de semillas', en: 'Seed necklace', pt: 'Colar de sementes' }, base: 15, cat: 'collares', color: '#a5dc5b', arte: 'collar', stock: 8,
+    { id: 'semillas', n: { es: 'Collar de semillas', en: 'Seed necklace', pt: 'Colar de sementes' }, base: 15, antes: 18, cat: 'collares', color: '#a5dc5b', arte: 'collar', stock: 8,
       desc: { es: 'Semillas naturales ensartadas a mano. Largo ajustable.', en: 'Natural seeds strung by hand. Adjustable length.', pt: 'Sementes naturais enfiadas à mão. Comprimento ajustável.' } }
   );
   PRODUCTOS.forEach(function (p) { p.hay = p.stock === null || p.stock > 0; });
@@ -294,6 +298,19 @@
   function dinero(n) {
     var loc = estado.idioma === 'en' ? 'en-US' : estado.idioma === 'pt' ? 'pt-BR' : pais().loc;
     try { return new Intl.NumberFormat(loc, { style: 'currency', currency: estado.moneda }).format(n); } catch (e) { return n + ' ' + estado.moneda; }
+  }
+  /* Ofertas: "antes" es el precio REAL que el vendedor tenía publicado. La app lo mostrará solo si ese precio
+     estuvo publicado de verdad (historial de precios); aquí en la demo es un dato de ejemplo. */
+  function antesDe(p) { return p.antes ? Math.round(p.antes * (FACTOR_EJEMPLO[estado.moneda] || 1)) : null; }
+  function pctOferta(p) { return p.antes ? Math.round((1 - p.base / p.antes) * 100) : 0; }
+  function precioBloque(p) {
+    var box = el('div', { class: 'precio-box' });
+    if (p.antes) {
+      box.setAttribute('role', 'group'); box.setAttribute('aria-label', t('ofertaAria', { a: dinero(antesDe(p)), b: dinero(precioDe(p)) }));
+      box.appendChild(el('s', { class: 'antes', 'aria-hidden': 'true', text: dinero(antesDe(p)) }));
+    }
+    box.appendChild(el('span', { class: 'precio' + (p.antes ? ' oferta-p' : ''), 'aria-hidden': p.antes ? 'true' : 'false', text: dinero(precioDe(p)) }));
+    return box;
   }
   function porId(id) { for (var i = 0; i < PRODUCTOS.length; i++) if (PRODUCTOS[i].id === id) return PRODUCTOS[i]; return null; }
   function opcion(p, id) { if (!p.variantes) return null; for (var i = 0; i < p.variantes.ops.length; i++) if (p.variantes.ops[i].id === id) return p.variantes.ops[i]; return null; }
@@ -387,11 +404,12 @@
     {
       var foto = el('div', { class: 'foto', style: 'background:' + p.color }); foto.innerHTML = svgHtml(p.arte, 54);
       if (!p.hay) foto.appendChild(el('span', { class: 'agotado', text: t('agotado') }));
+      if (p.antes && p.hay) foto.appendChild(el('span', { class: 'oferta', text: '-' + pctOferta(p) + '%' }));
       var mas = el('button', { type: 'button', class: 'mas', 'aria-label': p.hay ? t('agregar', { x: nm(p) }) : t('agotadoAria', { x: nm(p) }), onclick: function (e) { abridor = e.currentTarget; abrirProducto(p); } });
       mas.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
       if (!p.hay) mas.disabled = true;
       return (el('article', { class: 'prod' }, [foto, el('h3', { text: nm(p) }), el('p', { class: 'meta', text: nm(secPorId(p.cat)) + (p.variantes ? ' · ' + t(p.variantes.clave) : '') + (stockBajo(p) ? ' · ' + t('quedan', { n: p.stock }) : '') }),
-        el('div', { class: 'fila' }, [el('span', { class: 'precio', text: dinero(precioDe(p)) }), mas])]));
+        el('div', { class: 'fila' }, [precioBloque(p), mas])]));
     }
   }
 
@@ -431,7 +449,7 @@
     abrirHoja(function (h) {
       h.appendChild(cabecera(nm(p)));
       var foto = el('div', { class: 'foto', style: 'background:' + p.color + ';height:140px;margin-top:12px' }); foto.innerHTML = svgHtml(p.arte, 74, 1.4); h.appendChild(foto);
-      h.appendChild(el('p', { class: 'precio', style: 'font-size:24px;margin-top:12px', text: dinero(precioDe(p)) }));
+      var pb = precioBloque(p); pb.style.marginTop = '12px'; pb.querySelector('.precio').style.fontSize = '26px'; h.appendChild(pb);
       if (stockBajo(p)) h.appendChild(el('p', { class: 'abierto', text: t('quedan', { n: p.stock }) }));
       h.appendChild(el('p', { class: 'desc', style: 'margin-top:8px;color:var(--tinta)', text: p.desc[estado.idioma] || p.desc.es }));
       if (p.variantes) {
