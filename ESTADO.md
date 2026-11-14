@@ -47,13 +47,23 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 
 ## Gamificación y retención (pedido del usuario: crecimiento tipo Duolingo medido por ventas semana/mes)
 - Decisión: DOS mecánicas separadas, nunca mezcladas
-  1. RACHA SEMANAL de constancia (no diaria: un comercio no vende todos los días). Semana activa = el vendedor hizo ≥1 de: compartir su enlace, publicar/editar un producto, actualizar el estado de un pedido. Congelador semanal GANADO (no comprado). Reparación <48h. Nunca copy de culpa. Sube desde la semana 2.
+  (NOMBRE DE CARA AL USUARIO: "camino de éxito" — la palabra "racha" NO se usa en la app ni en el copy; decisión del usuario 2026-11-14)
+  1. CAMINO DE ÉXITO semanal (antes "racha") de constancia (no diaria: un comercio no vende todos los días). Semana activa = el vendedor hizo ≥1 de: compartir su enlace, publicar/editar un producto, actualizar el estado de un pedido. Congelador semanal GANADO (no comprado). Reparación <48h. Nunca copy de culpa. Sube desde la semana 2.
   2. PROGRESO DE VENTAS con meta propia, semanal y mensual: barra hacia la meta que fija el vendedor, "tu mejor semana/mes", comparación SOLO contra sí mismo (sin rankings). "Ventas" = suma de subtotales de pedidos que el vendedor marca como entregados; se etiqueta "según tus pedidos registrados". La racha NUNCA se rompe por vender poco.
 - Por qué: la app no ve pagos ni entregas (pago fuera de la app). Medir la racha en ventas la rompería por factores ajenos al vendedor y incentivaría marcar pedidos falsos. La racha premia lo que el vendedor controla; las ventas se celebran como progreso.
 - Registro del pedido: se guarda al pulsar "Enviar pedido por WhatsApp" (estado "solicitado", no confirmado), para que el panel tenga datos aunque el vendedor no los copie.
-- Plan: racha semanal + meta + récords en el plan Gratis (es el gancho); reportes de varios meses y estadísticas detalladas en planes de pago.
+- Plan: camino de éxito semanal + meta + récords en el plan Gratis (es el gancho); reportes de varios meses, estadísticas detalladas y mejora de fotos en planes de pago.
 - Loop: Gatillo = aviso semanal accionable (máx 1-2/semana) → Acción = compartir enlace / atender pedido → Recompensa = barra de meta, hito, récord → Inversión = catálogo y pedidos acumulados.
 - Pendiente para Sesión 4/5: validar con 24, 56 (momentos emocionales) y tabla de datos con permisos por vendedor.
+
+## Requisitos nuevos del usuario (2026-11-14) — cosa juzgada salvo que él lo cambie
+- Producto "se vende solo": el comprador de la app debe poder VER que funciona → la página de ventas incluye una tienda de DEMOSTRACIÓN interactiva (datos de ejemplo claramente marcados como demo) donde se prueba el catálogo, el carrito y el mensaje de WhatsApp
+- Inicio del vendedor: sube nombre del negocio, descripción, servicios, catálogo; obtiene enlace para compartir en redes; el cliente final ve catálogo con precios
+- Plan GRATIS: prueba con hasta 10 productos/fotos (fotos con límite de tamaño)
+- Plan PAGADO (desde "Emprendedor"): MÁS fotos y espacio de catálogo + estadísticas + mejora de fotos (fondo blanco, recorte, luz/color) + plantillas para personalizar la foto del producto + colores y estilo del catálogo personalizables
+- Diferenciador: resolver lo que las apps de la competencia hacen mal (quejas reales encontradas: soporte lento, comisiones ocultas, fallas de cobro, lentitud). Reglas de producto: cero comisión por venta, límites y precios siempre visibles, soporte por WhatsApp con tiempo prometido, carga rápida en celular, cancelación en 1 toque
+- Aviso de alcance: mejora automática de fotos usa servicio externo con costo por foto → entra al gate de economía (40) antes de fijar cupos y precio; el PDF original lo dejaba fuera del MVP; se construye por fases (ver Plan)
+- Fases del premium: F1 más fotos + estadísticas + colores/plantillas de catálogo; F2 recorte/fondo blanco/luz automático + plantillas de foto (cuando el costo por foto esté medido)
 
 ## Mejoras de producto aplicadas (desde el reporte de validación)
 - Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
