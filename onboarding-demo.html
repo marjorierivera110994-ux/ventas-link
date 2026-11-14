@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crea tu tienda — recorrido de inicio (demostración)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --verde-texto: #2f6a10; --wa: #25d366;
+          --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; --ease: cubic-bezier(.16, 1, .3, 1); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45; overflow-x: hidden;
+         background-image: radial-gradient(700px 360px at 0% -6%, color-mix(in oklab, var(--pistacho) 55%, transparent), transparent 62%),
+                           radial-gradient(600px 300px at 100% 0, color-mix(in oklab, var(--lima) 45%, transparent), transparent 60%); }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; border: 0; background: none; }
+  :focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; }
+  h1, h2, h3 { font-family: var(--f-d); letter-spacing: -.02em; }
+  h1 em, h2 em { font-style: normal; background: linear-gradient(transparent 58%, color-mix(in oklab, var(--lima) 85%, transparent) 58%); }
+
+  .app { max-width: 440px; margin: 0 auto; min-height: 100dvh; display: flex; flex-direction: column; padding: 0 20px; position: relative; }
+  .tope { display: flex; align-items: center; gap: 12px; padding-top: max(14px, env(safe-area-inset-top)); min-height: 62px; }
+  .atras, .cerrar { width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; flex-shrink: 0; background: color-mix(in oklab, var(--blanco) 80%, transparent); }
+  .atras[hidden] { display: none; }
+  .barra { flex: 1; height: 4px; border-radius: 999px; background: color-mix(in oklab, var(--tinta) 12%, transparent); overflow: hidden; }
+  .barra i { display: block; height: 100%; width: 8%; border-radius: 999px; background: var(--tinta); transition: width .3s ease-out; }
+  .pct { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 34px; text-align: right; color: var(--texto-2); }
+  .tope.oculto .barra, .tope.oculto .pct { visibility: hidden; }
+
+  #escena { flex: 1; display: flex; flex-direction: column; position: relative; }
+  .paso { flex: 1; display: flex; flex-direction: column; padding-bottom: 12px; }
+  .paso h1 { font-size: clamp(28px, 8vw, 34px); line-height: 1.08; font-weight: 800; margin-top: 26px; text-wrap: balance; }
+  .paso .sub { font-size: 15px; color: var(--texto-2); margin-top: 8px; }
+  .paso .sub b { color: var(--tinta); font-weight: 600; }
+  .cuerpo { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .pie { position: sticky; bottom: 0; margin: auto -20px 0; padding: 14px 20px max(16px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--beige) 28%); }
+
+  .campo { display: block; }
+  .campo label { font-weight: 700; font-size: 14px; display: block; margin-bottom: 6px; }
+  .campo input, .campo select { width: 100%; min-height: 58px; border-radius: 18px; border: 2px solid transparent; background: var(--blanco); padding: 0 18px; font-size: 18px; box-shadow: 0 10px 24px -16px rgb(40 60 40 / .5); }
+  .campo input:focus-visible, .campo select:focus-visible { border-color: var(--tinta); outline: none; }
+  .campo.err input, .campo.err select { border-color: #c2410c; }
+  .error { color: #9a3412; font-size: 14px; font-weight: 700; margin-top: 6px; display: none; }
+  .campo.err .error { display: block; }
+  .ayuda { font-size: 13px; color: var(--texto-2); margin-top: 6px; }
+  .tel-fila { display: grid; grid-template-columns: 132px 1fr; gap: 10px; }
+
+  .opciones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .opc > span { min-width: 0; overflow-wrap: anywhere; }
+  .opciones.uno { grid-template-columns: 1fr; }
+  .opc { position: relative; min-height: 64px; border-radius: 18px; background: var(--blanco); border: 2px solid color-mix(in oklab, var(--tinta) 10%, transparent); padding: 10px 14px; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; text-align: left; transition: transform .12s ease-out, border-color .15s, background .15s; }
+  .opc:active { transform: scale(.97); }
+  .opc .ic { width: 36px; height: 36px; border-radius: 12px; background: color-mix(in oklab, var(--pistacho) 55%, white); display: grid; place-items: center; flex-shrink: 0; }
+  .opc .ck { margin-left: auto; width: 24px; height: 24px; border-radius: 999px; background: var(--tinta); color: var(--lima); display: grid; place-items: center; transform: scale(0); }
+  .opc[aria-checked="true"] { border-color: var(--tinta); background: color-mix(in oklab, var(--lima) 40%, white); }
+  .opc[aria-checked="true"] .ck { transform: scale(1); transition: transform .2s cubic-bezier(.34, 1.56, .64, 1); }
+  .opc small { display: block; font-weight: 500; font-size: 13px; color: var(--texto-2); }
+  .bloqueado .opc { pointer-events: none; }
+
+  .btn { width: 100%; min-height: 58px; border-radius: 999px; font-weight: 800; font-size: 17px; display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--tinta); color: var(--lima); box-shadow: 0 16px 28px -14px rgb(19 19 19 / .6); transition: transform .12s ease-out, opacity .2s; }
+  .btn:active { transform: scale(.98); }
+  .btn[disabled] { opacity: .45; box-shadow: none; cursor: not-allowed; }
+  .btn.wa { background: var(--wa); color: var(--tinta); }
+  .btn.claro { background: var(--blanco); color: var(--tinta); box-shadow: none; }
+  .link { min-height: 44px; font-weight: 700; font-size: 14px; color: var(--texto-2); text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; justify-content: center; }
+  .centro { text-align: center; }
+  .pildora { display: inline-flex; align-items: center; gap: 8px; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; align-self: flex-start; }
+
+  /* Bienvenida */
+  .marca { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-family: var(--f-d); font-weight: 800; font-size: 18px; }
+  .marca i { width: 40px; height: 40px; border-radius: 14px; background: var(--tinta); display: grid; place-items: center; }
+  .lista-v { list-style: none; display: grid; gap: 12px; margin-top: 22px; }
+  .lista-v li { display: flex; gap: 12px; align-items: center; font-size: 16px; font-weight: 600; }
+  .lista-v .ic { width: 38px; height: 38px; border-radius: 12px; background: color-mix(in oklab, var(--pistacho) 60%, white); display: grid; place-items: center; flex-shrink: 0; }
+
+  /* Armando tu tienda */
+  .anillo { position: relative; width: 132px; height: 132px; margin: 34px auto 0; }
+  .anillo svg { transform: rotate(-90deg); display: block; }
+  .anillo .num { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums; }
+  .lineas { list-style: none; display: grid; gap: 14px; margin-top: 30px; }
+  .lineas li { display: flex; gap: 12px; align-items: center; font-size: 16px; font-weight: 600; opacity: 0; transform: translateY(8px); transition: opacity .25s ease-out, transform .25s ease-out, color .2s; }
+  .lineas li.ver { opacity: .45; transform: none; }
+  .lineas li.act { opacity: 1; }
+  .lineas li.hecha { opacity: 1; }
+  .lineas .pt { width: 24px; height: 24px; border-radius: 999px; flex-shrink: 0; display: grid; place-items: center; border: 2px solid color-mix(in oklab, var(--tinta) 30%, transparent); }
+  .lineas li.act .pt { border-color: var(--tinta); animation: pulsa 1s ease-in-out infinite; }
+  .lineas li.hecha .pt { background: var(--tinta); border-color: var(--tinta); color: var(--lima); }
+  .lineas li.hecha .pt svg { animation: pop .3s cubic-bezier(.34, 1.56, .64, 1); }
+  @keyframes pulsa { 50% { box-shadow: 0 0 0 6px color-mix(in oklab, var(--pistacho) 70%, transparent); } }
+  @keyframes pop { from { transform: scale(.5); } to { transform: scale(1); } }
+
+  /* Tienda lista */
+  .tienda { background: var(--blanco); border-radius: 26px; overflow: hidden; box-shadow: 0 22px 40px -22px rgb(40 60 40 / .55); margin-top: 22px; }
+  .tienda .ban { background: var(--pistacho); padding: 18px 16px; display: flex; gap: 12px; align-items: center; }
+  .tienda .logo { width: 52px; height: 52px; border-radius: 999px; background: var(--blanco); display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; font-size: 18px; flex-shrink: 0; }
+  .tienda .nom { font-family: var(--f-d); font-weight: 800; font-size: 20px; line-height: 1.1; }
+  .tienda .tip { font-size: 13px; }
+  .tienda .secs { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 16px 4px; }
+  .tienda .sec { border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 700; background: color-mix(in oklab, var(--lima) 55%, white); }
+  .tienda .vacios { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 16px 16px; }
+  .tienda .vacio { border: 2px dashed color-mix(in oklab, var(--tinta) 25%, transparent); border-radius: 16px; min-height: 84px; display: grid; place-items: center; text-align: center; font-size: 12px; font-weight: 700; color: var(--texto-2); padding: 8px; }
+  .enlace { margin-top: 16px; background: var(--blanco); border-radius: 18px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; }
+  .enlace b { font-size: 15px; word-break: break-all; flex: 1; min-width: 0; }
+  .copiar { min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--tinta); color: var(--lima); font-weight: 800; font-size: 14px; }
+  .nota { font-size: 13px; color: var(--texto-2); margin-top: 8px; }
+  .confeti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; contain: strict; z-index: 20; }
+  .confeti i { position: absolute; top: 38%; left: 50%; width: 10px; height: 14px; border-radius: 3px; }
+
+  /* Planes */
+  .beneficios { list-style: none; display: grid; gap: 10px; margin-top: 18px; }
+  .beneficios li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; font-weight: 600; }
+  .beneficios .ck { width: 22px; height: 22px; border-radius: 999px; background: var(--tinta); color: var(--lima); display: grid; place-items: center; flex-shrink: 0; margin-top: 1px; }
+  .planes { display: grid; gap: 12px; margin-top: 22px; }
+  .plan { position: relative; text-align: left; background: var(--blanco); border-radius: 22px; border: 2px solid color-mix(in oklab, var(--tinta) 10%, transparent); padding: 14px 16px; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 12px; align-items: start; transition: border-color .15s, background .15s, transform .12s; }
+  .plan:active { transform: scale(.985); }
+  .plan[aria-checked="true"] { border-color: var(--tinta); background: color-mix(in oklab, var(--lima) 40%, white); }
+  .plan .rd { width: 24px; height: 24px; border-radius: 999px; border: 2px solid color-mix(in oklab, var(--tinta) 35%, transparent); margin-top: 3px; display: grid; place-items: center; }
+  .plan[aria-checked="true"] .rd { border-color: var(--tinta); background: var(--tinta); }
+  .plan[aria-checked="true"] .rd::after { content: ''; width: 8px; height: 8px; border-radius: 999px; background: var(--lima); }
+  .plan h3 { font-size: 18px; font-weight: 800; }
+  .plan ul { list-style: none; margin-top: 4px; font-size: 13.5px; color: var(--texto-2); display: grid; gap: 2px; }
+  .plan > div { min-width: 0; }
+  .plan .pr { white-space: nowrap; text-align: right; font-family: var(--f-d); font-weight: 800; font-size: 24px; font-variant-numeric: tabular-nums; line-height: 1; }
+  .plan .pr small { display: block; font-family: var(--f-b); font-size: 12px; font-weight: 600; color: var(--texto-2); margin-top: 2px; }
+  .rec { position: absolute; top: -11px; left: 50px; background: var(--tinta); color: var(--lima); font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; }
+  .porque { margin-top: 12px; font-size: 14px; background: color-mix(in oklab, var(--pistacho) 45%, white); border-radius: 16px; padding: 10px 14px; font-weight: 600; }
+  .verdad { list-style: none; display: grid; gap: 4px; margin-top: 10px; font-size: 13.5px; color: var(--texto-2); }
+  .verdad li { display: flex; gap: 8px; align-items: center; }
+  .verdad svg { color: var(--verde-texto); flex-shrink: 0; }
+
+  .pasos-sig { list-style: none; display: grid; gap: 10px; margin-top: 18px; }
+  .pasos-sig li { display: flex; gap: 12px; align-items: center; background: var(--blanco); border-radius: 18px; padding: 12px 14px; font-weight: 700; font-size: 15px; }
+  .pasos-sig .n { width: 30px; height: 30px; border-radius: 999px; background: var(--lima); display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; flex-shrink: 0; }
+  .toast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 30; max-width: 90vw; }
+  .toast.on { display: block; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="tope" id="tope">
+    <button type="button" class="atras" id="atras" aria-label="Volver al paso anterior" hidden><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+    <div class="barra" role="progressbar" aria-label="Progreso" aria-valuemin="0" aria-valuemax="100" aria-valuenow="8" id="barra"><i id="barra-i"></i></div>
+    <span class="pct" id="pct" aria-live="polite">8%</span>
+  </div>
+  <main id="escena"></main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var REDUCIDO = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+
+  var TIPOS = [
+    { id: 'ropa', n: 'Ropa', sec: ['Camisas', 'Vestidos', 'Pantalones'], d: '<path d="M13 5 4 10l4 7 4-2v19h16V15l4 2 4-7-9-5c-1 3-3.5 4.5-7 4.5S14 8 13 5z" transform="scale(.6)"/>' },
+    { id: 'accesorios', n: 'Accesorios y joyería', sec: ['Aretes', 'Collares', 'Pulseras'], d: '<circle cx="8" cy="14" r="4"/><circle cx="16" cy="14" r="4"/><path d="M8 4v6M16 4v6"/>' },
+    { id: 'comida', n: 'Comida y postres', sec: ['Postres', 'Almuerzos', 'Bebidas'], d: '<path d="M4 11h16a8 8 0 0 1-16 0Z"/><path d="M9 7c0-2 2-2 2-4M14 7c0-2 2-2 2-4"/>' },
+    { id: 'belleza', n: 'Belleza y cuidado', sec: ['Maquillaje', 'Cuidado de piel', 'Perfumes'], d: '<path d="M12 3c3 4 6 6 6 10a6 6 0 0 1-12 0c0-4 3-6 6-10Z"/>' },
+    { id: 'hogar', n: 'Hogar y decoración', sec: ['Decoración', 'Cocina', 'Textiles'], d: '<path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>' },
+    { id: 'otra', n: 'Otra cosa (escribe la tuya)', sec: ['Destacados', 'Novedades', 'Ofertas'], d: '<path d="M12 5v14M5 12h14"/>' }
+  ];
+  var CANTIDADES = [
+    { id: 'hasta10', n: 'Hasta 10', plan: 'gratis' },
+    { id: '11a60', n: '11 a 60', plan: 'emprendedor' },
+    { id: 'mas60', n: 'Más de 60', plan: 'pro' },
+    { id: 'nose', n: 'Aún no lo sé', plan: 'gratis' }
+  ];
+  var PAISES = {
+    EC: { n: 'Ecuador', cod: '593', largo: [9], c0: true }, CO: { n: 'Colombia', cod: '57', largo: [10], c0: false }, PE: { n: 'Perú', cod: '51', largo: [9], c0: false },
+    MX: { n: 'México', cod: '52', largo: [10], c0: false }, CL: { n: 'Chile', cod: '56', largo: [9], c0: false }, AR: { n: 'Argentina', cod: '54', largo: [10], c0: true },
+    ES: { n: 'España', cod: '34', largo: [9], c0: false }, US: { n: 'Estados Unidos', cod: '1', largo: [10], c0: false }, BR: { n: 'Brasil', cod: '55', largo: [10, 11], c0: true }
+  };
+  var PLANES = {
+    gratis: { n: 'Gratis', precio: '$0', pts: ['Hasta 10 productos y 3 secciones', 'Pedidos por WhatsApp sin límite', 'Camino de éxito y mensajes motivadores'], cta: 'Crear mi tienda gratis' },
+    emprendedor: { n: 'Emprendedor', precio: '$4.99', pts: ['Hasta 60 productos y 10 secciones', 'Ofertas y textos listos para redes', '10 plantillas para tu tienda'], cta: 'Probar 7 días gratis' },
+    pro: { n: 'Profesional', precio: '$9.99', pts: ['Hasta 300 productos, secciones sin límite', '50 plantillas y paleta con dorado y plateado', 'Tu logo y tu portada'], cta: 'Probar 7 días gratis' }
+  };
+  var PORQUE = {
+    gratis: 'Con hasta 10 productos, el plan Gratis te alcanza. Puedes subir de plan cuando quieras.',
+    emprendedor: 'Con 11 a 60 productos, Emprendedor te alcanza: hasta 60 productos y 10 secciones.',
+    pro: 'Con más de 60 productos necesitas Profesional: hasta 300 productos y secciones sin límite.'
+  };
+  var FLUJO = ['bienvenida', 'nombre', 'vende', 'cantidad', 'whatsapp', 'armando', 'lista', 'planes', 'cuenta', 'fin'];
+  var PREGUNTAS = ['nombre', 'vende', 'cantidad', 'whatsapp'];
+
+  var R = { nombre: '', tipo: null, otro: '', cantidad: null, pais: 'EC', tel: '', plan: 'gratis', plan_rec: 'gratis', email: '' };
+  var paso = 'bienvenida'; var ocupado = false; var timers = [];
+
+  function el(tag, attrs, hijos) {
+    var e = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) {
+      if (k === 'class') e.className = attrs[k]; else if (k === 'text') e.textContent = attrs[k];
+      else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), attrs[k]); else e.setAttribute(k, attrs[k]);
+    });
+    (hijos || []).forEach(function (h) { if (h) e.appendChild(typeof h === 'string' ? document.createTextNode(h) : h); });
+    return e;
+  }
+  var CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+  function icono(d, t) { return '<svg width="' + (t || 20) + '" height="' + (t || 20) + '" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'; }
+  function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2200); }
+  function limpiarTimers() { timers.forEach(clearTimeout); timers = []; }
+  function esperar(fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; }
+
+  function nombreCorto() { return R.nombre.trim() || 'Tu tienda'; }
+  function iniciales(n) { return n.split(/\s+/).filter(Boolean).slice(0, 2).map(function (w) { return w.charAt(0).toUpperCase(); }).join('') || 'TT'; }
+  function slug(n) { var s = n.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); return s || 'mi-tienda'; }
+  function tipoActual() { for (var i = 0; i < TIPOS.length; i++) if (TIPOS[i].id === R.tipo) return TIPOS[i]; return TIPOS[5]; }
+  function etiquetaTipo() { var t = tipoActual(); return t.id === 'otra' ? (R.otro.trim() || 'tu negocio') : t.n.toLowerCase(); }
+  function planRecomendado() { for (var i = 0; i < CANTIDADES.length; i++) if (CANTIDADES[i].id === R.cantidad) return CANTIDADES[i].plan; return 'gratis'; }
+
+  /* Teléfono: limpia, quita código de país y 0 inicial, valida el largo */
+  function telLimpio() {
+    var p = PAISES[R.pais]; var d = R.tel.replace(/\D/g, '');
+    if (d.indexOf(p.cod) === 0 && d.length > Math.max.apply(null, p.largo)) d = d.slice(p.cod.length);
+    if (p.c0 && d.charAt(0) === '0') d = d.slice(1);
+    return d;
+  }
+  function telValido() { var p = PAISES[R.pais]; return p.largo.indexOf(telLimpio().length) >= 0; }
+  function telCompleto() { return '+' + PAISES[R.pais].cod + ' ' + telLimpio(); }
+  function telOculto() { var d = telLimpio(); return '+' + PAISES[R.pais].cod + ' ' + d.slice(0, 2) + '••• ' + d.slice(-3); }
+
+  /* ---------- Barra superior ---------- */
+  function actualizarTope() {
+    var i = PREGUNTAS.indexOf(paso); var oculto = i < 0 && paso !== 'armando';
+    $('tope').classList.toggle('oculto', oculto);
+    var pct = paso === 'armando' ? 100 : (i >= 0 ? Math.round(8 + (i / PREGUNTAS.length) * 92) : 8);
+    if (paso === 'whatsapp') pct = 80;
+    $('barra-i').style.width = pct + '%'; $('pct').textContent = pct + '%'; $('barra').setAttribute('aria-valuenow', String(pct));
+    $('atras').hidden = !(i >= 1 || paso === 'cuenta' || paso === 'planes');
+    $('atras').setAttribute('aria-label', 'Volver al paso anterior');
+  }
+
+  /* ---------- Transiciones ---------- */
+  function animar(nodo, dir) {
+    if (!nodo.animate) return;
+    var desde = REDUCIDO ? 0 : 40 * dir;
+    nodo.animate([{ transform: 'translateX(' + desde + 'px)', opacity: 0 }, { transform: 'translateX(0)', opacity: 1 }], { duration: REDUCIDO ? 200 : 300, easing: EASE, fill: 'both' });
+    if (!REDUCIDO) nodo.querySelectorAll('[data-esc]').forEach(function (c, i) { c.animate([{ transform: 'translateY(10px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 300, delay: 60 + i * 55, easing: EASE, fill: 'backwards' }); });
+  }
+  function ir(destino, dir) {
+    if (ocupado) return; ocupado = true; limpiarTimers();
+    var esc = $('escena'); var viejo = esc.firstElementChild; dir = dir || 1;
+    function montar() {
+      paso = destino; esc.textContent = ''; var nodo = construir(destino); esc.appendChild(nodo); actualizarTope(); animar(nodo, dir);
+      var h = nodo.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+      var auto = nodo.querySelector('input:not([type=hidden]), select'); if (auto && PREGUNTAS.indexOf(destino) >= 0) { try { auto.focus({ preventScroll: true }); } catch (e) { /* ok */ } }
+      window.scrollTo(0, 0); ocupado = false; if (destino === 'armando') arrancarArmado(); if (destino === 'lista') celebrar();
+    }
+    if (viejo && viejo.animate && !REDUCIDO) { var a = viejo.animate([{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(' + (-24 * dir) + 'px)', opacity: 0 }], { duration: 200, easing: 'ease-in', fill: 'forwards' }); a.onfinish = montar; } else montar();
+  }
+  function siguiente() { ir(FLUJO[FLUJO.indexOf(paso) + 1], 1); }
+  function anterior() { var i = FLUJO.indexOf(paso); if (paso === 'planes') { ir('whatsapp', -1); return; } if (i > 0) ir(FLUJO[i - 1], -1); }
+
+  /* ---------- Pantallas ---------- */
+  function construir(p) { return ({ bienvenida: pBienvenida, nombre: pNombre, vende: pVende, cantidad: pCantidad, whatsapp: pWhatsapp, armando: pArmando, lista: pLista, planes: pPlanes, cuenta: pCuenta, fin: pFin })[p](); }
+  function pie(btn, extra) { var d = el('div', { class: 'pie' }, [btn]); if (extra) d.appendChild(extra); return d; }
+  function cta(texto, fn, deshabilitado) { var b = el('button', { type: 'button', class: 'btn', text: texto, onclick: fn }); if (deshabilitado) b.disabled = true; return b; }
+
+  function pBienvenida() {
+    var m = el('div', { class: 'marca', 'data-esc': '' }); m.innerHTML = '<i>' + icono('<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>', 22).replace('#131313', '#e6ee4a') + '</i>Tu tienda digital';
+    var items = [['Tu enlace único para compartir en redes', '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'], ['Pedidos claros en tu WhatsApp', '<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/>'], ['Sin comisión por tus ventas', '<path d="M20 6 9 17l-5-5"/>']];
+    var ul = el('ul', { class: 'lista-v' }); items.forEach(function (x) { var li = el('li', { 'data-esc': '' }); li.innerHTML = '<span class="ic">' + icono(x[1], 20) + '</span>'; li.appendChild(document.createTextNode(x[0])); ul.appendChild(li); });
+    var h = el('h1', { 'data-esc': '' }); h.innerHTML = 'Crea tu tienda en <em>2 minutos</em>';
+    var sub = el('p', { class: 'sub', 'data-esc': '' }); sub.innerHTML = '<b>4 preguntas rápidas</b> y tu enlace queda listo para compartir.';
+    var nodo = el('section', { class: 'paso' }, [el('span', { class: 'pildora', 'data-esc': '', text: 'Demostración del recorrido de inicio' }), m, h, sub, ul, pie(cta('Empezar', function () { ir('nombre', 1); }), el('p', { class: 'nota centro', text: 'Sin tarjeta. Sin compromiso.' }))]);
+    return nodo;
+  }
+
+  function pNombre() {
+    var inp = el('input', { type: 'text', id: 'in-nombre', maxlength: '40', autocomplete: 'organization', placeholder: 'Ej: Boutique Luna', value: R.nombre, 'aria-describedby': 'e-nombre' });
+    var campo = el('div', { class: 'campo', 'data-esc': '' }, [el('label', { for: 'in-nombre', text: 'Nombre de tu negocio' }), inp, el('p', { class: 'error', id: 'e-nombre', text: 'Escribe el nombre de tu negocio (mínimo 2 letras).' })]);
+    var b = cta('Continuar', continuar, R.nombre.trim().length < 2);
+    function continuar() { var v = inp.value.trim(); if (v.length < 2) { campo.classList.add('err'); inp.focus(); return; } R.nombre = v; ir('vende', 1); }
+    inp.addEventListener('input', function () { R.nombre = inp.value; b.disabled = inp.value.trim().length < 2; campo.classList.remove('err'); });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') continuar(); });
+    var h = el('h1', { 'data-esc': '' }); h.innerHTML = '¿Cómo se llama <em>tu negocio</em>?';
+    return el('section', { class: 'paso' }, [h, el('p', { class: 'sub', 'data-esc': '', text: 'Así lo verán tus clientes en tu tienda.' }), el('div', { class: 'cuerpo' }, [campo]), pie(b)]);
+  }
+
+  function pVende() {
+    var h = el('h1', { 'data-esc': '' }); h.innerHTML = '¿Qué <em>vendes</em>?';
+    var grupo = el('div', { class: 'opciones', role: 'radiogroup', 'aria-label': 'Qué vendes' });
+    var otro = el('div', { class: 'campo', hidden: '', 'data-esc': '' }); var inpOtro = el('input', { type: 'text', id: 'in-otro', maxlength: '40', placeholder: 'Ej: Artesanías, plantas…', value: R.otro });
+    otro.appendChild(el('label', { for: 'in-otro', text: 'Cuéntanos qué vendes' })); otro.appendChild(inpOtro);
+    var b = cta('Continuar', function () { if (inpOtro.value.trim().length < 2) { inpOtro.focus(); return; } R.otro = inpOtro.value.trim(); ir('cantidad', 1); }, true); b.hidden = true;
+    var pieNodo = pie(b);
+    TIPOS.forEach(function (t) {
+      var o = el('button', { type: 'button', class: 'opc', role: 'radio', 'aria-checked': String(R.tipo === t.id), 'data-esc': '' });
+      o.innerHTML = '<span class="ic">' + icono(t.d, 20) + '</span><span></span><span class="ck">' + CHECK + '</span>'; o.children[1].textContent = t.n;
+      o.addEventListener('click', function () {
+        if (ocupado || grupo.classList.contains('bloqueado')) return; R.tipo = t.id; grupo.querySelectorAll('.opc').forEach(function (x) { x.setAttribute('aria-checked', String(x === o)); });
+        if (t.id === 'otra') { otro.hidden = false; b.hidden = false; inpOtro.focus(); b.disabled = inpOtro.value.trim().length < 2; }
+        else { otro.hidden = true; b.hidden = true; grupo.classList.add('bloqueado'); esperar(function () { grupo.classList.remove('bloqueado'); ir('cantidad', 1); }, REDUCIDO ? 120 : 320); }
+      }); grupo.appendChild(o);
+    });
+    inpOtro.addEventListener('input', function () { b.disabled = inpOtro.value.trim().length < 2; });
+    return el('section', { class: 'paso' }, [h, el('p', { class: 'sub', 'data-esc': '', text: 'Con esto te armamos secciones para tu catálogo.' }), el('div', { class: 'cuerpo' }, [grupo, otro]), pieNodo]);
+  }
+
+  function pCantidad() {
+    var h = el('h1', { 'data-esc': '' }); h.innerHTML = '¿Cuántos <em>productos</em> tienes para empezar?';
+    var grupo = el('div', { class: 'opciones', role: 'radiogroup', 'aria-label': 'Cantidad de productos' });
+    CANTIDADES.forEach(function (c) {
+      var o = el('button', { type: 'button', class: 'opc', role: 'radio', 'aria-checked': String(R.cantidad === c.id), 'data-esc': '' });
+      o.innerHTML = '<span></span><span class="ck">' + CHECK + '</span>'; o.children[0].textContent = c.n;
+      o.addEventListener('click', function () { if (ocupado || grupo.classList.contains('bloqueado')) return; R.cantidad = c.id; grupo.querySelectorAll('.opc').forEach(function (x) { x.setAttribute('aria-checked', String(x === o)); }); grupo.classList.add('bloqueado'); esperar(function () { grupo.classList.remove('bloqueado'); ir('whatsapp', 1); }, REDUCIDO ? 120 : 320); });
+      grupo.appendChild(o);
+    });
+    return el('section', { class: 'paso' }, [h, el('p', { class: 'sub', 'data-esc': '', text: 'Sirve para recomendarte el plan justo. Puedes cambiarlo cuando quieras.' }), el('div', { class: 'cuerpo' }, [grupo])]);
+  }
+
+  function pWhatsapp() {
+    var h = el('h1', { 'data-esc': '' }); h.innerHTML = '¿A qué <em>WhatsApp</em> te llegan los pedidos?';
+    var sel = el('select', { id: 'in-pais', 'aria-label': 'País' });
+    Object.keys(PAISES).forEach(function (k) { var o = el('option', { value: k, text: '+' + PAISES[k].cod + ' ' + PAISES[k].n }); if (k === R.pais) o.selected = true; sel.appendChild(o); });
+    var inp = el('input', { type: 'text', id: 'in-tel', inputmode: 'tel', autocomplete: 'tel-national', placeholder: '99 123 4567', value: R.tel, 'aria-describedby': 'e-tel a-tel' });
+    var campo = el('div', { class: 'campo', 'data-esc': '' }, [el('label', { for: 'in-tel', text: 'Tu número de WhatsApp' }), el('div', { class: 'tel-fila' }, [sel, inp]),
+      el('p', { class: 'error', id: 'e-tel', text: '' }), el('p', { class: 'ayuda', id: 'a-tel', text: 'Tus clientes te escribirán a este número cuando envíen su pedido.' })]);
+    function msgError() { var p = PAISES[R.pais]; return 'Revisa tu número: en ' + p.n + ' tiene ' + p.largo.join(' u ') + ' dígitos' + (p.c0 ? ', sin el 0 inicial' : '') + '.'; }
+    var b = cta('Crear mi tienda', continuar, !telValido());
+    function continuar() { R.tel = inp.value; if (!telValido()) { $('e-tel').textContent = msgError(); campo.classList.add('err'); inp.focus(); return; } ir('armando', 1); }
+    inp.addEventListener('input', function () { R.tel = inp.value; b.disabled = !telValido(); campo.classList.remove('err'); });
+    sel.addEventListener('change', function () { R.pais = sel.value; b.disabled = !telValido(); campo.classList.remove('err'); });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') continuar(); });
+    return el('section', { class: 'paso' }, [h, el('p', { class: 'sub', 'data-esc': '', text: 'Es lo último. Después armamos tu tienda.' }), el('div', { class: 'cuerpo' }, [campo]), pie(b)]);
+  }
+
+  /* ---------- Armando tu tienda (4 a 6 segundos, con datos reales del usuario) ---------- */
+  var ARM = { pct: 0, objetivo: 0, intervalo: null };
+  function pArmando() {
+    var anillo = el('div', { class: 'anillo', 'aria-hidden': 'true' });
+    anillo.innerHTML = '<svg width="132" height="132" viewBox="0 0 132 132"><circle cx="66" cy="66" r="57" fill="none" stroke="rgba(19,19,19,.12)" stroke-width="11"/><circle id="arco" cx="66" cy="66" r="57" fill="none" stroke="#131313" stroke-width="11" stroke-linecap="round" stroke-dasharray="358.1" stroke-dashoffset="358.1"/></svg><span class="num" id="num">0%</span>';
+    var t = tipoActual();
+    var textos = ['Creando el enlace de ' + nombreCorto(), 'Ordenando secciones para ' + etiquetaTipo(), 'Conectando tu WhatsApp ' + telOculto(), 'Activando tus mensajes motivadores'];
+    var ul = el('ul', { class: 'lineas', id: 'lineas' });
+    textos.forEach(function (tx) { var li = el('li'); li.innerHTML = '<span class="pt"></span>'; li.appendChild(document.createTextNode(tx)); ul.appendChild(li); });
+    var h = el('h1', { class: 'centro' }); h.innerHTML = 'Armando <em>tu tienda</em>…';
+    var vivo = el('div', { 'aria-live': 'polite', 'aria-busy': 'true', id: 'vivo' }, [ul]);
+    return el('section', { class: 'paso' }, [h, anillo, vivo]);
+  }
+  function fijarArco(p) { var a = $('arco'); if (a) a.setAttribute('stroke-dashoffset', String(358.1 * (1 - p / 100))); var n = $('num'); if (n) n.textContent = Math.round(p) + '%'; }
+  function arrancarArmado() {
+    var lis = [].slice.call(document.querySelectorAll('#lineas li')); var mesetas = [22, 48, 74, 100]; var paso0 = REDUCIDO ? 500 : 1150;
+    ARM.pct = 0; ARM.objetivo = 0; clearInterval(ARM.intervalo);
+    ARM.intervalo = setInterval(function () { if (ARM.pct < ARM.objetivo) { ARM.pct = Math.min(ARM.objetivo, ARM.pct + (REDUCIDO ? 8 : 1.6)); fijarArco(ARM.pct); } }, 30);
+    function marcar(i) {
+      lis.forEach(function (li, j) { if (j < i) { li.className = 'hecha'; li.firstChild.innerHTML = CHECK; } });
+      if (i < lis.length) { lis[i].className = 'act'; } ARM.objetivo = i === 0 ? 0 : mesetas[i - 1];
+    }
+    lis.forEach(function (li, i) { esperar(function () { li.classList.add('ver'); if (i === 0) li.className = 'act ver'; }, i * 220); });
+    mesetas.forEach(function (m, i) { esperar(function () { ARM.objetivo = m; lis[i].className = 'hecha ver'; lis[i].firstChild.innerHTML = CHECK; if (lis[i + 1]) lis[i + 1].className = 'act ver'; }, paso0 * (i + 1)); });
+    esperar(function () { clearInterval(ARM.intervalo); ARM.pct = 100; fijarArco(100); var v = $('vivo'); if (v) v.setAttribute('aria-busy', 'false'); }, paso0 * 4 + 150);
+    esperar(function () { ir('lista', 1); }, paso0 * 4 + (REDUCIDO ? 300 : 700));
+  }
+
+  /* ---------- Tu tienda lista ---------- */
+  function pLista() {
+    var t = tipoActual(); var nombre = nombreCorto();
+    var h = el('h1'); h.innerHTML = '<em>' + escapar(nombre) + '</em> está lista';
+    var sub = el('p', { class: 'sub', 'data-esc': '' }); sub.innerHTML = '<b>Hecho con tus 4 respuestas.</b> Así empieza tu tienda:';
+    var ban = el('div', { class: 'ban' }); ban.innerHTML = '<span class="logo"></span><div><p class="nom"></p><p class="tip">Tu catálogo</p></div>'; ban.querySelector('.logo').textContent = iniciales(nombre); ban.querySelector('.nom').textContent = nombre;
+    var secs = el('div', { class: 'secs' }); t.sec.forEach(function (s) { secs.appendChild(el('span', { class: 'sec', text: s })); });
+    var vacios = el('div', { class: 'vacios' }, [el('div', { class: 'vacio', text: 'Aquí irá tu primer producto' }), el('div', { class: 'vacio', text: 'Aquí irá tu segundo producto' })]);
+    var tienda = el('div', { class: 'tienda', 'data-esc': '' }, [ban, secs, vacios]);
+    var enlace = el('div', { class: 'enlace', 'data-esc': '' }, [el('b', { text: 'ejemplo.com/' + slug(nombre) }), el('button', { type: 'button', class: 'copiar', text: 'Copiar', onclick: function () { copiar('https://ejemplo.com/' + slug(nombre)); } })]);
+    var nota = el('p', { class: 'nota', 'data-esc': '', text: 'Este enlace es de ejemplo. En la app real recibes el tuyo.' });
+    return el('section', { class: 'paso' }, [h, sub, tienda, enlace, nota, pie(cta('Ver mi plan', function () { R.plan_rec = planRecomendado(); R.plan = R.plan_rec; ir('planes', 1); }))]);
+  }
+  function escapar(s) { return s.replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function copiar(txt) {
+    function respaldo() { var a = document.createElement('textarea'); a.value = txt; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); toast('Enlace copiado'); } catch (e) { toast('Copia el enlace manualmente'); } a.remove(); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function () { toast('Enlace copiado'); }, respaldo); else respaldo();
+  }
+  function celebrar() {
+    if (REDUCIDO) return; var cont = el('div', { class: 'confeti', 'aria-hidden': 'true' }); document.body.appendChild(cont);
+    var cols = ['#a5dc5b', '#e6ee4a', '#ff7a1a', '#131313'];
+    for (var i = 0; i < 22; i++) {
+      var p = el('i'); p.style.background = cols[i % cols.length]; cont.appendChild(p);
+      var ang = (Math.PI * 2 * i) / 22; var dist = 70 + Math.random() * 80; /* se queda dentro del ancho de un celular */
+      p.animate([{ transform: 'translate(0,0) rotate(0)', opacity: 1 }, { transform: 'translate(' + Math.cos(ang) * dist + 'px,' + (Math.sin(ang) * dist + 90) + 'px) rotate(' + (200 + Math.random() * 300) + 'deg)', opacity: 0 }], { duration: 1000 + Math.random() * 500, easing: 'cubic-bezier(.2,.8,.3,1)', fill: 'forwards' });
+    }
+    setTimeout(function () { cont.remove(); }, 1700);
+  }
+
+  /* ---------- Plan (la pantalla que decide) ---------- */
+  function pPlanes() {
+    var nombre = nombreCorto();
+    var cerrar = el('button', { type: 'button', class: 'cerrar', 'aria-label': 'Ahora no, seguir con el plan gratis', onclick: function () { R.plan = 'gratis'; ir('cuenta', 1); } });
+    cerrar.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+    var h = el('h1'); h.innerHTML = '<em>' + escapar(nombre) + '</em> lista para vender';
+    var sub = el('p', { class: 'sub' }); sub.innerHTML = '<b>Hecho con tus 4 respuestas.</b> Empieza gratis y crece cuando quieras.';
+    var ben = el('ul', { class: 'beneficios' }); ['Pedidos por WhatsApp, sin comisión', 'Tu enlace listo para compartir en redes', 'Camino de éxito y mensajes que animan a comprar'].forEach(function (x) { var li = el('li'); li.innerHTML = '<span class="ck">' + CHECK + '</span>'; li.appendChild(document.createTextNode(x)); ben.appendChild(li); });
+    var porque = el('p', { class: 'porque', text: PORQUE[R.plan_rec] });
+    var grupo = el('div', { class: 'planes', role: 'radiogroup', 'aria-label': 'Elige tu plan' });
+    var btn = cta(PLANES[R.plan].cta, function () { ir('cuenta', 1); });
+    ['gratis', 'emprendedor', 'pro'].forEach(function (k) {
+      var pl = PLANES[k]; var o = el('button', { type: 'button', class: 'plan', role: 'radio', 'aria-checked': String(R.plan === k) });
+      var ul = el('ul'); pl.pts.forEach(function (x) { ul.appendChild(el('li', { text: x })); });
+      var pr = el('div', { class: 'pr' }); pr.textContent = pl.precio; pr.appendChild(el('small', { text: k === 'gratis' ? 'para siempre' : 'al mes' }));
+      o.appendChild(el('span', { class: 'rd' })); o.appendChild(el('div', {}, [el('h3', { text: pl.n }), ul])); o.appendChild(pr);
+      if (k === R.plan_rec) o.appendChild(el('span', { class: 'rec', text: 'Recomendado para ti' }));
+      o.addEventListener('click', function () { R.plan = k; grupo.querySelectorAll('.plan').forEach(function (x, i) { x.setAttribute('aria-checked', String(['gratis', 'emprendedor', 'pro'][i] === k)); }); btn.textContent = PLANES[k].cta; });
+      grupo.appendChild(o);
+    });
+    var verdad = el('ul', { class: 'verdad' }); ['Hoy no pagas nada', 'No pedimos tarjeta', 'Tras 7 días vuelves al plan gratis, sin cobro automático'].forEach(function (x) { var li = el('li'); li.innerHTML = CHECK; li.appendChild(document.createTextNode(x)); verdad.appendChild(li); });
+    var salida = el('button', { type: 'button', class: 'link', text: 'Ahora no, seguir con el plan gratis', onclick: function () { R.plan = 'gratis'; ir('cuenta', 1); } });
+    var detalle = el('a', { class: 'link', href: 'vista-pagina-ventas.html#planes', target: '_blank', rel: 'noopener', text: 'Ver todo lo que incluye cada plan' });
+    var nodo = el('section', { class: 'paso' }, [h, sub, ben, porque, grupo, el('p', { class: 'nota centro', text: 'Precios de lanzamiento en dólares, de prueba. Se confirman antes de cobrar.' }),
+      el('div', { class: 'centro' }, [detalle]), pie(btn, el('div', {}, [verdad, el('div', { class: 'centro' }, [salida])]))]);
+    nodo.insertBefore(el('div', { style: 'margin-left:-8px;margin-top:-6px' }, [cerrar]), nodo.firstChild);
+    return nodo;
+  }
+
+  /* ---------- Cuenta (el último paso) ---------- */
+  function pCuenta() {
+    var h = el('h1'); h.innerHTML = 'Guarda <em>tu tienda</em>';
+    var sub = el('p', { class: 'sub' }); sub.innerHTML = 'Te enviamos un enlace a tu correo para entrar, <b>sin contraseña</b>.';
+    var inp = el('input', { type: 'text', id: 'in-mail', inputmode: 'email', autocomplete: 'email', placeholder: 'tucorreo@ejemplo.com', value: R.email, 'aria-describedby': 'e-mail' });
+    var campo = el('div', { class: 'campo' }, [el('label', { for: 'in-mail', text: 'Tu correo' }), inp, el('p', { class: 'error', id: 'e-mail', text: 'Escribe un correo válido, por ejemplo nombre@correo.com.' })]);
+    var b = cta('Crear mi cuenta', continuar, true);
+    function valido(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); }
+    function continuar() { if (!valido(inp.value)) { campo.classList.add('err'); inp.focus(); return; } R.email = inp.value.trim(); ir('fin', 1); }
+    inp.addEventListener('input', function () { b.disabled = !valido(inp.value); campo.classList.remove('err'); });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') continuar(); });
+    var resumen = el('p', { class: 'porque', text: 'Tu plan: ' + PLANES[R.plan].n + (R.plan === 'gratis' ? '' : ' · 7 días de funciones premium, sin cobro') });
+    return el('section', { class: 'paso' }, [h, sub, el('div', { class: 'cuerpo' }, [campo, resumen, el('p', { class: 'nota', text: 'Demostración: no se envía ningún correo ni se guarda tu dato.' })]), pie(b)]);
+  }
+
+  /* ---------- Fin ---------- */
+  function pFin() {
+    var nombre = nombreCorto(); var enlace = 'https://ejemplo.com/' + slug(nombre);
+    var h = el('h1'); h.innerHTML = '¡Listo, <em>' + escapar(nombre) + '</em>!';
+    var sub = el('p', { class: 'sub' }); sub.innerHTML = 'Todo gran negocio empezó así. <b>Ahora sube tu primer producto.</b>';
+    var link = el('div', { class: 'enlace' }, [el('b', { text: enlace.replace('https://', '') }), el('button', { type: 'button', class: 'copiar', text: 'Copiar', onclick: function () { copiar(enlace); } })]);
+    var lista = el('ol', { class: 'pasos-sig' }); ['Sube tu primer producto', 'Comparte tu enlace en tus redes', 'Revisa tu camino de éxito cada semana'].forEach(function (x, i) { var li = el('li'); li.innerHTML = '<span class="n">' + (i + 1) + '</span>'; li.appendChild(document.createTextNode(x)); lista.appendChild(li); });
+    var wa = el('a', { class: 'btn wa', href: 'https://wa.me/?text=' + encodeURIComponent('Mira mi tienda: ' + enlace), target: '_blank', rel: 'noopener', style: 'text-decoration:none' }); wa.textContent = 'Compartir por WhatsApp';
+    var otra = el('button', { type: 'button', class: 'btn claro', text: 'Repetir la demostración', onclick: reiniciar });
+    var guia = el('a', { class: 'link', href: 'vista-pagina-ventas.html', target: '_blank', rel: 'noopener', text: 'Ver cómo usar la app' });
+    return el('section', { class: 'paso' }, [h, sub, link, el('p', { class: 'nota', text: 'Enlace de ejemplo. Aquí empieza la app real.' }), lista, el('div', { class: 'pie' }, [wa, otra, el('div', { class: 'centro' }, [guia])])]);
+  }
+  function reiniciar() { R = { nombre: '', tipo: null, otro: '', cantidad: null, pais: 'EC', tel: '', plan: 'gratis', plan_rec: 'gratis', email: '' }; ir('bienvenida', -1); }
+
+  $('atras').addEventListener('click', function () { if (!ocupado) anterior(); });
+  $('escena').appendChild(construir('bienvenida')); actualizarTope();
+  window.__ob = { R: function () { return R; }, ir: ir, paso: function () { return paso; }, telValido: telValido, telLimpio: telLimpio, slug: slug, planRecomendado: planRecomendado, reiniciar: reiniciar };
+})();
+</script>
+</body>
+</html>
