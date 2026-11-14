@@ -68,6 +68,14 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Aviso de alcance: mejora automática de fotos usa servicio externo con costo por foto → entra al gate de economía (40) antes de fijar cupos y precio; el PDF original lo dejaba fuera del MVP; se construye por fases (ver Plan)
 - Fases del premium: F1 más fotos + estadísticas + colores/plantillas de catálogo; F2 recorte/fondo blanco/luz automático + plantillas de foto (cuando el costo por foto esté medido)
 
+## Carrito y compra por WhatsApp (pedido del usuario 2026-11-14) — implementado en tienda-demo.html
+- Flujo del comprador: catálogo (buscar + categorías) → producto con variante/cantidad → carrito (+/−/quitar, subtotal) → "Coordinemos tu pedido" (nombre, retiro o domicilio con dirección, forma de pago preferida, nota) → botón "Enviar pedido por WhatsApp" → abre wa.me con mensaje prellenado (URL-encoded) → pantalla de último paso
+- Entrega y pago SIEMPRE se acuerdan por WhatsApp; la app no cobra ni calcula envío; aviso visible de que el pedido no está confirmado hasta que el negocio responda
+- Número de WhatsApp del negocio: constante NEGOCIO.whatsapp (internacional sin "+"); vacío = modo demostración (WhatsApp deja elegir contacto)
+- Carrito guardado en el navegador del comprador (localStorage, con respaldo si no está disponible)
+- Probado por script: filtros, búsqueda, agotado, variantes, cantidades, validaciones, mensaje y URL correctos, sin errores de consola. NO probado: apertura real en WhatsApp ni teléfonos reales
+- Pendiente para la app real: registrar el pedido en la base de datos al pulsar enviar (estado "solicitado"), moneda/formato por país, límites del plan
+
 ## Mejoras de producto aplicadas (desde el reporte de validación)
 - Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
 - Diferenciador 2: hecho para Ecuador (español cotidiano; el mensaje puede indicar formas de pago que el vendedor acepta: transferencia, efectivo, Deuna, tarjeta)
