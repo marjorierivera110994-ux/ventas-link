@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es" data-estilo="a">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vista previa de la página de ventas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&family=Nunito:wght@400..900&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  /* Borrador de DISEÑO de las secciones "Cómo funciona" y "Preguntas frecuentes".
+     El texto es provisional: el copy final se deriva de la ficha del cliente ideal (Sesión 1). */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root[data-estilo="a"] {
+    --bg: #f7f3ea; --surface: #fffdf8; --text-1: #1f2a24; --text-2: #5b675e; --accent: #0e6b4f;
+    --radius-card: 16px; --radius-btn: 12px; --font-display: 'Figtree', monospace; --font-body: 'Figtree', monospace;
+    --shadow-tinta: 20 60 45; --on-accent: #f7f3ea;
+  }
+  :root[data-estilo="b"] {
+    --bg: #0f1715; --surface: #16211e; --text-1: #e8f1ec; --text-2: #93a59d; --accent: #34d399;
+    --radius-card: 20px; --radius-btn: 16px; --font-display: 'Nunito', monospace; --font-body: 'Nunito', monospace;
+    --shadow-tinta: 4 10 8; --on-accent: #0f1715;
+  }
+  :root[data-estilo="c"] {
+    --bg: #faf8f4; --surface: #ffffff; --text-1: #1b1a19; --text-2: #67625b; --accent: #c73e22;
+    --radius-card: 12px; --radius-btn: 10px; --font-display: 'Bricolage Grotesque', monospace; --font-body: 'Instrument Sans', monospace;
+    --shadow-tinta: 60 40 30; --on-accent: #ffffff;
+  }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background:
+      radial-gradient(900px 420px at 10% -5%, color-mix(in oklab, var(--accent) 10%, transparent), transparent 60%),
+      var(--bg);
+    color: var(--text-1); font-family: var(--font-body); line-height: 1.5; min-height: 100dvh;
+    transition: background .3s, color .3s;
+  }
+  .barra-estilo {
+    position: sticky; top: 0; z-index: 10; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+    padding: 10px 16px; background: color-mix(in oklab, var(--surface) 88%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid color-mix(in oklab, var(--text-2) 20%, transparent);
+    font-family: var(--font-body);
+  }
+  .barra-estilo span { align-self: center; font-size: 12px; color: var(--text-2); font-weight: 600; }
+  .barra-estilo button {
+    font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; padding: 8px 14px; min-height: 40px;
+    border-radius: 999px; border: 1px solid color-mix(in oklab, var(--text-2) 30%, transparent);
+    background: transparent; color: var(--text-1);
+  }
+  .barra-estilo button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  .barra-estilo button:focus-visible, .cta:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  main { max-width: 720px; margin: 0 auto; padding: 0 20px 48px; }
+  section { padding: 40px 0 8px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--accent); border-radius: 999px; padding: 5px 12px;
+    background: color-mix(in oklab, var(--accent) 10%, transparent);
+    border: 1px solid color-mix(in oklab, var(--accent) 25%, transparent);
+  }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.015em; }
+  h1 { font-size: clamp(32px, 7vw, 46px); line-height: 1.1; font-weight: 800; margin-top: 14px; }
+  h1 em, h2 em { font-style: normal; color: var(--accent); }
+  h2 { font-size: clamp(25px, 5vw, 32px); line-height: 1.15; font-weight: 800; }
+  .sub { margin-top: 12px; font-size: 17px; color: var(--text-2); max-width: 56ch; }
+  .sub b { color: var(--text-1); font-weight: 700; }
+  .cta {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 26px; margin-top: 22px;
+    border-radius: var(--radius-btn); font: inherit; font-weight: 700; font-size: 16px; text-decoration: none; cursor: pointer; border: 0;
+    color: var(--on-accent);
+    background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 86%, white), var(--accent));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), 0 12px 26px -8px color-mix(in oklab, var(--accent) 50%, transparent);
+  }
+  .nota { margin-top: 10px; font-size: 13px; color: var(--text-2); }
+
+  .pasos { display: grid; gap: 14px; margin-top: 22px; counter-reset: paso; }
+  .paso {
+    display: grid; grid-template-columns: 48px 1fr; gap: 14px; align-items: start; padding: 18px;
+    background: var(--surface); border-radius: var(--radius-card);
+    border: 1.5px solid transparent;
+    background: linear-gradient(var(--surface), var(--surface)) padding-box,
+                linear-gradient(135deg, color-mix(in oklab, var(--accent) 40%, transparent), transparent 60%) border-box;
+    box-shadow: 0 12px 28px -14px rgb(var(--shadow-tinta) / .25);
+  }
+  .chip { width: 48px; height: 48px; border-radius: var(--radius-btn); display: grid; place-items: center;
+          background: color-mix(in oklab, var(--accent) 12%, transparent); border: 1px solid color-mix(in oklab, var(--accent) 24%, transparent); }
+  .paso h3 { font-size: 18px; font-weight: 700; }
+  .paso h3 small { display: block; font-family: var(--font-body); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 2px; }
+  .paso p { margin-top: 4px; font-size: 15px; color: var(--text-2); }
+
+  .demo {
+    margin-top: 22px; padding: 22px; border-radius: var(--radius-card); text-align: center;
+    background: color-mix(in oklab, var(--accent) 8%, var(--surface));
+    border: 1.5px dashed color-mix(in oklab, var(--accent) 45%, transparent);
+  }
+  .demo h3 { font-size: 20px; font-weight: 800; }
+  .demo p { margin-top: 6px; font-size: 15px; color: var(--text-2); }
+  .demo .marca { display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); }
+
+  .faq { margin-top: 20px; display: grid; gap: 10px; }
+  details {
+    background: var(--surface); border-radius: var(--radius-card); padding: 0 18px;
+    border: 1px solid color-mix(in oklab, var(--text-2) 22%, transparent);
+  }
+  details[open] { border-color: color-mix(in oklab, var(--accent) 45%, transparent); box-shadow: 0 10px 24px -14px rgb(var(--shadow-tinta) / .3); }
+  summary {
+    list-style: none; cursor: pointer; min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    font-weight: 700; font-size: 16px; font-family: var(--font-display);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary svg { flex-shrink: 0; transition: transform .2s; color: var(--accent); }
+  details[open] summary svg { transform: rotate(45deg); }
+  details p { padding: 0 0 18px; font-size: 15px; color: var(--text-2); }
+  details p b { color: var(--text-1); }
+
+  .cierre { margin-top: 40px; padding: 28px 22px; text-align: center; border-radius: var(--radius-card);
+            background: color-mix(in oklab, var(--accent) 10%, var(--surface)); border: 1px solid color-mix(in oklab, var(--accent) 25%, transparent); }
+  .cierre .cta { margin-top: 16px; }
+  footer { margin-top: 32px; font-size: 12.5px; color: var(--text-2); text-align: center; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+<div class="barra-estilo" role="group" aria-label="Ver la página con cada estilo">
+  <span>Ver con el estilo:</span>
+  <button type="button" data-e="a" aria-pressed="true">A · Tienda de confianza</button>
+  <button type="button" data-e="b" aria-pressed="false">B · Meta y camino</button>
+  <button type="button" data-e="c" aria-pressed="false">C · Cuaderno de pedidos</button>
+</div>
+
+<main>
+  <section id="inicio">
+    <span class="badge">Para tiendas pequeñas</span>
+    <h1>Recibe pedidos <em>claros</em> por WhatsApp</h1>
+    <p class="sub"><b>Crea tu tienda y comparte tu enlace.</b> Tus clientes eligen sus productos y el pedido te llega armado a tu WhatsApp, sin chats desordenados.</p>
+    <a class="cta" href="#como-funciona">Crear mi tienda gratis</a>
+    <p class="nota">Plan gratis permanente · 7 días de funciones premium · sin comisión por tus ventas</p>
+  </section>
+
+  <section id="como-funciona" aria-labelledby="t-como">
+    <span class="badge">Cómo funciona</span>
+    <h2 id="t-como" style="margin-top:12px">Tu tienda lista en <em>4 pasos</em></h2>
+    <div class="pasos">
+      <div class="paso">
+        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg></span>
+        <div><h3><small>Paso 1</small>Crea tu tienda</h3><p>Escribe el nombre de tu negocio, qué ofreces y tu número de WhatsApp. Te guiamos en cada campo.</p></div>
+      </div>
+      <div class="paso">
+        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="m21 15-5-5L5 21"/></svg></span>
+        <div><h3><small>Paso 2</small>Sube tu catálogo</h3><p>Agrega fotos, nombres y precios de tus productos. En el plan gratis puedes subir hasta 10; en los planes de pago, más.</p></div>
+      </div>
+      <div class="paso">
+        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg></span>
+        <div><h3><small>Paso 3</small>Comparte tu enlace</h3><p>Copia tu enlace único y compártelo en WhatsApp, Instagram, Facebook o TikTok. Quien lo abre ve tu catálogo con precios, sin instalar nada.</p></div>
+      </div>
+      <div class="paso">
+        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/><path d="m8.5 11.5 2.2 2.2 4.3-4.4"/></svg></span>
+        <div><h3><small>Paso 4</small>Recibe pedidos claros</h3><p>El cliente arma su pedido y te llega a WhatsApp con productos, cantidades y subtotal. Tú confirmas disponibilidad, pago y entrega.</p></div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <h3>Pruébala tú mismo</h3>
+      <p>Aquí irá una tienda de demostración para que veas el catálogo, armes un pedido y veas el mensaje de WhatsApp antes de crear tu cuenta.</p>
+      <span class="marca">Espacio reservado · se construye en la Sesión 3</span>
+    </div>
+  </section>
+
+  <section id="preguntas" aria-labelledby="t-faq">
+    <span class="badge">Preguntas frecuentes</span>
+    <h2 id="t-faq" style="margin-top:12px">Lo que todos preguntan <em>antes de empezar</em></h2>
+    <div class="faq">
+      <details open><summary>¿Mis clientes tienen que descargar algo?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p><b>No.</b> Tus clientes abren tu enlace desde el navegador de su celular, ven tu catálogo y envían su pedido. No necesitan instalar la app ni crear una cuenta.</p></details>
+      <details><summary>¿Cómo me pagan mis clientes?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>El pago lo acuerdas <b>directamente con tu cliente</b>, fuera de la app: transferencia, efectivo o como prefieras. La app no cobra por tus ventas ni se queda con una comisión.</p></details>
+      <details><summary>¿Cuánto cuesta?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>Empiezas <b>gratis</b> y puedes quedarte en el plan gratis para siempre (hasta 10 productos). Los planes de pago son mensuales y opcionales, y verás su precio completo antes de elegir.</p></details>
+      <details><summary>¿Qué pasa cuando termina la prueba de 7 días?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>Pasas automáticamente al plan gratis. <b>No se cobra nada</b> y tu tienda sigue funcionando. Si quieres seguir con las funciones premium, tú decides cuándo pagar.</p></details>
+      <details><summary>¿Cómo recibo los pedidos?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>Cada pedido llega a tu WhatsApp como un mensaje ya armado, con productos, cantidades y subtotal. El pedido <b>no queda confirmado</b> hasta que tú respondas y acuerdes disponibilidad, pago y entrega.</p></details>
+      <details><summary>¿Necesito saber de tecnología?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>No. La configuración es guiada, con pocos campos y palabras de todos los días. Si te trabas, te ayudamos por WhatsApp.</p></details>
+      <details><summary>¿Qué es el camino de éxito?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>Es tu avance semana a semana: sumas cuando compartes tu enlace, actualizas productos o atiendes pedidos. También ves tu meta de ventas y tus mejores semanas. <b>Nunca se rompe por vender poco</b>: premia tu constancia, no la suerte.</p></details>
+      <details><summary>¿Puedo mejorar las fotos de mis productos?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>Sí, en los planes de pago: más fotos, estadísticas, colores y estilo de tu catálogo, y herramientas para dejar tus fotos más limpias, como fondo blanco. Algunas llegan por etapas y te avisaremos cuáles ya están disponibles.</p></details>
+      <details><summary>¿Mis datos están seguros?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>Cada vendedor ve solo su información. No guardamos datos de tarjetas, y puedes pedir que eliminemos tu cuenta y tus datos cuando quieras.</p></details>
+      <details><summary>¿Puedo cancelar cuando quiera?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>Sí. Si tienes un plan de pago, lo cancelas en un toque desde tu cuenta y vuelves al plan gratis sin perder tu tienda.</p></details>
+    </div>
+  </section>
+
+  <div class="cierre">
+    <h2>Empieza hoy, <em>gratis</em></h2>
+    <p class="sub" style="margin-inline:auto">Crea tu tienda, comparte tu enlace y recibe tu primer pedido claro.</p>
+    <a class="cta" href="#inicio">Crear mi tienda gratis</a>
+  </div>
+  <footer>Borrador de diseño · el texto final se ajusta con tu cliente ideal antes de publicar.</footer>
+</main>
+
+<script>
+  (function () {
+    var botones = document.querySelectorAll('.barra-estilo button');
+    function poner(e) {
+      document.documentElement.setAttribute('data-estilo', e);
+      botones.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.e === e)); });
+    }
+    botones.forEach(function (b) { b.addEventListener('click', function () { poner(b.dataset.e); }); });
+    var h = (location.hash || '').replace('#', '');
+    if (h === 'a' || h === 'b' || h === 'c') poner(h);
+  })();
+</script>
+</body>
+</html>
