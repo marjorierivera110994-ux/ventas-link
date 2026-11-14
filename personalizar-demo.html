@@ -20,7 +20,8 @@
   @media (min-width: 860px) { .page { grid-template-columns: 380px 1fr; align-items: start; } .col-vista { position: sticky; top: 16px; } }
   h1, h2, h3 { font-family: var(--f-d); letter-spacing: -.015em; }
   h1 { font-size: 26px; font-weight: 800; line-height: 1.1; }
-  h2 { font-size: 15px; font-weight: 800; margin-top: 20px; }
+  h2 { font-size: 15px; font-weight: 800; margin-top: 22px; }
+  h3.grupo { font-family: var(--f-b); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--texto-2); margin-top: 12px; }
   .demo { display: inline-flex; gap: 8px; align-items: center; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
   .sub { font-size: 14px; color: var(--texto-2); margin-top: 6px; }
   .opciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
@@ -30,8 +31,8 @@
   label.campo { display: block; margin-top: 14px; font-weight: 800; font-size: 14px; font-family: var(--f-d); }
   input[type=text] { display: block; width: 100%; margin-top: 6px; background: var(--blanco); border: 2px solid transparent; border-radius: 16px; padding: 12px 14px; min-height: 50px; font-size: 16px; font-family: var(--f-b); font-weight: 400; }
   input[type=text]:focus-visible { border-color: var(--tinta); outline: none; }
-  input[type=text]:disabled { opacity: .5; }
   .aviso { margin-top: 12px; font-size: 13px; color: var(--texto-2); background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 16px; padding: 10px 14px; }
+  .error { margin-top: 6px; font-size: 13px; font-weight: 700; color: #9a3412; }
   .galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; margin-top: 10px; }
   .mini { position: relative; border-radius: 14px; padding: 6px; border: 3px solid transparent; background: var(--blanco); text-align: left; display: flex; flex-direction: column; gap: 4px; min-height: 96px; }
   .mini[aria-pressed="true"] { border-color: var(--tinta); }
@@ -47,39 +48,57 @@
   .sw[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--tinta); }
   .sw[disabled] { opacity: .45; cursor: not-allowed; }
   input[type=color] { width: 44px; height: 44px; border: 0; padding: 0; background: none; border-radius: 999px; cursor: pointer; }
+  .combos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 8px; }
+  .combo { border-radius: 14px; background: var(--blanco); padding: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; border: 3px solid transparent; font-size: 12.5px; font-weight: 800; min-height: 44px; }
+  .combo[aria-pressed="true"] { border-color: var(--tinta); }
+  .combo .bar { height: 26px; border-radius: 8px; display: flex; overflow: hidden; box-shadow: 0 0 0 1px rgba(0,0,0,.12); }
+  .combo .bar i { flex: 1; display: block; }
+  .subir { margin-top: 10px; background: var(--blanco); border-radius: 18px; padding: 12px; display: flex; align-items: center; gap: 12px; }
+  .subir .vp { width: 56px; height: 56px; border-radius: 999px; background: color-mix(in oklab, var(--pistacho) 45%, white); display: grid; place-items: center; overflow: hidden; flex-shrink: 0; font-weight: 800; }
+  .subir .vp.port { border-radius: 12px; width: 84px; }
+  .subir .vp img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .subir .tx { flex: 1; font-size: 13px; }
+  .subir .tx b { display: block; font-size: 14px; font-family: var(--f-d); }
+  .btn-s { min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--tinta); color: var(--lima); font-weight: 800; font-size: 14px; display: inline-flex; align-items: center; cursor: pointer; }
+  .btn-s.claro { background: var(--beige); color: var(--tinta); }
+  .btn-s[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+  .oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .btn { margin-top: 18px; width: 100%; min-height: 54px; border-radius: 999px; font-weight: 800; font-size: 16px; background: var(--tinta); color: var(--lima); }
   .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 5; max-width: 90vw; }
   .toast.on { display: block; }
 
-  /* ===== Vista previa de la tienda (todo lo que cambia depende de estas variables) ===== */
+  /* ===== Vista previa de la tienda ===== */
   .marco { border: 8px solid var(--tinta); border-radius: 36px; overflow: hidden; max-width: 340px; margin: 14px auto 0; box-shadow: 0 24px 50px -20px rgb(0 0 0 / .45); }
   #vista { --brand: #a5dc5b; --on-brand: #131313; --bg: #f4ecdb; --sur: #fff; --txt: #131313; --mut: #5a5648; --r: 22px; --fd: 'Bricolage Grotesque', monospace; --fb: 'Instrument Sans', monospace;
            background: var(--bg); color: var(--txt); font-family: var(--fb); padding: 0 0 14px; min-height: 560px; position: relative; }
   #vista h3 { font-family: var(--fd); }
   .v-cab { padding: 14px 14px 0; }
-  .v-banner { position: relative; border-radius: var(--r); background: var(--brand); color: var(--on-brand); padding: 18px 16px; overflow: hidden; }
+  .v-banner { position: relative; border-radius: var(--r); background: var(--brand-bg, var(--brand)); color: var(--on-brand); padding: 18px 16px; overflow: hidden; background-position: center; }
   .v-banner > * { position: relative; }
-  .v-logo { width: 44px; height: 44px; border-radius: 999px; background: var(--sur); color: var(--txt); display: grid; place-items: center; font-family: var(--fd); font-weight: 800; font-size: 16px; }
-  .v-nombre { font-size: 22px; font-weight: 800; line-height: 1.1; margin-top: 8px; }
+  .v-logo { width: 46px; height: 46px; border-radius: 999px; background: var(--sur); color: var(--txt); display: grid; place-items: center; font-family: var(--fd); font-weight: 800; font-size: 16px; overflow: hidden; flex-shrink: 0; box-shadow: 0 0 0 2px rgba(255,255,255,.7); }
+  .v-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .v-nombre { font-size: 22px; font-weight: 800; line-height: 1.1; margin-top: 8px; font-family: var(--fd); }
   .v-lema { font-size: 13px; margin-top: 2px; }
   #vista[data-cab="centro"] .v-banner { text-align: center; } #vista[data-cab="centro"] .v-logo { margin: 0 auto; }
   #vista[data-cab="izq"] .v-banner { display: flex; align-items: center; gap: 12px; padding: 14px; } #vista[data-cab="izq"] .v-nombre { margin-top: 0; }
+  #vista[data-portada="si"] .v-banner { padding-top: 56px; text-shadow: 0 1px 6px rgba(0,0,0,.55); }
+  .v-bienv { margin: 10px 14px 0; font-size: 13px; font-weight: 700; color: var(--txt); background: var(--sur); border-radius: var(--r); padding: 9px 12px; }
   .v-chips { display: flex; gap: 6px; margin: 12px 14px 0; overflow: hidden; }
   .v-chip { border-radius: 999px; padding: 7px 12px; font-size: 12px; font-weight: 700; background: var(--sur); color: var(--txt); white-space: nowrap; }
-  .v-chip.on { background: var(--brand); color: var(--on-brand); }
+  .v-chip.on { background: var(--brand-bg, var(--brand)); color: var(--on-brand); }
   .v-sec { margin: 14px 14px 0; font-family: var(--fd); font-size: 16px; font-weight: 800; }
   .v-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 14px 0; }
   .v-prod { background: var(--sur); border-radius: var(--r); padding: 8px; }
   #vista[data-card="sombra"] .v-prod { box-shadow: 0 10px 22px -14px rgb(0 0 0 / .45); }
   #vista[data-card="borde"] .v-prod { box-shadow: none; border: 1.5px solid color-mix(in oklab, var(--txt) 22%, transparent); }
   #vista[data-card="plano"] .v-prod { background: color-mix(in oklab, var(--sur) 70%, var(--bg)); }
-  .v-foto { height: 76px; border-radius: calc(var(--r) * .65); display: grid; place-items: center; position: relative; }
+  .v-foto { height: 76px; border-radius: calc(var(--r) * .65); display: grid; place-items: center; position: relative; color: var(--txt); }
   .v-foto span { position: absolute; top: 6px; right: 6px; background: var(--txt); color: var(--bg); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 999px; }
   .v-prod h4 { font-family: var(--fd); font-size: 12.5px; font-weight: 800; margin-top: 6px; }
   .v-prod p { font-size: 12.5px; font-weight: 800; margin-top: 2px; }
   .v-prod p s { font-weight: 500; color: var(--mut); font-size: 10.5px; margin-right: 4px; }
   .v-barra { margin: 14px 14px 0; background: var(--txt); color: var(--bg); border-radius: 999px; display: flex; align-items: center; justify-content: space-between; padding: 6px 6px 6px 16px; font-size: 13px; font-weight: 700; }
-  .v-barra b { background: var(--brand); color: var(--on-brand); border-radius: 999px; padding: 9px 14px; font-weight: 800; }
+  .v-barra b { background: var(--brand-bg, var(--brand)); color: var(--on-brand); border-radius: 999px; padding: 9px 14px; font-weight: 800; }
 </style>
 </head>
 <body>
@@ -87,17 +106,18 @@
   <div class="col-vista">
     <p class="demo" role="note">Demostración · tienda de ejemplo</p>
     <h1>Personaliza tu tienda</h1>
-    <p class="sub">Los botones y el carrito ya vienen listos. Tú eliges la plantilla, el color de tu marca y la decoración.</p>
+    <p class="sub">Los botones y el carrito ya vienen listos. Tú eliges la plantilla, los colores, la decoración, tu logo y tu portada.</p>
     <div class="marco" aria-label="Vista previa de tu tienda">
       <div id="vista" data-cab="banner" data-card="sombra">
         <div class="v-cab"><div class="v-banner" id="v-banner">
-          <div class="v-logo" id="v-logo">BL</div>
+          <div class="v-logo" id="v-logo"></div>
           <div><p class="v-nombre" id="v-nombre"></p><p class="v-lema" id="v-lema"></p></div>
         </div></div>
+        <p class="v-bienv">¡Qué bueno verte por aquí! Encuentra algo que te encante.</p>
         <div class="v-chips"><span class="v-chip on">Todo</span><span class="v-chip">Aretes</span><span class="v-chip">Collares</span><span class="v-chip">Ropa</span></div>
         <h3 class="v-sec">Aretes</h3>
         <div class="v-grid">
-          <div class="v-prod"><div class="v-foto" style="background:color-mix(in oklab, var(--brand) 85%, white)"><svg width="38" height="38" viewBox="0 0 40 40" fill="#fff" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M13 4v8M27 4v8" fill="none"/><circle cx="13" cy="18" r="6"/><circle cx="27" cy="18" r="6"/></svg><span>-20%</span></div><h4>Aretes de plata</h4><p><s>$35,00</s>$28,00</p></div>
+          <div class="v-prod"><div class="v-foto" style="background:color-mix(in oklab, var(--brand) 75%, var(--sur))"><svg width="38" height="38" viewBox="0 0 40 40" fill="#fff" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M13 4v8M27 4v8" fill="none"/><circle cx="13" cy="18" r="6"/><circle cx="27" cy="18" r="6"/></svg><span>-20%</span></div><h4>Aretes de plata</h4><p><s>$35,00</s>$28,00</p></div>
           <div class="v-prod"><div class="v-foto" style="background:color-mix(in oklab, var(--brand) 45%, var(--sur))"><svg width="38" height="38" viewBox="0 0 40 40" fill="#fff" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M13 4v8M27 4v8" fill="none"/><circle cx="13" cy="18" r="6"/><circle cx="27" cy="18" r="6"/></svg></div><h4>Aretes de aro</h4><p>$22,00</p></div>
           <div class="v-prod"><div class="v-foto" style="background:color-mix(in oklab, var(--brand) 60%, var(--bg))"><svg width="38" height="38" viewBox="0 0 40 40" fill="#fff" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M13 5 4 10l4 7 4-2v19h16V15l4 2 4-7-9-5c-1 3-3.5 4.5-7 4.5S14 8 13 5z"/></svg></div><h4>Camisa de lino</h4><p>$24,00</p></div>
           <div class="v-prod"><div class="v-foto" style="background:color-mix(in oklab, var(--brand) 30%, var(--sur))"><svg width="38" height="38" viewBox="0 0 40 40" fill="#fff" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M8 14h24l2 22H6z"/><path d="M14 14v-3a6 6 0 0 1 12 0v3" fill="none"/></svg></div><h4>Bolso tejido</h4><p>$35,00</p></div>
@@ -116,13 +136,32 @@
     <label class="campo" for="i-lema">Frase corta (opcional)</label>
     <input type="text" id="i-lema" maxlength="60" value="Ropa y accesorios hechos a mano" autocomplete="off">
 
+    <h2 id="h-img">Logo y portada</h2>
+    <p class="sub" id="t-img"></p>
+    <div class="subir" id="f-logo"><div class="vp" id="vp-logo" aria-hidden="true"></div>
+      <div class="tx"><b>Logo o foto de perfil</b>JPG, PNG o WebP · hasta 2 MB</div>
+      <label class="btn-s" id="l-logo" for="in-logo">Subir</label><input class="oculto" type="file" id="in-logo" accept="image/jpeg,image/png,image/webp">
+      <button type="button" class="btn-s claro" id="q-logo" hidden>Quitar</button></div>
+    <div class="subir" id="f-port"><div class="vp port" id="vp-port" aria-hidden="true"></div>
+      <div class="tx"><b>Foto de portada</b>JPG, PNG o WebP · hasta 4 MB</div>
+      <label class="btn-s" id="l-port" for="in-port">Subir</label><input class="oculto" type="file" id="in-port" accept="image/jpeg,image/png,image/webp">
+      <button type="button" class="btn-s claro" id="q-port" hidden>Quitar</button></div>
+    <p class="error" id="err-img" role="alert"></p>
+
     <h2 id="h-plant">Plantilla</h2>
     <p class="sub" id="t-plant"></p>
     <div class="galeria" id="galeria" role="group" aria-labelledby="h-plant"></div>
     <div class="pag" id="pag"></div>
 
+    <div id="bloque-combos">
+      <h2 id="h-combos">Combinaciones profesionales</h2>
+      <p class="sub">Colores de fondo, texto y marca pensados para combinar, incluidos dorado y plateado.</p>
+      <div class="combos" id="combos" role="group" aria-labelledby="h-combos"></div>
+    </div>
+
     <h2 id="h-color">Color de tu marca</h2>
-    <div class="swatches" id="colores" role="group" aria-labelledby="h-color"></div>
+    <p class="sub" id="t-color"></p>
+    <div id="colores" role="group" aria-labelledby="h-color"></div>
 
     <h2 id="h-deco">Decoración</h2>
     <div class="opciones" id="decos" role="group" aria-labelledby="h-deco"></div>
@@ -159,34 +198,61 @@
   ];
   var DECOS = [['ninguna', 'Ninguna'], ['puntos', 'Puntos'], ['rayas', 'Rayas'], ['ondas', 'Ondas'], ['confeti', 'Confeti'], ['burbujas', 'Burbujas']];
   var DECOS_EMP = ['ninguna', 'puntos', 'rayas'];
-  var COLORES = ['#a5dc5b', '#ff7a1a', '#3aa6c8', '#9b6bdc', '#f06292', '#e6ee4a', '#f2b705', '#2f9e6b'];
+  var COLORES_BASICOS = ['#a5dc5b', '#ff7a1a', '#3aa6c8', '#9b6bdc', '#f06292', '#e6ee4a', '#f2b705', '#2f9e6b'];
+
+  /* Colores metálicos: degradados con texto que se lee sobre TODA la superficie */
+  var METALES = {
+    oro: { n: 'Oro', stops: ['#f3dc87', '#d4af37', '#b8912a'], on: '#131313', base: '#d4af37' },
+    plata: { n: 'Plata', stops: ['#f2f3f5', '#c5c9d0', '#9aa0aa'], on: '#131313', base: '#c5c9d0' },
+    ororosa: { n: 'Oro rosa', stops: ['#f3c9bb', '#d99a85', '#b87a68'], on: '#131313', base: '#d99a85' },
+    champan: { n: 'Champán', stops: ['#f7edd9', '#e0c9a0', '#c4a572'], on: '#131313', base: '#e0c9a0' },
+    bronce: { n: 'Bronce', stops: ['#e9b97b', '#d58b3f', '#b8702a'], on: '#131313', base: '#d58b3f' },
+    grafito: { n: 'Grafito', stops: ['#6b7078', '#3a3d44', '#1f2125'], on: '#ffffff', base: '#3a3d44' }
+  };
+  var GRUPOS = [
+    { n: 'Elegantes', c: [['Vino', '#7a1f3d'], ['Esmeralda', '#0f5c4a'], ['Azul noche', '#1b2a49'], ['Borgoña', '#5c1a2b'], ['Oliva', '#6b7a3a'], ['Berenjena', '#4a2545']] },
+    { n: 'Matizados', c: [['Salvia', '#9cb59a'], ['Arena', '#d8c3a5'], ['Rosa polvo', '#e3b5b0'], ['Lavanda', '#b7a9c9'], ['Celeste', '#a9c6d9'], ['Terracota', '#c98d77']] },
+    { n: 'Brillantes', c: [['Naranja', '#ff7a1a'], ['Fucsia', '#e6007e'], ['Turquesa', '#00b8c4'], ['Lima', '#c6e000'], ['Rojo', '#e11d48'], ['Azul eléctrico', '#2563eb']] },
+    { n: 'Metálicos', c: Object.keys(METALES).map(function (k) { return [METALES[k].n, 'metal:' + k]; }) }
+  ];
+  var COMBOS = [
+    { id: 'oro-negro', n: 'Oro y negro', brand: 'metal:oro', bg: '#121212', sur: '#1e1e1e', txt: '#f5efe0', mut: '#b8ad94' },
+    { id: 'plata-grafito', n: 'Plata y grafito', brand: 'metal:plata', bg: '#1f2125', sur: '#2a2d33', txt: '#f2f3f5', mut: '#a9afb9' },
+    { id: 'vino-champan', n: 'Vino y champán', brand: '#7a1f3d', bg: '#f7efe2', sur: '#ffffff', txt: '#2a0f18', mut: '#6b5560' },
+    { id: 'esmeralda-oro', n: 'Esmeralda y oro', brand: '#0f5c4a', bg: '#f5f1e6', sur: '#ffffff', txt: '#0d1f1a', mut: '#52645d' },
+    { id: 'noche-plata', n: 'Azul noche y plata', brand: '#1b2a49', bg: '#eef0f4', sur: '#ffffff', txt: '#0e1424', mut: '#515a6e' },
+    { id: 'rosa-oro', n: 'Rosa polvo y oro rosa', brand: 'metal:ororosa', bg: '#fbf1ee', sur: '#ffffff', txt: '#2d1a17', mut: '#715852' },
+    { id: 'terracota-arena', n: 'Terracota y arena', brand: '#c98d77', bg: '#f6ece0', sur: '#ffffff', txt: '#2b1a12', mut: '#6c5848' },
+    { id: 'salvia-crema', n: 'Salvia y crema', brand: '#9cb59a', bg: '#f4f1e8', sur: '#ffffff', txt: '#1b2419', mut: '#5b6658' }
+  ];
   var PLANES = { gratis: 'Gratis', emprendedor: 'Emprendedor', pro: 'Profesional' };
 
-  /* Plantillas: Emprendedor = 10 diseños (cada uno con su paleta); Profesional = 10 diseños × 5 paletas = 50 */
   function plantillasDe(plan) {
     var r = [], d, p;
     if (plan === 'emprendedor') { for (d = 0; d < 10; d++) r.push({ d: d, p: d % 5 }); }
     else if (plan === 'pro') { for (p = 0; p < 5; p++) for (d = 0; d < 10; d++) r.push({ d: d, p: p }); }
     return r;
   }
-  var estado = { plan: 'emprendedor', plantilla: { d: 0, p: 0 }, pagina: 0, color: null, deco: null };
+  var estado = { plan: 'pro', plantilla: { d: 0, p: 0 }, pagina: 0, color: null, deco: null, combo: null, logo: null, portada: null };
 
   function lum(hex) { var c = [1, 3, 5].map(function (i) { return parseInt(hex.slice(i, i + 2), 16) / 255; }).map(function (v) { return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
   function contraste(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
-  /* Texto negro o blanco, el que mejor se lea sobre ese color */
   function sobre(hex) { return contraste('#131313', hex) >= contraste('#ffffff', hex) ? '#131313' : '#ffffff'; }
   function mezcla(a, b, t) { return '#' + [1, 3, 5].map(function (i) { var x = parseInt(a.slice(i, i + 2), 16), y = parseInt(b.slice(i, i + 2), 16); return ('0' + Math.round(x + (y - x) * t).toString(16)).slice(-2); }).join(''); }
-  /* Si ni el negro ni el blanco alcanzan una lectura cómoda (4.5), se aclara u oscurece el color un poquito */
   function relleno(hex) {
     var on = sobre(hex), h = hex, i = 0;
     while (contraste(on, h) < 4.5 && i < 30) { h = mezcla(h, on === '#131313' ? '#ffffff' : '#000000', 0.05); i++; }
     return h;
   }
+  /* Convierte una elección de color (hex o "metal:oro") en relleno, texto y degradado */
+  function resolverColor(sel) {
+    if (sel && sel.indexOf('metal:') === 0) { var m = METALES[sel.slice(6)]; return { fill: m.base, on: m.on, grad: 'linear-gradient(135deg,' + m.stops.join(',') + ')', metal: true }; }
+    var f = relleno(sel); return { fill: f, on: sobre(f), grad: null, metal: false };
+  }
 
   function svgUri(svg) { return 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")'; }
   function decoCss(tipo, claro) {
-    var c = claro ? 'rgba(255,255,255,.28)' : 'rgba(0,0,0,.13)';
-    var s = claro ? '#ffffff' : '#000000'; var o = claro ? '.26' : '.14';
+    var c = claro ? 'rgba(255,255,255,.28)' : 'rgba(0,0,0,.13)'; var s = claro ? '#ffffff' : '#000000'; var o = claro ? '.26' : '.14';
     if (tipo === 'puntos') return { img: 'radial-gradient(circle, ' + c + ' 2.2px, transparent 2.7px)', size: '16px 16px' };
     if (tipo === 'rayas') return { img: 'repeating-linear-gradient(45deg, ' + c + ' 0 7px, transparent 7px 16px)', size: 'auto' };
     if (tipo === 'ondas') return { img: svgUri('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="0 0 48 20"><path d="M0 10 Q12 0 24 10 T48 10" fill="none" stroke="' + s + '" stroke-opacity="' + o + '" stroke-width="3"/></svg>'), size: '48px 20px' };
@@ -195,35 +261,50 @@
     return { img: 'none', size: 'auto' };
   }
 
+  function combo() { return estado.combo ? COMBOS.filter(function (c) { return c.id === estado.combo; })[0] : null; }
   function actual() {
-    var d = DISENOS[estado.plantilla.d]; var pal = PALETAS[estado.plantilla.p];
-    return { d: d, pal: pal, brand: estado.color || pal.brand, deco: estado.deco || d.deco };
+    var d = DISENOS[estado.plantilla.d]; var pal = PALETAS[estado.plantilla.p]; var cb = combo();
+    var oscuro = !!d.oscuro;
+    var neutros = cb ? { bg: cb.bg, sur: cb.sur, txt: cb.txt, mut: cb.mut } : { bg: oscuro ? '#131512' : pal.bg, sur: oscuro ? '#1f231e' : '#ffffff', txt: oscuro ? '#f3f1ea' : '#131313', mut: oscuro ? '#a9ad9f' : '#5a5648' };
+    var sel = cb ? cb.brand : (estado.color || pal.brand);
+    return { d: d, pal: pal, sel: sel, neutros: neutros, deco: estado.deco || d.deco };
   }
   function pintarVista() {
-    var a = actual(); var v = $('vista');
-    var oscuro = !!a.d.oscuro;
-    var fill = relleno(a.brand);
-    v.style.setProperty('--brand', fill); v.style.setProperty('--on-brand', sobre(fill));
-    v.style.setProperty('--bg', oscuro ? '#131512' : a.pal.bg); v.style.setProperty('--sur', oscuro ? '#1f231e' : '#ffffff');
-    v.style.setProperty('--txt', oscuro ? '#f3f1ea' : '#131313'); v.style.setProperty('--mut', oscuro ? '#a9ad9f' : '#5a5648');
+    var a = actual(); var v = $('vista'); var col = resolverColor(a.sel); var n = a.neutros; var conPortada = !!estado.portada;
+    v.style.setProperty('--brand', col.fill); v.style.setProperty('--on-brand', col.on);
+    if (col.grad) v.style.setProperty('--brand-bg', col.grad); else v.style.removeProperty('--brand-bg');
+    v.style.setProperty('--bg', n.bg); v.style.setProperty('--sur', n.sur); v.style.setProperty('--txt', n.txt); v.style.setProperty('--mut', n.mut);
     v.style.setProperty('--r', a.d.r + 'px'); v.style.setProperty('--fd', a.d.fd + ', monospace'); v.style.setProperty('--fb', a.d.fb + ', monospace');
-    v.setAttribute('data-cab', a.d.cab); v.setAttribute('data-card', a.d.card);
-    var dc = decoCss(a.deco, sobre(fill) === '#ffffff'); var b = $('v-banner');
-    b.style.backgroundImage = dc.img; b.style.backgroundSize = dc.size;
+    v.setAttribute('data-cab', a.d.cab); v.setAttribute('data-card', a.d.card); v.setAttribute('data-portada', conPortada ? 'si' : 'no');
+    var b = $('v-banner'); var capas = [], tams = [];
+    if (conPortada) {
+      capas.push('linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.62))'); tams.push('100% 100%');
+      capas.push('url("' + estado.portada + '")'); tams.push('cover'); b.style.color = '#ffffff';
+    } else {
+      b.style.color = '';
+      var dc = decoCss(a.deco, col.on === '#ffffff');
+      if (dc.img !== 'none') { capas.push(dc.img); tams.push(dc.size); }
+      if (col.grad) { capas.push(col.grad); tams.push('100% 100%'); }
+    }
+    b.style.backgroundColor = col.fill; b.style.backgroundImage = capas.length ? capas.join(',') : 'none'; b.style.backgroundSize = tams.length ? tams.join(',') : 'auto';
     var nombre = $('i-nombre').value.trim() || 'Tu tienda'; $('v-nombre').textContent = nombre; $('v-lema').textContent = $('i-lema').value.trim();
-    $('v-logo').textContent = nombre.split(/\s+/).slice(0, 2).map(function (w) { return w.charAt(0).toUpperCase(); }).join('');
+    var lg = $('v-logo'); lg.textContent = '';
+    if (estado.logo) { var im = document.createElement('img'); im.src = estado.logo; im.alt = 'Logo de ' + nombre; lg.appendChild(im); }
+    else lg.textContent = nombre.split(/\s+/).slice(0, 2).map(function (w) { return w.charAt(0).toUpperCase(); }).join('');
   }
 
   function boton(txt, pressed, fn, dis) { var b = document.createElement('button'); b.type = 'button'; b.className = 'op'; b.textContent = txt; b.setAttribute('aria-pressed', String(pressed)); if (dis) b.disabled = true; b.addEventListener('click', fn); return b; }
+  function aviso(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(aviso.t); aviso.t = setTimeout(function () { x.classList.remove('on'); }, 2400); }
 
-  function pintarPlanes() {
-    var c = $('planes'); c.textContent = '';
-    Object.keys(PLANES).forEach(function (k) { c.appendChild(boton(PLANES[k], estado.plan === k, function () { cambiarPlan(k); })); });
-  }
+  function pintarPlanes() { var c = $('planes'); c.textContent = ''; Object.keys(PLANES).forEach(function (k) { c.appendChild(boton(PLANES[k], estado.plan === k, function () { cambiarPlan(k); })); }); }
   function cambiarPlan(k) {
     estado.plan = k; estado.pagina = 0;
-    if (k === 'gratis') { estado.plantilla = { d: 0, p: 0 }; estado.color = null; estado.deco = null; }
-    else { var lista = plantillasDe(k); var ya = lista.some(function (t) { return t.d === estado.plantilla.d && t.p === estado.plantilla.p; }); if (!ya) estado.plantilla = lista[0]; }
+    if (k === 'gratis') { estado.plantilla = { d: 0, p: 0 }; estado.color = null; estado.deco = null; estado.combo = null; }
+    else {
+      var lista = plantillasDe(k); var ya = lista.some(function (t) { return t.d === estado.plantilla.d && t.p === estado.plantilla.p; }); if (!ya) estado.plantilla = lista[0];
+      if (k !== 'pro') { estado.combo = null; if (estado.color && estado.color.indexOf('metal:') === 0) estado.color = null; if (estado.color && COLORES_BASICOS.indexOf(estado.color) < 0 && !/^#[0-9a-f]{6}$/i.test(estado.color)) estado.color = null; }
+    }
+    if (k !== 'pro') quitarImagen('logo', true), quitarImagen('portada', true);
     pintarTodo();
   }
 
@@ -240,27 +321,14 @@
     if (bloq) { var c = document.createElement('span'); c.className = 'cand'; c.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'; b.appendChild(c); }
     return b;
   }
-
   function pintarGaleria() {
     var g = $('galeria'), pag = $('pag'); g.textContent = ''; pag.textContent = '';
-    if (estado.plan === 'gratis') {
-      $('t-plant').textContent = 'El plan Gratis usa el estilo base de la app. Con Emprendedor eliges entre 10 plantillas y con Profesional entre 50.';
-      g.appendChild(miniatura({ d: 0, p: 0 }, true, false)); return;
-    }
-    var lista = plantillasDe('pro'); var propias = plantillasDe(estado.plan);
-    var porPag = 10; var paginas = estado.plan === 'pro' ? 5 : 1;
-    $('t-plant').textContent = estado.plan === 'pro' ? '50 plantillas: 10 diseños en 5 paletas de colores. Elige una y ajústala.' : '10 plantillas listas. En el plan Profesional hay 50 (10 diseños en 5 paletas).';
+    if (estado.plan === 'gratis') { $('t-plant').textContent = 'El plan Gratis usa el estilo base. Con Emprendedor eliges entre 10 plantillas y con Profesional entre 50.'; g.appendChild(miniatura({ d: 0, p: 0 }, true, false)); return; }
+    var lista = plantillasDe('pro'); var propias = plantillasDe(estado.plan); var porPag = 10; var paginas = estado.plan === 'pro' ? 5 : 1;
+    $('t-plant').textContent = estado.plan === 'pro' ? '50 plantillas: 10 diseños en 5 paletas. Elige una y ajústala con tus colores.' : '10 plantillas listas. En el plan Profesional hay 50 y una paleta de colores mucho más amplia.';
     var vista = estado.plan === 'pro' ? lista.slice(estado.pagina * porPag, estado.pagina * porPag + porPag) : propias;
-    vista.forEach(function (t) {
-      var b = miniatura(t, estado.plantilla.d === t.d && estado.plantilla.p === t.p, false);
-      b.addEventListener('click', function () { estado.plantilla = t; estado.color = null; estado.deco = null; pintarTodo(); }); g.appendChild(b);
-    });
-    if (estado.plan === 'emprendedor') {
-      // muestra algunas del plan Profesional bloqueadas, para que se vea lo que hay
-      plantillasDe('pro').filter(function (t) { return t.p !== t.d % 5; }).slice(0, 4).forEach(function (t) {
-        var b = miniatura(t, false, true); b.addEventListener('click', function () { aviso('Esta plantilla es del plan Profesional (50 plantillas).'); }); g.appendChild(b);
-      });
-    }
+    vista.forEach(function (t) { var b = miniatura(t, estado.plantilla.d === t.d && estado.plantilla.p === t.p, false); b.addEventListener('click', function () { estado.plantilla = t; estado.color = null; estado.deco = null; estado.combo = null; pintarTodo(); }); g.appendChild(b); });
+    if (estado.plan === 'emprendedor') plantillasDe('pro').filter(function (t) { return t.p !== t.d % 5; }).slice(0, 4).forEach(function (t) { var b = miniatura(t, false, true); b.addEventListener('click', function () { aviso('Esta plantilla es del plan Profesional (50 plantillas).'); }); g.appendChild(b); });
     if (paginas > 1) {
       var ant = boton('Anterior', false, function () { estado.pagina = Math.max(0, estado.pagina - 1); pintarGaleria(); }, estado.pagina === 0);
       var sig = boton('Siguiente', false, function () { estado.pagina = Math.min(paginas - 1, estado.pagina + 1); pintarGaleria(); }, estado.pagina === paginas - 1);
@@ -269,14 +337,40 @@
     }
   }
 
-  function pintarColores() {
-    var c = $('colores'); c.textContent = ''; var a = actual(); var libre = estado.plan !== 'gratis';
-    COLORES.forEach(function (hex) {
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'sw'; b.style.background = hex; b.disabled = !libre;
-      b.setAttribute('aria-label', 'Color ' + hex); b.setAttribute('aria-pressed', String(a.brand.toLowerCase() === hex)); b.addEventListener('click', function () { estado.color = hex; pintarTodo(); }); c.appendChild(b);
+  function pintarCombos() {
+    var blq = $('bloque-combos'); blq.hidden = estado.plan !== 'pro'; var c = $('combos'); c.textContent = '';
+    COMBOS.forEach(function (cb) {
+      var col = resolverColor(cb.brand);
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'combo'; b.setAttribute('aria-pressed', String(estado.combo === cb.id)); b.setAttribute('aria-label', 'Combinación ' + cb.n);
+      var bar = document.createElement('div'); bar.className = 'bar';
+      [cb.bg, col.grad || col.fill, cb.sur, cb.txt].forEach(function (x) { var i = document.createElement('i'); i.style.background = x; bar.appendChild(i); });
+      var t = document.createElement('span'); t.textContent = cb.n; b.appendChild(bar); b.appendChild(t);
+      b.addEventListener('click', function () { estado.combo = estado.combo === cb.id ? null : cb.id; pintarTodo(); }); c.appendChild(b);
     });
-    var i = document.createElement('input'); i.type = 'color'; i.value = a.brand; i.disabled = !libre; i.setAttribute('aria-label', 'Elegir otro color'); i.addEventListener('input', function () { estado.color = i.value; pintarVista(); }); c.appendChild(i);
-    if (libre) c.appendChild(boton('Usar el de la plantilla', false, function () { estado.color = null; pintarTodo(); }));
+  }
+
+  function swatch(nombre, sel, activo, libre) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'sw'; b.disabled = !libre; b.setAttribute('aria-label', nombre); b.title = nombre;
+    var col = resolverColor(sel); b.style.background = col.grad || sel; b.setAttribute('aria-pressed', String(activo));
+    b.addEventListener('click', function () { estado.color = sel; estado.combo = null; pintarTodo(); }); return b;
+  }
+  function pintarColores() {
+    var c = $('colores'); c.textContent = ''; var a = actual(); var libre = estado.plan !== 'gratis'; var sel = estado.combo ? null : a.sel;
+    $('t-color').textContent = estado.plan === 'pro' ? 'Paleta amplia: colores elegantes, matizados, brillantes y metálicos (oro, plata y más), o cualquier color que elijas.' : (libre ? '8 colores para tu marca. Con el plan Profesional tienes una paleta mucho más amplia, con tonos elegantes y metálicos.' : 'El color de marca se personaliza desde el plan Emprendedor.');
+    var fila;
+    if (estado.plan === 'pro') {
+      GRUPOS.forEach(function (g) {
+        var t = document.createElement('h3'); t.className = 'grupo'; t.textContent = g.n; c.appendChild(t);
+        fila = document.createElement('div'); fila.className = 'swatches'; g.c.forEach(function (x) { fila.appendChild(swatch(x[0], x[1], sel === x[1], true)); }); c.appendChild(fila);
+      });
+    } else {
+      fila = document.createElement('div'); fila.className = 'swatches'; COLORES_BASICOS.forEach(function (h) { fila.appendChild(swatch('Color ' + h, h, sel === h, libre)); }); c.appendChild(fila);
+    }
+    fila = document.createElement('div'); fila.className = 'swatches';
+    var i = document.createElement('input'); i.type = 'color'; i.value = /^#[0-9a-f]{6}$/i.test(a.sel) ? a.sel : '#a5dc5b'; i.disabled = !libre; i.setAttribute('aria-label', 'Elegir cualquier otro color');
+    i.addEventListener('input', function () { estado.color = i.value; estado.combo = null; pintarVista(); }); fila.appendChild(i);
+    if (libre) fila.appendChild(boton('Usar el de la plantilla', false, function () { estado.color = null; estado.combo = null; pintarTodo(); }));
+    c.appendChild(fila);
   }
   function pintarDecos() {
     var c = $('decos'); c.textContent = ''; var a = actual();
@@ -285,22 +379,51 @@
       c.appendChild(boton(d[1] + (permitido ? '' : (estado.plan === 'gratis' ? ' (Emprendedor)' : ' (Profesional)')), a.deco === d[0], function () { estado.deco = d[0]; pintarTodo(); }, !permitido));
     });
   }
+
+  /* ---------- Logo y portada (solo plan Profesional) ---------- */
+  var LIMITES = { logo: 2 * 1024 * 1024, portada: 4 * 1024 * 1024 };
+  var TIPOS = ['image/jpeg', 'image/png', 'image/webp'];
+  function quitarImagen(cual, silencioso) {
+    if (estado[cual]) { try { URL.revokeObjectURL(estado[cual]); } catch (e) { /* ok */ } }
+    estado[cual] = null; if (!silencioso) { $('err-img').textContent = ''; pintarImagenes(); pintarVista(); }
+  }
+  function subirImagen(cual, archivo) {
+    var err = $('err-img'); err.textContent = '';
+    if (!archivo) return;
+    if (estado.plan !== 'pro') { err.textContent = 'Subir logo y portada es del plan Profesional.'; return; }
+    if (TIPOS.indexOf(archivo.type) < 0) { err.textContent = 'Ese archivo no sirve. Usa una imagen JPG, PNG o WebP.'; return; }
+    if (archivo.size > LIMITES[cual]) { err.textContent = 'La imagen pesa demasiado. El máximo es ' + (LIMITES[cual] / 1048576) + ' MB.'; return; }
+    if (estado[cual]) { try { URL.revokeObjectURL(estado[cual]); } catch (e) { /* ok */ } }
+    estado[cual] = URL.createObjectURL(archivo); pintarImagenes(); pintarVista(); aviso(cual === 'logo' ? 'Logo cargado' : 'Portada cargada');
+  }
+  function pintarImagenes() {
+    var pro = estado.plan === 'pro';
+    $('t-img').textContent = pro ? 'Sube el logo o la foto de tu negocio y una portada. Se ven al instante en tu tienda.' : 'Subir tu logo y tu portada es del plan Profesional.';
+    [['logo', 'vp-logo', 'l-logo', 'in-logo', 'q-logo'], ['portada', 'vp-port', 'l-port', 'in-port', 'q-port']].forEach(function (x) {
+      var vp = $(x[1]); vp.textContent = '';
+      if (estado[x[0]]) { var im = document.createElement('img'); im.src = estado[x[0]]; im.alt = ''; vp.appendChild(im); } else vp.textContent = x[0] === 'logo' ? 'Logo' : 'Portada';
+      $(x[2]).setAttribute('aria-disabled', String(!pro)); $(x[3]).disabled = !pro; $(x[4]).hidden = !estado[x[0]];
+    });
+  }
+
   function pintarAviso() {
     var m = { gratis: 'Plan Gratis: estilo base. Puedes cambiar el nombre y la frase de tu tienda. Las plantillas, colores y decoración empiezan en el plan Emprendedor.',
-      emprendedor: 'Plan Emprendedor: 10 plantillas, tu color de marca y 3 decoraciones. Para 50 plantillas y todas las decoraciones, pasa al plan Profesional.',
-      pro: 'Plan Profesional: 50 plantillas, cualquier color de marca y todas las decoraciones.' };
+      emprendedor: 'Plan Emprendedor: 10 plantillas, 8 colores de marca y 3 decoraciones. Para 50 plantillas, la paleta amplia con dorado y plateado, tu logo y tu portada, pasa al plan Profesional.',
+      pro: 'Plan Profesional: 50 plantillas, combinaciones profesionales, paleta amplia (elegantes, matizados, brillantes y metálicos), logo, portada y todas las decoraciones.' };
     $('aviso').textContent = m[estado.plan] + ' Los botones, el carrito y el pedido por WhatsApp no cambian: ya vienen listos.';
   }
-  function pintarTodo() { pintarPlanes(); pintarGaleria(); pintarColores(); pintarDecos(); pintarAviso(); pintarVista(); $('i-nombre').disabled = false; }
-  function aviso(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(aviso.t); aviso.t = setTimeout(function () { x.classList.remove('on'); }, 2400); }
+  function pintarTodo() { pintarPlanes(); pintarImagenes(); pintarGaleria(); pintarCombos(); pintarColores(); pintarDecos(); pintarAviso(); pintarVista(); }
 
   $('i-nombre').addEventListener('input', pintarVista); $('i-lema').addEventListener('input', pintarVista);
+  $('in-logo').addEventListener('change', function (e) { subirImagen('logo', e.target.files[0]); e.target.value = ''; });
+  $('in-port').addEventListener('change', function (e) { subirImagen('portada', e.target.files[0]); e.target.value = ''; });
+  $('q-logo').addEventListener('click', function () { quitarImagen('logo'); }); $('q-port').addEventListener('click', function () { quitarImagen('portada'); });
   $('guardar').addEventListener('click', function () {
-    try { localStorage.setItem('tienda-personalizada', JSON.stringify({ plan: estado.plan, plantilla: estado.plantilla, color: estado.color, deco: estado.deco, nombre: $('i-nombre').value, lema: $('i-lema').value })); } catch (e) { /* sin almacenamiento en esta vista */ }
+    try { localStorage.setItem('tienda-personalizada', JSON.stringify({ plan: estado.plan, plantilla: estado.plantilla, color: estado.color, deco: estado.deco, combo: estado.combo, nombre: $('i-nombre').value, lema: $('i-lema').value })); } catch (e) { /* sin almacenamiento en esta vista */ }
     aviso('Tienda guardada (demostración)');
   });
   pintarTodo();
-  window.__pers = { relleno: relleno, sobre: sobre, contraste: contraste, estado: estado, plantillasDe: plantillasDe, cambiarPlan: cambiarPlan, pintarTodo: pintarTodo, DISENOS: DISENOS, PALETAS: PALETAS };
+  window.__pers = { relleno: relleno, sobre: sobre, contraste: contraste, resolverColor: resolverColor, METALES: METALES, GRUPOS: GRUPOS, COMBOS: COMBOS, COLORES_BASICOS: COLORES_BASICOS, estado: estado, plantillasDe: plantillasDe, cambiarPlan: cambiarPlan, pintarTodo: pintarTodo, subirImagen: subirImagen, DISENOS: DISENOS, PALETAS: PALETAS };
 })();
 </script>
 </body>

@@ -32,6 +32,8 @@
   .cab h1 { font-size: 22px; font-weight: 800; line-height: 1.1; }
   .abierto { font-size: 12px; font-weight: 700; color: var(--verde-texto); }
   .desc { margin-top: 10px; font-size: 14px; color: var(--texto-2); }
+  .bienvenida { margin-top: 10px; font-size: 14px; font-weight: 700; background: var(--blanco); border-radius: 18px; padding: 10px 14px; box-shadow: 0 8px 20px -14px rgb(40 60 40 / .5); }
+  .pos { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--verde-texto); }
   .buscar { margin-top: 12px; display: flex; align-items: center; gap: 8px; background: var(--blanco); border-radius: 999px; padding: 0 16px; min-height: 48px; box-shadow: 0 8px 20px -12px rgb(40 60 40 / .45); }
   .buscar input { border: 0; background: none; flex: 1; min-width: 0; height: 46px; font-size: 16px; }
   .buscar input:focus-visible { outline: none; }
@@ -125,6 +127,7 @@
     <div><h1>Boutique Luna</h1><p class="abierto" data-i="abierto"></p></div>
   </header>
   <p class="desc" data-i="desc"></p>
+  <p class="bienvenida" id="bienv"></p>
 
   <label class="buscar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="q" type="search" data-ph="buscar" data-al="buscar" autocomplete="off"></label>
@@ -174,7 +177,7 @@
       verPedido: 'Ver mi pedido', cats: 'Categorías', todo: 'Todo', ropa: 'Ropa', accesorios: 'Accesorios', agotado: 'Agotado',
       agregar: 'Agregar {x}', agotadoAria: '{x} agotado', sinResultados: 'No encontramos productos con esa búsqueda. Prueba con otra palabra.',
       talla: 'Talla', color: 'Color', cantidad: 'Cantidad', agregarPedido: 'Agregar al pedido', mas1: 'Agregar una unidad', menos1: 'Quitar una unidad',
-      agregado: '{n} × {x} agregado', quedan: 'Quedan {n}', solo: 'Solo hay {n} disponibles', descripcion: 'Descripción', ofertaAria: 'Precio anterior {a}, precio actual {b}', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
+      agregado: 'Agregaste {n} × {x}', quedan: 'Quedan {n}', solo: 'Solo hay {n} disponibles', descripcion: 'Descripción', ofertaAria: 'Precio anterior {a}, precio actual {b}', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
       subtotal: 'Subtotal', envioNota: 'La entrega y el pago se coordinan por WhatsApp. El costo de envío, si aplica, te lo confirma el negocio.',
       continuar: 'Continuar', seguir: 'Seguir comprando', quitar: 'Quitar', coordina: 'Coordinemos tu pedido',
       aviso: 'Pulsa el botón verde y se abrirá WhatsApp con tu pedido listo. Allí acuerdas con el negocio la entrega y el pago.',
@@ -199,7 +202,7 @@
       verPedido: 'View my order', cats: 'Categories', todo: 'All', ropa: 'Clothing', accesorios: 'Accessories', agotado: 'Sold out',
       agregar: 'Add {x}', agotadoAria: '{x} sold out', sinResultados: 'No products match your search. Try another word.',
       talla: 'Size', color: 'Color', cantidad: 'Quantity', agregarPedido: 'Add to order', mas1: 'Add one unit', menos1: 'Remove one unit',
-      agregado: '{n} × {x} added', quedan: '{n} left', solo: 'Only {n} available', descripcion: 'Description', ofertaAria: 'Previous price {a}, current price {b}', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
+      agregado: 'Added {n} × {x}', quedan: '{n} left', solo: 'Only {n} available', descripcion: 'Description', ofertaAria: 'Previous price {a}, current price {b}', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
       subtotal: 'Subtotal', envioNota: 'Delivery and payment are arranged on WhatsApp. If shipping applies, the shop will confirm its cost.',
       continuar: 'Continue', seguir: 'Keep shopping', quitar: 'Remove', coordina: 'Let’s arrange your order',
       aviso: 'Tap the green button and WhatsApp will open with your order ready. There you agree on delivery and payment with the shop.',
@@ -223,7 +226,7 @@
       verPedido: 'Ver meu pedido', cats: 'Categorias', todo: 'Tudo', ropa: 'Roupas', accesorios: 'Acessórios', agotado: 'Esgotado',
       agregar: 'Adicionar {x}', agotadoAria: '{x} esgotado', sinResultados: 'Não encontramos produtos com essa busca. Tente outra palavra.',
       talla: 'Tamanho', color: 'Cor', cantidad: 'Quantidade', agregarPedido: 'Adicionar ao pedido', mas1: 'Adicionar uma unidade', menos1: 'Remover uma unidade',
-      agregado: '{n} × {x} adicionado', quedan: 'Restam {n}', solo: 'Só há {n} disponíveis', descripcion: 'Descrição', ofertaAria: 'Preço anterior {a}, preço atual {b}', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
+      agregado: 'Você adicionou {n} × {x}', quedan: 'Restam {n}', solo: 'Só há {n} disponíveis', descripcion: 'Descrição', ofertaAria: 'Preço anterior {a}, preço atual {b}', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
       subtotal: 'Subtotal', envioNota: 'Entrega e pagamento são combinados pelo WhatsApp. Se houver frete, a loja confirma o valor.',
       continuar: 'Continuar', seguir: 'Continuar comprando', quitar: 'Remover', coordina: 'Vamos combinar seu pedido',
       aviso: 'Toque no botão verde e o WhatsApp abrirá com seu pedido pronto. Lá você combina a entrega e o pagamento com a loja.',
@@ -285,6 +288,36 @@
   );
   PRODUCTOS.forEach(function (p) { p.hay = p.stock === null || p.stock > 0; });
   var LLAVE = 'tienda-demo-v2';
+
+  /* Mensajes positivos para quien visita la tienda (el comprador). Animan a comprar sin presionar:
+     nada de falsa urgencia ni escasez inventada. El vendedor podrá editarlos en los planes de pago. */
+  var FRASES = {
+    es: {
+      bienvenida: ['¡Qué bueno verte por aquí! Encuentra algo que te encante.', 'Bienvenido a nuestra tienda: mira con calma y elige lo que más te guste.', '¡Hola! Aquí tienes productos listos para ti.'],
+      eleccion: ['¡Buena elección!', '¡Excelente gusto!', '¡Te va a encantar!'],
+      carrito: ['¡Tu pedido va tomando forma!', 'Ya casi: revisa tus productos y sigue cuando quieras.'],
+      ultimo: ['Estás a un paso de tenerlo. ¡Solo faltan tus datos!', '¡Ya casi es tuyo!'],
+      gracias: ['¡Gracias por elegir {negocio}!']
+    },
+    en: {
+      bienvenida: ['So glad you’re here! Find something you’ll love.', 'Welcome to our store: take your time and pick what you like best.', 'Hi! Here are products ready for you.'],
+      eleccion: ['Great choice!', 'Excellent taste!', 'You’re going to love it!'],
+      carrito: ['Your order is taking shape!', 'Almost there: review your items and continue whenever you like.'],
+      ultimo: ['You’re one step away. Just your details left!', 'Almost yours!'],
+      gracias: ['Thank you for choosing {negocio}!']
+    },
+    pt: {
+      bienvenida: ['Que bom ter você aqui! Encontre algo de que vai gostar.', 'Bem-vindo à nossa loja: fique à vontade e escolha o que mais gostar.', 'Olá! Aqui estão produtos prontos para você.'],
+      eleccion: ['Ótima escolha!', 'Excelente gosto!', 'Você vai adorar!'],
+      carrito: ['Seu pedido está tomando forma!', 'Quase lá: confira seus itens e continue quando quiser.'],
+      ultimo: ['Falta só um passo. Só os seus dados!', 'Quase seu!'],
+      gracias: ['Obrigado por escolher {negocio}!']
+    }
+  };
+  var rot = { eleccion: 0, carrito: 0, ultimo: 0, gracias: 0, bienvenida: Math.floor(Math.random() * 3) };
+  function frase(tipo) {
+    var lista = (FRASES[estado.idioma] || FRASES.es)[tipo]; var i = rot[tipo] % lista.length; if (tipo !== 'bienvenida') rot[tipo] += 1; return lista[i];
+  }
 
   var estado = { cat: 'todo', q: '', carrito: [], entrega: null, pais: 'EC', idioma: 'es', moneda: 'USD' };
   cargar();
@@ -373,6 +406,7 @@
     document.querySelectorAll('[data-ph]').forEach(function (e) { e.placeholder = t(e.getAttribute('data-ph')); });
     document.querySelectorAll('[data-al]').forEach(function (e) { e.setAttribute('aria-label', t(e.getAttribute('data-al'))); });
     $('cats').setAttribute('aria-label', t('cats'));
+    $('bienv').textContent = frase('bienvenida');
     $('region').textContent = '';
     $('region').appendChild(document.createTextNode(estado.pais + ' · ' + estado.idioma.toUpperCase() + ' · ' + estado.moneda));
     $('region').setAttribute('aria-label', t('ajustes'));
@@ -463,7 +497,7 @@
       var menos = el('button', { type: 'button', 'aria-label': t('menos1'), text: '−', onclick: function () { cant = Math.max(1, cant - 1); num.textContent = cant; } });
       var masb = el('button', { type: 'button', 'aria-label': t('mas1'), text: '+', onclick: function () { var tope = Math.max(1, maxMas(p)); if (cant + 1 > maxMas(p) && p.stock !== null) toast(t('solo', { n: p.stock })); cant = Math.min(tope, cant + 1); num.textContent = cant; } });
       h.appendChild(el('div', { class: 'campo' }, [el('label', { text: t('cantidad') }), el('div', { class: 'cant' }, [menos, num, masb])]));
-      h.appendChild(el('button', { type: 'button', class: 'btn', text: t('agregarPedido'), onclick: function () { var n = agregar(p.id, variante, cant); if (n) { cerrarHoja(); toast(t('agregado', { n: n, x: nm(p) })); } } }));
+      h.appendChild(el('button', { type: 'button', class: 'btn', text: t('agregarPedido'), onclick: function () { var n = agregar(p.id, variante, cant); if (n) { cerrarHoja(); toast(frase('eleccion') + ' ' + t('agregado', { n: n, x: nm(p) })); } } }));
     });
   }
 
@@ -475,6 +509,7 @@
         h.appendChild(el('p', { class: 'aviso', text: t('vacio') }));
         h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('verProductos'), onclick: cerrarHoja })); return;
       }
+      h.appendChild(el('p', { class: 'pos', text: frase('carrito') }));
       ls.forEach(function (x) {
         var mini = el('div', { class: 'mini', style: 'background:' + x.p.color }); mini.innerHTML = svgHtml(x.p.arte, 32);
         var num = el('span', { text: String(x.l.cant) });
@@ -496,6 +531,7 @@
     if (pais().pagos.indexOf(d.pago) < 0) d.pago = pais().pagos[0];
     abrirHoja(function (h) {
       h.appendChild(cabecera(t('coordina')));
+      h.appendChild(el('p', { class: 'pos', text: frase('ultimo') }));
       h.appendChild(el('p', { class: 'aviso', text: t('aviso') }));
       var nombre = el('input', { type: 'text', id: 'f-nombre', maxlength: '60', autocomplete: 'name', value: d.nombre, 'aria-describedby': 'e-nombre' });
       var cNombre = el('div', { class: 'campo' }, [el('label', { for: 'f-nombre', text: t('nombre') }), nombre, el('p', { class: 'error', id: 'e-nombre', text: t('nombreErr') })]);
@@ -556,6 +592,7 @@
       h.appendChild(cabecera(t('ultimo')));
       var ok = el('div', { class: 'ok' }); ok.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'; h.appendChild(ok);
       h.appendChild(el('p', { class: 'frase centro', text: t('listo') }));
+      h.appendChild(el('p', { class: 'centro', style: 'margin-top:4px;font-weight:700', text: frase('gracias').split('{negocio}').join(NEGOCIO.nombre) }));
       h.appendChild(el('p', { class: 'centro', style: 'margin-top:6px;color:var(--texto-2);font-size:14px', text: w ? t('okTxt') : t('bloqueado') }));
       if (!NEGOCIO.whatsapp) h.appendChild(el('p', { class: 'aviso', text: t('demoModo') }));
       h.appendChild(el('div', { class: 'vista-msg', text: msg }));
