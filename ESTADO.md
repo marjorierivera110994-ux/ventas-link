@@ -1,7 +1,7 @@
 # ESTADO — Tienda digital con pedidos por WhatsApp (nombre provisional)
 Última actualización: 2026-11-14 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: reporte de validación aprobado; usuario eligió construir ya (opción 2). / Siguiente acción exacta: PREGUNTA DE REFERENCIA visual (54, PASO 0) y luego Plan Maestro (B5).
+⏸️ CHECKPOINT — Última acción completada: comparativa de 3 estilos (direcciones-abc.html) lista para que el usuario elija. / Siguiente acción exacta: usuario elige/combina/pide otras 3/ajusta; luego tour de la app y FICHA-ARTE.md.
 
 ## Qué es esta app (3 líneas máximo)
 Plataforma web móvil: cada vendedor crea su tienda, comparte un enlace único y recibe pedidos armados por WhatsApp. El comprador no instala nada ni se registra. Para pequeños comercios de Ecuador (mercado inicial). Plan gratis permanente + planes mensuales (hipótesis).
@@ -29,8 +29,10 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - No simular cobros ni integraciones: todo botón visible funciona o se marca como demostración
 
 ## Dirección de Arte (Sesión 2)
-- FICHA-ARTE.md: NO existe
-- ¿Referencia visual del usuario?: pendiente de preguntar
+- FICHA-ARTE.md: NO existe (esperando elección del usuario)
+- ¿Referencia visual del usuario?: NO — pidió "dame opciones" → Ruta de diseño: propuesta propia (3 estilos A/B/C)
+- Comparativa: direcciones-abc.html (kit abc-v2) — A "Tienda de confianza" (claro crema + esmeralda #0E6B4F, Figtree) · B "Meta y racha" (oscuro #0F1715 + #34D399 + racha ámbar #FBBF24, Nunito) · C "Cuaderno de pedidos" (claro #FAF8F4 + coral #C73E22, Bricolage Grotesque + Instrument Sans)
+- Limitación: tabla de líderes (16 PASO 0.2bis) hecha de forma ligera; pares tipográficos tomados de la tabla 29; sin screenshot archivado en docs/revisiones (solo revisión en vivo)
 
 ## Avatar y venta
 - FICHA-AVATAR.md: NO existe (obligatoria antes de la página de ventas)
