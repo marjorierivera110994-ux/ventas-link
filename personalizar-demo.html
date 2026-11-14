@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personaliza tu tienda — demostración</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&family=Figtree:wght@400..800&family=Nunito:wght@400..900&family=Fraunces:opsz,wght@9..144,500..800&display=swap" rel="stylesheet">
+<style>
+  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648;
+          --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45;
+         background-image: radial-gradient(800px 360px at 10% -6%, color-mix(in oklab, var(--pistacho) 45%, transparent), transparent 62%); }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; border: 0; background: none; }
+  :focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+  .page { max-width: 1040px; margin: 0 auto; padding: 16px; display: grid; gap: 22px; grid-template-columns: 1fr; }
+  @media (min-width: 860px) { .page { grid-template-columns: 380px 1fr; align-items: start; } .col-vista { position: sticky; top: 16px; } }
+  h1, h2, h3 { font-family: var(--f-d); letter-spacing: -.015em; }
+  h1 { font-size: 26px; font-weight: 800; line-height: 1.1; }
+  h2 { font-size: 15px; font-weight: 800; margin-top: 20px; }
+  .demo { display: inline-flex; gap: 8px; align-items: center; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+  .sub { font-size: 14px; color: var(--texto-2); margin-top: 6px; }
+  .opciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .op { min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--blanco); font-weight: 700; font-size: 14px; border: 2px solid transparent; }
+  .op[aria-pressed="true"] { background: var(--tinta); color: #fff; }
+  .op[disabled] { opacity: .45; cursor: not-allowed; }
+  label.campo { display: block; margin-top: 14px; font-weight: 800; font-size: 14px; font-family: var(--f-d); }
+  input[type=text] { display: block; width: 100%; margin-top: 6px; background: var(--blanco); border: 2px solid transparent; border-radius: 16px; padding: 12px 14px; min-height: 50px; font-size: 16px; font-family: var(--f-b); font-weight: 400; }
+  input[type=text]:focus-visible { border-color: var(--tinta); outline: none; }
+  input[type=text]:disabled { opacity: .5; }
+  .aviso { margin-top: 12px; font-size: 13px; color: var(--texto-2); background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 16px; padding: 10px 14px; }
+  .galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; margin-top: 10px; }
+  .mini { position: relative; border-radius: 14px; padding: 6px; border: 3px solid transparent; background: var(--blanco); text-align: left; display: flex; flex-direction: column; gap: 4px; min-height: 96px; }
+  .mini[aria-pressed="true"] { border-color: var(--tinta); }
+  .mini .lienzo { height: 52px; border-radius: 8px; position: relative; overflow: hidden; }
+  .mini .lienzo i { position: absolute; display: block; }
+  .mini b { font-size: 11px; font-weight: 800; line-height: 1.15; }
+  .mini small { font-size: 10px; color: var(--texto-2); }
+  .mini .cand { position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 999px; background: var(--tinta); color: #fff; display: grid; place-items: center; }
+  .mini.bloq { opacity: .55; }
+  .pag { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 10px; font-size: 13px; font-weight: 700; }
+  .swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: center; }
+  .sw { width: 44px; height: 44px; border-radius: 999px; border: 3px solid var(--blanco); box-shadow: 0 0 0 1px rgb(0 0 0 / .2); }
+  .sw[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--tinta); }
+  .sw[disabled] { opacity: .45; cursor: not-allowed; }
+  input[type=color] { width: 44px; height: 44px; border: 0; padding: 0; background: none; border-radius: 999px; cursor: pointer; }
+  .btn { margin-top: 18px; width: 100%; min-height: 54px; border-radius: 999px; font-weight: 800; font-size: 16px; background: var(--tinta); color: var(--lima); }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 5; max-width: 90vw; }
+  .toast.on { display: block; }
+
+  /* ===== Vista previa de la tienda (todo lo que cambia depende de estas variables) ===== */
+  .marco { border: 8px solid var(--tinta); border-radius: 36px; overflow: hidden; max-width: 340px; margin: 14px auto 0; box-shadow: 0 24px 50px -20px rgb(0 0 0 / .45); }
+  #vista { --brand: #a5dc5b; --on-brand: #131313; --bg: #f4ecdb; --sur: #fff; --txt: #131313; --mut: #5a5648; --r: 22px; --fd: 'Bricolage Grotesque', monospace; --fb: 'Instrument Sans', monospace;
+           background: var(--bg); color: var(--txt); font-family: var(--fb); padding: 0 0 14px; min-height: 560px; position: relative; }
+  #vista h3 { font-family: var(--fd); }
+  .v-cab { padding: 14px 14px 0; }
+  .v-banner { position: relative; border-radius: var(--r); background: var(--brand); color: var(--on-brand); padding: 18px 16px; overflow: hidden; }
+  .v-banner > * { position: relative; }
+  .v-logo { width: 44px; height: 44px; border-radius: 999px; background: var(--sur); color: var(--txt); display: grid; place-items: center; font-family: var(--fd); font-weight: 800; font-size: 16px; }
+  .v-nombre { font-size: 22px; font-weight: 800; line-height: 1.1; margin-top: 8px; }
+  .v-lema { font-size: 13px; margin-top: 2px; }
+  #vista[data-cab="centro"] .v-banner { text-align: center; } #vista[data-cab="centro"] .v-logo { margin: 0 auto; }
+  #vista[data-cab="izq"] .v-banner { display: flex; align-items: center; gap: 12px; padding: 14px; } #vista[data-cab="izq"] .v-nombre { margin-top: 0; }
+  .v-chips { display: flex; gap: 6px; margin: 12px 14px 0; overflow: hidden; }
+  .v-chip { border-radius: 999px; padding: 7px 12px; font-size: 12px; font-weight: 700; background: var(--sur); color: var(--txt); white-space: nowrap; }
+  .v-chip.on { background: var(--brand); color: var(--on-brand); }
+  .v-sec { margin: 14px 14px 0; font-family: var(--fd); font-size: 16px; font-weight: 800; }
+  .v-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 14px 0; }
+  .v-prod { background: var(--sur); border-radius: var(--r); padding: 8px; }
+  #vista[data-card="sombra"] .v-prod { box-shadow: 0 10px 22px -14px rgb(0 0 0 / .45); }
+  #vista[data-card="borde"] .v-prod { box-shadow: none; border: 1.5px solid color-mix(in oklab, var(--txt) 22%, transparent); }
+  #vista[data-card="plano"] .v-prod { background: color-mix(in oklab, var(--sur) 70%, var(--bg)); }
+  .v-foto { height: 76px; border-radius: calc(var(--r) * .65); display: grid; place-items: center; position: relative; }
+  .v-foto span { position: absolute; top: 6px; right: 6px; background: var(--txt); color: var(--bg); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 999px; }
+  .v-prod h4 { font-family: var(--fd); font-size: 12.5px; font-weight: 800; margin-top: 6px; }
+  .v-prod p { font-size: 12.5px; font-weight: 800; margin-top: 2px; }
+  .v-prod p s { font-weight: 500; color: var(--mut); font-size: 10.5px; margin-right: 4px; }
+  .v-barra { margin: 14px 14px 0; background: var(--txt); color: var(--bg); border-radius: 999px; display: flex; align-items: center; justify-content: space-between; padding: 6px 6px 6px 16px; font-size: 13px; font-weight: 700; }
+  .v-barra b { background: var(--brand); color: var(--on-brand); border-radius: 999px; padding: 9px 14px; font-weight: 800; }
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="col-vista">
+    <p class="demo" role="note">Demostración · tienda de ejemplo</p>
+    <h1>Personaliza tu tienda</h1>
+    <p class="sub">Los botones y el carrito ya vienen listos. Tú eliges la plantilla, el color de tu marca y la decoración.</p>
+    <div class="marco" aria-label="Vista previa de tu tienda">
+      <div id="vista" data-cab="banner" data-card="sombra">
+        <div class="v-cab"><div class="v-banner" id="v-banner">
+          <div class="v-logo" id="v-logo">BL</div>
+          <div><p class="v-nombre" id="v-nombre"></p><p class="v-lema" id="v-lema"></p></div>
+        </div></div>
+        <div class="v-chips"><span class="v-chip on">Todo</span><span class="v-chip">Aretes</span><span class="v-chip">Collares</span><span class="v-chip">Ropa</span></div>
+        <h3 class="v-sec">Aretes</h3>
+        <div class="v-grid">
+          <div class="v-prod"><div class="v-foto" style="background:color-mix(in oklab, var(--brand) 85%, white)"><svg width="38" height="38" viewBox="0 0 40 40" fill="#fff" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M13 4v8M27 4v8" fill="none"/><circle cx="13" cy="18" r="6"/><circle cx="27" cy="18" r="6"/></svg><span>-20%</span></div><h4>Aretes de plata</h4><p><s>$35,00</s>$28,00</p></div>
+          <div class="v-prod"><div class="v-foto" style="background:color-mix(in oklab, var(--brand) 45%, var(--sur))"><svg width="38" height="38" viewBox="0 0 40 40" fill="#fff" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M13 4v8M27 4v8" fill="none"/><circle cx="13" cy="18" r="6"/><circle cx="27" cy="18" r="6"/></svg></div><h4>Aretes de aro</h4><p>$22,00</p></div>
+          <div class="v-prod"><div class="v-foto" style="background:color-mix(in oklab, var(--brand) 60%, var(--bg))"><svg width="38" height="38" viewBox="0 0 40 40" fill="#fff" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M13 5 4 10l4 7 4-2v19h16V15l4 2 4-7-9-5c-1 3-3.5 4.5-7 4.5S14 8 13 5z"/></svg></div><h4>Camisa de lino</h4><p>$24,00</p></div>
+          <div class="v-prod"><div class="v-foto" style="background:color-mix(in oklab, var(--brand) 30%, var(--sur))"><svg width="38" height="38" viewBox="0 0 40 40" fill="#fff" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M8 14h24l2 22H6z"/><path d="M14 14v-3a6 6 0 0 1 12 0v3" fill="none"/></svg></div><h4>Bolso tejido</h4><p>$35,00</p></div>
+        </div>
+        <div class="v-barra"><span>2 productos · $50,00</span><b>Ver mi pedido</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-controles">
+    <h2 id="h-plan" style="margin-top:0">Ver como si tuvieras el plan</h2>
+    <div class="opciones" id="planes" role="group" aria-labelledby="h-plan"></div>
+
+    <label class="campo" for="i-nombre">Nombre de tu tienda</label>
+    <input type="text" id="i-nombre" maxlength="40" value="Boutique Luna" autocomplete="off">
+    <label class="campo" for="i-lema">Frase corta (opcional)</label>
+    <input type="text" id="i-lema" maxlength="60" value="Ropa y accesorios hechos a mano" autocomplete="off">
+
+    <h2 id="h-plant">Plantilla</h2>
+    <p class="sub" id="t-plant"></p>
+    <div class="galeria" id="galeria" role="group" aria-labelledby="h-plant"></div>
+    <div class="pag" id="pag"></div>
+
+    <h2 id="h-color">Color de tu marca</h2>
+    <div class="swatches" id="colores" role="group" aria-labelledby="h-color"></div>
+
+    <h2 id="h-deco">Decoración</h2>
+    <div class="opciones" id="decos" role="group" aria-labelledby="h-deco"></div>
+
+    <p class="aviso" id="aviso"></p>
+    <button type="button" class="btn" id="guardar">Guardar mi tienda</button>
+  </div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+
+  var PALETAS = [
+    { id: 'pistacho', n: 'Pistacho', brand: '#a5dc5b', bg: '#f4ecdb' },
+    { id: 'naranja', n: 'Naranja', brand: '#ff7a1a', bg: '#fff3e6' },
+    { id: 'oceano', n: 'Océano', brand: '#3aa6c8', bg: '#eaf6fb' },
+    { id: 'ciruela', n: 'Ciruela', brand: '#9b6bdc', bg: '#f4eefb' },
+    { id: 'rosa', n: 'Rosa', brand: '#f06292', bg: '#fff0f5' }
+  ];
+  var DISENOS = [
+    { n: 'Mercado', fd: "'Bricolage Grotesque'", fb: "'Instrument Sans'", r: 22, card: 'sombra', cab: 'banner', deco: 'puntos' },
+    { n: 'Boutique', fd: "'Fraunces'", fb: "'Instrument Sans'", r: 8, card: 'borde', cab: 'centro', deco: 'ninguna' },
+    { n: 'Fresco', fd: "'Nunito'", fb: "'Nunito'", r: 28, card: 'plano', cab: 'centro', deco: 'burbujas' },
+    { n: 'Moderno', fd: "'Figtree'", fb: "'Figtree'", r: 14, card: 'sombra', cab: 'izq', deco: 'rayas' },
+    { n: 'Artesanal', fd: "'Fraunces'", fb: "'Nunito'", r: 12, card: 'borde', cab: 'banner', deco: 'ondas' },
+    { n: 'Minimal', fd: "'Instrument Sans'", fb: "'Instrument Sans'", r: 4, card: 'borde', cab: 'izq', deco: 'ninguna' },
+    { n: 'Alegre', fd: "'Nunito'", fb: "'Nunito'", r: 30, card: 'sombra', cab: 'banner', deco: 'confeti' },
+    { n: 'Elegante', fd: "'Fraunces'", fb: "'Figtree'", r: 2, card: 'borde', cab: 'centro', deco: 'ninguna', oscuro: true },
+    { n: 'Nocturna', fd: "'Figtree'", fb: "'Figtree'", r: 18, card: 'plano', cab: 'izq', deco: 'puntos', oscuro: true },
+    { n: 'Vitrina', fd: "'Bricolage Grotesque'", fb: "'Instrument Sans'", r: 0, card: 'plano', cab: 'banner', deco: 'rayas' }
+  ];
+  var DECOS = [['ninguna', 'Ninguna'], ['puntos', 'Puntos'], ['rayas', 'Rayas'], ['ondas', 'Ondas'], ['confeti', 'Confeti'], ['burbujas', 'Burbujas']];
+  var DECOS_EMP = ['ninguna', 'puntos', 'rayas'];
+  var COLORES = ['#a5dc5b', '#ff7a1a', '#3aa6c8', '#9b6bdc', '#f06292', '#e6ee4a', '#f2b705', '#2f9e6b'];
+  var PLANES = { gratis: 'Gratis', emprendedor: 'Emprendedor', pro: 'Profesional' };
+
+  /* Plantillas: Emprendedor = 10 diseños (cada uno con su paleta); Profesional = 10 diseños × 5 paletas = 50 */
+  function plantillasDe(plan) {
+    var r = [], d, p;
+    if (plan === 'emprendedor') { for (d = 0; d < 10; d++) r.push({ d: d, p: d % 5 }); }
+    else if (plan === 'pro') { for (p = 0; p < 5; p++) for (d = 0; d < 10; d++) r.push({ d: d, p: p }); }
+    return r;
+  }
+  var estado = { plan: 'emprendedor', plantilla: { d: 0, p: 0 }, pagina: 0, color: null, deco: null };
+
+  function lum(hex) { var c = [1, 3, 5].map(function (i) { return parseInt(hex.slice(i, i + 2), 16) / 255; }).map(function (v) { return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+  function contraste(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  /* Texto negro o blanco, el que mejor se lea sobre ese color */
+  function sobre(hex) { return contraste('#131313', hex) >= contraste('#ffffff', hex) ? '#131313' : '#ffffff'; }
+  function mezcla(a, b, t) { return '#' + [1, 3, 5].map(function (i) { var x = parseInt(a.slice(i, i + 2), 16), y = parseInt(b.slice(i, i + 2), 16); return ('0' + Math.round(x + (y - x) * t).toString(16)).slice(-2); }).join(''); }
+  /* Si ni el negro ni el blanco alcanzan una lectura cómoda (4.5), se aclara u oscurece el color un poquito */
+  function relleno(hex) {
+    var on = sobre(hex), h = hex, i = 0;
+    while (contraste(on, h) < 4.5 && i < 30) { h = mezcla(h, on === '#131313' ? '#ffffff' : '#000000', 0.05); i++; }
+    return h;
+  }
+
+  function svgUri(svg) { return 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")'; }
+  function decoCss(tipo, claro) {
+    var c = claro ? 'rgba(255,255,255,.28)' : 'rgba(0,0,0,.13)';
+    var s = claro ? '#ffffff' : '#000000'; var o = claro ? '.26' : '.14';
+    if (tipo === 'puntos') return { img: 'radial-gradient(circle, ' + c + ' 2.2px, transparent 2.7px)', size: '16px 16px' };
+    if (tipo === 'rayas') return { img: 'repeating-linear-gradient(45deg, ' + c + ' 0 7px, transparent 7px 16px)', size: 'auto' };
+    if (tipo === 'ondas') return { img: svgUri('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="0 0 48 20"><path d="M0 10 Q12 0 24 10 T48 10" fill="none" stroke="' + s + '" stroke-opacity="' + o + '" stroke-width="3"/></svg>'), size: '48px 20px' };
+    if (tipo === 'confeti') return { img: svgUri('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><g fill="' + s + '" fill-opacity="' + o + '"><circle cx="10" cy="12" r="4"/><rect x="40" y="8" width="9" height="9" rx="2" transform="rotate(25 44 12)"/><circle cx="66" cy="30" r="3"/><rect x="14" y="48" width="9" height="9" rx="2" transform="rotate(-20 18 52)"/><circle cx="48" cy="60" r="4"/><rect x="66" y="64" width="8" height="8" rx="2"/></g></svg>'), size: '80px 80px' };
+    if (tipo === 'burbujas') return { img: svgUri('<svg xmlns="http://www.w3.org/2000/svg" width="90" height="70" viewBox="0 0 90 70"><g fill="none" stroke="' + s + '" stroke-opacity="' + o + '" stroke-width="3"><circle cx="16" cy="20" r="10"/><circle cx="60" cy="14" r="6"/><circle cx="72" cy="48" r="12"/><circle cx="30" cy="56" r="5"/></g></svg>'), size: '90px 70px' };
+    return { img: 'none', size: 'auto' };
+  }
+
+  function actual() {
+    var d = DISENOS[estado.plantilla.d]; var pal = PALETAS[estado.plantilla.p];
+    return { d: d, pal: pal, brand: estado.color || pal.brand, deco: estado.deco || d.deco };
+  }
+  function pintarVista() {
+    var a = actual(); var v = $('vista');
+    var oscuro = !!a.d.oscuro;
+    var fill = relleno(a.brand);
+    v.style.setProperty('--brand', fill); v.style.setProperty('--on-brand', sobre(fill));
+    v.style.setProperty('--bg', oscuro ? '#131512' : a.pal.bg); v.style.setProperty('--sur', oscuro ? '#1f231e' : '#ffffff');
+    v.style.setProperty('--txt', oscuro ? '#f3f1ea' : '#131313'); v.style.setProperty('--mut', oscuro ? '#a9ad9f' : '#5a5648');
+    v.style.setProperty('--r', a.d.r + 'px'); v.style.setProperty('--fd', a.d.fd + ', monospace'); v.style.setProperty('--fb', a.d.fb + ', monospace');
+    v.setAttribute('data-cab', a.d.cab); v.setAttribute('data-card', a.d.card);
+    var dc = decoCss(a.deco, sobre(fill) === '#ffffff'); var b = $('v-banner');
+    b.style.backgroundImage = dc.img; b.style.backgroundSize = dc.size;
+    var nombre = $('i-nombre').value.trim() || 'Tu tienda'; $('v-nombre').textContent = nombre; $('v-lema').textContent = $('i-lema').value.trim();
+    $('v-logo').textContent = nombre.split(/\s+/).slice(0, 2).map(function (w) { return w.charAt(0).toUpperCase(); }).join('');
+  }
+
+  function boton(txt, pressed, fn, dis) { var b = document.createElement('button'); b.type = 'button'; b.className = 'op'; b.textContent = txt; b.setAttribute('aria-pressed', String(pressed)); if (dis) b.disabled = true; b.addEventListener('click', fn); return b; }
+
+  function pintarPlanes() {
+    var c = $('planes'); c.textContent = '';
+    Object.keys(PLANES).forEach(function (k) { c.appendChild(boton(PLANES[k], estado.plan === k, function () { cambiarPlan(k); })); });
+  }
+  function cambiarPlan(k) {
+    estado.plan = k; estado.pagina = 0;
+    if (k === 'gratis') { estado.plantilla = { d: 0, p: 0 }; estado.color = null; estado.deco = null; }
+    else { var lista = plantillasDe(k); var ya = lista.some(function (t) { return t.d === estado.plantilla.d && t.p === estado.plantilla.p; }); if (!ya) estado.plantilla = lista[0]; }
+    pintarTodo();
+  }
+
+  function miniatura(t, pressed, bloq) {
+    var d = DISENOS[t.d], pal = PALETAS[t.p]; var oscuro = !!d.oscuro; var bg = oscuro ? '#131512' : pal.bg; var sur = oscuro ? '#1f231e' : '#fff';
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'mini' + (bloq ? ' bloq' : ''); b.setAttribute('aria-pressed', String(pressed));
+    b.setAttribute('aria-label', 'Plantilla ' + d.n + ' ' + pal.n + (bloq ? ', disponible en el plan Profesional' : ''));
+    var l = document.createElement('div'); l.className = 'lienzo'; l.style.background = bg; var rr = Math.min(d.r, 10) + 'px';
+    l.innerHTML = '<i style="left:4px;right:4px;top:4px;height:20px;border-radius:' + rr + ';background:' + relleno(pal.brand) + '"></i>' +
+      '<i style="left:4px;top:28px;width:38%;height:20px;border-radius:' + rr + ';background:' + sur + ';box-shadow:0 0 0 1px rgba(128,128,128,.25)"></i>' +
+      '<i style="right:4px;top:28px;width:38%;height:20px;border-radius:' + rr + ';background:' + sur + ';box-shadow:0 0 0 1px rgba(128,128,128,.25)"></i>';
+    var n = document.createElement('b'); n.textContent = d.n; var s = document.createElement('small'); s.textContent = pal.n;
+    b.appendChild(l); b.appendChild(n); b.appendChild(s);
+    if (bloq) { var c = document.createElement('span'); c.className = 'cand'; c.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'; b.appendChild(c); }
+    return b;
+  }
+
+  function pintarGaleria() {
+    var g = $('galeria'), pag = $('pag'); g.textContent = ''; pag.textContent = '';
+    if (estado.plan === 'gratis') {
+      $('t-plant').textContent = 'El plan Gratis usa el estilo base de la app. Con Emprendedor eliges entre 10 plantillas y con Profesional entre 50.';
+      g.appendChild(miniatura({ d: 0, p: 0 }, true, false)); return;
+    }
+    var lista = plantillasDe('pro'); var propias = plantillasDe(estado.plan);
+    var porPag = 10; var paginas = estado.plan === 'pro' ? 5 : 1;
+    $('t-plant').textContent = estado.plan === 'pro' ? '50 plantillas: 10 diseños en 5 paletas de colores. Elige una y ajústala.' : '10 plantillas listas. En el plan Profesional hay 50 (10 diseños en 5 paletas).';
+    var vista = estado.plan === 'pro' ? lista.slice(estado.pagina * porPag, estado.pagina * porPag + porPag) : propias;
+    vista.forEach(function (t) {
+      var b = miniatura(t, estado.plantilla.d === t.d && estado.plantilla.p === t.p, false);
+      b.addEventListener('click', function () { estado.plantilla = t; estado.color = null; estado.deco = null; pintarTodo(); }); g.appendChild(b);
+    });
+    if (estado.plan === 'emprendedor') {
+      // muestra algunas del plan Profesional bloqueadas, para que se vea lo que hay
+      plantillasDe('pro').filter(function (t) { return t.p !== t.d % 5; }).slice(0, 4).forEach(function (t) {
+        var b = miniatura(t, false, true); b.addEventListener('click', function () { aviso('Esta plantilla es del plan Profesional (50 plantillas).'); }); g.appendChild(b);
+      });
+    }
+    if (paginas > 1) {
+      var ant = boton('Anterior', false, function () { estado.pagina = Math.max(0, estado.pagina - 1); pintarGaleria(); }, estado.pagina === 0);
+      var sig = boton('Siguiente', false, function () { estado.pagina = Math.min(paginas - 1, estado.pagina + 1); pintarGaleria(); }, estado.pagina === paginas - 1);
+      var t = document.createElement('span'); t.textContent = 'Página ' + (estado.pagina + 1) + ' de ' + paginas + ' · ' + (estado.pagina * porPag + 1) + '–' + (estado.pagina * porPag + porPag) + ' de 50';
+      pag.appendChild(ant); pag.appendChild(t); pag.appendChild(sig);
+    }
+  }
+
+  function pintarColores() {
+    var c = $('colores'); c.textContent = ''; var a = actual(); var libre = estado.plan !== 'gratis';
+    COLORES.forEach(function (hex) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'sw'; b.style.background = hex; b.disabled = !libre;
+      b.setAttribute('aria-label', 'Color ' + hex); b.setAttribute('aria-pressed', String(a.brand.toLowerCase() === hex)); b.addEventListener('click', function () { estado.color = hex; pintarTodo(); }); c.appendChild(b);
+    });
+    var i = document.createElement('input'); i.type = 'color'; i.value = a.brand; i.disabled = !libre; i.setAttribute('aria-label', 'Elegir otro color'); i.addEventListener('input', function () { estado.color = i.value; pintarVista(); }); c.appendChild(i);
+    if (libre) c.appendChild(boton('Usar el de la plantilla', false, function () { estado.color = null; pintarTodo(); }));
+  }
+  function pintarDecos() {
+    var c = $('decos'); c.textContent = ''; var a = actual();
+    DECOS.forEach(function (d) {
+      var permitido = estado.plan === 'pro' || (estado.plan === 'emprendedor' && DECOS_EMP.indexOf(d[0]) >= 0);
+      c.appendChild(boton(d[1] + (permitido ? '' : (estado.plan === 'gratis' ? ' (Emprendedor)' : ' (Profesional)')), a.deco === d[0], function () { estado.deco = d[0]; pintarTodo(); }, !permitido));
+    });
+  }
+  function pintarAviso() {
+    var m = { gratis: 'Plan Gratis: estilo base. Puedes cambiar el nombre y la frase de tu tienda. Las plantillas, colores y decoración empiezan en el plan Emprendedor.',
+      emprendedor: 'Plan Emprendedor: 10 plantillas, tu color de marca y 3 decoraciones. Para 50 plantillas y todas las decoraciones, pasa al plan Profesional.',
+      pro: 'Plan Profesional: 50 plantillas, cualquier color de marca y todas las decoraciones.' };
+    $('aviso').textContent = m[estado.plan] + ' Los botones, el carrito y el pedido por WhatsApp no cambian: ya vienen listos.';
+  }
+  function pintarTodo() { pintarPlanes(); pintarGaleria(); pintarColores(); pintarDecos(); pintarAviso(); pintarVista(); $('i-nombre').disabled = false; }
+  function aviso(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(aviso.t); aviso.t = setTimeout(function () { x.classList.remove('on'); }, 2400); }
+
+  $('i-nombre').addEventListener('input', pintarVista); $('i-lema').addEventListener('input', pintarVista);
+  $('guardar').addEventListener('click', function () {
+    try { localStorage.setItem('tienda-personalizada', JSON.stringify({ plan: estado.plan, plantilla: estado.plantilla, color: estado.color, deco: estado.deco, nombre: $('i-nombre').value, lema: $('i-lema').value })); } catch (e) { /* sin almacenamiento en esta vista */ }
+    aviso('Tienda guardada (demostración)');
+  });
+  pintarTodo();
+  window.__pers = { relleno: relleno, sobre: sobre, contraste: contraste, estado: estado, plantillasDe: plantillasDe, cambiarPlan: cambiarPlan, pintarTodo: pintarTodo, DISENOS: DISENOS, PALETAS: PALETAS };
+})();
+</script>
+</body>
+</html>

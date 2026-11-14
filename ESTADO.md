@@ -65,7 +65,7 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Inicio del vendedor: sube nombre del negocio, descripción, servicios, catálogo; obtiene enlace para compartir en redes; el cliente final ve catálogo con precios
 - Plan GRATIS: prueba con hasta 10 productos/fotos (fotos con límite de tamaño)
 - Plan PAGADO (desde "Emprendedor"): MÁS fotos y espacio de catálogo + estadísticas + mejora de fotos (fondo blanco, recorte, luz/color) + plantillas para personalizar la foto del producto + colores y estilo del catálogo personalizables
-- Diferenciador: resolver lo que las apps de la competencia hacen mal (quejas reales encontradas: soporte lento, comisiones ocultas, fallas de cobro, lentitud). Reglas de producto: cero comisión por venta, límites y precios siempre visibles, soporte por WhatsApp con tiempo prometido, carga rápida en celular, cancelación en 1 toque
+- Diferenciador: resolver lo que las apps de la competencia hacen mal (quejas reales encontradas: soporte lento, comisiones ocultas, fallas de cobro, lentitud). Reglas de producto: cero comisión por venta, límites y precios siempre visibles, soporte con guía + preguntas frecuentes + robot dentro de la app (SIN atención humana directa: decisión del usuario 2026-11-14), carga rápida en celular, cancelación en 1 toque
 - Aviso de alcance: mejora automática de fotos usa servicio externo con costo por foto → entra al gate de economía (40) antes de fijar cupos y precio; el PDF original lo dejaba fuera del MVP; se construye por fases (ver Plan)
 - Fases del premium: F1 más fotos + estadísticas + colores/plantillas de catálogo; F2 recorte/fondo blanco/luz automático + plantillas de foto (cuando el costo por foto esté medido)
 
@@ -80,10 +80,10 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 ## Soporte con robot en planes de pago (pedido del usuario 2026-11-14)
 - Gratis: guía de ayuda + preguntas frecuentes dentro de la app (sin robot)
 - Planes de pago (desde "Emprendedor"): asistente automático (robot) que se ACTIVA al pagar y se desactiva al volver al plan gratis; límite mensual de conversaciones por plan (a fijar con costo medido, gate 40)
-- Reglas: se presenta como robot (nunca se hace pasar por persona); responde SOLO con la guía de ayuda y datos de la cuenta del propio vendedor (no inventa); si no sabe o el vendedor lo pide, pasa a una persona por WhatsApp; nunca da consejos legales/fiscales/financieros; no ve datos de otros vendedores
+- Reglas: se presenta como robot (nunca se hace pasar por persona); responde SOLO con la guía de ayuda y datos de la cuenta del propio vendedor (no inventa); si no puede resolver algo, registra la consulta o queja para que el equipo la revise (SIN prometer respuesta individual ni contacto humano: decisión del usuario); nunca da consejos legales/fiscales/financieros; no ve datos de otros vendedores
 - Técnico (interno): IA llamada solo desde el servidor, con tope de gasto diario y botón de apagado (30/31); plan validado en servidor antes de responder
-- Fase: DESPUÉS del MVP vendible (el PDF original dejaba la IA fuera del MVP; el usuario la autorizó; entra con la segunda fase del premium). En el MVP: guía de ayuda + enlace a WhatsApp humano en planes de pago
-- Pendiente: definir horario y quién atiende el WhatsApp humano (promesa de tiempo de respuesta); costo por conversación antes de fijar límites
+- Fase: DESPUÉS del MVP vendible (el PDF original dejaba la IA fuera del MVP; el usuario la autorizó; entra con la segunda fase del premium). En el MVP: guía de ayuda + preguntas frecuentes para todos; el robot llega con la segunda fase
+- Pendiente: costo por conversación antes de fijar el límite mensual por plan; dónde se revisan las quejas registradas (panel del dueño, sin plazo prometido al vendedor)
 
 ## Requisito: app adaptada a celular (usuario, 2026-11-14) — NO negociable
 - Móvil primero: todo se diseña y verifica a 375px (Android gama media, datos móviles lentos) y luego se adapta a pantallas grandes
@@ -120,12 +120,18 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Pendiente: ubicar esto en un plan (¿premium?), definir límites y revisar con abogado/contador antes de lanzar.
 
 ## Planes, precios y guía "Cómo usar" (pedido del usuario 2026-11-14)
-- 3 planes (hipótesis de lanzamiento, NO validados): GRATIS $0 (10 productos, 3 secciones, pedidos por WhatsApp sin límite, descripción y stock opcional, camino de éxito y meta, guía de ayuda) · EMPRENDEDOR $4.99/mes recomendado (60 productos, 10 secciones, ofertas con fecha, textos para redes, colores y estilo del catálogo, estadísticas básicas, robot de ayuda [próximamente]) · PROFESIONAL $9.99/mes (300 productos, secciones ilimitadas, estadísticas completas y reporte mensual, mejora de fotos y plantillas de foto [próximamente], atención prioritaria por WhatsApp)
+- 3 planes (hipótesis de lanzamiento, NO validados) — VERSIÓN VIGENTE 2026-11-14: GRATIS $0 (10 productos, 3 secciones, pedidos por WhatsApp sin límite, descripción y stock opcional, camino de éxito y meta, guía de ayuda y preguntas frecuentes) · EMPRENDEDOR $4.99/mes recomendado (60 productos, 10 secciones, ofertas con fecha, textos para redes, 10 PLANTILLAS de tienda + color de marca + 3 decoraciones, estadísticas básicas, soporte con robot dentro de la app [próximamente]) · PROFESIONAL $9.99/mes (300 productos, secciones ilimitadas, estadísticas completas y reporte mensual, 50 PLANTILLAS (10 diseños × 5 paletas) + cualquier color + 6 decoraciones, mejora de fotos y plantillas de foto [próximamente], soporte con robot con más consultas)
 - Precios fijados mirando el mercado (FICHA-MERCADO.md): Take App Premium ~$14, Tiendanube Colombia básico ~$6, salario básico Ecuador $482. Los topes de productos/secciones por plan son MÍOS y salen de estimar costos; revisar con costo real de almacenamiento de fotos.
 - Reemplaza los 4 planes del PDF original ($5.99 / $9.99 / $14.99 + gratis): ahora son 3 por pedido del usuario
-- Pendiente: costo por foto mejorada y por conversación del robot ANTES de abrir esas funciones; proveedor de cobro Ecuador; IVA; promesa de "atención prioritaria por WhatsApp" (quién atiende y en cuánto tiempo)
+- Pendiente: costo por foto mejorada y por conversación del robot ANTES de abrir esas funciones; proveedor de cobro Ecuador; IVA
 - Botón "Cómo usar" (arriba en la página de ventas) abre una guía de 10 pasos con TODAS las funciones actuales; hay que actualizarla cada vez que cambie una función
 - Marketing (opción 3 del usuario): generador de textos para compartir (compartir-demo.html): plantillas Oferta / Producto nuevo / Últimas unidades / Todo el catálogo × WhatsApp / Instagram / Facebook / TikTok; texto editable; copiar y compartir por WhatsApp. Honestidad: "Oferta" solo con oferta publicada real; "Últimas unidades" solo con stock real ≤5. Probado por script. Pendiente: enlace real de la tienda, más plantillas (cumpleaños, temporadas), programación de recordatorios
+
+## Plantillas de tienda (pedido del usuario 2026-11-14) — implementado en personalizar-demo.html
+- Emprendedor: 10 plantillas (10 diseños, cada uno con su paleta) · Profesional: 50 (10 diseños × 5 paletas: Pistacho, Naranja, Océano, Ciruela, Rosa). Son combinaciones de diseño y paleta, no 50 diseños de cero
+- El vendedor solo cambia: plantilla, color de marca (texto sobre el color se elige solo, negro o blanco, para que se lea), decoración (Emprendedor 3: ninguna/puntos/rayas; Profesional 6: + ondas/confeti/burbujas), nombre y frase de la tienda. Botones, carrito y pedido por WhatsApp NO se editan
+- Gratis: estilo base fijo (solo nombre y frase)
+- Pendiente: subir logo propio, aplicar la plantilla a la tienda real y a la tienda-demo, más decoraciones, revisión visual de las 50 combinaciones (hasta ahora probadas por script, no una por una a ojo)
 
 ## Mejoras de producto aplicadas (desde el reporte de validación)
 - Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
