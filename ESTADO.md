@@ -91,6 +91,14 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Instalable como app en el celular (PWA) si la plataforma lo permite; la tienda del comprador NO exige instalar nada
 - Verificado hasta ahora (en el panel y por script): tienda-demo.html y vista-pagina-ventas.html sin desbordes a 375px. Pendiente: probar en un celular real y con conexión lenta
 
+## Mensaje de WhatsApp y multi-país (pedido del usuario 2026-11-14) — implementado en tienda-demo.html
+- Mensaje del comprador (amable + cierre de venta): saludo con el nombre del negocio, lista de productos con subtotales, total en negrita, entrega, forma de pago preferida, nombre, nota opcional y cierre: pide confirmar el número de cuenta/datos de pago, coordinar la entrega y promete pagar apenas se confirme disponibilidad. Existe en español, inglés y portugués. Los emojis solo van dentro del mensaje (no como íconos de la app).
+- Selector de país, idioma y moneda: 9 países (EC, CO, PE, MX, CL, AR, ES, US, BR), 3 idiomas (es/en/pt), 8 monedas. El país propone moneda e idioma, y cada uno se puede cambiar. Medios de pago de ejemplo por país (Deuna, Nequi, Yape, Mercado Pago, Bizum, Zelle, Pix).
+- Reglas de producto: el VENDEDOR elige país y moneda de su tienda y escribe sus precios en ella; el comprador puede cambiar de idioma. La app NO convierte monedas. En la demo los precios por moneda son de ejemplo (factores ficticios).
+- Realidad por país: cobro de planes de pago empieza en Ecuador; otros países por etapas (cada país necesita proveedor de pagos, impuestos y términos propios). Código de país del WhatsApp del vendedor por país (EC 593, CO 57, PE 51, MX 52, CL 56, AR 54, ES 34, US 1, BR 55) — se valida al registrar el número.
+- Probado por script: mensaje en 3 idiomas, cambio de país/moneda, validaciones, sin errores, sin desbordes a 375px, botones ≥44px. NO probado: apertura real en WhatsApp; traducciones sin revisión de un hablante nativo (en/pt).
+- Pendiente (Sesión 4-5): traducir TODA la app (no solo la tienda) con archivos de idioma; revisión de en/pt por nativo; reglas de moneda por país (decimales, impuestos); definir lista inicial de países con el usuario (39-INTERNACIONALIZACION)
+
 ## Mejoras de producto aplicadas (desde el reporte de validación)
 - Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
 - Diferenciador 2: hecho para Ecuador (español cotidiano; el mensaje puede indicar formas de pago que el vendedor acepta: transferencia, efectivo, Deuna, tarjeta)

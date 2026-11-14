@@ -18,20 +18,22 @@
   body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45;
          background-image: radial-gradient(800px 360px at 10% -6%, color-mix(in oklab, var(--pistacho) 45%, transparent), transparent 62%),
                            radial-gradient(700px 320px at 95% 0, color-mix(in oklab, var(--lima) 40%, transparent), transparent 60%); }
-  button, input, textarea { font: inherit; color: inherit; }
+  button, input, textarea, select { font: inherit; color: inherit; }
   button { cursor: pointer; border: 0; background: none; }
   :focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
   .app { max-width: 460px; margin: 0 auto; padding: 14px 16px 120px; }
   h1, h2, h3, h4 { font-family: var(--f-d); letter-spacing: -.015em; }
 
-  .demo { display: flex; gap: 8px; align-items: center; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; }
+  .top { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+  .demo { display: flex; gap: 8px; align-items: center; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; min-height: 44px; }
+  .region { min-height: 44px; border-radius: 999px; background: var(--blanco); padding: 0 14px; font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 6px; white-space: nowrap; box-shadow: 0 6px 16px -10px rgb(40 60 40 / .5); }
   .cab { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
   .logo { width: 52px; height: 52px; border-radius: 999px; background: var(--pistacho); display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; font-size: 19px; flex-shrink: 0; }
   .cab h1 { font-size: 22px; font-weight: 800; line-height: 1.1; }
   .abierto { font-size: 12px; font-weight: 700; color: var(--verde-texto); }
   .desc { margin-top: 10px; font-size: 14px; color: var(--texto-2); }
   .buscar { margin-top: 12px; display: flex; align-items: center; gap: 8px; background: var(--blanco); border-radius: 999px; padding: 0 16px; min-height: 48px; box-shadow: 0 8px 20px -12px rgb(40 60 40 / .45); }
-  .buscar input { border: 0; background: none; flex: 1; min-width: 0; height: 46px; font-size: 15px; }
+  .buscar input { border: 0; background: none; flex: 1; min-width: 0; height: 46px; font-size: 16px; }
   .buscar input:focus-visible { outline: none; }
   .buscar:focus-within { outline: 3px solid var(--tinta); outline-offset: 2px; }
   .cats { display: flex; gap: 8px; margin-top: 12px; overflow-x: auto; padding-bottom: 4px; }
@@ -44,14 +46,13 @@
   .agotado { position: absolute; top: 8px; left: 8px; background: var(--tinta); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
   .prod h3 { margin-top: 9px; font-size: 15px; font-weight: 800; line-height: 1.2; }
   .prod .meta { font-size: 12px; color: var(--texto-2); margin-top: 2px; }
-  .fila { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px; }
+  .fila { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto; padding-top: 8px; }
   .precio { font-weight: 800; font-size: 16px; font-family: var(--f-d); }
-  .mas { width: 44px; height: 44px; border-radius: 999px; background: var(--lima); display: grid; place-items: center; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .12); }
+  .mas { width: 44px; height: 44px; border-radius: 999px; background: var(--lima); display: grid; place-items: center; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .12); flex-shrink: 0; }
   .mas[disabled] { background: #e4e0d4; cursor: not-allowed; }
   .vacio { grid-column: 1 / -1; text-align: center; padding: 30px 10px; color: var(--texto-2); }
   .pie { margin-top: 22px; font-size: 12px; color: var(--texto-2); text-align: center; }
 
-  /* Barra del carrito */
   .barra { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 16px calc(14px + env(safe-area-inset-bottom)); display: none; justify-content: center; z-index: 5; pointer-events: none; }
   .barra.on { display: flex; }
   .barra button { pointer-events: auto; width: 100%; max-width: 428px; min-height: 58px; border-radius: 999px; background: var(--tinta); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 20px; font-weight: 700; box-shadow: 0 18px 34px -12px rgb(19 19 19 / .6); }
@@ -59,7 +60,6 @@
   .badge { background: var(--naranja); color: var(--tinta); min-width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; font-size: 13px; font-weight: 800; }
   .barra .ver { background: var(--lima); color: var(--tinta); border-radius: 999px; padding: 12px 18px; font-weight: 800; }
 
-  /* Hojas */
   .fondo { position: fixed; inset: 0; background: rgb(19 19 19 / .5); display: none; z-index: 10; align-items: flex-end; justify-content: center; }
   .fondo.on { display: flex; }
   .hoja { background: var(--beige); width: 100%; max-width: 460px; max-height: 92dvh; overflow-y: auto; border-radius: 28px 28px 0 0; padding: 18px 18px 26px; animation: sube .22s ease-out; }
@@ -72,21 +72,19 @@
   .linea h4 { font-size: 14px; font-weight: 800; }
   .linea p { font-size: 12px; color: var(--texto-2); }
   .cant { display: flex; align-items: center; gap: 4px; margin-top: 6px; }
-  .cant button { width: 36px; height: 36px; border-radius: 999px; background: var(--beige); display: grid; place-items: center; font-weight: 800; font-size: 18px; }
+  .cant button { width: 44px; height: 44px; border-radius: 999px; background: var(--beige); display: grid; place-items: center; font-weight: 800; font-size: 18px; }
   .cant span { min-width: 24px; text-align: center; font-weight: 800; }
   .quitar { font-size: 12px; font-weight: 700; color: var(--texto-2); text-decoration: underline; min-height: 44px; padding: 0 6px; }
   .total { margin-top: 16px; background: var(--tinta); color: #fff; border-radius: 22px; padding: 16px; }
   .total div { display: flex; justify-content: space-between; font-size: 14px; }
-  .total .gr { font-family: var(--f-d); font-size: 24px; font-weight: 800; color: var(--lima); margin-top: 4px; }
   .total small { display: block; margin-top: 6px; font-size: 12px; color: #cfcabb; }
   .btn { margin-top: 14px; width: 100%; min-height: 54px; border-radius: 999px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--tinta); color: var(--lima); }
   .btn.wa { background: var(--wa); color: var(--tinta); }
   .btn.claro { background: var(--blanco); color: var(--tinta); }
-  .btn[disabled] { opacity: .5; cursor: not-allowed; }
   .campo { margin-top: 14px; }
   .campo > label, .campo > legend { font-weight: 800; font-size: 14px; display: block; margin-bottom: 6px; font-family: var(--f-d); }
-  .campo input[type=text], .campo textarea { width: 100%; background: var(--blanco); border: 2px solid transparent; border-radius: 16px; padding: 12px 14px; min-height: 50px; font-size: 16px; }
-  .campo input[type=text]:focus-visible, .campo textarea:focus-visible { border-color: var(--tinta); outline: none; }
+  .campo input[type=text], .campo textarea, .campo select { width: 100%; background: var(--blanco); border: 2px solid transparent; border-radius: 16px; padding: 12px 14px; min-height: 50px; font-size: 16px; }
+  .campo input[type=text]:focus-visible, .campo textarea:focus-visible, .campo select:focus-visible { border-color: var(--tinta); outline: none; }
   .campo.err input, .campo.err textarea { border-color: #c2410c; }
   .error { color: #9a3412; font-size: 13px; font-weight: 700; margin-top: 4px; display: none; }
   .campo.err .error { display: block; }
@@ -98,7 +96,7 @@
   .opc input:checked + span { background: var(--tinta); color: #fff; }
   .opc input:focus-visible + span { outline: 3px solid var(--naranja); outline-offset: 2px; }
   .aviso { margin-top: 12px; font-size: 13px; color: var(--texto-2); background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 16px; padding: 10px 14px; }
-  .vista-msg { white-space: pre-wrap; background: var(--blanco); border-radius: 16px; padding: 12px 14px; font-size: 13px; margin-top: 10px; max-height: 220px; overflow-y: auto; }
+  .vista-msg { white-space: pre-wrap; background: var(--blanco); border-radius: 16px; padding: 12px 14px; font-size: 13px; margin-top: 10px; max-height: 240px; overflow-y: auto; }
   .ok { width: 64px; height: 64px; border-radius: 999px; background: var(--pistacho); display: grid; place-items: center; margin: 6px auto 8px; }
   .centro { text-align: center; }
   .frase { font-weight: 800; font-family: var(--f-d); font-size: 19px; }
@@ -110,25 +108,27 @@
 <body>
 
 <main class="app">
-  <p class="demo" role="note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>Tienda de demostración · productos de ejemplo</p>
+  <div class="top">
+    <p class="demo" role="note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg><span data-i="demo"></span></p>
+    <button type="button" class="region" id="region"></button>
+  </div>
 
   <header class="cab">
     <span class="logo" aria-hidden="true">BL</span>
-    <div><h1>Boutique Luna</h1><p class="abierto">Abierto hoy · 9:00 a 18:00</p></div>
+    <div><h1>Boutique Luna</h1><p class="abierto" data-i="abierto"></p></div>
   </header>
-  <p class="desc">Ropa y accesorios hechos a mano. Arma tu pedido y lo coordinamos por WhatsApp: entrega y pago los acordamos contigo.</p>
+  <p class="desc" data-i="desc"></p>
 
   <label class="buscar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-    <span class="sr" style="position:absolute;left:-9999px">Buscar productos</span>
-    <input id="q" type="search" placeholder="Buscar productos" autocomplete="off"></label>
-  <div class="cats" id="cats" role="group" aria-label="Categorías"></div>
+    <input id="q" type="search" data-ph="buscar" data-al="buscar" autocomplete="off"></label>
+  <div class="cats" id="cats" role="group"></div>
 
   <div class="grid" id="grid" aria-live="polite"></div>
-  <p class="pie">El pedido no queda confirmado hasta que el negocio te responda y acuerden disponibilidad, pago y entrega.</p>
+  <p class="pie" data-i="pie"></p>
 </main>
 
-<div class="barra" id="barra"><button type="button" id="abrir-carrito" aria-label="Ver mi pedido">
-  <span class="cuenta"><span class="badge" id="n">0</span><span id="sub">$0,00</span></span><span class="ver">Ver mi pedido</span></button></div>
+<div class="barra" id="barra"><button type="button" id="abrir-carrito">
+  <span class="cuenta"><span class="badge" id="n">0</span><span id="sub"></span></span><span class="ver" data-i="verPedido"></span></button></div>
 
 <div class="fondo" id="fondo"><div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-t"></div></div>
 <div class="toast" id="toast" role="status"></div>
@@ -137,43 +137,152 @@
 (function () {
   'use strict';
   /* Configuración del negocio. En una tienda real, el número es el WhatsApp del vendedor en formato
-     internacional, sin "+" ni espacios (ejemplo Ecuador: 593991234567). Vacío = modo demostración:
-     WhatsApp deja elegir el contacto. */
+     internacional, sin "+" ni espacios (Ecuador: 593…, Colombia: 57…, México: 52…). Vacío = demostración. */
   var NEGOCIO = { nombre: 'Boutique Luna', whatsapp: '' };
 
-  var CATEGORIAS = ['Todo', 'Ropa', 'Accesorios'];
+  /* ---------- Países: moneda, idioma y medios de pago de ejemplo ---------- */
+  var PAISES = {
+    EC: { n: { es: 'Ecuador', en: 'Ecuador', pt: 'Equador' }, moneda: 'USD', idioma: 'es', loc: 'es-EC', pagos: ['transfer', 'cash', 'Deuna', 'card'] },
+    CO: { n: { es: 'Colombia', en: 'Colombia', pt: 'Colômbia' }, moneda: 'COP', idioma: 'es', loc: 'es-CO', pagos: ['transfer', 'cash', 'Nequi', 'card'] },
+    PE: { n: { es: 'Perú', en: 'Peru', pt: 'Peru' }, moneda: 'PEN', idioma: 'es', loc: 'es-PE', pagos: ['transfer', 'cash', 'Yape', 'card'] },
+    MX: { n: { es: 'México', en: 'Mexico', pt: 'México' }, moneda: 'MXN', idioma: 'es', loc: 'es-MX', pagos: ['transfer', 'cash', 'Mercado Pago', 'card'] },
+    CL: { n: { es: 'Chile', en: 'Chile', pt: 'Chile' }, moneda: 'CLP', idioma: 'es', loc: 'es-CL', pagos: ['transfer', 'cash', 'card'] },
+    AR: { n: { es: 'Argentina', en: 'Argentina', pt: 'Argentina' }, moneda: 'ARS', idioma: 'es', loc: 'es-AR', pagos: ['transfer', 'cash', 'Mercado Pago', 'card'] },
+    ES: { n: { es: 'España', en: 'Spain', pt: 'Espanha' }, moneda: 'EUR', idioma: 'es', loc: 'es-ES', pagos: ['transfer', 'cash', 'Bizum', 'card'] },
+    US: { n: { es: 'Estados Unidos', en: 'United States', pt: 'Estados Unidos' }, moneda: 'USD', idioma: 'en', loc: 'en-US', pagos: ['transfer', 'cash', 'Zelle', 'card'] },
+    BR: { n: { es: 'Brasil', en: 'Brazil', pt: 'Brasil' }, moneda: 'BRL', idioma: 'pt', loc: 'pt-BR', pagos: ['transfer', 'cash', 'Pix', 'card'] }
+  };
+  var MONEDAS = ['USD', 'EUR', 'COP', 'PEN', 'MXN', 'CLP', 'ARS', 'BRL'];
+  var IDIOMAS = { es: 'Español', en: 'English', pt: 'Português' };
+  /* Solo para la DEMOSTRACIÓN: precios de ejemplo en cada moneda. En una tienda real el vendedor escribe
+     sus propios precios en su moneda; la app NO convierte monedas automáticamente. */
+  var FACTOR_EJEMPLO = { USD: 1, EUR: 1, COP: 4000, PEN: 4, MXN: 18, CLP: 950, ARS: 1000, BRL: 5 };
+
+  /* ---------- Textos por idioma ---------- */
+  var I = {
+    es: {
+      demo: 'Tienda de demostración · productos de ejemplo', abierto: 'Abierto hoy · 9:00 a 18:00',
+      desc: 'Ropa y accesorios hechos a mano. Arma tu pedido y lo coordinamos por WhatsApp: entrega y pago los acordamos contigo.',
+      buscar: 'Buscar productos', pie: 'El pedido no queda confirmado hasta que el negocio te responda y acuerden disponibilidad, pago y entrega.',
+      verPedido: 'Ver mi pedido', cats: 'Categorías', todo: 'Todo', ropa: 'Ropa', accesorios: 'Accesorios', agotado: 'Agotado',
+      agregar: 'Agregar {x}', agotadoAria: '{x} agotado', sinResultados: 'No encontramos productos con esa búsqueda. Prueba con otra palabra.',
+      talla: 'Talla', color: 'Color', cantidad: 'Cantidad', agregarPedido: 'Agregar al pedido', mas1: 'Agregar una unidad', menos1: 'Quitar una unidad',
+      agregado: '{n} × {x} agregado', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
+      subtotal: 'Subtotal', envioNota: 'La entrega y el pago se coordinan por WhatsApp. El costo de envío, si aplica, te lo confirma el negocio.',
+      continuar: 'Continuar', seguir: 'Seguir comprando', quitar: 'Quitar', coordina: 'Coordinemos tu pedido',
+      aviso: 'Pulsa el botón verde y se abrirá WhatsApp con tu pedido listo. Allí acuerdas con el negocio la entrega y el pago.',
+      nombre: 'Tu nombre', nombreErr: 'Escribe tu nombre para que el negocio sepa quién eres.', como: '¿Cómo lo recibes?', retiro: 'Retiro en tienda', domicilio: 'Entrega a domicilio',
+      dir: 'Dirección de entrega', dirPh: 'Calle, referencia y sector', dirErr: 'Escribe una dirección o elige retiro en tienda.',
+      pago: '¿Cómo prefieres pagar? (se acuerda por WhatsApp)', transfer: 'Transferencia', cash: 'Efectivo', card: 'Tarjeta',
+      nota: 'Nota para el negocio', notaPh: 'Opcional: horario, detalles del pedido…', producto: 'producto', productos: 'productos',
+      enviar: 'Enviar pedido por WhatsApp', volver: 'Volver al pedido', ultimo: 'Último paso en WhatsApp', listo: '¡Tu pedido está listo para enviar!',
+      okTxt: 'Revisa el mensaje en WhatsApp y pulsa enviar. El negocio te responderá para coordinar entrega y pago.', bloqueado: 'Tu navegador bloqueó la ventana. Pulsa el botón verde para abrir WhatsApp.',
+      demoModo: 'Modo demostración: WhatsApp te pedirá elegir un contacto. En una tienda real, el mensaje llega directo al WhatsApp del negocio.',
+      reabrir: 'Abrir WhatsApp de nuevo', yaEnvie: 'Ya lo envié: nuevo pedido', editar: 'Editar mi pedido', vaciado: 'Carrito vaciado. ¡Gracias!', cerrar: 'Cerrar',
+      ajustes: 'País, idioma y moneda', pais: 'País', idioma: 'Idioma', moneda: 'Moneda', aplicar: 'Listo',
+      ajustesNota: 'En tu tienda real, el vendedor elige su país y su moneda y escribe sus precios en ella; tus clientes pueden cambiar el idioma. La app no convierte monedas. Aquí los precios son de ejemplo.',
+      /* Mensaje de WhatsApp */
+      m_hola: '¡Hola, {negocio}! 👋 Me interesan estos productos de tu tienda:', m_total: 'Total', m_entrega: 'Entrega', m_pago: 'Forma de pago que prefiero', m_nombre: 'Mi nombre', m_nota: 'Nota',
+      m_cierre: '¿Me confirmas por favor tu número de cuenta o los datos para hacerte el pago, y coordinamos la entrega? Apenas me confirmes la disponibilidad, realizo el pago. ¡Muchas gracias! 😊'
+    },
+    en: {
+      demo: 'Demo store · sample products', abierto: 'Open today · 9:00 am to 6:00 pm',
+      desc: 'Handmade clothing and accessories. Build your order and we will arrange delivery and payment with you on WhatsApp.',
+      buscar: 'Search products', pie: 'Your order is not confirmed until the shop replies and you agree on availability, payment and delivery.',
+      verPedido: 'View my order', cats: 'Categories', todo: 'All', ropa: 'Clothing', accesorios: 'Accessories', agotado: 'Sold out',
+      agregar: 'Add {x}', agotadoAria: '{x} sold out', sinResultados: 'No products match your search. Try another word.',
+      talla: 'Size', color: 'Color', cantidad: 'Quantity', agregarPedido: 'Add to order', mas1: 'Add one unit', menos1: 'Remove one unit',
+      agregado: '{n} × {x} added', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
+      subtotal: 'Subtotal', envioNota: 'Delivery and payment are arranged on WhatsApp. If shipping applies, the shop will confirm its cost.',
+      continuar: 'Continue', seguir: 'Keep shopping', quitar: 'Remove', coordina: 'Let’s arrange your order',
+      aviso: 'Tap the green button and WhatsApp will open with your order ready. There you agree on delivery and payment with the shop.',
+      nombre: 'Your name', nombreErr: 'Enter your name so the shop knows who you are.', como: 'How do you want to receive it?', retiro: 'Store pickup', domicilio: 'Home delivery',
+      dir: 'Delivery address', dirPh: 'Street, landmark and area', dirErr: 'Enter an address or choose store pickup.',
+      pago: 'How would you like to pay? (agreed on WhatsApp)', transfer: 'Bank transfer', cash: 'Cash', card: 'Card',
+      nota: 'Note for the shop', notaPh: 'Optional: schedule, order details…', producto: 'item', productos: 'items',
+      enviar: 'Send order on WhatsApp', volver: 'Back to order', ultimo: 'Last step on WhatsApp', listo: 'Your order is ready to send!',
+      okTxt: 'Check the message in WhatsApp and tap send. The shop will reply to arrange delivery and payment.', bloqueado: 'Your browser blocked the window. Tap the green button to open WhatsApp.',
+      demoModo: 'Demo mode: WhatsApp will ask you to pick a contact. In a real store, the message goes straight to the shop’s WhatsApp.',
+      reabrir: 'Open WhatsApp again', yaEnvie: 'Already sent: new order', editar: 'Edit my order', vaciado: 'Cart emptied. Thank you!', cerrar: 'Close',
+      ajustes: 'Country, language and currency', pais: 'Country', idioma: 'Language', moneda: 'Currency', aplicar: 'Done',
+      ajustesNota: 'In your real store, the seller chooses their country and currency and writes prices in it; customers can change the language. The app does not convert currencies. Prices here are samples.',
+      m_hola: 'Hi, {negocio}! 👋 I’m interested in these products from your store:', m_total: 'Total', m_entrega: 'Delivery', m_pago: 'Preferred payment method', m_nombre: 'My name', m_nota: 'Note',
+      m_cierre: 'Could you please confirm your account number or the details to send the payment, and we arrange the delivery? As soon as you confirm availability, I will pay. Thank you so much! 😊'
+    },
+    pt: {
+      demo: 'Loja de demonstração · produtos de exemplo', abierto: 'Aberto hoje · 9h às 18h',
+      desc: 'Roupas e acessórios feitos à mão. Monte seu pedido e combinamos a entrega e o pagamento com você pelo WhatsApp.',
+      buscar: 'Buscar produtos', pie: 'O pedido só é confirmado quando a loja responder e vocês combinarem disponibilidade, pagamento e entrega.',
+      verPedido: 'Ver meu pedido', cats: 'Categorias', todo: 'Tudo', ropa: 'Roupas', accesorios: 'Acessórios', agotado: 'Esgotado',
+      agregar: 'Adicionar {x}', agotadoAria: '{x} esgotado', sinResultados: 'Não encontramos produtos com essa busca. Tente outra palavra.',
+      talla: 'Tamanho', color: 'Cor', cantidad: 'Quantidade', agregarPedido: 'Adicionar ao pedido', mas1: 'Adicionar uma unidade', menos1: 'Remover uma unidade',
+      agregado: '{n} × {x} adicionado', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
+      subtotal: 'Subtotal', envioNota: 'Entrega e pagamento são combinados pelo WhatsApp. Se houver frete, a loja confirma o valor.',
+      continuar: 'Continuar', seguir: 'Continuar comprando', quitar: 'Remover', coordina: 'Vamos combinar seu pedido',
+      aviso: 'Toque no botão verde e o WhatsApp abrirá com seu pedido pronto. Lá você combina a entrega e o pagamento com a loja.',
+      nombre: 'Seu nome', nombreErr: 'Digite seu nome para a loja saber quem você é.', como: 'Como você quer receber?', retiro: 'Retirada na loja', domicilio: 'Entrega em casa',
+      dir: 'Endereço de entrega', dirPh: 'Rua, referência e bairro', dirErr: 'Digite um endereço ou escolha retirada na loja.',
+      pago: 'Como prefere pagar? (combinado pelo WhatsApp)', transfer: 'Transferência', cash: 'Dinheiro', card: 'Cartão',
+      nota: 'Observação para a loja', notaPh: 'Opcional: horário, detalhes do pedido…', producto: 'item', productos: 'itens',
+      enviar: 'Enviar pedido pelo WhatsApp', volver: 'Voltar ao pedido', ultimo: 'Último passo no WhatsApp', listo: 'Seu pedido está pronto para enviar!',
+      okTxt: 'Confira a mensagem no WhatsApp e toque em enviar. A loja responderá para combinar entrega e pagamento.', bloqueado: 'Seu navegador bloqueou a janela. Toque no botão verde para abrir o WhatsApp.',
+      demoModo: 'Modo demonstração: o WhatsApp vai pedir para escolher um contato. Em uma loja real, a mensagem vai direto para o WhatsApp da loja.',
+      reabrir: 'Abrir o WhatsApp de novo', yaEnvie: 'Já enviei: novo pedido', editar: 'Editar meu pedido', vaciado: 'Carrinho esvaziado. Obrigado!', cerrar: 'Fechar',
+      ajustes: 'País, idioma e moeda', pais: 'País', idioma: 'Idioma', moneda: 'Moeda', aplicar: 'Pronto',
+      ajustesNota: 'Na sua loja real, o vendedor escolhe seu país e sua moeda e escreve os preços nela; os clientes podem mudar o idioma. O app não converte moedas. Aqui os preços são de exemplo.',
+      m_hola: 'Olá, {negocio}! 👋 Tenho interesse nestes produtos da sua loja:', m_total: 'Total', m_entrega: 'Entrega', m_pago: 'Forma de pagamento que prefiro', m_nombre: 'Meu nome', m_nota: 'Observação',
+      m_cierre: 'Você pode me confirmar, por favor, o número da conta ou os dados para eu fazer o pagamento, e combinamos a entrega? Assim que você confirmar a disponibilidade, eu pago. Muito obrigado! 😊'
+    }
+  };
+
+  var CATS = ['todo', 'ropa', 'accesorios'];
   var ARTE = {
     camisa: '<path d="M13 5 4 10l4 7 4-2v19h16V15l4 2 4-7-9-5c-1 3-3.5 4.5-7 4.5S14 8 13 5z"/>',
     bolso: '<path d="M8 14h24l2 22H6z"/><path d="M14 14v-3a6 6 0 0 1 12 0v3" fill="none"/>',
     aretes: '<path d="M13 4v8M27 4v8" fill="none"/><circle cx="13" cy="18" r="6"/><circle cx="27" cy="18" r="6"/>',
     pulsera: '<circle cx="20" cy="20" r="11" fill="none"/><circle cx="20" cy="20" r="6" fill="none"/>',
-    falda: '<path d="M13 6h14l7 28H6z"/><path d="M13 6h14" />',
+    falda: '<path d="M13 6h14l7 28H6z"/>',
     collar: '<path d="M8 8c0 14 24 14 24 0" fill="none"/><circle cx="20" cy="26" r="4"/>'
   };
+  var TALLAS = { clave: 'talla', ops: [{ id: 'S', n: { es: 'S', en: 'S', pt: 'P' } }, { id: 'M', n: { es: 'M', en: 'M', pt: 'M' } }, { id: 'L', n: { es: 'L', en: 'L', pt: 'G' } }] };
   var PRODUCTOS = [
-    { id: 'camisa', nombre: 'Camisa de lino', precio: 24, cat: 'Ropa', color: '#a5dc5b', arte: 'camisa', variantes: { etiqueta: 'Talla', opciones: ['S', 'M', 'L'] }, hay: true },
-    { id: 'bolso', nombre: 'Bolso tejido', precio: 35, cat: 'Accesorios', color: '#ffd84a', arte: 'bolso', variantes: { etiqueta: 'Color', opciones: ['Crudo', 'Mostaza'] }, hay: true },
-    { id: 'aretes', nombre: 'Aretes de plata', precio: 28, cat: 'Accesorios', color: '#ff7a1a', arte: 'aretes', hay: true },
-    { id: 'pulsera', nombre: 'Pulsera tejida', precio: 9, cat: 'Accesorios', color: '#e6ee4a', arte: 'pulsera', hay: true },
-    { id: 'falda', nombre: 'Falda midi', precio: 32, cat: 'Ropa', color: '#a5dc5b', arte: 'falda', variantes: { etiqueta: 'Talla', opciones: ['S', 'M', 'L'] }, hay: true },
-    { id: 'collar', nombre: 'Collar artesanal', precio: 18, cat: 'Accesorios', color: '#ffd84a', arte: 'collar', hay: false }
+    { id: 'camisa', n: { es: 'Camisa de lino', en: 'Linen shirt', pt: 'Camisa de linho' }, base: 24, cat: 'ropa', color: '#a5dc5b', arte: 'camisa', variantes: TALLAS, hay: true },
+    { id: 'bolso', n: { es: 'Bolso tejido', en: 'Woven bag', pt: 'Bolsa tecida' }, base: 35, cat: 'accesorios', color: '#ffd84a', arte: 'bolso',
+      variantes: { clave: 'color', ops: [{ id: 'crudo', n: { es: 'Crudo', en: 'Natural', pt: 'Cru' } }, { id: 'mostaza', n: { es: 'Mostaza', en: 'Mustard', pt: 'Mostarda' } }] }, hay: true },
+    { id: 'aretes', n: { es: 'Aretes de plata', en: 'Silver earrings', pt: 'Brincos de prata' }, base: 28, cat: 'accesorios', color: '#ff7a1a', arte: 'aretes', hay: true },
+    { id: 'pulsera', n: { es: 'Pulsera tejida', en: 'Woven bracelet', pt: 'Pulseira tecida' }, base: 9, cat: 'accesorios', color: '#e6ee4a', arte: 'pulsera', hay: true },
+    { id: 'falda', n: { es: 'Falda midi', en: 'Midi skirt', pt: 'Saia midi' }, base: 32, cat: 'ropa', color: '#a5dc5b', arte: 'falda', variantes: TALLAS, hay: true },
+    { id: 'collar', n: { es: 'Collar artesanal', en: 'Handmade necklace', pt: 'Colar artesanal' }, base: 18, cat: 'accesorios', color: '#ffd84a', arte: 'collar', hay: false }
   ];
-  var MONEDA = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' });
-  var LLAVE = 'tienda-demo-carrito-v1';
+  var LLAVE = 'tienda-demo-v2';
 
-  var estado = { cat: 'Todo', q: '', carrito: cargar(), entrega: null };
+  var estado = { cat: 'todo', q: '', carrito: [], entrega: null, pais: 'EC', idioma: 'es', moneda: 'USD' };
+  cargar();
   var abridor = null;
 
   function $(id) { return document.getElementById(id); }
-  function dinero(n) { return MONEDA.format(n); }
+  function t(k, v) { var s = (I[estado.idioma] && I[estado.idioma][k]) || I.es[k] || k; if (v) Object.keys(v).forEach(function (x) { s = s.split('{' + x + '}').join(v[x]); }); return s; }
+  function nm(o) { return o.n[estado.idioma] || o.n.es; }
+  function pais() { return PAISES[estado.pais]; }
+  function precioDe(p) { return Math.round(p.base * (FACTOR_EJEMPLO[estado.moneda] || 1)); }
+  function dinero(n) {
+    var loc = estado.idioma === 'en' ? 'en-US' : estado.idioma === 'pt' ? 'pt-BR' : pais().loc;
+    try { return new Intl.NumberFormat(loc, { style: 'currency', currency: estado.moneda }).format(n); } catch (e) { return n + ' ' + estado.moneda; }
+  }
   function porId(id) { for (var i = 0; i < PRODUCTOS.length; i++) if (PRODUCTOS[i].id === id) return PRODUCTOS[i]; return null; }
+  function opcion(p, id) { if (!p.variantes) return null; for (var i = 0; i < p.variantes.ops.length; i++) if (p.variantes.ops[i].id === id) return p.variantes.ops[i]; return null; }
   function cargar() {
     try {
-      var d = JSON.parse(localStorage.getItem(LLAVE) || '[]');
-      return Array.isArray(d) ? d.filter(function (l) { return porId(l.id) && l.cant > 0 && l.cant <= 20; }) : [];
-    } catch (e) { return []; }
+      var d = JSON.parse(localStorage.getItem(LLAVE) || 'null');
+      if (d && Array.isArray(d.carrito)) {
+        estado.carrito = d.carrito.filter(function (l) { return porId(l.id) && l.cant > 0 && l.cant <= 20; });
+        if (PAISES[d.pais]) estado.pais = d.pais;
+        if (I[d.idioma]) estado.idioma = d.idioma;
+        if (MONEDAS.indexOf(d.moneda) >= 0) estado.moneda = d.moneda;
+      }
+    } catch (e) { /* sin almacenamiento: todo vive solo en esta página */ }
   }
-  function guardar() { try { localStorage.setItem(LLAVE, JSON.stringify(estado.carrito)); } catch (e) { /* sin almacenamiento: el carrito vive solo en esta página */ } }
+  function guardar() { try { localStorage.setItem(LLAVE, JSON.stringify({ carrito: estado.carrito, pais: estado.pais, idioma: estado.idioma, moneda: estado.moneda })); } catch (e) { /* ok */ } }
   function el(tag, attrs, hijos) {
     var e = document.createElement(tag);
     Object.keys(attrs || {}).forEach(function (k) {
@@ -184,10 +293,12 @@
     return e;
   }
   function svgHtml(arte, tam, borde) { return '<svg width="' + tam + '" height="' + tam + '" viewBox="0 0 40 40" fill="#fff" stroke="#131313" stroke-width="' + (borde || 1.6) + '" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">' + ARTE[arte] + '</svg>'; }
-  function toast(t) { var x = $('toast'); x.textContent = t; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2200); }
+  function toast(x) { var e = $('toast'); e.textContent = x; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { e.classList.remove('on'); }, 2200); }
+  function etiquetaVar(p, id) { var o = opcion(p, id); return o ? t(p.variantes.clave) + ' ' + nm(o) : ''; }
+  function etiquetaPago(k) { return I.es[k] ? t(k) : k; }
 
-  /* ---------- Cálculos del carrito ---------- */
-  function lineas() { return estado.carrito.map(function (l) { var p = porId(l.id); return { l: l, p: p, total: p.precio * l.cant }; }); }
+  /* ---------- Carrito ---------- */
+  function lineas() { return estado.carrito.map(function (l) { var p = porId(l.id); return { l: l, p: p, total: precioDe(p) * l.cant }; }); }
   function subtotal() { return lineas().reduce(function (s, x) { return s + x.total; }, 0); }
   function cantidad() { return estado.carrito.reduce(function (s, l) { return s + l.cant; }, 0); }
   function agregar(id, variante, cant) {
@@ -201,182 +312,203 @@
     $('barra').classList.toggle('on', n > 0);
     $('n').textContent = String(n);
     $('sub').textContent = dinero(subtotal());
+    $('abrir-carrito').setAttribute('aria-label', t('verPedido'));
+  }
+  function quitar(l) { estado.carrito = estado.carrito.filter(function (x) { return x !== l; }); }
+
+  /* ---------- Textos fijos de la página ---------- */
+  function aplicarIdioma() {
+    document.documentElement.lang = estado.idioma;
+    document.querySelectorAll('[data-i]').forEach(function (e) { e.textContent = t(e.getAttribute('data-i')); });
+    document.querySelectorAll('[data-ph]').forEach(function (e) { e.placeholder = t(e.getAttribute('data-ph')); });
+    document.querySelectorAll('[data-al]').forEach(function (e) { e.setAttribute('aria-label', t(e.getAttribute('data-al'))); });
+    $('cats').setAttribute('aria-label', t('cats'));
+    $('region').textContent = '';
+    $('region').appendChild(document.createTextNode(estado.pais + ' · ' + estado.idioma.toUpperCase() + ' · ' + estado.moneda));
+    $('region').setAttribute('aria-label', t('ajustes'));
+    pintarCats(); pintarGrid(); pintarBarra();
   }
 
-  /* ---------- Catálogo ---------- */
   function pintarCats() {
     var c = $('cats'); c.textContent = '';
-    CATEGORIAS.forEach(function (n) {
-      c.appendChild(el('button', { type: 'button', class: 'chip', 'aria-pressed': String(estado.cat === n), text: n, onclick: function () { estado.cat = n; pintarCats(); pintarGrid(); } }));
+    CATS.forEach(function (k) {
+      c.appendChild(el('button', { type: 'button', class: 'chip', 'aria-pressed': String(estado.cat === k), text: t(k), onclick: function () { estado.cat = k; pintarCats(); pintarGrid(); } }));
     });
   }
   function pintarGrid() {
     var g = $('grid'); g.textContent = '';
     var q = estado.q.trim().toLowerCase();
-    var lista = PRODUCTOS.filter(function (p) { return (estado.cat === 'Todo' || p.cat === estado.cat) && (!q || p.nombre.toLowerCase().indexOf(q) >= 0); });
-    if (!lista.length) { g.appendChild(el('p', { class: 'vacio', text: 'No encontramos productos con esa búsqueda. Prueba con otra palabra.' })); return; }
+    var lista = PRODUCTOS.filter(function (p) { return (estado.cat === 'todo' || p.cat === estado.cat) && (!q || nm(p).toLowerCase().indexOf(q) >= 0); });
+    if (!lista.length) { g.appendChild(el('p', { class: 'vacio', text: t('sinResultados') })); return; }
     lista.forEach(function (p) {
-      var foto = el('div', { class: 'foto', style: 'background:' + p.color });
-      foto.innerHTML = svgHtml(p.arte, 54);
-      if (!p.hay) foto.appendChild(el('span', { class: 'agotado', text: 'Agotado' }));
-      var mas = el('button', { type: 'button', class: 'mas', 'aria-label': p.hay ? 'Agregar ' + p.nombre : p.nombre + ' agotado', onclick: function (e) { abridor = e.currentTarget; abrirProducto(p); } });
+      var foto = el('div', { class: 'foto', style: 'background:' + p.color }); foto.innerHTML = svgHtml(p.arte, 54);
+      if (!p.hay) foto.appendChild(el('span', { class: 'agotado', text: t('agotado') }));
+      var mas = el('button', { type: 'button', class: 'mas', 'aria-label': p.hay ? t('agregar', { x: nm(p) }) : t('agotadoAria', { x: nm(p) }), onclick: function (e) { abridor = e.currentTarget; abrirProducto(p); } });
       mas.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
       if (!p.hay) mas.disabled = true;
-      g.appendChild(el('article', { class: 'prod' }, [foto, el('h3', { text: p.nombre }), el('p', { class: 'meta', text: p.cat + (p.variantes ? ' · ' + p.variantes.etiqueta : '') }),
-        el('div', { class: 'fila' }, [el('span', { class: 'precio', text: dinero(p.precio) }), mas])]));
+      g.appendChild(el('article', { class: 'prod' }, [foto, el('h3', { text: nm(p) }), el('p', { class: 'meta', text: t(p.cat) + (p.variantes ? ' · ' + t(p.variantes.clave) : '') }),
+        el('div', { class: 'fila' }, [el('span', { class: 'precio', text: dinero(precioDe(p)) }), mas])]));
     });
   }
 
-  /* ---------- Hoja (ventana inferior) ---------- */
+  /* ---------- Hojas ---------- */
   function abrirHoja(construir) {
     var h = $('hoja'); h.textContent = ''; construir(h);
     $('fondo').classList.add('on'); document.body.style.overflow = 'hidden';
-    var f = h.querySelector('input, button, textarea'); if (f) f.focus();
+    var f = h.querySelector('input, button, textarea, select'); if (f) f.focus();
   }
   function cerrarHoja() { $('fondo').classList.remove('on'); document.body.style.overflow = ''; if (abridor && document.contains(abridor)) abridor.focus(); }
   function cabecera(titulo) {
-    var x = el('button', { type: 'button', class: 'cerrar', 'aria-label': 'Cerrar', onclick: cerrarHoja });
+    var x = el('button', { type: 'button', class: 'cerrar', 'aria-label': t('cerrar'), onclick: cerrarHoja });
     x.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
     return el('div', { class: 'hoja-cab' }, [el('h2', { id: 'hoja-t', text: titulo }), x]);
   }
 
-  function abrirProducto(p) {
-    var variante = p.variantes ? p.variantes.opciones[0] : '';
-    var cant = 1;
+  function abrirAjustes() {
     abrirHoja(function (h) {
-      h.appendChild(cabecera(p.nombre));
+      h.appendChild(cabecera(t('ajustes')));
+      function selector(etq, id, opciones, actual, alCambiar) {
+        var s = el('select', { id: id }); opciones.forEach(function (o) { var op = el('option', { value: o[0], text: o[1] }); if (o[0] === actual) op.selected = true; s.appendChild(op); });
+        s.addEventListener('change', function () { alCambiar(s.value); });
+        return el('div', { class: 'campo' }, [el('label', { for: id, text: etq }), s]);
+      }
+      h.appendChild(selector(t('pais'), 's-pais', Object.keys(PAISES).map(function (k) { return [k, nm(PAISES[k])]; }), estado.pais, function (v) {
+        estado.pais = v; estado.moneda = PAISES[v].moneda; estado.idioma = PAISES[v].idioma; estado.entrega = null; guardar(); aplicarIdioma(); abrirAjustes();
+      }));
+      h.appendChild(selector(t('idioma'), 's-idioma', Object.keys(IDIOMAS).map(function (k) { return [k, IDIOMAS[k]]; }), estado.idioma, function (v) { estado.idioma = v; guardar(); aplicarIdioma(); abrirAjustes(); }));
+      h.appendChild(selector(t('moneda'), 's-moneda', MONEDAS.map(function (m) { return [m, m]; }), estado.moneda, function (v) { estado.moneda = v; guardar(); aplicarIdioma(); abrirAjustes(); }));
+      h.appendChild(el('p', { class: 'aviso', text: t('ajustesNota') }));
+      h.appendChild(el('button', { type: 'button', class: 'btn', text: t('aplicar'), onclick: cerrarHoja }));
+    });
+  }
+
+  function abrirProducto(p) {
+    var variante = p.variantes ? p.variantes.ops[0].id : ''; var cant = 1;
+    abrirHoja(function (h) {
+      h.appendChild(cabecera(nm(p)));
       var foto = el('div', { class: 'foto', style: 'background:' + p.color + ';height:140px;margin-top:12px' }); foto.innerHTML = svgHtml(p.arte, 74, 1.4); h.appendChild(foto);
-      h.appendChild(el('p', { class: 'precio', style: 'font-size:24px;margin-top:12px', text: dinero(p.precio) }));
+      h.appendChild(el('p', { class: 'precio', style: 'font-size:24px;margin-top:12px', text: dinero(precioDe(p)) }));
       if (p.variantes) {
-        var fs = el('fieldset', { class: 'campo' }, [el('legend', { text: p.variantes.etiqueta })]);
-        var ops = el('div', { class: 'opciones' });
-        p.variantes.opciones.forEach(function (o, i) {
-          var r = el('input', { type: 'radio', name: 'var', value: o, onchange: function () { variante = o; } }); if (i === 0) r.checked = true;
-          ops.appendChild(el('label', { class: 'opc' }, [r, el('span', { text: o })]));
-        });
-        fs.appendChild(ops); h.appendChild(fs);
+        var fs = el('fieldset', { class: 'campo' }, [el('legend', { text: t(p.variantes.clave) })]); var ops = el('div', { class: 'opciones' });
+        p.variantes.ops.forEach(function (o, i) {
+          var r = el('input', { type: 'radio', name: 'var', value: o.id, onchange: function () { variante = o.id; } }); if (i === 0) r.checked = true;
+          ops.appendChild(el('label', { class: 'opc' }, [r, el('span', { text: nm(o) })]));
+        }); fs.appendChild(ops); h.appendChild(fs);
       }
       var num = el('span', { text: '1', 'aria-live': 'polite' });
-      var menos = el('button', { type: 'button', 'aria-label': 'Quitar una unidad', text: '−', onclick: function () { cant = Math.max(1, cant - 1); num.textContent = cant; } });
-      var masb = el('button', { type: 'button', 'aria-label': 'Agregar una unidad', text: '+', onclick: function () { cant = Math.min(20, cant + 1); num.textContent = cant; } });
-      h.appendChild(el('div', { class: 'campo' }, [el('label', { text: 'Cantidad' }), el('div', { class: 'cant' }, [menos, num, masb])]));
-      h.appendChild(el('button', { type: 'button', class: 'btn', text: 'Agregar al pedido', onclick: function () { agregar(p.id, variante, cant); cerrarHoja(); toast(cant + ' × ' + p.nombre + ' agregado'); } }));
+      var menos = el('button', { type: 'button', 'aria-label': t('menos1'), text: '−', onclick: function () { cant = Math.max(1, cant - 1); num.textContent = cant; } });
+      var masb = el('button', { type: 'button', 'aria-label': t('mas1'), text: '+', onclick: function () { cant = Math.min(20, cant + 1); num.textContent = cant; } });
+      h.appendChild(el('div', { class: 'campo' }, [el('label', { text: t('cantidad') }), el('div', { class: 'cant' }, [menos, num, masb])]));
+      h.appendChild(el('button', { type: 'button', class: 'btn', text: t('agregarPedido'), onclick: function () { agregar(p.id, variante, cant); cerrarHoja(); toast(t('agregado', { n: cant, x: nm(p) })); } }));
     });
   }
 
   function abrirCarrito() {
     abrirHoja(function (h) {
-      h.appendChild(cabecera('Mi pedido'));
+      h.appendChild(cabecera(t('miPedido')));
       var ls = lineas();
       if (!ls.length) {
-        h.appendChild(el('p', { class: 'aviso', text: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.' }));
-        h.appendChild(el('button', { type: 'button', class: 'btn claro', text: 'Ver productos', onclick: cerrarHoja })); return;
+        h.appendChild(el('p', { class: 'aviso', text: t('vacio') }));
+        h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('verProductos'), onclick: cerrarHoja })); return;
       }
       ls.forEach(function (x) {
         var mini = el('div', { class: 'mini', style: 'background:' + x.p.color }); mini.innerHTML = svgHtml(x.p.arte, 32);
         var num = el('span', { text: String(x.l.cant) });
-        var menos = el('button', { type: 'button', 'aria-label': 'Quitar una unidad de ' + x.p.nombre, text: '−', onclick: function () { x.l.cant -= 1; if (x.l.cant <= 0) quitar(x.l); guardar(); pintarBarra(); abrirCarrito(); } });
-        var masb = el('button', { type: 'button', 'aria-label': 'Agregar una unidad de ' + x.p.nombre, text: '+', onclick: function () { x.l.cant = Math.min(20, x.l.cant + 1); guardar(); pintarBarra(); abrirCarrito(); } });
-        var quitarB = el('button', { type: 'button', class: 'quitar', text: 'Quitar', 'aria-label': 'Quitar ' + x.p.nombre + ' del pedido', onclick: function () { quitar(x.l); guardar(); pintarBarra(); abrirCarrito(); } });
+        var menos = el('button', { type: 'button', 'aria-label': t('menos1') + ': ' + nm(x.p), text: '−', onclick: function () { x.l.cant -= 1; if (x.l.cant <= 0) quitar(x.l); guardar(); pintarBarra(); abrirCarrito(); } });
+        var masb = el('button', { type: 'button', 'aria-label': t('mas1') + ': ' + nm(x.p), text: '+', onclick: function () { x.l.cant = Math.min(20, x.l.cant + 1); guardar(); pintarBarra(); abrirCarrito(); } });
+        var qb = el('button', { type: 'button', class: 'quitar', text: t('quitar'), 'aria-label': t('quitar') + ': ' + nm(x.p), onclick: function () { quitar(x.l); guardar(); pintarBarra(); abrirCarrito(); } });
         h.appendChild(el('div', { class: 'linea' }, [mini,
-          el('div', {}, [el('h4', { text: x.p.nombre }), el('p', { text: (x.l.variante ? x.p.variantes.etiqueta + ' ' + x.l.variante + ' · ' : '') + dinero(x.p.precio) }), el('div', { class: 'cant' }, [menos, num, masb])]),
-          el('div', { style: 'text-align:right' }, [el('strong', { text: dinero(x.total) }), el('br'), quitarB])]));
+          el('div', {}, [el('h4', { text: nm(x.p) }), el('p', { text: (x.l.variante ? etiquetaVar(x.p, x.l.variante) + ' · ' : '') + dinero(precioDe(x.p)) }), el('div', { class: 'cant' }, [menos, num, masb])]),
+          el('div', { style: 'text-align:right' }, [el('strong', { text: dinero(x.total) }), el('br'), qb])]));
       });
-      h.appendChild(el('div', { class: 'total' }, [el('div', {}, [el('span', { text: 'Subtotal' }), el('span', { text: dinero(subtotal()) })]),
-        el('small', { text: 'La entrega y el pago se coordinan por WhatsApp. El costo de envío, si aplica, te lo confirma el negocio.' })]));
-      h.appendChild(el('button', { type: 'button', class: 'btn', text: 'Continuar', onclick: abrirEntrega }));
-      h.appendChild(el('button', { type: 'button', class: 'btn claro', text: 'Seguir comprando', onclick: cerrarHoja }));
+      h.appendChild(el('div', { class: 'total' }, [el('div', {}, [el('span', { text: t('subtotal') }), el('span', { text: dinero(subtotal()) })]), el('small', { text: t('envioNota') })]));
+      h.appendChild(el('button', { type: 'button', class: 'btn', text: t('continuar'), onclick: abrirEntrega }));
+      h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('seguir'), onclick: cerrarHoja }));
     });
   }
-  function quitar(l) { estado.carrito = estado.carrito.filter(function (x) { return x !== l; }); }
 
   function abrirEntrega() {
-    var d = estado.entrega || { nombre: '', modo: 'Retiro en tienda', direccion: '', pago: 'Transferencia', nota: '' };
+    var d = estado.entrega || { nombre: '', modo: 'retiro', direccion: '', pago: pais().pagos[0], nota: '' };
+    if (pais().pagos.indexOf(d.pago) < 0) d.pago = pais().pagos[0];
     abrirHoja(function (h) {
-      h.appendChild(cabecera('Coordinemos tu pedido'));
-      h.appendChild(el('p', { class: 'aviso', text: 'Pulsa el botón verde y se abrirá WhatsApp con tu pedido listo. Allí acuerdas con el negocio la entrega y el pago.' }));
-
+      h.appendChild(cabecera(t('coordina')));
+      h.appendChild(el('p', { class: 'aviso', text: t('aviso') }));
       var nombre = el('input', { type: 'text', id: 'f-nombre', maxlength: '60', autocomplete: 'name', value: d.nombre, 'aria-describedby': 'e-nombre' });
-      var cNombre = el('div', { class: 'campo' }, [el('label', { for: 'f-nombre', text: 'Tu nombre' }), nombre, el('p', { class: 'error', id: 'e-nombre', text: 'Escribe tu nombre para que el negocio sepa quién eres.' })]);
-
-      var dir = el('input', { type: 'text', id: 'f-dir', maxlength: '120', autocomplete: 'street-address', value: d.direccion, placeholder: 'Calle, referencia y sector', 'aria-describedby': 'e-dir' });
-      var cDir = el('div', { class: 'campo' }, [el('label', { for: 'f-dir', text: 'Dirección de entrega' }), dir, el('p', { class: 'error', id: 'e-dir', text: 'Escribe una dirección o elige retiro en tienda.' })]);
-      cDir.style.display = d.modo === 'Entrega a domicilio' ? '' : 'none';
-
+      var cNombre = el('div', { class: 'campo' }, [el('label', { for: 'f-nombre', text: t('nombre') }), nombre, el('p', { class: 'error', id: 'e-nombre', text: t('nombreErr') })]);
+      var dir = el('input', { type: 'text', id: 'f-dir', maxlength: '120', autocomplete: 'street-address', value: d.direccion, placeholder: t('dirPh'), 'aria-describedby': 'e-dir' });
+      var cDir = el('div', { class: 'campo' }, [el('label', { for: 'f-dir', text: t('dir') }), dir, el('p', { class: 'error', id: 'e-dir', text: t('dirErr') })]);
+      cDir.style.display = d.modo === 'domicilio' ? '' : 'none';
       function grupo(titulo, nombreG, opciones, actual, alCambiar) {
         var fs = el('fieldset', { class: 'campo' }, [el('legend', { text: titulo })]); var ops = el('div', { class: 'opciones' });
         opciones.forEach(function (o) {
-          var r = el('input', { type: 'radio', name: nombreG, value: o, onchange: function () { alCambiar(o); } }); if (o === actual) r.checked = true;
-          ops.appendChild(el('label', { class: 'opc' }, [r, el('span', { text: o })]));
+          var r = el('input', { type: 'radio', name: nombreG, value: o[0], onchange: function () { alCambiar(o[0]); } }); if (o[0] === actual) r.checked = true;
+          ops.appendChild(el('label', { class: 'opc' }, [r, el('span', { text: o[1] })]));
         }); fs.appendChild(ops); return fs;
       }
       var modo = d.modo, pago = d.pago;
       h.appendChild(cNombre);
-      h.appendChild(grupo('¿Cómo lo recibes?', 'modo', ['Retiro en tienda', 'Entrega a domicilio'], modo, function (o) { modo = o; cDir.style.display = o === 'Entrega a domicilio' ? '' : 'none'; }));
+      h.appendChild(grupo(t('como'), 'modo', [['retiro', t('retiro')], ['domicilio', t('domicilio')]], modo, function (o) { modo = o; cDir.style.display = o === 'domicilio' ? '' : 'none'; }));
       h.appendChild(cDir);
-      h.appendChild(grupo('¿Cómo prefieres pagar? (se acuerda por WhatsApp)', 'pago', ['Transferencia', 'Efectivo', 'Deuna', 'Tarjeta'], pago, function (o) { pago = o; }));
-      var nota = el('textarea', { id: 'f-nota', maxlength: '200', rows: '2', placeholder: 'Opcional: horario, detalles del pedido…' }); nota.value = d.nota;
-      h.appendChild(el('div', { class: 'campo' }, [el('label', { for: 'f-nota', text: 'Nota para el negocio' }), nota]));
-      h.appendChild(el('div', { class: 'total', style: 'margin-top:16px' }, [el('div', {}, [el('span', { text: cantidad() + (cantidad() === 1 ? ' producto' : ' productos') }), el('span', { text: dinero(subtotal()) })])]));
-
+      h.appendChild(grupo(t('pago'), 'pago', pais().pagos.map(function (k) { return [k, etiquetaPago(k)]; }), pago, function (o) { pago = o; }));
+      var nota = el('textarea', { id: 'f-nota', maxlength: '200', rows: '2', placeholder: t('notaPh') }); nota.value = d.nota;
+      h.appendChild(el('div', { class: 'campo' }, [el('label', { for: 'f-nota', text: t('nota') }), nota]));
+      h.appendChild(el('div', { class: 'total', style: 'margin-top:16px' }, [el('div', {}, [el('span', { text: cantidad() + ' ' + (cantidad() === 1 ? t('producto') : t('productos')) }), el('span', { text: dinero(subtotal()) })])]));
       var wa = el('button', { type: 'button', class: 'btn wa', onclick: function () {
         var ok = true;
         var n = nombre.value.trim(); cNombre.classList.toggle('err', !n); if (!n) ok = false;
-        var dr = dir.value.trim(); var falta = modo === 'Entrega a domicilio' && !dr; cDir.classList.toggle('err', falta); if (falta) ok = false;
+        var dr = dir.value.trim(); var falta = modo === 'domicilio' && !dr; cDir.classList.toggle('err', falta); if (falta) ok = false;
         if (!ok) { (!n ? nombre : dir).focus(); return; }
-        estado.entrega = { nombre: n, modo: modo, direccion: modo === 'Entrega a domicilio' ? dr : '', pago: pago, nota: nota.value.trim() };
+        estado.entrega = { nombre: n, modo: modo, direccion: modo === 'domicilio' ? dr : '', pago: pago, nota: nota.value.trim() };
         enviar();
       } });
-      wa.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg><span>Enviar pedido por WhatsApp</span>';
+      wa.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg><span></span>';
+      wa.lastChild.textContent = t('enviar');
       h.appendChild(wa);
-      h.appendChild(el('button', { type: 'button', class: 'btn claro', text: 'Volver al pedido', onclick: abrirCarrito }));
+      h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('volver'), onclick: abrirCarrito }));
     });
   }
 
-  /* ---------- Mensaje de WhatsApp ---------- */
+  /* ---------- Mensaje de WhatsApp (amable y de cierre de venta) ---------- */
   function armarMensaje() {
-    var e = estado.entrega; var t = [];
-    t.push('Hola, ' + NEGOCIO.nombre + '. Quiero hacer este pedido desde tu tienda:'); t.push('');
+    var e = estado.entrega; var m = [];
+    m.push(t('m_hola', { negocio: NEGOCIO.nombre })); m.push('');
     lineas().forEach(function (x) {
-      t.push(x.l.cant + ' x ' + x.p.nombre + (x.l.variante ? ' (' + x.p.variantes.etiqueta + ' ' + x.l.variante + ')' : '') + ' - ' + dinero(x.total));
+      m.push('• ' + x.l.cant + ' x ' + nm(x.p) + (x.l.variante ? ' (' + etiquetaVar(x.p, x.l.variante) + ')' : '') + ' — ' + dinero(x.total));
     });
-    t.push(''); t.push('Subtotal: ' + dinero(subtotal()));
-    t.push('Entrega: ' + e.modo + (e.direccion ? ' - ' + e.direccion : ''));
-    t.push('Pago (a coordinar): ' + e.pago);
-    t.push('Nombre: ' + e.nombre);
-    if (e.nota) t.push('Nota: ' + e.nota);
-    t.push(''); t.push('Entiendo que el pedido queda confirmado cuando me respondas y acordemos disponibilidad, pago y entrega.');
-    return t.join('\n');
+    m.push(''); m.push('*' + t('m_total') + ': ' + dinero(subtotal()) + '*'); m.push('');
+    m.push('📍 ' + t('m_entrega') + ': ' + (e.modo === 'domicilio' ? t('domicilio') + ' — ' + e.direccion : t('retiro')));
+    m.push('💳 ' + t('m_pago') + ': ' + etiquetaPago(e.pago));
+    m.push('🙋 ' + t('m_nombre') + ': ' + e.nombre);
+    if (e.nota) m.push('📝 ' + t('m_nota') + ': ' + e.nota);
+    m.push(''); m.push(t('m_cierre'));
+    return m.join('\n');
   }
-  function enlaceWa(msg) {
-    var num = String(NEGOCIO.whatsapp || '').replace(/\D/g, '');
-    return 'https://wa.me/' + (num ? num : '') + '?text=' + encodeURIComponent(msg);
-  }
+  function enlaceWa(msg) { var num = String(NEGOCIO.whatsapp || '').replace(/\D/g, ''); return 'https://wa.me/' + num + '?text=' + encodeURIComponent(msg); }
   function enviar() {
     var msg = armarMensaje(); var url = enlaceWa(msg);
-    window.ultimoEnlaceWa = url; /* para pruebas */
+    window.ultimoEnlaceWa = url;
     var w = window.open(url, '_blank', 'noopener');
     abrirHoja(function (h) {
-      h.appendChild(cabecera('Último paso en WhatsApp'));
+      h.appendChild(cabecera(t('ultimo')));
       var ok = el('div', { class: 'ok' }); ok.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'; h.appendChild(ok);
-      h.appendChild(el('p', { class: 'frase centro', text: '¡Tu pedido está listo para enviar!' }));
-      h.appendChild(el('p', { class: 'centro', style: 'margin-top:6px;color:var(--texto-2);font-size:14px', text: w ? 'Revisa el mensaje en WhatsApp y pulsa enviar. El negocio te responderá para coordinar entrega y pago.' : 'Tu navegador bloqueó la ventana. Pulsa el botón verde para abrir WhatsApp.' }));
-      if (!NEGOCIO.whatsapp) h.appendChild(el('p', { class: 'aviso', text: 'Modo demostración: WhatsApp te pedirá elegir un contacto. En una tienda real, el mensaje llega directo al WhatsApp del negocio.' }));
+      h.appendChild(el('p', { class: 'frase centro', text: t('listo') }));
+      h.appendChild(el('p', { class: 'centro', style: 'margin-top:6px;color:var(--texto-2);font-size:14px', text: w ? t('okTxt') : t('bloqueado') }));
+      if (!NEGOCIO.whatsapp) h.appendChild(el('p', { class: 'aviso', text: t('demoModo') }));
       h.appendChild(el('div', { class: 'vista-msg', text: msg }));
-      var a = el('a', { class: 'btn wa', href: url, target: '_blank', rel: 'noopener', style: 'text-decoration:none' }); a.textContent = 'Abrir WhatsApp de nuevo'; h.appendChild(a);
-      h.appendChild(el('button', { type: 'button', class: 'btn claro', text: 'Ya lo envié: nuevo pedido', onclick: function () { estado.carrito = []; estado.entrega = null; guardar(); pintarBarra(); cerrarHoja(); toast('Carrito vaciado. ¡Gracias!'); } }));
-      h.appendChild(el('button', { type: 'button', class: 'btn claro', text: 'Editar mi pedido', onclick: abrirCarrito }));
+      var a = el('a', { class: 'btn wa', href: url, target: '_blank', rel: 'noopener', style: 'text-decoration:none' }); a.textContent = t('reabrir'); h.appendChild(a);
+      h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('yaEnvie'), onclick: function () { estado.carrito = []; estado.entrega = null; guardar(); pintarBarra(); cerrarHoja(); toast(t('vaciado')); } }));
+      h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('editar'), onclick: abrirCarrito }));
     });
   }
 
-  /* ---------- Eventos ---------- */
   $('q').addEventListener('input', function (e) { estado.q = e.target.value; pintarGrid(); });
   $('abrir-carrito').addEventListener('click', function (e) { abridor = e.currentTarget; abrirCarrito(); });
+  $('region').addEventListener('click', function (e) { abridor = e.currentTarget; abrirAjustes(); });
   $('fondo').addEventListener('click', function (e) { if (e.target === $('fondo')) cerrarHoja(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && $('fondo').classList.contains('on')) cerrarHoja(); });
 
-  pintarCats(); pintarGrid(); pintarBarra();
-  window.__tienda = { agregar: agregar, abrirCarrito: abrirCarrito, abrirEntrega: abrirEntrega, estado: estado, armarMensaje: armarMensaje, enlaceWa: enlaceWa };
+  aplicarIdioma();
+  window.__tienda = { agregar: agregar, abrirCarrito: abrirCarrito, abrirEntrega: abrirEntrega, estado: estado, armarMensaje: armarMensaje, enlaceWa: enlaceWa, aplicarIdioma: aplicarIdioma, PAISES: PAISES };
 })();
 </script>
 </body>
