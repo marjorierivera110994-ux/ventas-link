@@ -26,6 +26,13 @@
     --radius-card: 12px; --radius-btn: 10px; --font-display: 'Bricolage Grotesque', monospace; --font-body: 'Instrument Sans', monospace;
     --shadow-tinta: 60 40 30; --on-accent: #ffffff;
   }
+  :root { --accent-text: var(--accent); --soft: color-mix(in oklab, var(--accent) 12%, transparent); }
+  :root[data-estilo="d"] {
+    --bg: #f2e9d8; --surface: #ffffff; --text-1: #131313; --text-2: #5a5648; --accent: #d5df70; --accent-text: #2c6a53;
+    --soft: #a8dcc5; --radius-card: 24px; --radius-btn: 999px; --font-display: 'Bricolage Grotesque', monospace; --font-body: 'Instrument Sans', monospace;
+    --shadow-tinta: 40 60 40; --on-accent: #131313;
+  }
+  :root[data-estilo="d"] .cta { background: #131313; color: #d5df70; box-shadow: 0 12px 26px -10px rgb(19 19 19 / .55); }
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
     background:
@@ -53,13 +60,13 @@
   section { padding: 40px 0 8px; }
   .badge {
     display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .06em;
-    text-transform: uppercase; color: var(--accent); border-radius: 999px; padding: 5px 12px;
-    background: color-mix(in oklab, var(--accent) 10%, transparent);
+    text-transform: uppercase; color: var(--accent-text); border-radius: 999px; padding: 5px 12px;
+    background: var(--soft);
     border: 1px solid color-mix(in oklab, var(--accent) 25%, transparent);
   }
   h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.015em; }
   h1 { font-size: clamp(32px, 7vw, 46px); line-height: 1.1; font-weight: 800; margin-top: 14px; }
-  h1 em, h2 em { font-style: normal; color: var(--accent); }
+  h1 em, h2 em { font-style: normal; color: var(--accent-text); }
   h2 { font-size: clamp(25px, 5vw, 32px); line-height: 1.15; font-weight: 800; }
   .sub { margin-top: 12px; font-size: 17px; color: var(--text-2); max-width: 56ch; }
   .sub b { color: var(--text-1); font-weight: 700; }
@@ -82,9 +89,9 @@
     box-shadow: 0 12px 28px -14px rgb(var(--shadow-tinta) / .25);
   }
   .chip { width: 48px; height: 48px; border-radius: var(--radius-btn); display: grid; place-items: center;
-          background: color-mix(in oklab, var(--accent) 12%, transparent); border: 1px solid color-mix(in oklab, var(--accent) 24%, transparent); }
+          background: var(--soft); border: 1px solid color-mix(in oklab, var(--accent) 24%, transparent); }
   .paso h3 { font-size: 18px; font-weight: 700; }
-  .paso h3 small { display: block; font-family: var(--font-body); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 2px; }
+  .paso h3 small { display: block; font-family: var(--font-body); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-text); font-weight: 700; margin-bottom: 2px; }
   .paso p { margin-top: 4px; font-size: 15px; color: var(--text-2); }
 
   .demo {
@@ -107,7 +114,7 @@
     font-weight: 700; font-size: 16px; font-family: var(--font-display);
   }
   summary::-webkit-details-marker { display: none; }
-  summary svg { flex-shrink: 0; transition: transform .2s; color: var(--accent); }
+  summary svg { flex-shrink: 0; transition: transform .2s; color: var(--accent-text); }
   details[open] summary svg { transform: rotate(45deg); }
   details p { padding: 0 0 18px; font-size: 15px; color: var(--text-2); }
   details p b { color: var(--text-1); }
@@ -126,6 +133,7 @@
   <button type="button" data-e="a" aria-pressed="true">A · Tienda de confianza</button>
   <button type="button" data-e="b" aria-pressed="false">B · Meta y camino</button>
   <button type="button" data-e="c" aria-pressed="false">C · Cuaderno de pedidos</button>
+  <button type="button" data-e="d" aria-pressed="false">D · Tus colores</button>
 </div>
 
 <main>
@@ -142,19 +150,19 @@
     <h2 id="t-como" style="margin-top:12px">Tu tienda lista en <em>4 pasos</em></h2>
     <div class="pasos">
       <div class="paso">
-        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg></span>
+        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg></span>
         <div><h3><small>Paso 1</small>Crea tu tienda</h3><p>Escribe el nombre de tu negocio, qué ofreces y tu número de WhatsApp. Te guiamos en cada campo.</p></div>
       </div>
       <div class="paso">
-        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="m21 15-5-5L5 21"/></svg></span>
+        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="m21 15-5-5L5 21"/></svg></span>
         <div><h3><small>Paso 2</small>Sube tu catálogo</h3><p>Agrega fotos, nombres y precios de tus productos. En el plan gratis puedes subir hasta 10; en los planes de pago, más.</p></div>
       </div>
       <div class="paso">
-        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg></span>
+        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg></span>
         <div><h3><small>Paso 3</small>Comparte tu enlace</h3><p>Copia tu enlace único y compártelo en WhatsApp, Instagram, Facebook o TikTok. Quien lo abre ve tu catálogo con precios, sin instalar nada.</p></div>
       </div>
       <div class="paso">
-        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/><path d="m8.5 11.5 2.2 2.2 4.3-4.4"/></svg></span>
+        <span class="chip" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/><path d="m8.5 11.5 2.2 2.2 4.3-4.4"/></svg></span>
         <div><h3><small>Paso 4</small>Recibe pedidos claros</h3><p>El cliente arma su pedido y te llega a WhatsApp con productos, cantidades y subtotal. Tú confirmas disponibilidad, pago y entrega.</p></div>
       </div>
     </div>
@@ -210,7 +218,7 @@
     }
     botones.forEach(function (b) { b.addEventListener('click', function () { poner(b.dataset.e); }); });
     var h = (location.hash || '').replace('#', '');
-    if (h === 'a' || h === 'b' || h === 'c') poner(h);
+    if (h === 'a' || h === 'b' || h === 'c' || h === 'd') poner(h);
   })();
 </script>
 </body>

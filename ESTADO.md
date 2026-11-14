@@ -32,6 +32,7 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - FICHA-ARTE.md: NO existe (esperando elección del usuario)
 - ¿Referencia visual del usuario?: NO — pidió "dame opciones" → Ruta de diseño: propuesta propia (3 estilos A/B/C)
 - Comparativa: direcciones-abc.html (kit abc-v2) — A "Tienda de confianza" (claro crema + esmeralda #0E6B4F, Figtree) · B "Meta y racha" (oscuro #0F1715 + #34D399 + racha ámbar #FBBF24, Nunito) · C "Cuaderno de pedidos" (claro #FAF8F4 + coral #C73E22, Bricolage Grotesque + Instrument Sans)
+- REFERENCIA DEL USUARIO (2026-11-14, CONTRATO de paleta): verde menta #A8DCC5 · amarillo verdoso #D5DF70 · beige #F2E9D8 · blanco #FFFFFF, más negro #131313 y coral #EF8767 de su misma captura (negro = botones y tarjeta de meta; coral = solo avisos). Capturas en docs/revisiones/referencia-paleta-1.jpg y -2.jpg. Aplicada en app-con-tus-colores.html (3 pantallas) y como estilo "D · Tus colores" en vista-pagina-ventas.html. Texto sobre menta/lima siempre negro (contraste). Pendiente: aprobación del usuario y FICHA-ARTE.md.
 - Limitación: tabla de líderes (16 PASO 0.2bis) hecha de forma ligera; pares tipográficos tomados de la tabla 29; sin screenshot archivado en docs/revisiones (solo revisión en vivo)
 
 ## Avatar y venta
