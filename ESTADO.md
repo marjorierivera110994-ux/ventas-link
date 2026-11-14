@@ -38,7 +38,8 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Limitación: tabla de líderes (16 PASO 0.2bis) hecha de forma ligera; pares tipográficos tomados de la tabla 29; sin screenshot archivado en docs/revisiones (solo revisión en vivo)
 
 ## Avatar y venta
-- FICHA-AVATAR.md: NO existe (obligatoria antes de la página de ventas)
+- FICHA-AVATAR.md: BORRADOR (2026-11-14) — nicho "de todo un poco", solo hipótesis; falta VoC real (≥10 frases con fuente) para aprobarla. El copy final de venta NO se escribe hasta aprobarla.
+- Competidores nuevos hallados (fuentes de prensa/lanzamientos, no verificadas): Pocket (IA y pagos en WhatsApp para pymes), Deuna Negocios (cobros y gestión; Deuna dice 630.000 comercios), portal Ecuayapa del gobierno. Dato de contexto (no es cuota de ventas): ~74% prefiere WhatsApp para comprar según informe UEES citado por Vistazo.
 
 ## Estrategia de monetización
 - Pendiente de decidir (matriz 02C). Hipótesis del usuario arriba.
