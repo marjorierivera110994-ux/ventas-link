@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Crea tu tienda — recorrido de inicio (demostración)</title>
+<title>Ventas Link — crea tu tienda (demostración)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
@@ -73,7 +73,16 @@
   .marca { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-family: var(--f-d); font-weight: 800; font-size: 18px; }
   .marca i { width: 40px; height: 40px; border-radius: 14px; background: var(--tinta); display: grid; place-items: center; }
   .lista-v { list-style: none; display: grid; gap: 12px; margin-top: 22px; }
-  .lista-v li { display: flex; gap: 12px; align-items: center; font-size: 16px; font-weight: 600; }
+  .lista-v li { display: flex; gap: 12px; align-items: flex-start; font-size: 16px; font-weight: 600; }
+  .lista-v b { display: block; font-size: 16px; font-weight: 800; line-height: 1.2; }
+  .lista-v small { display: block; font-size: 14px; font-weight: 500; color: var(--texto-2); margin-top: 1px; }
+  .mini-tienda { margin-top: 22px; background: var(--blanco); border-radius: 24px; padding: 10px; box-shadow: 0 22px 40px -22px rgb(40 60 40 / .55); position: relative; }
+  .mini-tienda .mt-ban { background: var(--pistacho); border-radius: 16px; padding: 12px; display: flex; align-items: center; gap: 10px; font-family: var(--f-d); font-weight: 800; font-size: 16px; }
+  .mini-tienda .mt-logo { width: 36px; height: 36px; border-radius: 999px; background: var(--blanco); display: grid; place-items: center; font-size: 13px; }
+  .mini-tienda .mt-prods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+  .mini-tienda .mt-prods i { display: block; height: 46px; border-radius: 12px; }
+  .mini-tienda .mt-prods i:nth-child(1) { background: var(--lima); } .mini-tienda .mt-prods i:nth-child(2) { background: var(--naranja); } .mini-tienda .mt-prods i:nth-child(3) { background: color-mix(in oklab, var(--pistacho) 70%, white); }
+  .mini-tienda .mt-wa { position: absolute; right: -6px; bottom: -14px; background: var(--wa); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 800; box-shadow: 0 10px 18px -8px rgb(37 211 102 / .7); }
   .lista-v .ic { width: 38px; height: 38px; border-radius: 12px; background: color-mix(in oklab, var(--pistacho) 60%, white); display: grid; place-items: center; flex-shrink: 0; }
 
   /* Armando tu tienda */
@@ -186,7 +195,7 @@
     emprendedor: 'Con 11 a 60 productos, Emprendedor te alcanza: hasta 60 productos y 10 secciones.',
     pro: 'Con más de 60 productos necesitas Profesional: hasta 300 productos y secciones sin límite.'
   };
-  var FLUJO = ['bienvenida', 'nombre', 'vende', 'cantidad', 'whatsapp', 'armando', 'lista', 'planes', 'cuenta', 'fin'];
+  var FLUJO = ['bienvenida', 'nombre', 'vende', 'cantidad', 'whatsapp', 'armando', 'lista', 'cuenta', 'planes', 'fin'];
   var PREGUNTAS = ['nombre', 'vende', 'cantidad', 'whatsapp'];
 
   var R = { nombre: '', tipo: null, otro: '', cantidad: null, pais: 'EC', tel: '', plan: 'gratis', plan_rec: 'gratis', email: '' };
@@ -232,7 +241,7 @@
     var pct = paso === 'armando' ? 100 : (i >= 0 ? Math.round(8 + (i / PREGUNTAS.length) * 92) : 8);
     if (paso === 'whatsapp') pct = 80;
     $('barra-i').style.width = pct + '%'; $('pct').textContent = pct + '%'; $('barra').setAttribute('aria-valuenow', String(pct));
-    $('atras').hidden = !(i >= 1 || paso === 'cuenta' || paso === 'planes');
+    $('atras').hidden = !(i >= 1 || paso === 'cuenta' || paso === 'lista');
     $('atras').setAttribute('aria-label', 'Volver al paso anterior');
   }
 
@@ -255,7 +264,7 @@
     if (viejo && viejo.animate && !REDUCIDO) { var a = viejo.animate([{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(' + (-24 * dir) + 'px)', opacity: 0 }], { duration: 200, easing: 'ease-in', fill: 'forwards' }); a.onfinish = montar; } else montar();
   }
   function siguiente() { ir(FLUJO[FLUJO.indexOf(paso) + 1], 1); }
-  function anterior() { var i = FLUJO.indexOf(paso); if (paso === 'planes') { ir('whatsapp', -1); return; } if (i > 0) ir(FLUJO[i - 1], -1); }
+  function anterior() { var i = FLUJO.indexOf(paso); if (paso === 'lista') { ir('whatsapp', -1); return; } if (i > 0) ir(FLUJO[i - 1], -1); }
 
   /* ---------- Pantallas ---------- */
   function construir(p) { return ({ bienvenida: pBienvenida, nombre: pNombre, vende: pVende, cantidad: pCantidad, whatsapp: pWhatsapp, armando: pArmando, lista: pLista, planes: pPlanes, cuenta: pCuenta, fin: pFin })[p](); }
@@ -263,12 +272,19 @@
   function cta(texto, fn, deshabilitado) { var b = el('button', { type: 'button', class: 'btn', text: texto, onclick: fn }); if (deshabilitado) b.disabled = true; return b; }
 
   function pBienvenida() {
-    var m = el('div', { class: 'marca', 'data-esc': '' }); m.innerHTML = '<i>' + icono('<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>', 22).replace('#131313', '#e6ee4a') + '</i>Tu tienda digital';
-    var items = [['Tu enlace único para compartir en redes', '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'], ['Pedidos claros en tu WhatsApp', '<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/>'], ['Sin comisión por tus ventas', '<path d="M20 6 9 17l-5-5"/>']];
-    var ul = el('ul', { class: 'lista-v' }); items.forEach(function (x) { var li = el('li', { 'data-esc': '' }); li.innerHTML = '<span class="ic">' + icono(x[1], 20) + '</span>'; li.appendChild(document.createTextNode(x[0])); ul.appendChild(li); });
-    var h = el('h1', { 'data-esc': '' }); h.innerHTML = 'Crea tu tienda en <em>2 minutos</em>';
-    var sub = el('p', { class: 'sub', 'data-esc': '' }); sub.innerHTML = '<b>4 preguntas rápidas</b> y tu enlace queda listo para compartir.';
-    var nodo = el('section', { class: 'paso' }, [el('span', { class: 'pildora', 'data-esc': '', text: 'Demostración del recorrido de inicio' }), m, h, sub, ul, pie(cta('Empezar', function () { ir('nombre', 1); }), el('p', { class: 'nota centro', text: 'Sin tarjeta. Sin compromiso.' }))]);
+    var m = el('div', { class: 'marca', 'data-esc': '' }); m.innerHTML = '<i>' + icono('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>', 22).replace('#131313', '#e6ee4a') + '</i>Ventas Link';
+    var items = [
+      ['Tu enlace único', 'Compártelo en WhatsApp, Instagram, Facebook y TikTok.', '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'],
+      ['Pedidos claros por WhatsApp', 'Con productos, cantidades y total, ya armados.', '<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/>'],
+      ['Sin comisión por tus ventas', 'Lo que vendes es tuyo.', '<path d="M12 2v20M17 6.5C17 4.6 14.8 3.5 12 3.5S7 4.6 7 6.5s2.2 2.8 5 3.5 5 1.6 5 3.5-2.2 3-5 3-5-1.1-5-3"/>'],
+      ['Te ayuda a cerrar ventas', 'Ofertas reales, mensajes positivos y textos listos para tus redes.', '<path d="m12 2 2.6 6.9L22 9.3l-5.4 4.6 1.8 7.1L12 17l-6.4 4 1.8-7.1L2 9.3l7.4-.4Z"/>'],
+      ['Gratis para empezar', 'Sin tarjeta. Creces cuando quieras.', '<path d="M20 6 9 17l-5-5"/>']
+    ];
+    var ul = el('ul', { class: 'lista-v' }); items.forEach(function (x) { var li = el('li', { 'data-esc': '' }); li.innerHTML = '<span class="ic">' + icono(x[2], 20) + '</span><div><b></b><small></small></div>'; li.querySelector('b').textContent = x[0]; li.querySelector('small').textContent = x[1]; ul.appendChild(li); });
+    var h = el('h1', { 'data-esc': '' }); h.innerHTML = 'Bienvenido a <em>Ventas Link</em>';
+    var sub = el('p', { class: 'sub', 'data-esc': '' }); sub.innerHTML = 'Tu tienda en un enlace: <b>lista en 2 minutos</b>, con 4 preguntas rápidas.';
+    var mini = el('div', { class: 'mini-tienda', 'data-esc': '', 'aria-hidden': 'true' }); mini.innerHTML = '<div class="mt-ban"><span class="mt-logo">TU</span>Tu tienda</div><div class="mt-prods"><i></i><i></i><i></i></div><span class="mt-wa">Pedido por WhatsApp</span>';
+    var nodo = el('section', { class: 'paso' }, [el('span', { class: 'pildora', 'data-esc': '', text: 'Demostración del recorrido de inicio' }), m, h, sub, mini, ul, pie(cta('Empezar', function () { ir('nombre', 1); }), el('p', { class: 'nota centro', text: 'Sin tarjeta. Sin compromiso.' }))]);
     return nodo;
   }
 
@@ -340,7 +356,7 @@
     var textos = ['Creando el enlace de ' + nombreCorto(), 'Ordenando secciones para ' + etiquetaTipo(), 'Conectando tu WhatsApp ' + telOculto(), 'Activando tus mensajes motivadores'];
     var ul = el('ul', { class: 'lineas', id: 'lineas' });
     textos.forEach(function (tx) { var li = el('li'); li.innerHTML = '<span class="pt"></span>'; li.appendChild(document.createTextNode(tx)); ul.appendChild(li); });
-    var h = el('h1', { class: 'centro' }); h.innerHTML = 'Armando <em>tu tienda</em>…';
+    var h = el('h1', { class: 'centro' }); h.innerHTML = 'Cargando <em>tu tienda</em>…';
     var vivo = el('div', { 'aria-live': 'polite', 'aria-busy': 'true', id: 'vivo' }, [ul]);
     return el('section', { class: 'paso' }, [h, anillo, vivo]);
   }
@@ -370,7 +386,7 @@
     var tienda = el('div', { class: 'tienda', 'data-esc': '' }, [ban, secs, vacios]);
     var enlace = el('div', { class: 'enlace', 'data-esc': '' }, [el('b', { text: 'ejemplo.com/' + slug(nombre) }), el('button', { type: 'button', class: 'copiar', text: 'Copiar', onclick: function () { copiar('https://ejemplo.com/' + slug(nombre)); } })]);
     var nota = el('p', { class: 'nota', 'data-esc': '', text: 'Este enlace es de ejemplo. En la app real recibes el tuyo.' });
-    return el('section', { class: 'paso' }, [h, sub, tienda, enlace, nota, pie(cta('Ver mi plan', function () { R.plan_rec = planRecomendado(); R.plan = R.plan_rec; ir('planes', 1); }))]);
+    return el('section', { class: 'paso' }, [h, sub, tienda, enlace, nota, pie(cta('Guardar mi tienda', function () { ir('cuenta', 1); }))]);
   }
   function escapar(s) { return s.replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function copiar(txt) {
@@ -390,15 +406,16 @@
 
   /* ---------- Plan (la pantalla que decide) ---------- */
   function pPlanes() {
+    R.plan_rec = planRecomendado(); R.plan = R.plan_rec;
     var nombre = nombreCorto();
-    var cerrar = el('button', { type: 'button', class: 'cerrar', 'aria-label': 'Ahora no, seguir con el plan gratis', onclick: function () { R.plan = 'gratis'; ir('cuenta', 1); } });
+    var cerrar = el('button', { type: 'button', class: 'cerrar', 'aria-label': 'Ahora no, seguir con el plan gratis', onclick: function () { R.plan = 'gratis'; ir('fin', 1); } });
     cerrar.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
     var h = el('h1'); h.innerHTML = '<em>' + escapar(nombre) + '</em> lista para vender';
     var sub = el('p', { class: 'sub' }); sub.innerHTML = '<b>Hecho con tus 4 respuestas.</b> Empieza gratis y crece cuando quieras.';
     var ben = el('ul', { class: 'beneficios' }); ['Pedidos por WhatsApp, sin comisión', 'Tu enlace listo para compartir en redes', 'Camino de éxito y mensajes que animan a comprar'].forEach(function (x) { var li = el('li'); li.innerHTML = '<span class="ck">' + CHECK + '</span>'; li.appendChild(document.createTextNode(x)); ben.appendChild(li); });
     var porque = el('p', { class: 'porque', text: PORQUE[R.plan_rec] });
     var grupo = el('div', { class: 'planes', role: 'radiogroup', 'aria-label': 'Elige tu plan' });
-    var btn = cta(PLANES[R.plan].cta, function () { ir('cuenta', 1); });
+    var btn = cta(PLANES[R.plan].cta, function () { ir('fin', 1); });
     ['gratis', 'emprendedor', 'pro'].forEach(function (k) {
       var pl = PLANES[k]; var o = el('button', { type: 'button', class: 'plan', role: 'radio', 'aria-checked': String(R.plan === k) });
       var ul = el('ul'); pl.pts.forEach(function (x) { ul.appendChild(el('li', { text: x })); });
@@ -409,7 +426,7 @@
       grupo.appendChild(o);
     });
     var verdad = el('ul', { class: 'verdad' }); ['Hoy no pagas nada', 'No pedimos tarjeta', 'Tras 7 días vuelves al plan gratis, sin cobro automático'].forEach(function (x) { var li = el('li'); li.innerHTML = CHECK; li.appendChild(document.createTextNode(x)); verdad.appendChild(li); });
-    var salida = el('button', { type: 'button', class: 'link', text: 'Ahora no, seguir con el plan gratis', onclick: function () { R.plan = 'gratis'; ir('cuenta', 1); } });
+    var salida = el('button', { type: 'button', class: 'link', text: 'Ahora no, seguir con el plan gratis', onclick: function () { R.plan = 'gratis'; ir('fin', 1); } });
     var detalle = el('a', { class: 'link', href: 'vista-pagina-ventas.html#planes', target: '_blank', rel: 'noopener', text: 'Ver todo lo que incluye cada plan' });
     var nodo = el('section', { class: 'paso' }, [h, sub, ben, porque, grupo, el('p', { class: 'nota centro', text: 'Precios de lanzamiento en dólares, de prueba. Se confirman antes de cobrar.' }),
       el('div', { class: 'centro' }, [detalle]), pie(btn, el('div', {}, [verdad, el('div', { class: 'centro' }, [salida])]))]);
@@ -425,10 +442,10 @@
     var campo = el('div', { class: 'campo' }, [el('label', { for: 'in-mail', text: 'Tu correo' }), inp, el('p', { class: 'error', id: 'e-mail', text: 'Escribe un correo válido, por ejemplo nombre@correo.com.' })]);
     var b = cta('Crear mi cuenta', continuar, true);
     function valido(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); }
-    function continuar() { if (!valido(inp.value)) { campo.classList.add('err'); inp.focus(); return; } R.email = inp.value.trim(); ir('fin', 1); }
+    function continuar() { if (!valido(inp.value)) { campo.classList.add('err'); inp.focus(); return; } R.email = inp.value.trim(); ir('planes', 1); }
     inp.addEventListener('input', function () { b.disabled = !valido(inp.value); campo.classList.remove('err'); });
     inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') continuar(); });
-    var resumen = el('p', { class: 'porque', text: 'Tu plan: ' + PLANES[R.plan].n + (R.plan === 'gratis' ? '' : ' · 7 días de funciones premium, sin cobro') });
+    var resumen = el('p', { class: 'porque', text: 'Es gratis y no pedimos tarjeta. En el último paso eliges tu plan.' });
     return el('section', { class: 'paso' }, [h, sub, el('div', { class: 'cuerpo' }, [campo, resumen, el('p', { class: 'nota', text: 'Demostración: no se envía ningún correo ni se guarda tu dato.' })]), pie(b)]);
   }
 
@@ -436,13 +453,14 @@
   function pFin() {
     var nombre = nombreCorto(); var enlace = 'https://ejemplo.com/' + slug(nombre);
     var h = el('h1'); h.innerHTML = '¡Listo, <em>' + escapar(nombre) + '</em>!';
-    var sub = el('p', { class: 'sub' }); sub.innerHTML = 'Todo gran negocio empezó así. <b>Ahora sube tu primer producto.</b>';
+    var sub = el('p', { class: 'sub' }); sub.innerHTML = 'Bienvenido a <b>Ventas Link</b>. Todo gran negocio empezó así: ahora sube tu primer producto.';
+    var planTxt = el('p', { class: 'porque', text: 'Tu plan: ' + PLANES[R.plan].n + (R.plan === 'gratis' ? '' : ' · 7 días de funciones premium, sin cobro') });
     var link = el('div', { class: 'enlace' }, [el('b', { text: enlace.replace('https://', '') }), el('button', { type: 'button', class: 'copiar', text: 'Copiar', onclick: function () { copiar(enlace); } })]);
     var lista = el('ol', { class: 'pasos-sig' }); ['Sube tu primer producto', 'Comparte tu enlace en tus redes', 'Revisa tu camino de éxito cada semana'].forEach(function (x, i) { var li = el('li'); li.innerHTML = '<span class="n">' + (i + 1) + '</span>'; li.appendChild(document.createTextNode(x)); lista.appendChild(li); });
     var wa = el('a', { class: 'btn wa', href: 'https://wa.me/?text=' + encodeURIComponent('Mira mi tienda: ' + enlace), target: '_blank', rel: 'noopener', style: 'text-decoration:none' }); wa.textContent = 'Compartir por WhatsApp';
     var otra = el('button', { type: 'button', class: 'btn claro', text: 'Repetir la demostración', onclick: reiniciar });
     var guia = el('a', { class: 'link', href: 'vista-pagina-ventas.html', target: '_blank', rel: 'noopener', text: 'Ver cómo usar la app' });
-    return el('section', { class: 'paso' }, [h, sub, link, el('p', { class: 'nota', text: 'Enlace de ejemplo. Aquí empieza la app real.' }), lista, el('div', { class: 'pie' }, [wa, otra, el('div', { class: 'centro' }, [guia])])]);
+    return el('section', { class: 'paso' }, [h, sub, planTxt, link, el('p', { class: 'nota', text: 'Enlace de ejemplo. Aquí empieza la app real.' }), lista, el('div', { class: 'pie' }, [wa, otra, el('div', { class: 'centro' }, [guia])])]);
   }
   function reiniciar() { R = { nombre: '', tipo: null, otro: '', cantidad: null, pais: 'EC', tel: '', plan: 'gratis', plan_rec: 'gratis', email: '' }; ir('bienvenida', -1); }
 

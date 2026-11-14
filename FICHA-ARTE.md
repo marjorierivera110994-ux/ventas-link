@@ -1,4 +1,4 @@
-# FICHA DE DIRECCIÓN DE ARTE — Tienda digital con pedidos por WhatsApp (nombre provisional)
+# FICHA DE DIRECCIÓN DE ARTE — Ventas Link
 
 ## Referencia del usuario (CONTRATO de paleta)
 - ¿Hay imagen(es) de referencia del usuario?: SÍ → docs/revisiones/referencia-paleta-1.jpg y referencia-paleta-2.jpg (paleta + un mockup de tienda de otra app). Referencia PARCIAL (paleta, no pantalla propia).

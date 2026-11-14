@@ -1,4 +1,4 @@
-# FICHA DE AVATAR — Tienda digital con pedidos por WhatsApp (nombre provisional)
+# FICHA DE AVATAR — Ventas Link
 
 - Estado: BORRADOR — hipótesis sin frases literales de comerciantes reales (la regla pide ≥10 frases con fuente para APROBAR). En BORRADOR está PROHIBIDO derivar el copy final de venta.
 - Decisión del usuario (2026-11-14): nicho "de todo un poco" (cualquier negocio pequeño de productos físicos que vende por WhatsApp)

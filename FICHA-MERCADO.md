@@ -1,4 +1,4 @@
-# FICHA DE MERCADO — Tienda digital con pedidos por WhatsApp (nombre provisional)
+# FICHA DE MERCADO — Ventas Link
 
 Fecha de investigación: 2026-11-14 · Estado: BORRADOR (fuentes de páginas de las propias empresas y prensa; precios pueden haber cambiado)
 

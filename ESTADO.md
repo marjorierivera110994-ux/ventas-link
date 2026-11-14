@@ -1,4 +1,5 @@
-# ESTADO — Tienda digital con pedidos por WhatsApp (nombre provisional)
+# ESTADO — Ventas Link (tienda digital con pedidos por WhatsApp)
+> NOMBRE DE LA APP: **Ventas Link** (decidido por el usuario 2026-11-14). Es un nombre GENERAL a propósito: cada cliente registra el nombre de SU tienda, así que la marca no compite con la de ellos. Pendiente: verificar disponibilidad real de marca (Ecuador/IEPI), dominio (ventaslink.com / .app / .ec) y nombre en tiendas de apps; una búsqueda web rápida no encontró otra app con ese nombre, pero no es una búsqueda legal.
 Última actualización: 2026-11-14 | Sesión actual: 1
 
 ⏸️ CHECKPOINT — Última acción completada: estilo y funciones aprobados; FICHA-ARTE.md creada. / Siguiente acción exacta: Sesión 1 — preguntas del cliente ideal (FICHA-AVATAR), números de Ecuador (FICHA-MERCADO), app modelo (FICHA-MODELO), planes y precios, método de cobro en Ecuador, modelo de datos.
@@ -140,7 +141,16 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - MENSAJES POSITIVOS AL COMPRADOR (tienda-demo.html): bienvenida al abrir el enlace, "¡Buena elección!" al agregar, frase al revisar el pedido, "Estás a un paso de tenerlo" antes de enviar, "¡Gracias por elegir {negocio}!" al terminar; en español, inglés y portugués. Regla: animan sin presionar (NADA de falsa urgencia ni escasez inventada). Todos los planes los tienen por defecto; Emprendedor y Profesional pueden editarlos. Pendiente: pantalla del vendedor para editarlos
 - Planes actualizados (vista-pagina-ventas.html): Gratis suma "mensajes positivos"; Emprendedor suma "edita los mensajes"; Profesional suma 50 plantillas + combinaciones, paleta amplia, logo y portada
 
-## Recorrido de inicio (onboarding) y pantalla de planes — onboarding-demo.html (2026-11-14)
+## ACTUALIZACIÓN del recorrido (2026-11-14, pedido del usuario): nombre Ventas Link + nuevo orden
+- ORDEN VIGENTE: Bienvenida con ventajas → 4 preguntas básicas → "Cargando tu tienda…" → Tu tienda lista → Guardar tu tienda (cuenta por correo) → PLANES (último paso) → ¡Listo! (reemplaza el orden anterior de abajo, donde la cuenta iba al final)
+- Decisión profesional explicada al usuario: la cuenta va ANTES de los planes (el SO la ponía al final). Razón: el plan Gratis también es un plan y requiere cuenta; el vendedor ya vio su tienda armada (valor) y los planes pasan a ser la última decisión, como pidió. En planes no hay botón "atrás" (la cuenta ya se creó); sí hay ✕ visible y "Ahora no, seguir con el plan gratis".
+- Bienvenida: marca Ventas Link, mini ilustración de tienda con burbuja "Pedido por WhatsApp" y 5 ventajas: enlace único (WhatsApp, Instagram, Facebook, TikTok) · pedidos claros por WhatsApp · sin comisión por tus ventas · te ayuda a cerrar ventas (ofertas reales, mensajes positivos, textos para redes) · gratis para empezar. Se muestran SOLO ventajas que la app realmente tiene en el diseño.
+- La pantalla de carga dice "Cargando tu tienda…" (le gustó al usuario)
+- Atrás: disponible desde la pregunta 2; también en "tienda lista" (vuelve al WhatsApp conservando respuestas) y en la cuenta (vuelve a la tienda lista)
+- Probado por script en 2 recorridos (con plan Profesional elegido y con "Ahora no"), sin errores; a 375 px sin elementos fuera de pantalla y botones ≥44 px. Siguen sin verificarse captura visual ni veredicto del revisor.
+- NOMBRE "Ventas Link" aplicado en la bienvenida, la página de ventas (menú, título, guía "Cómo usar Ventas Link", etiqueta del titular) y las fichas. Las tiendas de ejemplo (Boutique Luna, Café Sol) son de clientes ficticios, no de la marca.
+
+## Recorrido de inicio (onboarding) y pantalla de planes — onboarding-demo.html (2026-11-14) [diseño base; el orden de pasos está superado por la actualización de arriba]
 - Pedido del usuario: pocas preguntas, profesional, amable, interactivo. Se aplicó 02B/50/52 del SO. NOTA DE PROCESO: el usuario pegó el prompt "Mejorar onboarding y paywall" (pensado para apps que YA tienen un flujo débil). Aquí no existía flujo, así que R1/R2 (auditar lo existente) no aplican; se hizo R3 (diseño) y se construyó un PROTOTIPO para aprobación antes de pasar a código real (R4). GATE DE AVATAR: FICHA-AVATAR.md sigue en BORRADOR; los textos son HIPÓTESIS y se ajustan al aprobar el avatar.
 - Investigación: wizards de Shopify/Wix/WooCommerce — 3 a 5 pasos máximo, cada pregunta debe cambiar algo visible, separar lo que bloquea vender de lo que puede esperar, medir tiempo hasta el primer pedido (no solo "terminó el asistente"); 72% prefiere onboarding de ≤60 s (Pushwoosh citando a Clutch, sin verificar); diferir el registro hasta mostrar valor (Duolingo). Fuentes de blogs de proveedores, no estudios independientes.
 - Clasificación: app de UTILIDAD con valor obvio → 4 preguntas (02B: 1-5 pasos). Orden SO: bienvenida → 4 preguntas → "armando tu tienda" → tienda lista → planes → cuenta (último) → fin
