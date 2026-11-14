@@ -85,6 +85,12 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Fase: DESPUÉS del MVP vendible (el PDF original dejaba la IA fuera del MVP; el usuario la autorizó; entra con la segunda fase del premium). En el MVP: guía de ayuda + enlace a WhatsApp humano en planes de pago
 - Pendiente: definir horario y quién atiende el WhatsApp humano (promesa de tiempo de respuesta); costo por conversación antes de fijar límites
 
+## Requisito: app adaptada a celular (usuario, 2026-11-14) — NO negociable
+- Móvil primero: todo se diseña y verifica a 375px (Android gama media, datos móviles lentos) y luego se adapta a pantallas grandes
+- Panel del vendedor y tienda del comprador: botones de al menos 44px, texto legible, sin scroll horizontal, formularios cortos, carga rápida
+- Instalable como app en el celular (PWA) si la plataforma lo permite; la tienda del comprador NO exige instalar nada
+- Verificado hasta ahora (en el panel y por script): tienda-demo.html y vista-pagina-ventas.html sin desbordes a 375px. Pendiente: probar en un celular real y con conexión lenta
+
 ## Mejoras de producto aplicadas (desde el reporte de validación)
 - Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
 - Diferenciador 2: hecho para Ecuador (español cotidiano; el mensaje puede indicar formas de pago que el vendedor acepta: transferencia, efectivo, Deuna, tarjeta)
