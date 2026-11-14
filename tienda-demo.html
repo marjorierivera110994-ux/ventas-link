@@ -50,6 +50,9 @@
   .precio { font-weight: 800; font-size: 16px; font-family: var(--f-d); }
   .mas { width: 44px; height: 44px; border-radius: 999px; background: var(--lima); display: grid; place-items: center; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .12); flex-shrink: 0; }
   .mas[disabled] { background: #e4e0d4; cursor: not-allowed; }
+  .sec-t { margin-top: 24px; font-size: 19px; font-weight: 800; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .sec-n { font-family: var(--f-b); font-size: 12px; font-weight: 600; color: var(--texto-2); }
+  .seccion:first-child .sec-t { margin-top: 18px; }
   .vacio { grid-column: 1 / -1; text-align: center; padding: 30px 10px; color: var(--texto-2); }
   .pie { margin-top: 22px; font-size: 12px; color: var(--texto-2); text-align: center; }
 
@@ -123,7 +126,7 @@
     <input id="q" type="search" data-ph="buscar" data-al="buscar" autocomplete="off"></label>
   <div class="cats" id="cats" role="group"></div>
 
-  <div class="grid" id="grid" aria-live="polite"></div>
+  <div id="grid" aria-live="polite"></div>
   <p class="pie" data-i="pie"></p>
 </main>
 
@@ -235,7 +238,15 @@
     }
   };
 
-  var CATS = ['todo', 'ropa', 'accesorios'];
+  /* Secciones: las crea el vendedor con los nombres que quiera ("Aretes", "Collares", "Ropa"…) y cada una
+     guarda su propio catálogo. En esta demo los nombres vienen en 3 idiomas solo para mostrar el cambio de idioma. */
+  var SECCIONES = [
+    { id: 'aretes', n: { es: 'Aretes', en: 'Earrings', pt: 'Brincos' } },
+    { id: 'collares', n: { es: 'Collares', en: 'Necklaces', pt: 'Colares' } },
+    { id: 'ropa', n: { es: 'Ropa', en: 'Clothing', pt: 'Roupas' } },
+    { id: 'otros', n: { es: 'Bolsos y pulseras', en: 'Bags & bracelets', pt: 'Bolsas e pulseiras' } }
+  ];
+  function secPorId(id) { for (var i = 0; i < SECCIONES.length; i++) if (SECCIONES[i].id === id) return SECCIONES[i]; return null; }
   var ARTE = {
     camisa: '<path d="M13 5 4 10l4 7 4-2v19h16V15l4 2 4-7-9-5c-1 3-3.5 4.5-7 4.5S14 8 13 5z"/>',
     bolso: '<path d="M8 14h24l2 22H6z"/><path d="M14 14v-3a6 6 0 0 1 12 0v3" fill="none"/>',
@@ -250,18 +261,24 @@
   var PRODUCTOS = [
     { id: 'camisa', n: { es: 'Camisa de lino', en: 'Linen shirt', pt: 'Camisa de linho' }, base: 24, cat: 'ropa', color: '#a5dc5b', arte: 'camisa', variantes: TALLAS, stock: 5,
       desc: { es: 'Lino suave y fresco, de corte holgado. Lavar a mano. Ideal para días calurosos.', en: 'Soft, breathable linen with a relaxed fit. Hand wash. Great for warm days.', pt: 'Linho macio e fresco, de corte solto. Lavar à mão. Ideal para dias quentes.' } },
-    { id: 'bolso', n: { es: 'Bolso tejido', en: 'Woven bag', pt: 'Bolsa tecida' }, base: 35, cat: 'accesorios', color: '#ffd84a', arte: 'bolso', stock: null,
+    { id: 'bolso', n: { es: 'Bolso tejido', en: 'Woven bag', pt: 'Bolsa tecida' }, base: 35, cat: 'otros', color: '#ffd84a', arte: 'bolso', stock: null,
       variantes: { clave: 'color', ops: [{ id: 'crudo', n: { es: 'Crudo', en: 'Natural', pt: 'Cru' } }, { id: 'mostaza', n: { es: 'Mostaza', en: 'Mustard', pt: 'Mostarda' } }] },
       desc: { es: 'Tejido a mano con fibra natural. Amplio, con asa corta y forro interior.', en: 'Handwoven from natural fiber. Roomy, with a short handle and inner lining.', pt: 'Tecida à mão com fibra natural. Espaçosa, com alça curta e forro interno.' } },
-    { id: 'aretes', n: { es: 'Aretes de plata', en: 'Silver earrings', pt: 'Brincos de prata' }, base: 28, cat: 'accesorios', color: '#ff7a1a', arte: 'aretes', stock: 2,
+    { id: 'aretes', n: { es: 'Aretes de plata', en: 'Silver earrings', pt: 'Brincos de prata' }, base: 28, cat: 'aretes', color: '#ff7a1a', arte: 'aretes', stock: 2,
       desc: { es: 'Hechos a mano, livianos y con cierre de seguridad. Vienen en caja de regalo.', en: 'Handmade, lightweight, with a secure clasp. Comes in a gift box.', pt: 'Feitos à mão, leves e com fecho de segurança. Acompanham caixa de presente.' } },
-    { id: 'pulsera', n: { es: 'Pulsera tejida', en: 'Woven bracelet', pt: 'Pulseira tecida' }, base: 9, cat: 'accesorios', color: '#e6ee4a', arte: 'pulsera', stock: 12,
+    { id: 'pulsera', n: { es: 'Pulsera tejida', en: 'Woven bracelet', pt: 'Pulseira tecida' }, base: 9, cat: 'otros', color: '#e6ee4a', arte: 'pulsera', stock: 12,
       desc: { es: 'Hilo encerado en colores vivos. Ajustable, para toda ocasión.', en: 'Waxed thread in bright colors. Adjustable, for any occasion.', pt: 'Fio encerado em cores vivas. Ajustável, para qualquer ocasião.' } },
     { id: 'falda', n: { es: 'Falda midi', en: 'Midi skirt', pt: 'Saia midi' }, base: 32, cat: 'ropa', color: '#a5dc5b', arte: 'falda', variantes: TALLAS, stock: null,
       desc: { es: 'Falda midi con cintura elástica y caída suelta. Disponible en tallas S, M y L.', en: 'Midi skirt with an elastic waist and a loose drape. Available in sizes S, M and L.', pt: 'Saia midi com cintura elástica e caimento solto. Disponível nos tamanhos P, M e G.' } },
-    { id: 'collar', n: { es: 'Collar artesanal', en: 'Handmade necklace', pt: 'Colar artesanal' }, base: 18, cat: 'accesorios', color: '#ffd84a', arte: 'collar', stock: 0,
+    { id: 'collar', n: { es: 'Collar artesanal', en: 'Handmade necklace', pt: 'Colar artesanal' }, base: 18, cat: 'collares', color: '#ffd84a', arte: 'collar', stock: 0,
       desc: { es: 'Collar artesanal con dije de cerámica pintado a mano.', en: 'Handmade necklace with a hand-painted ceramic pendant.', pt: 'Colar artesanal com pingente de cerâmica pintado à mão.' } }
   ];
+  PRODUCTOS.push(
+    { id: 'aros', n: { es: 'Aretes de aro', en: 'Hoop earrings', pt: 'Argolas' }, base: 22, cat: 'aretes', color: '#e6ee4a', arte: 'aretes', stock: null,
+      desc: { es: 'Aros medianos en acabado dorado. Livianos, ideales para todos los días.', en: 'Medium hoops in a gold finish. Lightweight, perfect for everyday wear.', pt: 'Argolas médias com acabamento dourado. Leves, ideais para o dia a dia.' } },
+    { id: 'semillas', n: { es: 'Collar de semillas', en: 'Seed necklace', pt: 'Colar de sementes' }, base: 15, cat: 'collares', color: '#a5dc5b', arte: 'collar', stock: 8,
+      desc: { es: 'Semillas naturales ensartadas a mano. Largo ajustable.', en: 'Natural seeds strung by hand. Adjustable length.', pt: 'Sementes naturais enfiadas à mão. Comprimento ajustável.' } }
+  );
   PRODUCTOS.forEach(function (p) { p.hay = p.stock === null || p.stock > 0; });
   var LLAVE = 'tienda-demo-v2';
 
@@ -347,24 +364,35 @@
 
   function pintarCats() {
     var c = $('cats'); c.textContent = '';
-    CATS.forEach(function (k) {
-      c.appendChild(el('button', { type: 'button', class: 'chip', 'aria-pressed': String(estado.cat === k), text: t(k), onclick: function () { estado.cat = k; pintarCats(); pintarGrid(); } }));
+    [{ id: 'todo', nombre: t('todo') }].concat(SECCIONES.map(function (s) { return { id: s.id, nombre: nm(s) }; })).forEach(function (k) {
+      c.appendChild(el('button', { type: 'button', class: 'chip', 'aria-pressed': String(estado.cat === k.id), text: k.nombre, onclick: function () { estado.cat = k.id; pintarCats(); pintarGrid(); } }));
     });
   }
   function pintarGrid() {
     var g = $('grid'); g.textContent = '';
     var q = estado.q.trim().toLowerCase();
-    var lista = PRODUCTOS.filter(function (p) { return (estado.cat === 'todo' || p.cat === estado.cat) && (!q || nm(p).toLowerCase().indexOf(q) >= 0); });
-    if (!lista.length) { g.appendChild(el('p', { class: 'vacio', text: t('sinResultados') })); return; }
-    lista.forEach(function (p) {
+    var visibles = PRODUCTOS.filter(function (p) { return (estado.cat === 'todo' || p.cat === estado.cat) && (!q || nm(p).toLowerCase().indexOf(q) >= 0); });
+    if (!visibles.length) { g.appendChild(el('p', { class: 'vacio', text: t('sinResultados') })); return; }
+    SECCIONES.forEach(function (s) {
+      var lista = visibles.filter(function (p) { return p.cat === s.id; });
+      if (!lista.length) return;
+      var sec = el('section', { class: 'seccion', 'aria-labelledby': 'sec-' + s.id });
+      sec.appendChild(el('h2', { class: 'sec-t', id: 'sec-' + s.id }, [nm(s), el('span', { class: 'sec-n', text: lista.length + ' ' + (lista.length === 1 ? t('producto') : t('productos')) })]));
+      var gr = el('div', { class: 'grid' });
+      lista.forEach(function (p) { gr.appendChild(tarjeta(p)); });
+      sec.appendChild(gr); g.appendChild(sec);
+    });
+  }
+  function tarjeta(p) {
+    {
       var foto = el('div', { class: 'foto', style: 'background:' + p.color }); foto.innerHTML = svgHtml(p.arte, 54);
       if (!p.hay) foto.appendChild(el('span', { class: 'agotado', text: t('agotado') }));
       var mas = el('button', { type: 'button', class: 'mas', 'aria-label': p.hay ? t('agregar', { x: nm(p) }) : t('agotadoAria', { x: nm(p) }), onclick: function (e) { abridor = e.currentTarget; abrirProducto(p); } });
       mas.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
       if (!p.hay) mas.disabled = true;
-      g.appendChild(el('article', { class: 'prod' }, [foto, el('h3', { text: nm(p) }), el('p', { class: 'meta', text: t(p.cat) + (p.variantes ? ' · ' + t(p.variantes.clave) : '') + (stockBajo(p) ? ' · ' + t('quedan', { n: p.stock }) : '') }),
+      return (el('article', { class: 'prod' }, [foto, el('h3', { text: nm(p) }), el('p', { class: 'meta', text: nm(secPorId(p.cat)) + (p.variantes ? ' · ' + t(p.variantes.clave) : '') + (stockBajo(p) ? ' · ' + t('quedan', { n: p.stock }) : '') }),
         el('div', { class: 'fila' }, [el('span', { class: 'precio', text: dinero(precioDe(p)) }), mas])]));
-    });
+    }
   }
 
   /* ---------- Hojas ---------- */

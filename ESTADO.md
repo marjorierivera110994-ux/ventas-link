@@ -105,6 +105,12 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Reglas pendientes para la app real: el stock se descuenta cuando el vendedor marca el pedido como confirmado/entregado (NO al enviar el mensaje, porque el pedido aún no está confirmado); validar el tope también en el servidor; stock por variante (talla/color) queda para después
 - Implementado en demo: tienda-demo.html (descripción, "Quedan N", agotado, tope por stock, 3 idiomas, probado por script) y pantalla 5 de app-con-tus-colores.html (formulario de nuevo producto)
 
+## Secciones del catálogo (pedido del usuario 2026-11-14)
+- El vendedor crea sus propias secciones con el nombre que quiera (Aretes, Collares, Ropa…) y sube productos dentro de cada una; el catálogo público muestra cada sección con su título y cantidad, y chips para entrar directo a una
+- Reglas: un producto pertenece a UNA sección; secciones vacías no se muestran al cliente; los nombres los escribe el vendedor (la app no los traduce)
+- Por definir en Sesión 1/2 con costos: límite de secciones y de productos por plan (NO inventado todavía; el usuario solo fijó 10 fotos/productos en el plan gratis); orden de las secciones (subir/bajar) y qué pasa con los productos al borrar una sección (pedir confirmar y moverlos a otra)
+- Implementado en demo: tienda-demo.html (8 productos en 4 secciones, filtro por chip, búsqueda, carrito de varias secciones) y pantalla 6 "Mis secciones" de app-con-tus-colores.html. Probado por script, sin errores
+
 ## Mejoras de producto aplicadas (desde el reporte de validación)
 - Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
 - Diferenciador 2: hecho para Ecuador (español cotidiano; el mensaje puede indicar formas de pago que el vendedor acepta: transferencia, efectivo, Deuna, tarjeta)

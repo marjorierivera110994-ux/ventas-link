@@ -85,6 +85,14 @@
   .inter .s { font-size: 10.5px; color: var(--texto-2); }
   .sw { width: 42px; height: 24px; border-radius: 999px; background: var(--tinta); position: relative; flex-shrink: 0; }
   .sw::after { content: ''; position: absolute; right: 3px; top: 3px; width: 18px; height: 18px; border-radius: 999px; background: var(--lima); }
+  .seccion-f { margin-top: 8px; background: var(--blanco); border-radius: 18px; padding: 9px 12px; }
+  .seccion-f .r { display: flex; align-items: center; gap: 10px; }
+  .seccion-f .ic2 { width: 34px; height: 34px; border-radius: 12px; background: var(--menta); display: grid; place-items: center; flex-shrink: 0; }
+  .seccion-f h4 { font-size: 13px; font-weight: 800; font-family: var(--font-display); flex: 1; }
+  .seccion-f .n { font-size: 11px; color: var(--texto-2); font-weight: 600; }
+  .miniaturas { display: flex; gap: 6px; margin-top: 8px; align-items: center; }
+  .miniaturas i { width: 38px; height: 38px; border-radius: 12px; display: block; }
+  .agregar-p { margin-left: auto; background: var(--lima); border-radius: 999px; padding: 8px 12px; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 4px; }
   .paso-cant { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 13px; }
   .paso-cant b { width: 28px; height: 28px; border-radius: 999px; background: var(--lima); display: grid; place-items: center; }
   .dia.hoy b { background: var(--blanco); box-shadow: 0 0 0 2px var(--tinta); }
@@ -350,6 +358,40 @@
         <div class="inter"><p class="t">Unidades disponibles</p><span class="paso-cant"><b>−</b>5<b>+</b></span></div>
 
         <div class="boton" style="margin-top:12px">Guardar producto</div>
+      </div>
+      <div class="home"></div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. Mis secciones ═══ -->
+  <section aria-label="Mis secciones">
+    <h2>6 · Mis secciones del catálogo</h2>
+    <div class="tel">
+      <div class="status"><span>9:41</span><span class="der">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="4" rx=".8"/><rect x="4.5" y="5" width="3" height="6" rx=".8"/><rect x="9" y="3" width="3" height="8" rx=".8"/><rect x="13.5" y=".5" width="3" height="10.5" rx=".8"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true"><rect x=".5" y=".5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/></svg></span></div>
+      <div class="pant">
+        <p class="saludo">Tu catálogo</p>
+        <h3 class="titulo">Mis secciones</h3>
+        <p class="t-p" style="margin-top:4px">Ordena tu mercadería en secciones. Cada una tiene su propio catálogo.</p>
+
+        <div class="seccion-f">
+          <div class="r"><span class="ic2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="14" r="4"/><circle cx="16" cy="14" r="4"/><path d="M8 4v6M16 4v6"/></svg></span><h4>Aretes</h4><span class="n">2 productos</span></div>
+          <div class="miniaturas"><i style="background:#ff7a1a"></i><i style="background:#e6ee4a"></i><span class="agregar-p"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agregar a Aretes</span></div>
+        </div>
+        <div class="seccion-f"><div class="r"><span class="ic2" style="background:var(--lima)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5c0 10 14 10 14 0"/><circle cx="12" cy="16" r="2.5"/></svg></span><h4>Collares</h4><span class="n">2 productos</span></div></div>
+        <div class="seccion-f"><div class="r"><span class="ic2" style="background:#ffd84a"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M8 4 3 7l2.5 4L8 10v10h8V10l2.5 1L21 7l-5-3c-.6 1.8-2 2.6-4 2.6S8.6 5.8 8 4Z"/></svg></span><h4>Ropa</h4><span class="n">2 productos</span></div></div>
+        <div class="seccion-f"><div class="r"><span class="ic2" style="background:#ff7a1a"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l1 12H4z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span><h4>Bolsos y pulseras</h4><span class="n">2 productos</span></div></div>
+
+        <div class="ent" style="margin-top:10px"><label>Nueva sección</label><div class="v" style="color:var(--texto-2)">Ej: Anillos, Vestidos, Regalos…</div></div>
+        <div class="boton" style="margin-top:10px">Crear sección</div>
+
+        <nav class="tabs" aria-label="Navegación">
+          <a href="#"><span class="c"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Inicio</a>
+          <a href="#"><span class="c"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>Metas</a>
+          <a href="#"><span class="c"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>Pedidos</a>
+          <a class="on" href="#"><span class="c"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg></span>Tienda</a>
+        </nav>
       </div>
       <div class="home"></div>
     </div>
