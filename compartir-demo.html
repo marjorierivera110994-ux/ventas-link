@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compartir en redes — Boutique Luna (demostración)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --wa: #25d366;
+          --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45;
+         background-image: radial-gradient(800px 360px at 10% -6%, color-mix(in oklab, var(--pistacho) 45%, transparent), transparent 62%); }
+  button, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; border: 0; background: none; }
+  :focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+  .app { max-width: 520px; margin: 0 auto; padding: 16px 16px 40px; }
+  h1, h2 { font-family: var(--f-d); letter-spacing: -.015em; }
+  h1 { font-size: 26px; font-weight: 800; line-height: 1.1; margin-top: 12px; }
+  .sub { margin-top: 6px; font-size: 14px; color: var(--texto-2); }
+  .demo { display: inline-flex; gap: 8px; align-items: center; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; }
+  h2 { font-size: 15px; font-weight: 800; margin-top: 20px; }
+  .opciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .op { min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--blanco); font-weight: 700; font-size: 14px; border: 2px solid transparent; }
+  .op[aria-pressed="true"] { background: var(--tinta); color: #fff; }
+  .op[disabled] { opacity: .45; cursor: not-allowed; }
+  .razon { font-size: 12px; color: var(--texto-2); margin-top: 6px; }
+  textarea { width: 100%; margin-top: 8px; background: var(--blanco); border: 2px solid transparent; border-radius: 18px; padding: 14px; min-height: 200px; font-size: 16px; line-height: 1.45; resize: vertical; }
+  textarea:focus-visible { border-color: var(--tinta); outline: none; }
+  .cuenta { display: flex; justify-content: space-between; font-size: 12px; color: var(--texto-2); margin-top: 4px; }
+  .btn { margin-top: 12px; width: 100%; min-height: 54px; border-radius: 999px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--tinta); color: var(--lima); text-decoration: none; }
+  .btn.wa { background: var(--wa); color: var(--tinta); }
+  .aviso { margin-top: 16px; font-size: 13px; color: var(--texto-2); background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 16px; padding: 10px 14px; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 5; max-width: 90vw; }
+  .toast.on { display: block; }
+</style>
+</head>
+<body>
+<main class="app">
+  <p class="demo" role="note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>Demostración · productos de ejemplo</p>
+  <h1>Comparte tu tienda en redes</h1>
+  <p class="sub">Elige un producto, una plantilla y la red social. La app escribe el texto por ti y tú lo ajustas.</p>
+
+  <h2 id="h-prod">1 · ¿Qué quieres compartir?</h2>
+  <div class="opciones" id="prods" role="group" aria-labelledby="h-prod"></div>
+
+  <h2 id="h-plan">2 · ¿Qué tipo de mensaje?</h2>
+  <div class="opciones" id="plantillas" role="group" aria-labelledby="h-plan"></div>
+  <p class="razon" id="razon" aria-live="polite"></p>
+
+  <h2 id="h-red">3 · ¿Dónde lo vas a publicar?</h2>
+  <div class="opciones" id="redes" role="group" aria-labelledby="h-red"></div>
+
+  <h2><label for="texto">4 · Tu texto (puedes editarlo)</label></h2>
+  <textarea id="texto" maxlength="2200"></textarea>
+  <p class="cuenta"><span id="nota-red"></span><span id="contador"></span></p>
+
+  <button type="button" class="btn" id="copiar">Copiar texto</button>
+  <a class="btn wa" id="wa" href="#" target="_blank" rel="noopener">Compartir por WhatsApp</a>
+
+  <p class="aviso">Las plantillas de <b>oferta</b> y <b>últimas unidades</b> solo se activan con datos reales: el producto debe tener una oferta publicada o un stock bajo. Así tus clientes siempre ven información verdadera.</p>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var NEGOCIO = 'Boutique Luna';
+  var ENLACE = 'https://ejemplo.com/boutique-luna'; /* en la app real: el enlace único de cada tienda */
+  var $ = function (id) { return document.getElementById(id); };
+  var USD = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' });
+
+  /* Datos de ejemplo: "antes/hasta" existen solo si el vendedor publicó una oferta; "stock" solo si controla inventario */
+  var PRODUCTOS = [
+    { id: 'camisa', n: 'Camisa de lino', precio: 24, antes: 30, hasta: '30 de noviembre', stock: 5, desc: 'Lino suave y fresco, de corte holgado.' },
+    { id: 'aretes', n: 'Aretes de plata', precio: 28, antes: 35, hasta: '25 de noviembre', stock: 2, desc: 'Hechos a mano, livianos y con cierre de seguridad.' },
+    { id: 'semillas', n: 'Collar de semillas', precio: 15, antes: 18, hasta: '20 de noviembre', stock: 8, desc: 'Semillas naturales ensartadas a mano.' },
+    { id: 'bolso', n: 'Bolso tejido', precio: 35, antes: null, hasta: null, stock: null, desc: 'Tejido a mano con fibra natural, amplio y con forro.' }
+  ];
+  var PLANTILLAS = [
+    { id: 'oferta', n: 'Oferta', ok: function (p) { return !!p.antes; }, no: 'Este producto no tiene una oferta publicada. Ponla primero en "Poner en oferta".' },
+    { id: 'nuevo', n: 'Producto nuevo', ok: function () { return true; }, no: '' },
+    { id: 'ultimas', n: 'Últimas unidades', ok: function (p) { return p.stock !== null && p.stock > 0 && p.stock <= 5; }, no: 'Solo disponible cuando el stock real es de 5 o menos.' },
+    { id: 'catalogo', n: 'Todo el catálogo', ok: function () { return true; }, no: '' }
+  ];
+  var REDES = [
+    { id: 'wa', n: 'WhatsApp', nota: 'Para estados y chats' },
+    { id: 'ig', n: 'Instagram', nota: 'Los enlaces no se tocan en las publicaciones: pide ir a tu perfil' },
+    { id: 'fb', n: 'Facebook', nota: 'Pega el enlace al final' },
+    { id: 'tt', n: 'TikTok', nota: 'Texto corto para el pie del video; pide ir a tu perfil para ver el enlace' }
+  ];
+  var estado = { prod: 'camisa', plantilla: 'oferta', red: 'wa', editado: false };
+  function prodActual() { return PRODUCTOS.filter(function (p) { return p.id === estado.prod; })[0]; }
+  function pct(p) { return Math.round((1 - p.precio / p.antes) * 100); }
+
+  function generar() {
+    var p = prodActual(); var red = estado.red; var t = [];
+    var cierre = (red === 'ig' || red === 'tt') ? 'Pídelo desde el link en mi perfil 👆' : 'Pídelo aquí 👉 ' + ENLACE;
+    if (estado.plantilla === 'oferta') {
+      t.push('🔥 ¡Oferta en ' + NEGOCIO + '!'); t.push(p.n + ': antes ' + USD.format(p.antes) + ', ahora ' + USD.format(p.precio) + ' (-' + pct(p) + '%).');
+      if (red !== 'tt') t.push(p.desc); t.push('Oferta hasta el ' + p.hasta + '.'); t.push(cierre);
+    } else if (estado.plantilla === 'nuevo') {
+      t.push('✨ ¡Nuevo en ' + NEGOCIO + '!'); t.push(p.n + ' · ' + USD.format(p.precio)); if (red !== 'tt') t.push(p.desc); t.push((red === 'ig' || red === 'tt') ? 'Mira todo el catálogo desde el link en mi perfil 👆' : 'Mira todo el catálogo 👉 ' + ENLACE);
+    } else if (estado.plantilla === 'ultimas') {
+      t.push('⏳ ¡Últimas ' + p.stock + ' unidades!'); t.push(p.n + ' · ' + USD.format(p.precio)); t.push('Cuando se acaben, se acabaron.'); t.push(cierre);
+    } else {
+      t.push('🛍️ Mira todo el catálogo de ' + NEGOCIO + ': aretes, collares, ropa y más, con precios y pedido directo por WhatsApp.'); t.push((red === 'ig' || red === 'tt') ? 'Link en mi perfil 👆' : '👉 ' + ENLACE);
+    }
+    if (red === 'ig' || red === 'tt') { t.push(''); t.push('#emprendedores #tiendaonline #compralocal'); }
+    return t.join('\n');
+  }
+
+  function boton(txt, pressed, onclick, deshabilitado) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'op'; b.textContent = txt; b.setAttribute('aria-pressed', String(pressed));
+    if (deshabilitado) b.disabled = true; b.addEventListener('click', onclick); return b;
+  }
+  function pintar() {
+    var p = prodActual();
+    // si la plantilla elegida no aplica a este producto, pasar a "Producto nuevo"
+    var pl = PLANTILLAS.filter(function (x) { return x.id === estado.plantilla; })[0];
+    if (!pl.ok(p)) estado.plantilla = 'nuevo';
+    var c = $('prods'); c.textContent = '';
+    PRODUCTOS.forEach(function (x) { c.appendChild(boton(x.n, x.id === estado.prod, function () { estado.prod = x.id; estado.editado = false; pintar(); })); });
+    c = $('plantillas'); c.textContent = ''; var razones = [];
+    PLANTILLAS.forEach(function (x) {
+      var ok = x.ok(p); if (!ok && x.no) razones.push(x.n + ': ' + x.no);
+      c.appendChild(boton(x.n, x.id === estado.plantilla, function () { estado.plantilla = x.id; estado.editado = false; pintar(); }, !ok));
+    });
+    $('razon').textContent = razones.join(' ');
+    c = $('redes'); c.textContent = '';
+    REDES.forEach(function (x) { c.appendChild(boton(x.n, x.id === estado.red, function () { estado.red = x.id; estado.editado = false; pintar(); })); });
+    $('nota-red').textContent = REDES.filter(function (x) { return x.id === estado.red; })[0].nota;
+    if (!estado.editado) $('texto').value = generar();
+    actualizar();
+  }
+  function actualizar() {
+    var v = $('texto').value; $('contador').textContent = v.length + ' / 2200';
+    $('wa').href = 'https://wa.me/?text=' + encodeURIComponent(v);
+  }
+  function aviso(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(aviso.t); aviso.t = setTimeout(function () { x.classList.remove('on'); }, 2200); }
+
+  $('texto').addEventListener('input', function () { estado.editado = true; actualizar(); });
+  $('copiar').addEventListener('click', function () {
+    var v = $('texto').value;
+    function respaldo() { var a = $('texto'); a.select(); try { document.execCommand('copy'); aviso('Texto copiado'); } catch (e) { aviso('Selecciona el texto y cópialo manualmente'); } }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(function () { aviso('Texto copiado'); }, respaldo); else respaldo();
+  });
+  pintar();
+  window.__compartir = { estado: estado, generar: generar, pintar: pintar };
+})();
+</script>
+</body>
+</html>

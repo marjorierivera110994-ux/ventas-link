@@ -112,6 +112,37 @@
   :root[data-estilo="d"] .logro-c:nth-child(2) small { color: #e6ee4a; }
   :root[data-estilo="d"] .logro-c:nth-child(3) { background: #ff7a1a; color: #131313; }
   :root[data-estilo="d"] .logro-c:nth-child(3) small { color: #131313; }
+  .nav { display: flex; align-items: center; gap: 8px; padding: 12px 0 0; overflow-x: auto; }
+  .nav .marca { font-family: var(--font-display); font-weight: 800; font-size: 17px; margin-right: auto; white-space: nowrap; }
+  .nav a, .nav button { min-height: 44px; padding: 0 16px; border-radius: 999px; font: inherit; font-weight: 700; font-size: 14px; text-decoration: none; color: var(--text-1); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; cursor: pointer;
+                        border: 1px solid color-mix(in oklab, var(--text-2) 30%, transparent); background: var(--surface); }
+  .nav .como { background: var(--text-1); color: var(--bg); border-color: var(--text-1); }
+  dialog { border: 0; border-radius: var(--radius-card); background: var(--bg); color: var(--text-1); width: min(92vw, 560px); max-height: 88dvh; padding: 0; font-family: var(--font-body); }
+  dialog::backdrop { background: rgb(19 19 19 / .55); }
+  .dlg-cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 18px 18px 8px; position: sticky; top: 0; background: var(--bg); }
+  .dlg-cab h2 { font-size: 22px; }
+  .dlg-x { width: 44px; height: 44px; border-radius: 999px; border: 0; background: var(--surface); cursor: pointer; display: grid; place-items: center; color: var(--text-1); }
+  .guia { list-style: none; padding: 0 18px 22px; display: grid; gap: 10px; counter-reset: g; }
+  .guia li { counter-increment: g; display: grid; grid-template-columns: 34px 1fr; gap: 12px; background: var(--surface); border-radius: 18px; padding: 12px 14px; }
+  .guia li::before { content: counter(g); width: 34px; height: 34px; border-radius: 999px; background: var(--soft); display: grid; place-items: center; font-weight: 800; font-family: var(--font-display); color: var(--text-1); }
+  .guia h3 { font-size: 15px; font-weight: 800; }
+  .guia p { font-size: 14px; color: var(--text-2); margin-top: 2px; }
+  .prox { font-size: 11px; font-weight: 700; font-style: normal; background: color-mix(in oklab, var(--text-2) 14%, transparent); color: var(--text-2); border-radius: 999px; padding: 1px 8px; margin-left: 4px; white-space: nowrap; }
+  .planes { display: grid; gap: 14px; margin-top: 20px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); align-items: stretch; }
+  .plan { position: relative; background: var(--surface); border-radius: var(--radius-card); padding: 20px 18px; display: flex; flex-direction: column;
+          border: 1px solid color-mix(in oklab, var(--text-2) 22%, transparent); box-shadow: 0 12px 28px -18px rgb(var(--shadow-tinta) / .35); }
+  .plan.rec { border: 2px solid var(--text-1); box-shadow: 0 18px 36px -16px rgb(var(--shadow-tinta) / .45); }
+  .plan .etq { position: absolute; top: -12px; left: 18px; background: var(--text-1); color: var(--bg); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; }
+  .plan h3 { font-size: 20px; font-weight: 800; }
+  .plan .para { font-size: 13px; color: var(--text-2); margin-top: 2px; }
+  .plan .precio { margin-top: 12px; font-family: var(--font-display); font-size: 38px; font-weight: 800; line-height: 1; }
+  .plan .precio small { font-family: var(--font-body); font-size: 14px; font-weight: 600; color: var(--text-2); }
+  .plan ul { list-style: none; margin-top: 14px; display: grid; gap: 8px; flex: 1; }
+  .plan li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; font-size: 14px; }
+  .plan li svg { margin-top: 2px; color: var(--accent-text); }
+  .plan .cta { margin-top: 18px; width: 100%; }
+  .plan:not(.rec) .cta { background: var(--surface); color: var(--text-1); border: 2px solid var(--text-1); box-shadow: none; }
+  .nota-planes { margin-top: 14px; font-size: 13px; color: var(--text-2); }
   .faq { margin-top: 20px; display: grid; gap: 10px; }
   details {
     background: var(--surface); border-radius: var(--radius-card); padding: 0 18px;
@@ -146,6 +177,13 @@
 </div>
 
 <main>
+  <nav class="nav" aria-label="Menú principal">
+    <span class="marca">Tu tienda digital</span>
+    <button type="button" class="como" id="abrir-guia" aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.8M12 17h.01"/></svg>Cómo usar</button>
+    <a href="#planes">Planes</a>
+    <a href="#preguntas">Preguntas</a>
+  </nav>
+
   <section id="inicio">
     <span class="badge">Para tiendas pequeñas</span>
     <h1>Recibe pedidos <em>claros</em> por WhatsApp</h1>
@@ -184,6 +222,59 @@
     </div>
   </section>
 
+  <section id="planes" aria-labelledby="t-planes">
+    <span class="badge">Planes</span>
+    <h2 id="t-planes" style="margin-top:12px">Empieza gratis. <em>Crece cuando quieras.</em></h2>
+    <p class="sub">Tres planes pensados para negocios pequeños. Sin comisión por tus ventas y sin letra chica.</p>
+    <div class="planes">
+      <article class="plan">
+        <h3>Gratis</h3><p class="para">Para empezar y probar</p>
+        <p class="precio">$0 <small>/ mes</small></p>
+        <ul>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Tu tienda con enlace único</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Hasta 10 productos con foto</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Hasta 3 secciones</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Pedidos por WhatsApp sin límite</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Descripción y stock opcional</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Camino de éxito y meta semanal</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Guía de ayuda</span></li>
+        </ul>
+        <a class="cta" href="#inicio">Empezar gratis</a>
+      </article>
+
+      <article class="plan rec">
+        <span class="etq">Recomendado</span>
+        <h3>Emprendedor</h3><p class="para">Para vender todos los días</p>
+        <p class="precio">$4.99 <small>/ mes</small></p>
+        <ul>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Todo lo del plan Gratis</b></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Hasta 60 productos y 10 secciones</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Ofertas y descuentos con fecha de fin</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Textos listos para compartir en redes</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Colores y estilo de tu catálogo</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Estadísticas básicas: visitas y pedidos</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Asistente automático de ayuda <em class="prox">Próximamente</em></span></li>
+        </ul>
+        <a class="cta" href="#inicio">Probar 7 días gratis</a>
+      </article>
+
+      <article class="plan">
+        <h3>Profesional</h3><p class="para">Para crecer en serio</p>
+        <p class="precio">$9.99 <small>/ mes</small></p>
+        <ul>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Todo lo del plan Emprendedor</b></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Hasta 300 productos y secciones sin límite</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Estadísticas completas y reporte mensual</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mejora de fotos: fondo blanco y luz <em class="prox">Próximamente</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Plantillas para personalizar tus fotos <em class="prox">Próximamente</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Atención prioritaria por WhatsApp</span></li>
+        </ul>
+        <a class="cta" href="#inicio">Probar 7 días gratis</a>
+      </article>
+    </div>
+    <p class="nota-planes">Precios de lanzamiento en dólares, por mes. Son precios de prueba y los confirmamos antes de abrir los cobros. Empiezas con 7 días de funciones premium y luego pasas al plan gratis, sin cobro automático. Cancelas cuando quieras. Los impuestos se definen según tu país.</p>
+  </section>
+
   <section id="logros" aria-labelledby="t-logros">
     <span class="badge">Te acompañamos</span>
     <h2 id="t-logros" style="margin-top:12px">Celebramos <em>cada paso</em> de tu negocio</h2>
@@ -203,7 +294,7 @@
       <details><summary>¿Cómo me pagan mis clientes?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
         <p>El pago lo acuerdas <b>directamente con tu cliente</b>, fuera de la app: transferencia, efectivo o como prefieras. La app no cobra por tus ventas ni se queda con una comisión.</p></details>
       <details><summary>¿Cuánto cuesta?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
-        <p>Empiezas <b>gratis</b> y puedes quedarte en el plan gratis para siempre (hasta 10 productos). Los planes de pago son mensuales y opcionales, y verás su precio completo antes de elegir.</p></details>
+        <p>Empiezas <b>gratis</b> y puedes quedarte en el plan gratis para siempre (hasta 10 productos). Los planes de pago son mensuales y opcionales: <b>Emprendedor $4.99</b> y <b>Profesional $9.99</b> (precios de lanzamiento de prueba). Verás el precio completo antes de elegir. <a href="#planes">Ver los tres planes</a>.</p></details>
       <details><summary>¿Qué pasa cuando termina la prueba de 7 días?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
         <p>Pasas automáticamente al plan gratis. <b>No se cobra nada</b> y tu tienda sigue funcionando. Si quieres seguir con las funciones premium, tú decides cuándo pagar.</p></details>
       <details><summary>¿Cómo recibo los pedidos?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
@@ -239,6 +330,23 @@
   <footer>Borrador de diseño · el texto final se ajusta con tu cliente ideal antes de publicar.</footer>
 </main>
 
+<dialog id="guia" aria-labelledby="guia-t">
+  <div class="dlg-cab"><h2 id="guia-t">Cómo usar tu app</h2>
+    <button type="button" class="dlg-x" id="cerrar-guia" aria-label="Cerrar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <ol class="guia">
+    <li><div><h3>Crea tu tienda</h3><p>Escribe el nombre de tu negocio, qué ofreces, tu horario y tu número de WhatsApp con el código de tu país.</p></div></li>
+    <li><div><h3>Elige tu país, idioma y moneda</h3><p>Escribe tus precios en tu moneda: la app no convierte monedas. Tus clientes pueden ver el catálogo en español, inglés o portugués.</p></div></li>
+    <li><div><h3>Crea tus secciones</h3><p>Ordena tu mercadería, por ejemplo Aretes, Collares y Ropa. Cada sección tiene su propio catálogo.</p></div></li>
+    <li><div><h3>Sube tus productos</h3><p>Agrega foto, nombre, precio y descripción. Si quieres, controla el stock: la tienda marca "Agotado" sola cuando llegan a cero.</p></div></li>
+    <li><div><h3>Pon ofertas reales</h3><p>Elige un descuento y la app calcula el nuevo precio. Tu cliente ve tu precio anterior, el precio nuevo y cuándo termina. El precio anterior siempre es el real.</p></div></li>
+    <li><div><h3>Comparte tu enlace en redes</h3><p>Copia tu enlace y usa los textos listos para WhatsApp, Instagram, Facebook y TikTok. Los ajustas a tu gusto antes de publicar.</p></div></li>
+    <li><div><h3>Recibe pedidos por WhatsApp</h3><p>Tu cliente arma su carrito y el mensaje te llega listo, con productos, cantidades, total, entrega y forma de pago. Tú confirmas disponibilidad, pago y entrega por el chat.</p></div></li>
+    <li><div><h3>Actualiza tus pedidos</h3><p>Marca cada pedido como nuevo, confirmado o entregado. Así se actualizan tu stock y tus ventas.</p></div></li>
+    <li><div><h3>Sigue tu camino de éxito</h3><p>Suma semana a semana al compartir tu enlace, actualizar productos y atender pedidos. Fija tu meta de ventas y celebra tus logros.</p></div></li>
+    <li><div><h3>¿Tienes dudas?</h3><p>Usa la guía de ayuda. En los planes de pago tendrás además un asistente automático <em class="prox">Próximamente</em> y atención por WhatsApp.</p></div></li>
+  </ol>
+</dialog>
+
 <script>
   (function () {
     var botones = document.querySelectorAll('.barra-estilo button');
@@ -247,6 +355,10 @@
       botones.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.e === e)); });
     }
     botones.forEach(function (b) { b.addEventListener('click', function () { poner(b.dataset.e); }); });
+    var guia = document.getElementById('guia');
+    document.getElementById('abrir-guia').addEventListener('click', function () { if (guia.showModal) guia.showModal(); else guia.setAttribute('open', ''); });
+    document.getElementById('cerrar-guia').addEventListener('click', function () { if (guia.close) guia.close(); else guia.removeAttribute('open'); });
+    guia.addEventListener('click', function (e) { if (e.target === guia && guia.close) guia.close(); });
     var h = (location.hash || '').replace('#', '');
     if (h === 'a' || h === 'b' || h === 'c' || h === 'd') poner(h);
   })();

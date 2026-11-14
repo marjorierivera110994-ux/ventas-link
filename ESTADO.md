@@ -119,6 +119,14 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Implementado en demo: tienda-demo.html (3 productos con "Antes" tachado, precio grande y etiqueta -%) y pantalla 7 "Poner en oferta" de app-con-tus-colores.html.
 - Pendiente: ubicar esto en un plan (¿premium?), definir límites y revisar con abogado/contador antes de lanzar.
 
+## Planes, precios y guía "Cómo usar" (pedido del usuario 2026-11-14)
+- 3 planes (hipótesis de lanzamiento, NO validados): GRATIS $0 (10 productos, 3 secciones, pedidos por WhatsApp sin límite, descripción y stock opcional, camino de éxito y meta, guía de ayuda) · EMPRENDEDOR $4.99/mes recomendado (60 productos, 10 secciones, ofertas con fecha, textos para redes, colores y estilo del catálogo, estadísticas básicas, robot de ayuda [próximamente]) · PROFESIONAL $9.99/mes (300 productos, secciones ilimitadas, estadísticas completas y reporte mensual, mejora de fotos y plantillas de foto [próximamente], atención prioritaria por WhatsApp)
+- Precios fijados mirando el mercado (FICHA-MERCADO.md): Take App Premium ~$14, Tiendanube Colombia básico ~$6, salario básico Ecuador $482. Los topes de productos/secciones por plan son MÍOS y salen de estimar costos; revisar con costo real de almacenamiento de fotos.
+- Reemplaza los 4 planes del PDF original ($5.99 / $9.99 / $14.99 + gratis): ahora son 3 por pedido del usuario
+- Pendiente: costo por foto mejorada y por conversación del robot ANTES de abrir esas funciones; proveedor de cobro Ecuador; IVA; promesa de "atención prioritaria por WhatsApp" (quién atiende y en cuánto tiempo)
+- Botón "Cómo usar" (arriba en la página de ventas) abre una guía de 10 pasos con TODAS las funciones actuales; hay que actualizarla cada vez que cambie una función
+- Marketing (opción 3 del usuario): generador de textos para compartir (compartir-demo.html): plantillas Oferta / Producto nuevo / Últimas unidades / Todo el catálogo × WhatsApp / Instagram / Facebook / TikTok; texto editable; copiar y compartir por WhatsApp. Honestidad: "Oferta" solo con oferta publicada real; "Últimas unidades" solo con stock real ≤5. Probado por script. Pendiente: enlace real de la tienda, más plantillas (cumpleaños, temporadas), programación de recordatorios
+
 ## Mejoras de producto aplicadas (desde el reporte de validación)
 - Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
 - Diferenciador 2: hecho para Ecuador (español cotidiano; el mensaje puede indicar formas de pago que el vendedor acepta: transferencia, efectivo, Deuna, tarjeta)
