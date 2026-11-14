@@ -76,6 +76,14 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Probado por script: filtros, búsqueda, agotado, variantes, cantidades, validaciones, mensaje y URL correctos, sin errores de consola. NO probado: apertura real en WhatsApp ni teléfonos reales
 - Pendiente para la app real: registrar el pedido en la base de datos al pulsar enviar (estado "solicitado"), moneda/formato por país, límites del plan
 
+## Soporte con robot en planes de pago (pedido del usuario 2026-11-14)
+- Gratis: guía de ayuda + preguntas frecuentes dentro de la app (sin robot)
+- Planes de pago (desde "Emprendedor"): asistente automático (robot) que se ACTIVA al pagar y se desactiva al volver al plan gratis; límite mensual de conversaciones por plan (a fijar con costo medido, gate 40)
+- Reglas: se presenta como robot (nunca se hace pasar por persona); responde SOLO con la guía de ayuda y datos de la cuenta del propio vendedor (no inventa); si no sabe o el vendedor lo pide, pasa a una persona por WhatsApp; nunca da consejos legales/fiscales/financieros; no ve datos de otros vendedores
+- Técnico (interno): IA llamada solo desde el servidor, con tope de gasto diario y botón de apagado (30/31); plan validado en servidor antes de responder
+- Fase: DESPUÉS del MVP vendible (el PDF original dejaba la IA fuera del MVP; el usuario la autorizó; entra con la segunda fase del premium). En el MVP: guía de ayuda + enlace a WhatsApp humano en planes de pago
+- Pendiente: definir horario y quién atiende el WhatsApp humano (promesa de tiempo de respuesta); costo por conversación antes de fijar límites
+
 ## Mejoras de producto aplicadas (desde el reporte de validación)
 - Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
 - Diferenciador 2: hecho para Ecuador (español cotidiano; el mensaje puede indicar formas de pago que el vendedor acepta: transferencia, efectivo, Deuna, tarjeta)
