@@ -28,11 +28,11 @@
   }
   :root { --accent-text: var(--accent); --soft: color-mix(in oklab, var(--accent) 12%, transparent); }
   :root[data-estilo="d"] {
-    --bg: #f2e9d8; --surface: #ffffff; --text-1: #131313; --text-2: #5a5648; --accent: #d5df70; --accent-text: #2c6a53;
-    --soft: #a8dcc5; --radius-card: 24px; --radius-btn: 999px; --font-display: 'Bricolage Grotesque', monospace; --font-body: 'Instrument Sans', monospace;
+    --bg: #f4ecdb; --surface: #ffffff; --text-1: #131313; --text-2: #5a5648; --accent: #e6ee4a; --accent-text: #2f6a10;
+    --soft: #a5dc5b; --radius-card: 24px; --radius-btn: 999px; --font-display: 'Bricolage Grotesque', monospace; --font-body: 'Instrument Sans', monospace;
     --shadow-tinta: 40 60 40; --on-accent: #131313;
   }
-  :root[data-estilo="d"] .cta { background: #131313; color: #d5df70; box-shadow: 0 12px 26px -10px rgb(19 19 19 / .55); }
+  :root[data-estilo="d"] .cta { background: #131313; color: #e6ee4a; box-shadow: 0 12px 26px -10px rgb(19 19 19 / .55); }
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
     background:
@@ -103,6 +103,15 @@
   .demo p { margin-top: 6px; font-size: 15px; color: var(--text-2); }
   .demo .marca { display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); }
 
+  .logros { display: grid; gap: 12px; margin-top: 20px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  .logro-c { padding: 16px; border-radius: var(--radius-card); background: var(--surface);
+             border: 1px solid color-mix(in oklab, var(--text-2) 20%, transparent); box-shadow: 0 10px 24px -16px rgb(var(--shadow-tinta) / .3); }
+  .logro-c small { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-text); }
+  .logro-c p { margin-top: 6px; font-family: var(--font-display); font-size: 18px; font-weight: 800; line-height: 1.2; }
+  :root[data-estilo="d"] .logro-c:nth-child(2) { background: #131313; color: #fff; }
+  :root[data-estilo="d"] .logro-c:nth-child(2) small { color: #e6ee4a; }
+  :root[data-estilo="d"] .logro-c:nth-child(3) { background: #ff7a1a; color: #131313; }
+  :root[data-estilo="d"] .logro-c:nth-child(3) small { color: #131313; }
   .faq { margin-top: 20px; display: grid; gap: 10px; }
   details {
     background: var(--surface); border-radius: var(--radius-card); padding: 0 18px;
@@ -171,6 +180,16 @@
       <h3>Pruébala tú mismo</h3>
       <p>Aquí irá una tienda de demostración para que veas el catálogo, armes un pedido y veas el mensaje de WhatsApp antes de crear tu cuenta.</p>
       <span class="marca">Espacio reservado · se construye en la Sesión 3</span>
+    </div>
+  </section>
+
+  <section id="logros" aria-labelledby="t-logros">
+    <span class="badge">Te acompañamos</span>
+    <h2 id="t-logros" style="margin-top:12px">Celebramos <em>cada paso</em> de tu negocio</h2>
+    <div class="logros">
+      <div class="logro-c"><small>Primer producto</small><p>Todo gran negocio empezó así.</p></div>
+      <div class="logro-c"><small>Primer pedido</small><p>Lo difícil ya lo hiciste.</p></div>
+      <div class="logro-c"><small>Tu mejor semana</small><p>Tú puedes más de lo que crees.</p></div>
     </div>
   </section>
 
