@@ -99,6 +99,12 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Probado por script: mensaje en 3 idiomas, cambio de país/moneda, validaciones, sin errores, sin desbordes a 375px, botones ≥44px. NO probado: apertura real en WhatsApp; traducciones sin revisión de un hablante nativo (en/pt).
 - Pendiente (Sesión 4-5): traducir TODA la app (no solo la tienda) con archivos de idioma; revisión de en/pt por nativo; reglas de moneda por país (decimales, impuestos); definir lista inicial de países con el usuario (39-INTERNACIONALIZACION)
 
+## Descripción de producto y stock opcional (pedido del usuario 2026-11-14)
+- Cada producto: foto, nombre, precio, categoría, DESCRIPCIÓN (hasta 300 caracteres), disponibilidad y STOCK OPCIONAL
+- Stock: el vendedor decide si lo controla. Si lo activa: unidades por producto; la tienda marca "Agotado" sola al llegar a 0, muestra "Quedan N" con 5 o menos, y el carrito no deja pedir más de lo disponible. Si no lo activa: sin límite (tope de 20 por pedido)
+- Reglas pendientes para la app real: el stock se descuenta cuando el vendedor marca el pedido como confirmado/entregado (NO al enviar el mensaje, porque el pedido aún no está confirmado); validar el tope también en el servidor; stock por variante (talla/color) queda para después
+- Implementado en demo: tienda-demo.html (descripción, "Quedan N", agotado, tope por stock, 3 idiomas, probado por script) y pantalla 5 de app-con-tus-colores.html (formulario de nuevo producto)
+
 ## Mejoras de producto aplicadas (desde el reporte de validación)
 - Diferenciador 1: pedido ordenado (mensaje prellenado con productos, variantes, subtotal y aclaración de que no está confirmado)
 - Diferenciador 2: hecho para Ecuador (español cotidiano; el mensaje puede indicar formas de pago que el vendedor acepta: transferencia, efectivo, Deuna, tarjeta)

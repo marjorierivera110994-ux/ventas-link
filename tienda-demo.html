@@ -167,7 +167,7 @@
       verPedido: 'Ver mi pedido', cats: 'Categorías', todo: 'Todo', ropa: 'Ropa', accesorios: 'Accesorios', agotado: 'Agotado',
       agregar: 'Agregar {x}', agotadoAria: '{x} agotado', sinResultados: 'No encontramos productos con esa búsqueda. Prueba con otra palabra.',
       talla: 'Talla', color: 'Color', cantidad: 'Cantidad', agregarPedido: 'Agregar al pedido', mas1: 'Agregar una unidad', menos1: 'Quitar una unidad',
-      agregado: '{n} × {x} agregado', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
+      agregado: '{n} × {x} agregado', quedan: 'Quedan {n}', solo: 'Solo hay {n} disponibles', descripcion: 'Descripción', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
       subtotal: 'Subtotal', envioNota: 'La entrega y el pago se coordinan por WhatsApp. El costo de envío, si aplica, te lo confirma el negocio.',
       continuar: 'Continuar', seguir: 'Seguir comprando', quitar: 'Quitar', coordina: 'Coordinemos tu pedido',
       aviso: 'Pulsa el botón verde y se abrirá WhatsApp con tu pedido listo. Allí acuerdas con el negocio la entrega y el pago.',
@@ -192,7 +192,7 @@
       verPedido: 'View my order', cats: 'Categories', todo: 'All', ropa: 'Clothing', accesorios: 'Accessories', agotado: 'Sold out',
       agregar: 'Add {x}', agotadoAria: '{x} sold out', sinResultados: 'No products match your search. Try another word.',
       talla: 'Size', color: 'Color', cantidad: 'Quantity', agregarPedido: 'Add to order', mas1: 'Add one unit', menos1: 'Remove one unit',
-      agregado: '{n} × {x} added', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
+      agregado: '{n} × {x} added', quedan: '{n} left', solo: 'Only {n} available', descripcion: 'Description', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
       subtotal: 'Subtotal', envioNota: 'Delivery and payment are arranged on WhatsApp. If shipping applies, the shop will confirm its cost.',
       continuar: 'Continue', seguir: 'Keep shopping', quitar: 'Remove', coordina: 'Let’s arrange your order',
       aviso: 'Tap the green button and WhatsApp will open with your order ready. There you agree on delivery and payment with the shop.',
@@ -216,7 +216,7 @@
       verPedido: 'Ver meu pedido', cats: 'Categorias', todo: 'Tudo', ropa: 'Roupas', accesorios: 'Acessórios', agotado: 'Esgotado',
       agregar: 'Adicionar {x}', agotadoAria: '{x} esgotado', sinResultados: 'Não encontramos produtos com essa busca. Tente outra palavra.',
       talla: 'Tamanho', color: 'Cor', cantidad: 'Quantidade', agregarPedido: 'Adicionar ao pedido', mas1: 'Adicionar uma unidade', menos1: 'Remover uma unidade',
-      agregado: '{n} × {x} adicionado', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
+      agregado: '{n} × {x} adicionado', quedan: 'Restam {n}', solo: 'Só há {n} disponíveis', descripcion: 'Descrição', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
       subtotal: 'Subtotal', envioNota: 'Entrega e pagamento são combinados pelo WhatsApp. Se houver frete, a loja confirma o valor.',
       continuar: 'Continuar', seguir: 'Continuar comprando', quitar: 'Remover', coordina: 'Vamos combinar seu pedido',
       aviso: 'Toque no botão verde e o WhatsApp abrirá com seu pedido pronto. Lá você combina a entrega e o pagamento com a loja.',
@@ -245,15 +245,24 @@
     collar: '<path d="M8 8c0 14 24 14 24 0" fill="none"/><circle cx="20" cy="26" r="4"/>'
   };
   var TALLAS = { clave: 'talla', ops: [{ id: 'S', n: { es: 'S', en: 'S', pt: 'P' } }, { id: 'M', n: { es: 'M', en: 'M', pt: 'M' } }, { id: 'L', n: { es: 'L', en: 'L', pt: 'G' } }] };
+  /* stock: número = el vendedor controla el inventario (la tienda marca "Agotado" sola al llegar a 0);
+     null = sin control de stock (opcional). */
   var PRODUCTOS = [
-    { id: 'camisa', n: { es: 'Camisa de lino', en: 'Linen shirt', pt: 'Camisa de linho' }, base: 24, cat: 'ropa', color: '#a5dc5b', arte: 'camisa', variantes: TALLAS, hay: true },
-    { id: 'bolso', n: { es: 'Bolso tejido', en: 'Woven bag', pt: 'Bolsa tecida' }, base: 35, cat: 'accesorios', color: '#ffd84a', arte: 'bolso',
-      variantes: { clave: 'color', ops: [{ id: 'crudo', n: { es: 'Crudo', en: 'Natural', pt: 'Cru' } }, { id: 'mostaza', n: { es: 'Mostaza', en: 'Mustard', pt: 'Mostarda' } }] }, hay: true },
-    { id: 'aretes', n: { es: 'Aretes de plata', en: 'Silver earrings', pt: 'Brincos de prata' }, base: 28, cat: 'accesorios', color: '#ff7a1a', arte: 'aretes', hay: true },
-    { id: 'pulsera', n: { es: 'Pulsera tejida', en: 'Woven bracelet', pt: 'Pulseira tecida' }, base: 9, cat: 'accesorios', color: '#e6ee4a', arte: 'pulsera', hay: true },
-    { id: 'falda', n: { es: 'Falda midi', en: 'Midi skirt', pt: 'Saia midi' }, base: 32, cat: 'ropa', color: '#a5dc5b', arte: 'falda', variantes: TALLAS, hay: true },
-    { id: 'collar', n: { es: 'Collar artesanal', en: 'Handmade necklace', pt: 'Colar artesanal' }, base: 18, cat: 'accesorios', color: '#ffd84a', arte: 'collar', hay: false }
+    { id: 'camisa', n: { es: 'Camisa de lino', en: 'Linen shirt', pt: 'Camisa de linho' }, base: 24, cat: 'ropa', color: '#a5dc5b', arte: 'camisa', variantes: TALLAS, stock: 5,
+      desc: { es: 'Lino suave y fresco, de corte holgado. Lavar a mano. Ideal para días calurosos.', en: 'Soft, breathable linen with a relaxed fit. Hand wash. Great for warm days.', pt: 'Linho macio e fresco, de corte solto. Lavar à mão. Ideal para dias quentes.' } },
+    { id: 'bolso', n: { es: 'Bolso tejido', en: 'Woven bag', pt: 'Bolsa tecida' }, base: 35, cat: 'accesorios', color: '#ffd84a', arte: 'bolso', stock: null,
+      variantes: { clave: 'color', ops: [{ id: 'crudo', n: { es: 'Crudo', en: 'Natural', pt: 'Cru' } }, { id: 'mostaza', n: { es: 'Mostaza', en: 'Mustard', pt: 'Mostarda' } }] },
+      desc: { es: 'Tejido a mano con fibra natural. Amplio, con asa corta y forro interior.', en: 'Handwoven from natural fiber. Roomy, with a short handle and inner lining.', pt: 'Tecida à mão com fibra natural. Espaçosa, com alça curta e forro interno.' } },
+    { id: 'aretes', n: { es: 'Aretes de plata', en: 'Silver earrings', pt: 'Brincos de prata' }, base: 28, cat: 'accesorios', color: '#ff7a1a', arte: 'aretes', stock: 2,
+      desc: { es: 'Hechos a mano, livianos y con cierre de seguridad. Vienen en caja de regalo.', en: 'Handmade, lightweight, with a secure clasp. Comes in a gift box.', pt: 'Feitos à mão, leves e com fecho de segurança. Acompanham caixa de presente.' } },
+    { id: 'pulsera', n: { es: 'Pulsera tejida', en: 'Woven bracelet', pt: 'Pulseira tecida' }, base: 9, cat: 'accesorios', color: '#e6ee4a', arte: 'pulsera', stock: 12,
+      desc: { es: 'Hilo encerado en colores vivos. Ajustable, para toda ocasión.', en: 'Waxed thread in bright colors. Adjustable, for any occasion.', pt: 'Fio encerado em cores vivas. Ajustável, para qualquer ocasião.' } },
+    { id: 'falda', n: { es: 'Falda midi', en: 'Midi skirt', pt: 'Saia midi' }, base: 32, cat: 'ropa', color: '#a5dc5b', arte: 'falda', variantes: TALLAS, stock: null,
+      desc: { es: 'Falda midi con cintura elástica y caída suelta. Disponible en tallas S, M y L.', en: 'Midi skirt with an elastic waist and a loose drape. Available in sizes S, M and L.', pt: 'Saia midi com cintura elástica e caimento solto. Disponível nos tamanhos P, M e G.' } },
+    { id: 'collar', n: { es: 'Collar artesanal', en: 'Handmade necklace', pt: 'Colar artesanal' }, base: 18, cat: 'accesorios', color: '#ffd84a', arte: 'collar', stock: 0,
+      desc: { es: 'Collar artesanal con dije de cerámica pintado a mano.', en: 'Handmade necklace with a hand-painted ceramic pendant.', pt: 'Colar artesanal com pingente de cerâmica pintado à mão.' } }
   ];
+  PRODUCTOS.forEach(function (p) { p.hay = p.stock === null || p.stock > 0; });
   var LLAVE = 'tienda-demo-v2';
 
   var estado = { cat: 'todo', q: '', carrito: [], entrega: null, pais: 'EC', idioma: 'es', moneda: 'USD' };
@@ -301,11 +310,18 @@
   function lineas() { return estado.carrito.map(function (l) { var p = porId(l.id); return { l: l, p: p, total: precioDe(p) * l.cant }; }); }
   function subtotal() { return lineas().reduce(function (s, x) { return s + x.total; }, 0); }
   function cantidad() { return estado.carrito.reduce(function (s, l) { return s + l.cant; }, 0); }
+  function enCarrito(id) { return estado.carrito.reduce(function (s, l) { return l.id === id ? s + l.cant : s; }, 0); }
+  function maxMas(p) { return p.stock === null ? 20 : Math.max(0, Math.min(20, p.stock - enCarrito(p.id))); }
+  function stockBajo(p) { return p.stock !== null && p.stock > 0 && p.stock <= 5; }
   function agregar(id, variante, cant) {
+    var p = porId(id); var permitido = Math.min(cant, maxMas(p));
+    if (permitido <= 0) { toast(t('solo', { n: p.stock })); return false; }
     var enc = null;
     estado.carrito.forEach(function (l) { if (l.id === id && (l.variante || '') === (variante || '')) enc = l; });
-    if (enc) enc.cant = Math.min(20, enc.cant + cant); else estado.carrito.push({ id: id, variante: variante || '', cant: Math.min(20, cant) });
+    if (enc) enc.cant += permitido; else estado.carrito.push({ id: id, variante: variante || '', cant: permitido });
     guardar(); pintarBarra();
+    if (permitido < cant) toast(t('solo', { n: p.stock }));
+    return permitido;
   }
   function pintarBarra() {
     var n = cantidad();
@@ -346,7 +362,7 @@
       var mas = el('button', { type: 'button', class: 'mas', 'aria-label': p.hay ? t('agregar', { x: nm(p) }) : t('agotadoAria', { x: nm(p) }), onclick: function (e) { abridor = e.currentTarget; abrirProducto(p); } });
       mas.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
       if (!p.hay) mas.disabled = true;
-      g.appendChild(el('article', { class: 'prod' }, [foto, el('h3', { text: nm(p) }), el('p', { class: 'meta', text: t(p.cat) + (p.variantes ? ' · ' + t(p.variantes.clave) : '') }),
+      g.appendChild(el('article', { class: 'prod' }, [foto, el('h3', { text: nm(p) }), el('p', { class: 'meta', text: t(p.cat) + (p.variantes ? ' · ' + t(p.variantes.clave) : '') + (stockBajo(p) ? ' · ' + t('quedan', { n: p.stock }) : '') }),
         el('div', { class: 'fila' }, [el('span', { class: 'precio', text: dinero(precioDe(p)) }), mas])]));
     });
   }
@@ -388,6 +404,8 @@
       h.appendChild(cabecera(nm(p)));
       var foto = el('div', { class: 'foto', style: 'background:' + p.color + ';height:140px;margin-top:12px' }); foto.innerHTML = svgHtml(p.arte, 74, 1.4); h.appendChild(foto);
       h.appendChild(el('p', { class: 'precio', style: 'font-size:24px;margin-top:12px', text: dinero(precioDe(p)) }));
+      if (stockBajo(p)) h.appendChild(el('p', { class: 'abierto', text: t('quedan', { n: p.stock }) }));
+      h.appendChild(el('p', { class: 'desc', style: 'margin-top:8px;color:var(--tinta)', text: p.desc[estado.idioma] || p.desc.es }));
       if (p.variantes) {
         var fs = el('fieldset', { class: 'campo' }, [el('legend', { text: t(p.variantes.clave) })]); var ops = el('div', { class: 'opciones' });
         p.variantes.ops.forEach(function (o, i) {
@@ -397,9 +415,9 @@
       }
       var num = el('span', { text: '1', 'aria-live': 'polite' });
       var menos = el('button', { type: 'button', 'aria-label': t('menos1'), text: '−', onclick: function () { cant = Math.max(1, cant - 1); num.textContent = cant; } });
-      var masb = el('button', { type: 'button', 'aria-label': t('mas1'), text: '+', onclick: function () { cant = Math.min(20, cant + 1); num.textContent = cant; } });
+      var masb = el('button', { type: 'button', 'aria-label': t('mas1'), text: '+', onclick: function () { var tope = Math.max(1, maxMas(p)); if (cant + 1 > maxMas(p) && p.stock !== null) toast(t('solo', { n: p.stock })); cant = Math.min(tope, cant + 1); num.textContent = cant; } });
       h.appendChild(el('div', { class: 'campo' }, [el('label', { text: t('cantidad') }), el('div', { class: 'cant' }, [menos, num, masb])]));
-      h.appendChild(el('button', { type: 'button', class: 'btn', text: t('agregarPedido'), onclick: function () { agregar(p.id, variante, cant); cerrarHoja(); toast(t('agregado', { n: cant, x: nm(p) })); } }));
+      h.appendChild(el('button', { type: 'button', class: 'btn', text: t('agregarPedido'), onclick: function () { var n = agregar(p.id, variante, cant); if (n) { cerrarHoja(); toast(t('agregado', { n: n, x: nm(p) })); } } }));
     });
   }
 
@@ -415,7 +433,7 @@
         var mini = el('div', { class: 'mini', style: 'background:' + x.p.color }); mini.innerHTML = svgHtml(x.p.arte, 32);
         var num = el('span', { text: String(x.l.cant) });
         var menos = el('button', { type: 'button', 'aria-label': t('menos1') + ': ' + nm(x.p), text: '−', onclick: function () { x.l.cant -= 1; if (x.l.cant <= 0) quitar(x.l); guardar(); pintarBarra(); abrirCarrito(); } });
-        var masb = el('button', { type: 'button', 'aria-label': t('mas1') + ': ' + nm(x.p), text: '+', onclick: function () { x.l.cant = Math.min(20, x.l.cant + 1); guardar(); pintarBarra(); abrirCarrito(); } });
+        var masb = el('button', { type: 'button', 'aria-label': t('mas1') + ': ' + nm(x.p), text: '+', onclick: function () { if (maxMas(x.p) <= 0) { toast(t('solo', { n: x.p.stock })); return; } x.l.cant += 1; guardar(); pintarBarra(); abrirCarrito(); } });
         var qb = el('button', { type: 'button', class: 'quitar', text: t('quitar'), 'aria-label': t('quitar') + ': ' + nm(x.p), onclick: function () { quitar(x.l); guardar(); pintarBarra(); abrirCarrito(); } });
         h.appendChild(el('div', { class: 'linea' }, [mini,
           el('div', {}, [el('h4', { text: nm(x.p) }), el('p', { text: (x.l.variante ? etiquetaVar(x.p, x.l.variante) + ' · ' : '') + dinero(precioDe(x.p)) }), el('div', { class: 'cant' }, [menos, num, masb])]),

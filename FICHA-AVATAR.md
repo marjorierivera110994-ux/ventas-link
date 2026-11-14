@@ -3,6 +3,13 @@
 - Estado: BORRADOR — hipótesis sin frases literales de comerciantes reales (la regla pide ≥10 frases con fuente para APROBAR). En BORRADOR está PROHIBIDO derivar el copy final de venta.
 - Decisión del usuario (2026-11-14): nicho "de todo un poco" (cualquier negocio pequeño de productos físicos que vende por WhatsApp)
 
+## Definición del fundador (2026-11-14) — fuente: el dueño del producto, NO es voz de cliente
+- "Una persona que necesita un lugar donde poner los productos que ofrece, con sus precios y su catálogo": una página/cuenta de catálogo propia.
+- Se motiva a diario: sigue subiendo más productos y los comparte con más personas en redes sociales (espacio propio para compartir y vender).
+- Sus clientes llegan desde un enlace en redes ("ofrezco tal producto"), ven el catálogo completo, piden y contactan directo al vendedor.
+- Quiere describir cada producto y, de forma OPCIONAL, controlar el stock.
+- Uso en esta ficha: refuerza el deseo #1 y la promesa; NO sustituye las frases literales de comerciantes que exige la aprobación.
+
 ## El avatar (HIPÓTESIS)
 - Arquetipo: dueña/dueño de un negocio pequeño de productos físicos (ropa, accesorios, comida, belleza, hogar) · Edad: 28-50 · Situación: atiende solo/a o con 1 ayudante, desde casa o local pequeño · País: Ecuador (mercado inicial)
 - Poder adquisitivo: bajo-medio; $5.99-14.99/mes SÍ le pesa si no ve pedidos nuevos (por validar) · Dispositivo: Android gama media, datos móviles
