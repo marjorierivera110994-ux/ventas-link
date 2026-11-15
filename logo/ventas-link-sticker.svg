@@ -18,12 +18,12 @@
   <ellipse class="sombra" cx="256" cy="478" rx="130" ry="14" fill="#131313" opacity=".28"/>
   <g class="bolsa">
     <path class="asa" d="M184 190v-26a72 72 0 0 1 144 0v26" fill="none" stroke="#131313" stroke-width="26" stroke-linecap="round"/>
-    <path d="M132 190h248a22 22 0 0 1 22 20l24 200a30 30 0 0 1-30 34H116a30 30 0 0 1-30-34l24-200a22 22 0 0 1 22-20z" fill="#131313"/>
+    <path d="M132 190h248a22 22 0 0 1 22 20l24 200a30 30 0 0 1-30 34H116a30 30 0 0 1-30-34l24-200a22 22 0 0 1 22-20z" fill="#a5dc5b"/>
     <g fill="none" stroke-width="20" stroke-linecap="round">
-      <rect class="a1" x="148" y="298" width="132" height="64" rx="32" stroke="#e6ee4a" transform="rotate(-18 214 330)"/>
+      <rect class="a1" x="148" y="298" width="132" height="64" rx="32" stroke="#131313" transform="rotate(-18 214 330)"/>
       <rect class="a2" x="232" y="298" width="132" height="64" rx="32" stroke="#ff7a1a" transform="rotate(-18 298 330)"/>
     </g>
   </g>
   <circle class="punto" cx="400" cy="112" r="16" fill="#ff7a1a"/>
-  <path class="chispa" d="M112 92l8 22 22 8-22 8-8 22-8-22-22-8 22-8z" fill="#e6ee4a" stroke="#131313" stroke-width="5" stroke-linejoin="round"/>
+  <path class="chispa" d="M112 92l8 22 22 8-22 8-8 22-8-22-22-8 22-8z" fill="#ff7a1a" stroke="#131313" stroke-width="5" stroke-linejoin="round"/>
 </svg>

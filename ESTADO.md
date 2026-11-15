@@ -250,7 +250,7 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Pendiente: aviso real 2 días antes (notificación/WhatsApp, requiere servidor); decidir qué pasa con productos que pasen de 10 al bajar de plan (hipótesis: quedan visibles, no se editan nuevos); enlazar el mapa desde el inicio de la app real.
 
 ## LOGO Y STICKER (carpeta logo/)
-- Logo: bolso de compras negro con dos eslabones de cadena (lima + naranja) sobre pistacho, punto naranja. Idea: vender + enlace. Interpreté "logro" como "logo".
+- Logo (v2, pedido del usuario): bolso VERDE pistacho, asa y punto negros, eslabones negro + naranja, FONDO NARANJA (el sticker va sin fondo). Idea: vender + enlace. Interpreté "logro" como "logo".
 - Archivos: ventas-link-icono.svg/.png (ícono redondeado, fondo transparente), ventas-link-perfil.svg/-1024.png (cuadrado lleno, para foto de perfil que las redes recortan en círculo), ventas-link-sticker.svg (animado: salta, asa y eslabones se mueven; quieto con "reducir movimiento"). Vista: logo-demo.html.
 - Puesto en: bienvenida del recorrido de inicio (sticker grande + ícono en marca) y barra de la página de ventas.
 - Pendiente: sticker de WhatsApp (WebP animado 512×512, lo exige el formato), favicon en todas las páginas, revisar marca/nombre "Ventas Link" (registro y dominio), el usuario no dio referencia de perfil: logo propuesto, puede pedir otra versión.
