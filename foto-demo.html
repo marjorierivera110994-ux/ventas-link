@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ventas Link — mejorar fotos y plantillas (demostración)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --verde-texto: #2f6a10;
+          --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45;
+         background-image: radial-gradient(800px 360px at 10% -6%, color-mix(in oklab, var(--pistacho) 45%, transparent), transparent 62%); }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; border: 0; background: none; }
+  :focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+  .app { max-width: 520px; margin: 0 auto; padding: 14px 16px 60px; }
+  h1, h2 { font-family: var(--f-d); letter-spacing: -.015em; }
+  h1 { font-size: 26px; font-weight: 800; line-height: 1.1; margin-top: 12px; }
+  h2 { font-size: 16px; font-weight: 800; margin-top: 22px; }
+  .demo { display: inline-flex; gap: 8px; align-items: center; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; }
+  .sub { font-size: 14px; color: var(--texto-2); margin-top: 6px; }
+  .opciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .op { min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--blanco); font-weight: 700; font-size: 14px; border: 2px solid transparent; }
+  .op[aria-pressed="true"] { background: var(--tinta); color: #fff; }
+  .op[disabled] { opacity: .45; cursor: not-allowed; }
+  .btn { margin-top: 12px; width: 100%; min-height: 54px; border-radius: 999px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--tinta); color: var(--lima); cursor: pointer; text-decoration: none; }
+  .btn.claro { background: var(--blanco); color: var(--tinta); }
+  .btn[disabled], .btn[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+  .oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .lienzo-caja { margin-top: 12px; background: repeating-conic-gradient(#e8e2d2 0% 25%, #f4ecdb 0% 50%) 50% / 20px 20px; border-radius: 22px; overflow: hidden; display: grid; place-items: center; min-height: 220px; box-shadow: 0 14px 30px -18px rgb(40 60 40 / .55); }
+  canvas#lienzo { max-width: 100%; height: auto; display: block; }
+  .vacio { padding: 40px 16px; text-align: center; color: var(--texto-2); font-weight: 600; }
+  .control { margin-top: 12px; background: var(--blanco); border-radius: 18px; padding: 10px 14px; }
+  .control label { display: flex; justify-content: space-between; font-weight: 700; font-size: 14px; }
+  .control input[type=range] { width: 100%; height: 36px; accent-color: var(--tinta); }
+  .toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; font-weight: 700; }
+  .toggle input { width: 28px; height: 28px; accent-color: var(--tinta); }
+  .campos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .campo label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .campo input { width: 100%; min-height: 48px; border-radius: 14px; border: 2px solid transparent; background: var(--blanco); padding: 0 12px; font-size: 16px; }
+  .campo input:focus-visible { border-color: var(--tinta); outline: none; }
+  .aviso { margin-top: 12px; font-size: 13px; color: var(--texto-2); background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 16px; padding: 10px 14px; }
+  .aviso.mal { background: #fde7d9; color: #7c2d12; font-weight: 700; }
+  .bloq { opacity: .5; pointer-events: none; }
+  .plantillas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+  .plantillas .op { text-align: left; border-radius: 16px; padding: 8px 14px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+  .plantillas small { font-weight: 500; font-size: 12px; opacity: .8; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 5; max-width: 90vw; text-align: center; }
+  .toast.on { display: block; }
+</style>
+</head>
+<body>
+<main class="app">
+  <p class="demo" role="note">Demostración · tus fotos no salen de tu navegador</p>
+  <h1>Mejora tus fotos</h1>
+  <p class="sub">Más luz, fondo limpio y plantillas listas para compartir. Todo se hace en tu celular, sin subir nada a internet.</p>
+
+  <h2 id="h-plan" style="margin-top:16px">Ver como si tuvieras el plan</h2>
+  <div class="opciones" id="planes" role="group" aria-labelledby="h-plan"></div>
+  <p class="aviso" id="aviso-plan" hidden></p>
+
+  <div id="zona">
+    <h2>1 · Tu foto</h2>
+    <label class="btn" for="in-foto" id="l-foto">Elegir una foto</label>
+    <input class="oculto" type="file" id="in-foto" accept="image/jpeg,image/png,image/webp">
+    <button type="button" class="btn claro" id="ejemplo">Probar con una foto de ejemplo</button>
+    <p class="aviso mal" id="err" role="alert" hidden></p>
+
+    <div class="lienzo-caja"><canvas id="lienzo" width="1" height="1" aria-label="Vista previa de tu foto"></canvas><p class="vacio" id="vacio">Elige una foto para empezar</p></div>
+    <div class="opciones" id="ad" role="group" aria-label="Comparar" hidden>
+      <button type="button" class="op" data-v="antes" aria-pressed="false">Antes</button>
+      <button type="button" class="op" data-v="despues" aria-pressed="true">Después</button>
+    </div>
+
+    <div id="herr" class="bloq">
+      <h2>2 · Luz y color</h2>
+      <div class="control"><label class="toggle" for="auto">Mejorar automáticamente<input type="checkbox" id="auto" checked></label></div>
+      <div class="control"><label for="brillo">Brillo <span id="v-brillo">0</span></label><input type="range" id="brillo" min="-50" max="50" value="0"></div>
+      <div class="control"><label for="contraste">Contraste <span id="v-contraste">0</span></label><input type="range" id="contraste" min="-50" max="50" value="0"></div>
+      <div class="control"><label for="color">Color <span id="v-color">100</span>%</label><input type="range" id="color" min="0" max="200" value="105"></div>
+
+      <h2>3 · Fondo</h2>
+      <div class="opciones" id="fondos" role="group" aria-label="Fondo"></div>
+      <div class="control"><label for="sens">Sensibilidad del fondo <span id="v-sens">45</span></label><input type="range" id="sens" min="15" max="110" value="45"></div>
+      <div class="control"><label class="toggle" for="sombra">Sombra suave<input type="checkbox" id="sombra" checked></label></div>
+      <p class="aviso">Funciona mejor con fondo liso (una pared o una mesa lisa). Si el producto es del mismo color que el fondo, baja la sensibilidad.</p>
+
+      <h2>4 · Formato</h2>
+      <div class="opciones" id="formatos" role="group" aria-label="Formato"></div>
+
+      <h2>5 · Plantilla</h2>
+      <div class="plantillas" id="plantillas" role="group" aria-label="Plantillas"></div>
+      <div class="campos">
+        <div class="campo"><label for="nombre">Nombre</label><input type="text" id="nombre" maxlength="30" value="Blusa de seda"></div>
+        <div class="campo"><label for="precio">Precio</label><input type="text" id="precio" inputmode="decimal" maxlength="8" value="24"></div>
+        <div class="campo"><label for="antes">Precio anterior (real)</label><input type="text" id="antes" inputmode="decimal" maxlength="8" placeholder="Solo si hay oferta"></div>
+        <div class="campo"><label for="stock">Unidades que quedan</label><input type="text" id="stock" inputmode="numeric" maxlength="3" placeholder="Solo si quedan pocas"></div>
+      </div>
+      <p class="aviso" id="razon"></p>
+
+      <button type="button" class="btn" id="descargar">Descargar imagen</button>
+      <button type="button" class="btn claro" id="compartir">Compartir</button>
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var PLANES = { gratis: 'Gratis', emprendedor: 'Emprendedor', pro: 'Profesional' };
+  var estado = { plan: 'pro', src: null, ver: 'despues', fondo: 'blanco', formato: '1:1', plantilla: 'limpio', cacheMask: null };
+  var FONDOS = [['original', 'Original', null], ['blanco', 'Blanco', '#ffffff'], ['crema', 'Crema', '#f4ecdb'], ['marca', 'Color de tu marca', '#a5dc5b']];
+  var FORMATOS = { '1:1': [1080, 1080], '4:5': [1080, 1350], '9:16': [1080, 1920] };
+  var USD = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' });
+  var MAXLADO = 1400;
+  var work = document.createElement('canvas'), wctx = work.getContext('2d', { willReadFrequently: true });
+  var salida = document.createElement('canvas');
+
+  function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2600); }
+  function error(m) { var e = $('err'); e.textContent = m; e.hidden = !m; }
+  function num(v) { var n = parseFloat(String(v).replace(',', '.')); return isFinite(n) && n > 0 ? n : null; }
+
+  /* ---------- Foto de ejemplo (mal iluminada, fondo liso) ---------- */
+  function fotoEjemplo() {
+    var c = document.createElement('canvas'); c.width = 900; c.height = 900; var x = c.getContext('2d');
+    var g = x.createLinearGradient(0, 0, 900, 900); g.addColorStop(0, '#8d97a3'); g.addColorStop(1, '#6f7a86'); x.fillStyle = g; x.fillRect(0, 0, 900, 900);
+    x.fillStyle = 'rgba(0,0,0,.18)'; x.beginPath(); x.ellipse(450, 790, 250, 38, 0, 0, 7); x.fill();
+    x.save(); x.translate(450, 430); x.fillStyle = '#b3364a'; x.strokeStyle = '#7e1f30'; x.lineWidth = 6; x.lineJoin = 'round';
+    x.beginPath(); x.moveTo(-120, -230); x.lineTo(-290, -120); x.lineTo(-230, 20); x.lineTo(-170, -20); x.lineTo(-175, 300); x.lineTo(175, 300); x.lineTo(170, -20); x.lineTo(230, 20); x.lineTo(290, -120); x.lineTo(120, -230); x.quadraticCurveTo(0, -150, -120, -230); x.closePath(); x.fill(); x.stroke();
+    x.strokeStyle = 'rgba(255,255,255,.22)'; x.lineWidth = 3; for (var i = -150; i < 170; i += 28) { x.beginPath(); x.moveTo(i, -120); x.lineTo(i + 6, 290); x.stroke(); }
+    x.restore();
+    var d = x.getImageData(0, 0, 900, 900), p = d.data; for (var k = 0; k < p.length; k += 4) { var n = (Math.random() - .5) * 10; p[k] = Math.max(0, p[k] * .62 + n); p[k + 1] = Math.max(0, p[k + 1] * .62 + n); p[k + 2] = Math.max(0, p[k + 2] * .62 + n); }
+    x.putImageData(d, 0, 0); return c;
+  }
+
+  /* ---------- Cargar ---------- */
+  function usarImagen(fuente, w, h) {
+    var esc = Math.min(1, MAXLADO / Math.max(w, h)); var W = Math.round(w * esc), H = Math.round(h * esc);
+    work.width = W; work.height = H; wctx.drawImage(fuente, 0, 0, W, H); estado.src = wctx.getImageData(0, 0, W, H); estado.cacheMask = null;
+    $('herr').classList.remove('bloq'); $('vacio').hidden = true; $('ad').hidden = false; error(''); pintar();
+  }
+  $('in-foto').addEventListener('change', function (e) {
+    var f = e.target.files[0]; e.target.value = ''; error(''); if (!f) return;
+    if (['image/jpeg', 'image/png', 'image/webp'].indexOf(f.type) < 0) { error('Ese archivo no sirve. Usa una foto JPG, PNG o WebP.'); return; }
+    if (f.size > 12 * 1048576) { error('La foto pesa ' + Math.round(f.size / 1048576) + ' MB y el máximo es 12 MB.'); return; }
+    if (estado.plan !== 'pro') { error('Mejorar fotos es del plan Profesional.'); return; }
+    var url = URL.createObjectURL(f), im = new Image();
+    im.onload = function () { URL.revokeObjectURL(url); if (im.naturalWidth < 300 || im.naturalHeight < 300) { error('La foto es muy pequeña (mínimo 300 píxeles de lado).'); return; } usarImagen(im, im.naturalWidth, im.naturalHeight); };
+    im.onerror = function () { URL.revokeObjectURL(url); error('No pudimos abrir esa foto. Prueba con otra.'); }; im.src = url;
+  });
+  $('ejemplo').addEventListener('click', function () { if (estado.plan !== 'pro') { error('Mejorar fotos es del plan Profesional.'); return; } var c = fotoEjemplo(); usarImagen(c, c.width, c.height); });
+
+  /* ---------- Luz y color ---------- */
+  function mejorar(src, o) {
+    var d = new ImageData(new Uint8ClampedArray(src.data), src.width, src.height), p = d.data, n = p.length / 4;
+    var lo = 0, hi = 255, gamma = 1;
+    if (o.auto) {
+      var hist = new Uint32Array(256), suma = 0, cnt = 0; for (var i = 0; i < p.length; i += 16) { var l = (p[i] * 299 + p[i + 1] * 587 + p[i + 2] * 114) / 1000 | 0; hist[l]++; suma += l; cnt++; }
+      var acc = 0, a1 = cnt * 0.01, a99 = cnt * 0.99; for (var v = 0; v < 256; v++) { acc += hist[v]; if (!lo && acc >= a1) lo = v; if (acc >= a99) { hi = v; break; } }
+      if (hi - lo < 60) { lo = 0; hi = 255; }
+      var media = (suma / cnt - lo) / Math.max(1, hi - lo); media = Math.min(.9, Math.max(.05, media)); gamma = Math.min(1.5, Math.max(.7, Math.log(.5) / Math.log(media)));
+    }
+    var br = o.brillo * 1.4, ct = 1 + o.contraste / 100, sat = o.color / 100, rango = Math.max(1, hi - lo);
+    for (var j = 0; j < p.length; j += 4) {
+      var r = p[j], g = p[j + 1], b = p[j + 2];
+      if (o.auto) { r = 255 * Math.pow(Math.min(1, Math.max(0, (r - lo) / rango)), gamma); g = 255 * Math.pow(Math.min(1, Math.max(0, (g - lo) / rango)), gamma); b = 255 * Math.pow(Math.min(1, Math.max(0, (b - lo) / rango)), gamma); }
+      r += br; g += br; b += br; r = (r - 128) * ct + 128; g = (g - 128) * ct + 128; b = (b - 128) * ct + 128;
+      var y = .299 * r + .587 * g + .114 * b; r = y + (r - y) * sat; g = y + (g - y) * sat; b = y + (b - y) * sat;
+      p[j] = r; p[j + 1] = g; p[j + 2] = b;
+    }
+    return d;
+  }
+
+  /* ---------- Fondo: quita el color liso que toca los bordes ---------- */
+  function distancia(p, i, c) { var a = p[i] - c[0], b = p[i + 1] - c[1], d = p[i + 2] - c[2]; return Math.sqrt(a * a + b * b + d * d); }
+  function mascara(src, tol) {
+    var W = src.width, H = src.height, p = src.data, N = W * H;
+    var anillo = Math.max(2, Math.round(Math.min(W, H) * 0.03)), sr = 0, sg = 0, sb = 0, sn = 0;
+    for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) { if (x < anillo || y < anillo || x >= W - anillo || y >= H - anillo) { var i = (y * W + x) * 4; sr += p[i]; sg += p[i + 1]; sb += p[i + 2]; sn++; } }
+    var c = [sr / sn, sg / sn, sb / sn];
+    var bg = new Uint8Array(N), cola = new Int32Array(N), ini = 0, fin = 0;
+    function intentar(idx, padre) {
+      if (bg[idx]) return; var i = idx * 4, dc = distancia(p, i, c); var ok = dc < tol;
+      if (!ok && padre >= 0) { var j = padre * 4, dx = p[i] - p[j], dy = p[i + 1] - p[j + 1], dz = p[i + 2] - p[j + 2]; ok = Math.sqrt(dx * dx + dy * dy + dz * dz) < tol * 0.22 && dc < tol * 2.2; }
+      if (ok) { bg[idx] = 1; cola[fin++] = idx; }
+    }
+    for (var x2 = 0; x2 < W; x2++) { intentar(x2, -1); intentar((H - 1) * W + x2, -1); }
+    for (var y2 = 0; y2 < H; y2++) { intentar(y2 * W, -1); intentar(y2 * W + W - 1, -1); }
+    while (ini < fin) { var k = cola[ini++], kx = k % W; if (kx > 0) intentar(k - 1, k); if (kx < W - 1) intentar(k + 1, k); if (k >= W) intentar(k - W, k); if (k < N - W) intentar(k + W, k); }
+    // alfa suave: producto = 255, fondo = 0, con borde desenfocado
+    var a = new Float32Array(N), cuenta = 0; for (var q = 0; q < N; q++) { a[q] = bg[q] ? 0 : 255; if (!bg[q]) cuenta++; }
+    var b2 = desenfocar(a, W, H, 2), alfa = new Uint8ClampedArray(N); for (var m = 0; m < N; m++) { var t = (b2[m] - 90) / 85; t = t < 0 ? 0 : t > 1 ? 1 : t; alfa[m] = t * t * (3 - 2 * t) * 255; }
+    return { alfa: alfa, W: W, H: H, fraccion: cuenta / N };
+  }
+  function desenfocar(a, W, H, r) {
+    var t = new Float32Array(a.length), o = new Float32Array(a.length), d = r * 2 + 1;
+    for (var y = 0; y < H; y++) { var s = 0, row = y * W; for (var x = -r; x <= r; x++) s += a[row + Math.min(W - 1, Math.max(0, x))]; for (var x2 = 0; x2 < W; x2++) { t[row + x2] = s / d; s += a[row + Math.min(W - 1, x2 + r + 1)] - a[row + Math.max(0, x2 - r)]; } }
+    for (var x3 = 0; x3 < W; x3++) { var s2 = 0; for (var y3 = -r; y3 <= r; y3++) s2 += t[Math.min(H - 1, Math.max(0, y3)) * W + x3]; for (var y4 = 0; y4 < H; y4++) { o[y4 * W + x3] = s2 / d; s2 += t[Math.min(H - 1, y4 + r + 1) * W + x3] - t[Math.max(0, y4 - r) * W + x3]; } }
+    return o;
+  }
+
+  /* ---------- Producto recortado (con borde de producto) ---------- */
+  function sujeto(mej, mk) {
+    var W = mej.width, H = mej.height; var c = document.createElement('canvas'); c.width = W; c.height = H; var x = c.getContext('2d');
+    if (!mk) { x.putImageData(mej, 0, 0); return { canvas: c, bbox: { x: 0, y: 0, w: W, h: H }, recortado: false }; }
+    var d = new ImageData(new Uint8ClampedArray(mej.data), W, H), p = d.data, x0 = W, y0 = H, x1 = 0, y1 = 0;
+    for (var yy = 0; yy < H; yy++) for (var xx = 0; xx < W; xx++) { var i = yy * W + xx; p[i * 4 + 3] = mk.alfa[i]; if (mk.alfa[i] > 128) { if (xx < x0) x0 = xx; if (xx > x1) x1 = xx; if (yy < y0) y0 = yy; if (yy > y1) y1 = yy; } }
+    x.putImageData(d, 0, 0); return { canvas: c, bbox: { x: x0, y: y0, w: Math.max(1, x1 - x0 + 1), h: Math.max(1, y1 - y0 + 1) }, recortado: true };
+  }
+
+  /* ---------- Plantillas ---------- */
+  function rr(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
+  function colocar(x, s, area, sombra) {
+    var esc = Math.min(area.w / s.bbox.w, area.h / s.bbox.h); var w = s.bbox.w * esc, h = s.bbox.h * esc, px = area.x + (area.w - w) / 2, py = area.y + (area.h - h) / 2;
+    x.save(); if (s.recortado) { if (sombra) { x.shadowColor = 'rgba(0,0,0,.28)'; x.shadowBlur = 38; x.shadowOffsetY = 18; } x.drawImage(s.canvas, s.bbox.x, s.bbox.y, s.bbox.w, s.bbox.h, px, py, w, h); }
+    else { rr(x, px, py, w, h, 36); x.clip(); x.drawImage(s.canvas, px, py, w, h); }
+    x.restore();
+  }
+  function texto(x, t, px, py, tam, color, alin, peso, max) { x.fillStyle = color; x.textAlign = alin || 'left'; x.textBaseline = 'alphabetic'; x.font = (peso || 800) + ' ' + tam + 'px "Bricolage Grotesque", sans-serif'; var s = tam; while (x.measureText(t).width > max && s > 24) { s -= 2; x.font = (peso || 800) + ' ' + s + 'px "Bricolage Grotesque", sans-serif'; } x.fillText(t, px, py); }
+  var PLANTILLAS = [
+    { id: 'limpio', n: 'Limpio', d: 'Fondo liso, producto al centro', ok: function () { return true; } },
+    { id: 'precio', n: 'Precio grande', d: 'Pistacho con el precio en grande', ok: function () { return true; } },
+    { id: 'oferta', n: 'Oferta', d: 'Con tu precio anterior real', ok: function (o) { return o.antes && o.antes > o.precio; }, no: 'Escribe un precio anterior MAYOR al precio actual (el precio real de antes).' },
+    { id: 'nuevo', n: 'Nuevo', d: 'Sello de producto nuevo', ok: function () { return true; } },
+    { id: 'ultimas', n: 'Últimas unidades', d: 'Con las unidades que quedan', ok: function (o) { return o.stock && o.stock <= 5; }, no: 'Solo disponible si quedan 5 unidades o menos (escribe cuántas quedan).' },
+    { id: 'elegante', n: 'Elegante', d: 'Beige con marco fino', ok: function () { return true; } },
+    { id: 'dorado', n: 'Dorado', d: 'Degradado dorado', ok: function () { return true; } },
+    { id: 'plateado', n: 'Plateado', d: 'Degradado plateado', ok: function () { return true; } }
+  ];
+  function dibujar(x, W, H, s, o, id, fondoColor) {
+    var area = { x: 90, y: 90, w: W - 180, h: Math.round(H * 0.6) }, base = area.y + area.h + 70, nom = o.nombre || 'Tu producto';
+    var fm = function (v) { return USD.format(v); };
+    if (id === 'limpio') { x.fillStyle = fondoColor || '#ffffff'; x.fillRect(0, 0, W, H); colocar(x, s, area, o.sombra); texto(x, nom, 80, base, 62, '#131313', 'left', 700, W - 160); texto(x, fm(o.precio), 80, base + 96, 84, '#131313', 'left', 800, W - 160); }
+    else if (id === 'precio') { x.fillStyle = '#a5dc5b'; x.fillRect(0, 0, W, H); colocar(x, s, { x: 90, y: 90, w: W - 180, h: Math.round(H * 0.52) }, o.sombra); var b2 = 90 + Math.round(H * 0.52) + 70; texto(x, nom, 80, b2, 56, '#131313', 'left', 700, W - 160); texto(x, fm(o.precio), 80, b2 + 150, 170, '#131313', 'left', 800, W - 160); }
+    else if (id === 'oferta') { x.fillStyle = '#ff7a1a'; x.fillRect(0, 0, W, H); colocar(x, s, area, o.sombra); var pct = Math.round((1 - o.precio / o.antes) * 100); x.fillStyle = '#131313'; x.beginPath(); x.arc(W - 190, 190, 120, 0, 7); x.fill(); texto(x, '-' + pct + '%', W - 190, 215, 90, '#e6ee4a', 'center', 800, 200); texto(x, nom, 80, base, 56, '#131313', 'left', 700, W - 160); texto(x, 'Antes ' + fm(o.antes), 80, base + 70, 44, 'rgba(19,19,19,.7)', 'left', 500, 520); var tw = x.measureText('Antes ' + fm(o.antes)).width; x.fillStyle = 'rgba(19,19,19,.75)'; x.fillRect(80, base + 56, tw, 4); texto(x, 'Hoy ' + fm(o.precio), 80, base + 160, 110, '#131313', 'left', 800, W - 160); }
+    else if (id === 'nuevo') { x.fillStyle = '#e6ee4a'; x.fillRect(0, 0, W, H); colocar(x, s, area, o.sombra); x.save(); x.translate(W - 210, 170); x.rotate(.2); x.fillStyle = '#131313'; rr(x, -130, -50, 260, 100, 30); x.fill(); texto(x, 'NUEVO', 0, 24, 64, '#e6ee4a', 'center', 800, 230); x.restore(); texto(x, nom, 80, base, 62, '#131313', 'left', 700, W - 160); texto(x, fm(o.precio), 80, base + 96, 84, '#131313', 'left', 800, W - 160); }
+    else if (id === 'ultimas') { x.fillStyle = '#131313'; x.fillRect(0, 0, W, H); colocar(x, s, area, o.sombra); texto(x, '¡Últimas ' + o.stock + ' unidades!', 80, base, 70, '#e6ee4a', 'left', 800, W - 160); texto(x, nom, 80, base + 80, 52, '#ffffff', 'left', 600, W - 160); texto(x, fm(o.precio), 80, base + 175, 100, '#ffffff', 'left', 800, W - 160); }
+    else if (id === 'elegante') { x.fillStyle = '#f4ecdb'; x.fillRect(0, 0, W, H); x.strokeStyle = '#131313'; x.lineWidth = 3; x.strokeRect(36, 36, W - 72, H - 72); colocar(x, s, { x: 110, y: 110, w: W - 220, h: Math.round(H * 0.58) }, o.sombra); texto(x, nom.toUpperCase(), W / 2, base, 54, '#131313', 'center', 600, W - 200); texto(x, fm(o.precio), W / 2, base + 88, 76, '#131313', 'center', 800, W - 200); }
+    else { var g = x.createLinearGradient(0, 0, W, H); if (id === 'dorado') { g.addColorStop(0, '#f3dc87'); g.addColorStop(.5, '#d4af37'); g.addColorStop(1, '#b8912a'); } else { g.addColorStop(0, '#f2f3f5'); g.addColorStop(.5, '#c5c9d0'); g.addColorStop(1, '#9aa0aa'); } x.fillStyle = g; x.fillRect(0, 0, W, H); colocar(x, s, area, o.sombra); texto(x, nom, 80, base, 62, '#131313', 'left', 700, W - 160); texto(x, fm(o.precio), 80, base + 96, 84, '#131313', 'left', 800, W - 160); }
+  }
+
+  /* ---------- Pintar todo ---------- */
+  function opciones() { return { auto: $('auto').checked, brillo: +$('brillo').value, contraste: +$('contraste').value, color: +$('color').value, sombra: $('sombra').checked, nombre: $('nombre').value.trim(), precio: num($('precio').value) || 0, antes: num($('antes').value), stock: (function () { var n = parseInt($('stock').value, 10); return n > 0 ? n : null; })() }; }
+  function pintar() {
+    var src = estado.src; if (!src) return; var o = opciones(); var lienzo = $('lienzo'), lx = lienzo.getContext('2d');
+    $('v-brillo').textContent = o.brillo; $('v-contraste').textContent = o.contraste; $('v-color').textContent = o.color; $('v-sens').textContent = $('sens').value;
+    if (estado.ver === 'antes') { lienzo.width = src.width; lienzo.height = src.height; lx.putImageData(src, 0, 0); return; }
+    var mej = mejorar(src, o), mk = null, aviso = '';
+    if (estado.fondo !== 'original') { var tol = +$('sens').value; if (!estado.cacheMask || estado.cacheMask.tol !== tol) estado.cacheMask = { tol: tol, m: mascara(src, tol) }; mk = estado.cacheMask.m; if (mk.fraccion < 0.04) { aviso = 'El fondo se llevó casi todo el producto. Baja la sensibilidad del fondo.'; mk = null; } else if (mk.fraccion > 0.97) { aviso = 'No se encontró un fondo liso. Sube la sensibilidad o usa una foto con fondo liso.'; mk = null; } }
+    var f = FONDOS.filter(function (z) { return z[0] === estado.fondo; })[0]; var s = sujeto(mej, mk); var dim = FORMATOS[estado.formato];
+    salida.width = dim[0]; salida.height = dim[1]; var sx = salida.getContext('2d'); sx.clearRect(0, 0, dim[0], dim[1]);
+    var pl = PLANTILLAS.filter(function (z) { return z.id === estado.plantilla; })[0]; if (!pl.ok(o)) { estado.plantilla = 'limpio'; pl = PLANTILLAS[0]; }
+    dibujar(sx, dim[0], dim[1], s, o, estado.plantilla, f && f[2] ? f[2] : '#ffffff');
+    var maxW = Math.min(520, dim[0]); lienzo.width = dim[0]; lienzo.height = dim[1]; lienzo.style.width = maxW + 'px'; lx.drawImage(salida, 0, 0);
+    var r = $('razon'); var faltan = PLANTILLAS.filter(function (z) { return !z.ok(o) && z.no; }).map(function (z) { return z.n + ': ' + z.no; }); r.textContent = (aviso ? aviso + ' ' : '') + faltan.join(' '); r.hidden = !r.textContent;
+    pintarBotones(o);
+  }
+  function btn(txt, sub, pressed, fn, dis) { var b = document.createElement('button'); b.type = 'button'; b.className = 'op'; b.setAttribute('aria-pressed', String(pressed)); var t = document.createElement('span'); t.textContent = txt; b.appendChild(t); if (sub) { var s = document.createElement('small'); s.textContent = sub; b.appendChild(s); } if (dis) b.disabled = true; b.addEventListener('click', fn); return b; }
+  function pintarBotones(o) {
+    var f = $('fondos'); f.textContent = ''; FONDOS.forEach(function (z) { f.appendChild(btn(z[1], '', estado.fondo === z[0], function () { estado.fondo = z[0]; pintar(); })); });
+    var m = $('formatos'); m.textContent = ''; Object.keys(FORMATOS).forEach(function (k) { m.appendChild(btn(k === '1:1' ? 'Cuadrada 1:1' : k === '4:5' ? 'Vertical 4:5' : 'Historia 9:16', '', estado.formato === k, function () { estado.formato = k; pintar(); })); });
+    var p = $('plantillas'); p.textContent = ''; PLANTILLAS.forEach(function (z) { p.appendChild(btn(z.n, z.d, estado.plantilla === z.id, function () { estado.plantilla = z.id; pintar(); }, !z.ok(o))); });
+  }
+  function pintarPlanes() {
+    var c = $('planes'); c.textContent = ''; Object.keys(PLANES).forEach(function (k) { c.appendChild(btn(PLANES[k], '', estado.plan === k, function () { estado.plan = k; pintarPlanes(); })); });
+    var pro = estado.plan === 'pro'; var a = $('aviso-plan'); a.hidden = pro; a.textContent = 'Mejorar fotos y las plantillas son del plan Profesional. Con tu plan puedes subir fotos normales y ver tu catálogo.';
+    $('zona').classList.toggle('bloq', !pro); $('l-foto').setAttribute('aria-disabled', String(!pro)); $('in-foto').disabled = !pro; $('ejemplo').disabled = !pro;
+  }
+
+  ['auto', 'brillo', 'contraste', 'color', 'sombra', 'nombre', 'precio', 'antes', 'stock'].forEach(function (id) { $(id).addEventListener('input', pintar); });
+  $('sens').addEventListener('input', pintar);
+  [].slice.call($('ad').querySelectorAll('button')).forEach(function (b) { b.addEventListener('click', function () { estado.ver = b.dataset.v; [].slice.call($('ad').querySelectorAll('button')).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); pintar(); }); });
+  $('descargar').addEventListener('click', function () {
+    if (!estado.src) return; estado.ver = 'despues'; pintar();
+    salida.toBlob(function (b) { if (!b) { toast('No pudimos crear la imagen'); return; } var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'producto-ventas-link.png'; document.body.appendChild(a); a.click(); a.remove(); toast('Imagen lista (' + salida.width + '×' + salida.height + ')'); }, 'image/png');
+  });
+  $('compartir').addEventListener('click', function () {
+    if (!estado.src) return; salida.toBlob(function (b) { var f = new File([b], 'producto-ventas-link.png', { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [f] })) navigator.share({ files: [f], text: 'Mira este producto' }).catch(function () { /* cancelado */ }); else toast('Tu navegador no puede compartir imágenes: usa "Descargar imagen"'); }, 'image/png');
+  });
+
+  pintarPlanes(); pintarBotones(opciones());
+  if (document.fonts && document.fonts.load) { document.fonts.load('800 48px "Bricolage Grotesque"').then(function () { if (estado.src) pintar(); }); }
+  window.__foto = { estado: estado, mejorar: mejorar, mascara: mascara, pintar: pintar, salida: salida, fotoEjemplo: fotoEjemplo, usarImagen: usarImagen, opciones: opciones };
+})();
+</script>
+</body>
+</html>

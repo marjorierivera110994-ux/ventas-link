@@ -229,3 +229,10 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 
 ## Notas para la próxima sesión
 - SO instalado en C:\Users\User\Desktop\Xiomara\APP; git inicializado
+
+## EDITOR DE FOTOS (Pro) — foto-demo.html
+- Mejora de luz (niveles+gamma), fondo blanco/crema/color (recorte por fondo liso), 8 plantillas (limpio, precio, oferta, nuevo, últimas, elegante, dorado, plateado), formatos 1:1, 4:5, 9:16, descarga PNG/compartir.
+- Corre en el navegador del vendedor: sin costo por foto, las fotos no salen del dispositivo. Solo plan Pro.
+- Honesto: el recorte funciona con fondo liso; con fondos complejos puede fallar (hay aviso + sensibilidad). Futuro opcional: recorte con IA.
+- Oferta solo con precio anterior real mayor; Últimas solo con stock ≤5.
+- Ya no hay "Próximamente" en la página de ventas. Probado: luz 76→108, formatos, bloqueo por plan, sin errores. Falta probar en celular real.
