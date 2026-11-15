@@ -100,6 +100,47 @@
   .toast { position: fixed; left: 50%; bottom: 100px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 60; max-width: 90vw; text-align: center; }
   .toast.on { display: block; }
   @media (prefers-reduced-motion: reduce) { .stk { animation: none; } .barra i, .hoja, .splash { transition: none; } }
+
+  /* ===== Estilo 3D (marca: v3d) ===== */
+  .t3d { position: absolute; top: -22px; left: 50%; margin-left: -25px; width: 50px; height: 50px; border-radius: 18px; display: grid; place-items: center; color: #fff;
+         background: linear-gradient(160deg, var(--a), var(--b)); --y: 0px; --s: 1;
+         box-shadow: inset 0 3px 0 rgb(255 255 255 / .6), inset 0 -5px 0 rgb(0 0 0 / .16), 0 7px 0 var(--sh), 0 16px 16px -4px rgb(20 40 10 / .5);
+         animation: bob3d 3.4s ease-in-out infinite; transition: box-shadow .2s ease; }
+  .t3d::before { content: ''; position: absolute; left: 4px; right: 4px; top: 3px; height: 46%; border-radius: 15px 15px 50% 50% / 15px 15px 40% 40%; background: linear-gradient(rgb(255 255 255 / .55), rgb(255 255 255 / 0)); pointer-events: none; }
+  .t3d svg { position: relative; width: 24px; height: 24px; stroke-width: 2.6; filter: drop-shadow(0 2px 0 rgb(0 0 0 / .28)); }
+  .t3d.verde { --a: #b8ee62; --b: #4fae12; --sh: #2f7d0f; } .t3d.naranja { --a: #ffb83a; --b: #ff6a00; --sh: #b34700; }
+  .t3d.lima { --a: #f7fa86; --b: #d6de1c; --sh: #8a9100; color: #131313; } .t3d.lima svg { filter: drop-shadow(0 2px 0 rgb(255 255 255 / .5)); }
+  .t3d.cielo { --a: #86d4ff; --b: #2f9bea; --sh: #1b6aa8; } .t3d.tinta { --a: #4a4a4a; --b: #131313; --sh: #000; color: #e6ee4a; }
+  @keyframes bob3d { 0%, 100% { transform: translateY(var(--y)) scale(var(--s)); } 50% { transform: translateY(calc(var(--y) - 4px)) scale(var(--s)); } }
+  .nav { overflow: visible; height: 74px; padding: 0 6px;
+         background: linear-gradient(180deg, rgb(255 255 255 / .92), rgb(244 250 238 / .86));
+         box-shadow: 0 26px 40px -14px rgb(20 50 10 / .55), 0 4px 0 rgb(255 255 255 / .9) inset, 0 -4px 0 rgb(0 0 0 / .05) inset, 0 6px 0 rgb(40 70 20 / .12); }
+  .nav button { background: transparent !important; justify-content: flex-end; height: 100%; min-height: 0; padding: 0 0 8px; color: var(--texto-2) !important; font-size: 11px; font-weight: 700; }
+  .nav button:active { transform: none; }
+  .nav button:active .t3d { box-shadow: inset 0 3px 0 rgb(255 255 255 / .5), inset 0 -3px 0 rgb(0 0 0 / .16), 0 2px 0 var(--sh), 0 8px 10px -4px rgb(20 40 10 / .5); transform: translateY(5px); }
+  .nav button[aria-current="page"], .nav button.act { color: var(--tinta) !important; }
+  .nav button[aria-current="page"] .t3d, .nav button.act .t3d { --y: -9px; --s: 1.14; box-shadow: inset 0 3px 0 rgb(255 255 255 / .6), inset 0 -5px 0 rgb(0 0 0 / .16), 0 8px 0 var(--sh), 0 22px 22px -4px rgb(20 40 10 / .6), 0 0 0 5px rgb(255 255 255 / .75); }
+  .nav button svg { transform: none !important; }
+  .nav button:nth-child(2) .t3d { animation-delay: .35s; } .nav button:nth-child(3) .t3d { animation-delay: .7s; } .nav button:nth-child(4) .t3d { animation-delay: 1.05s; } .nav button:nth-child(5) .t3d { animation-delay: 1.4s; }
+  .nav .cuenta-n { top: -26px; right: 8px; z-index: 2; }
+  .nav .nuevo::after { top: -22px; right: 10px; z-index: 2; }
+  @media (prefers-reduced-motion: reduce) { .t3d { animation: none; } }
+
+  .panel.marco { bottom: 112px; } .inicio { padding-bottom: 150px; }
+  body::before, body::after { content: ''; position: fixed; z-index: -1; border-radius: 50%; pointer-events: none; }
+  body::before { width: 260px; height: 260px; right: -90px; top: 120px; background: radial-gradient(circle at 32% 28%, #fff 0, #ffc46b 22%, #ff7a1a 70%, #d95a00 100%); opacity: .28; }
+  body::after { width: 220px; height: 220px; left: -90px; top: 520px; background: radial-gradient(circle at 32% 28%, #fff 0, #c9f08a 22%, #6cc424 70%, #3f9a10 100%); opacity: .28; }
+  .tarj, .stat, .accion { border: 1px solid rgb(255 255 255 / .95); box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -4px 0 rgb(0 0 0 / .05) inset, 0 6px 0 rgb(40 70 20 / .09), 0 24px 30px -18px rgb(30 60 20 / .5); }
+  .tarj.oscura { background: linear-gradient(160deg, #343434, #131313); border-color: #3a3a3a; box-shadow: 0 3px 0 rgb(255 255 255 / .14) inset, 0 -5px 0 rgb(0 0 0 / .35) inset, 0 7px 0 #000, 0 24px 30px -14px rgb(0 0 0 / .6); }
+  .accion { transition: transform .1s ease, box-shadow .1s ease; } .accion:active { transform: translateY(4px); box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 1px 0 rgb(40 70 20 / .09), 0 8px 12px -8px rgb(30 60 20 / .5); }
+  .accion .chip { border-radius: 16px; box-shadow: inset 0 3px 0 rgb(255 255 255 / .6), inset 0 -4px 0 rgb(0 0 0 / .14), 0 5px 0 rgb(0 0 0 / .18), 0 10px 10px -4px rgb(20 40 10 / .4); }
+  .accion .c1 { background: linear-gradient(160deg, #b8ee62, #4fae12); } .accion .c2 { background: linear-gradient(160deg, #ffb83a, #ff6a00); } .accion .c3 { background: linear-gradient(160deg, #f7fa86, #d6de1c); } .accion .c4 { background: linear-gradient(160deg, #86d4ff, #2f9bea); }
+  .accion .c1 svg, .accion .c2 svg, .accion .c4 svg { stroke: #fff; stroke-width: 2.8; filter: drop-shadow(0 2px 0 rgb(0 0 0 / .28)); }
+  .banner { box-shadow: 0 3px 0 rgb(255 255 255 / .4) inset, 0 -4px 0 rgb(0 0 0 / .12) inset, 0 7px 0 #c25000, 0 22px 26px -12px rgb(180 80 0 / .6); transition: transform .1s ease, box-shadow .1s ease; }
+  .banner.verde { box-shadow: 0 3px 0 rgb(255 255 255 / .5) inset, 0 -4px 0 rgb(0 0 0 / .1) inset, 0 7px 0 #5a9a14, 0 22px 26px -12px rgb(60 120 10 / .6); }
+  .banner:active { transform: translateY(5px); box-shadow: 0 3px 0 rgb(255 255 255 / .4) inset, 0 2px 0 #c25000; } .banner.verde:active { box-shadow: 0 3px 0 rgb(255 255 255 / .5) inset, 0 2px 0 #5a9a14; }
+  .ic-btn { box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -3px 0 rgb(0 0 0 / .06) inset, 0 4px 0 rgb(40 70 20 / .12), 0 12px 14px -8px rgb(30 60 20 / .5); }
+  .barra { box-shadow: inset 0 3px 6px rgb(0 0 0 / .18); height: 16px; } .barra i { box-shadow: inset 0 3px 0 rgb(255 255 255 / .55), inset 0 -3px 0 rgb(0 0 0 / .12); }
 </style>
 </head>
 <body>
@@ -176,11 +217,11 @@
 <section class="panel marco" id="p-plan" role="tabpanel" aria-label="Mi plan" hidden><iframe data-src="mi-plan-demo.html" title="Mi plan"></iframe></section>
 
 <nav class="nav" id="nav" aria-label="Menú principal">
-  <button type="button" data-t="inicio" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>Inicio</button>
-  <button type="button" data-t="productos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg>Productos</button>
-  <button type="button" data-t="pedidos" class="nuevo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l1 2h3a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3zM8 12h8M8 16h5"/></svg>Pedidos</button>
-  <button type="button" data-t="compartir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Compartir</button>
-  <button type="button" data-t="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.6 6.9L22 9.3l-5.4 4.6 1.8 7.1L12 17l-6.4 4 1.8-7.1L2 9.3l7.4-.4z"/></svg>Mi plan</button>
+  <button type="button" data-t="inicio" aria-current="page"><span class="t3d verde"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span><span class="lbl">Inicio</span></button>
+  <button type="button" data-t="productos"><span class="t3d naranja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg></span><span class="lbl">Productos</span></button>
+  <button type="button" data-t="pedidos" class="nuevo"><span class="t3d lima"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l1 2h3a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3zM8 12h8M8 16h5"/></svg></span><span class="lbl">Pedidos</span></button>
+  <button type="button" data-t="compartir"><span class="t3d cielo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></span><span class="lbl">Compartir</span></button>
+  <button type="button" data-t="plan"><span class="t3d tinta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.6 6.9L22 9.3l-5.4 4.6 1.8 7.1L12 17l-6.4 4 1.8-7.1L2 9.3l7.4-.4z"/></svg></span><span class="lbl">Mi plan</span></button>
 </nav>
 
 <div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-t">
