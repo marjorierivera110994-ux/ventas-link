@@ -236,3 +236,5 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Honesto: el recorte funciona con fondo liso; con fondos complejos puede fallar (hay aviso + sensibilidad). Futuro opcional: recorte con IA.
 - Oferta solo con precio anterior real mayor; Últimas solo con stock ≤5.
 - Ya no hay "Próximamente" en la página de ventas. Probado: luz 76→108, formatos, bloqueo por plan, sin errores. Falta probar en celular real.
+- Cámara: botón "Tomar foto" (input capture=environment, abre la cámara en el celular) + "Subir de galería". Edición inteligente 1 toque: luz auto, fondo blanco con sensibilidad elegida sola, plantilla según oferta/stock reales, aviso si la foto sale borrosa. Probado por código; falta celular real (la cámara solo se abre en móvil/HTTPS).
+- PENDIENTE: QR + póster imprimible (usuario eligió 2 pero pidió cámara primero).

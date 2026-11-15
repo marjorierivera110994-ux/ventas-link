@@ -64,7 +64,9 @@
 
   <div id="zona">
     <h2>1 · Tu foto</h2>
-    <label class="btn" for="in-foto" id="l-foto">Elegir una foto</label>
+    <label class="btn" for="in-camara" id="l-camara">Tomar foto con la cámara</label>
+    <input class="oculto" type="file" id="in-camara" accept="image/*" capture="environment">
+    <label class="btn claro" for="in-foto" id="l-foto">Subir foto de mi galería</label>
     <input class="oculto" type="file" id="in-foto" accept="image/jpeg,image/png,image/webp">
     <button type="button" class="btn claro" id="ejemplo">Probar con una foto de ejemplo</button>
     <p class="aviso mal" id="err" role="alert" hidden></p>
@@ -76,6 +78,8 @@
     </div>
 
     <div id="herr" class="bloq">
+      <button type="button" class="btn" id="inteligente" style="background:var(--naranja);color:var(--tinta)">✨ Edición inteligente (1 toque)</button>
+      <p class="aviso" id="resumen" hidden></p>
       <h2>2 · Luz y color</h2>
       <div class="control"><label class="toggle" for="auto">Mejorar automáticamente<input type="checkbox" id="auto" checked></label></div>
       <div class="control"><label for="brillo">Brillo <span id="v-brillo">0</span></label><input type="range" id="brillo" min="-50" max="50" value="0"></div>
@@ -144,7 +148,7 @@
     work.width = W; work.height = H; wctx.drawImage(fuente, 0, 0, W, H); estado.src = wctx.getImageData(0, 0, W, H); estado.cacheMask = null;
     $('herr').classList.remove('bloq'); $('vacio').hidden = true; $('ad').hidden = false; error(''); pintar();
   }
-  $('in-foto').addEventListener('change', function (e) {
+  function alElegir(e) {
     var f = e.target.files[0]; e.target.value = ''; error(''); if (!f) return;
     if (['image/jpeg', 'image/png', 'image/webp'].indexOf(f.type) < 0) { error('Ese archivo no sirve. Usa una foto JPG, PNG o WebP.'); return; }
     if (f.size > 12 * 1048576) { error('La foto pesa ' + Math.round(f.size / 1048576) + ' MB y el máximo es 12 MB.'); return; }
@@ -152,7 +156,35 @@
     var url = URL.createObjectURL(f), im = new Image();
     im.onload = function () { URL.revokeObjectURL(url); if (im.naturalWidth < 300 || im.naturalHeight < 300) { error('La foto es muy pequeña (mínimo 300 píxeles de lado).'); return; } usarImagen(im, im.naturalWidth, im.naturalHeight); };
     im.onerror = function () { URL.revokeObjectURL(url); error('No pudimos abrir esa foto. Prueba con otra.'); }; im.src = url;
-  });
+  }
+  $('in-foto').addEventListener('change', alElegir);
+  $('in-camara').addEventListener('change', alElegir);
+
+  /* ---------- Edición inteligente: un toque ---------- */
+  function nitidez(src) {
+    var W = src.width, H = src.height, p = src.data, g = new Float32Array(W * H), i;
+    for (i = 0; i < g.length; i++) g[i] = p[i * 4] * .299 + p[i * 4 + 1] * .587 + p[i * 4 + 2] * .114;
+    var s = 0, s2 = 0, n = 0; for (var y = 1; y < H - 1; y += 2) for (var x = 1; x < W - 1; x += 2) { var k = y * W + x, l = 4 * g[k] - g[k - 1] - g[k + 1] - g[k - W] - g[k + W]; s += l; s2 += l * l; n++; }
+    return s2 / n - (s / n) * (s / n);
+  }
+  function inteligente() {
+    if (!estado.src) { error('Primero toma o sube una foto.'); return; }
+    var notas = [], src = estado.src;
+    $('auto').checked = true; $('brillo').value = 0; $('contraste').value = 6; $('color').value = 108; $('sombra').checked = true;
+    estado.fondo = 'blanco'; estado.formato = '1:1'; estado.plantilla = 'limpio'; estado.ver = 'despues';
+    [].slice.call($('ad').querySelectorAll('button')).forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.v === 'despues')); });
+    var mejor = null, objetivo = 0.3;
+    [30, 45, 65, 90].forEach(function (t) { var m = mascara(src, t); if (m.fraccion >= 0.06 && m.fraccion <= 0.9) { var d = Math.abs(m.fraccion - objetivo); if (!mejor || d < mejor.d) mejor = { t: t, d: d, m: m }; } });
+    if (mejor) { $('sens').value = mejor.t; estado.cacheMask = { tol: mejor.t, m: mejor.m }; notas.push('Fondo blanco listo (producto recortado y centrado).'); }
+    else { estado.fondo = 'original'; notas.push('No se encontró un fondo liso: dejamos el fondo original. Prueba con una pared o mesa lisa.'); }
+    notas.push('Luz y color mejorados automáticamente.');
+    var nt = nitidez(src); estado.nitidez = nt;
+    if (nt < 25) notas.push('⚠ La foto se ve borrosa. Para mejor resultado, toma otra con el celular quieto.');
+    var o = opciones(); if (o.antes && o.antes > o.precio) { estado.plantilla = 'oferta'; notas.push('Elegimos la plantilla Oferta porque pusiste un precio anterior real.'); }
+    else if (o.stock && o.stock <= 5) { estado.plantilla = 'ultimas'; notas.push('Elegimos "Últimas unidades" porque quedan pocas.'); }
+    pintar(); var r = $('resumen'); r.textContent = notas.join(' '); r.hidden = false; toast('Edición inteligente lista');
+  }
+  $('inteligente').addEventListener('click', inteligente);
   $('ejemplo').addEventListener('click', function () { if (estado.plan !== 'pro') { error('Mejorar fotos es del plan Profesional.'); return; } var c = fotoEjemplo(); usarImagen(c, c.width, c.height); });
 
   /* ---------- Luz y color ---------- */
@@ -269,7 +301,7 @@
   function pintarPlanes() {
     var c = $('planes'); c.textContent = ''; Object.keys(PLANES).forEach(function (k) { c.appendChild(btn(PLANES[k], '', estado.plan === k, function () { estado.plan = k; pintarPlanes(); })); });
     var pro = estado.plan === 'pro'; var a = $('aviso-plan'); a.hidden = pro; a.textContent = 'Mejorar fotos y las plantillas son del plan Profesional. Con tu plan puedes subir fotos normales y ver tu catálogo.';
-    $('zona').classList.toggle('bloq', !pro); $('l-foto').setAttribute('aria-disabled', String(!pro)); $('in-foto').disabled = !pro; $('ejemplo').disabled = !pro;
+    $('zona').classList.toggle('bloq', !pro); $('l-foto').setAttribute('aria-disabled', String(!pro)); $('l-camara').setAttribute('aria-disabled', String(!pro)); $('in-foto').disabled = !pro; $('in-camara').disabled = !pro; $('ejemplo').disabled = !pro;
   }
 
   ['auto', 'brillo', 'contraste', 'color', 'sombra', 'nombre', 'precio', 'antes', 'stock'].forEach(function (id) { $(id).addEventListener('input', pintar); });
@@ -286,7 +318,7 @@
 
   pintarPlanes(); pintarBotones(opciones());
   if (document.fonts && document.fonts.load) { document.fonts.load('800 48px "Bricolage Grotesque"').then(function () { if (estado.src) pintar(); }); }
-  window.__foto = { estado: estado, mejorar: mejorar, mascara: mascara, pintar: pintar, salida: salida, fotoEjemplo: fotoEjemplo, usarImagen: usarImagen, opciones: opciones };
+  window.__foto = { estado: estado, mejorar: mejorar, mascara: mascara, pintar: pintar, salida: salida, inteligente: inteligente, fotoEjemplo: fotoEjemplo, usarImagen: usarImagen, opciones: opciones };
 })();
 </script>
 </body>
