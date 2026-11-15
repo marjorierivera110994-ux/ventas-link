@@ -323,28 +323,28 @@
      nada de falsa urgencia ni escasez inventada. El vendedor podrá editarlos en los planes de pago. */
   var FRASES = {
     es: {
-      bienvenida: ['¡Qué bueno verte por aquí! Encuentra algo que te encante.', 'Bienvenido a nuestra tienda: mira con calma y elige lo que más te guste.', '¡Hola! Aquí tienes productos listos para ti.'],
+      bienvenida: ['Hoy es un buen día para regalarte algo bonito.', 'Cada día es una nueva oportunidad: empieza por sonreír.', 'Lo bueno llega a quien se anima a dar el primer paso.', 'Cuídate, quiérete y date ese gusto que mereces.', 'La vida es más linda cuando la compartes con los tuyos.', 'Hoy haz algo que tu yo de mañana te agradezca.', 'Pequeños detalles hacen grandes días.', 'Tú puedes más de lo que imaginas. ¡Sigue adelante!'],
       eleccion: ['¡Buena elección!', '¡Excelente gusto!', '¡Te va a encantar!'],
       carrito: ['¡Tu pedido va tomando forma!', 'Ya casi: revisa tus productos y sigue cuando quieras.'],
       ultimo: ['Estás a un paso de tenerlo. ¡Solo faltan tus datos!', '¡Ya casi es tuyo!'],
       gracias: ['¡Gracias por elegir {negocio}!']
     },
     en: {
-      bienvenida: ['So glad you’re here! Find something you’ll love.', 'Welcome to our store: take your time and pick what you like best.', 'Hi! Here are products ready for you.'],
+      bienvenida: ['Today is a good day to treat yourself to something nice.', 'Every day is a new chance: start with a smile.', 'Good things come to those who take the first step.', 'Take care of yourself and enjoy what you deserve.', 'Life is better when you share it with your people.', 'Do something today your future self will thank you for.', 'Small details make great days.', 'You can do more than you imagine. Keep going!'],
       eleccion: ['Great choice!', 'Excellent taste!', 'You’re going to love it!'],
       carrito: ['Your order is taking shape!', 'Almost there: review your items and continue whenever you like.'],
       ultimo: ['You’re one step away. Just your details left!', 'Almost yours!'],
       gracias: ['Thank you for choosing {negocio}!']
     },
     pt: {
-      bienvenida: ['Que bom ter você aqui! Encontre algo de que vai gostar.', 'Bem-vindo à nossa loja: fique à vontade e escolha o que mais gostar.', 'Olá! Aqui estão produtos prontos para você.'],
+      bienvenida: ['Hoje é um bom dia para se presentear com algo bonito.', 'Cada dia é uma nova chance: comece com um sorriso.', 'Coisas boas chegam a quem dá o primeiro passo.', 'Cuide de você e aproveite o que merece.', 'A vida é mais bonita quando compartilhada com quem você ama.', 'Faça hoje algo que o seu eu de amanhã vai agradecer.', 'Pequenos detalhes fazem grandes dias.', 'Você pode mais do que imagina. Continue!'],
       eleccion: ['Ótima escolha!', 'Excelente gosto!', 'Você vai adorar!'],
       carrito: ['Seu pedido está tomando forma!', 'Quase lá: confira seus itens e continue quando quiser.'],
       ultimo: ['Falta só um passo. Só os seus dados!', 'Quase seu!'],
       gracias: ['Obrigado por escolher {negocio}!']
     }
   };
-  var rot = { eleccion: 0, carrito: 0, ultimo: 0, gracias: 0, bienvenida: Math.floor(Math.random() * 3) };
+  var rot = { eleccion: 0, carrito: 0, ultimo: 0, gracias: 0, bienvenida: Math.floor(Math.random() * 8) };
   function frase(tipo) {
     var lista = (FRASES[estado.idioma] || FRASES.es)[tipo]; var i = rot[tipo] % lista.length; if (tipo !== 'bienvenida') rot[tipo] += 1; return lista[i];
   }

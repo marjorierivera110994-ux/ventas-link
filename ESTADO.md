@@ -238,3 +238,8 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Ya no hay "Próximamente" en la página de ventas. Probado: luz 76→108, formatos, bloqueo por plan, sin errores. Falta probar en celular real.
 - Cámara: botón "Tomar foto" (input capture=environment, abre la cámara en el celular) + "Subir de galería". Edición inteligente 1 toque: luz auto, fondo blanco con sensibilidad elegida sola, plantilla según oferta/stock reales, aviso si la foto sale borrosa. Probado por código; falta celular real (la cámara solo se abre en móvil/HTTPS).
 - PENDIENTE: QR + póster imprimible (usuario eligió 2 pero pidió cámara primero).
+
+## Frases al entrar
+- Vendedor (cobro-demo, tarjeta "Para ti, hoy"): 15 frases de marketing/ventas/crecimiento personal, cambia en cada entrada y no repite la última (localStorage con fallback).
+- Comprador (tienda-demo, bajo la bandera): 8 frases de la vida en es/en/pt, al azar en cada visita. Reemplazan el saludo anterior.
+- Pendiente: ponerla también en la pantalla de inicio de la app real del vendedor; frases editables en planes de pago; revisar traducciones en/pt con nativos.
