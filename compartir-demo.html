@@ -64,6 +64,15 @@
   .barra i, .tubo i, .pasos i.on { box-shadow: inset 0 3px 0 rgb(255 255 255 / .55), inset 0 -3px 0 rgb(0 0 0 / .14); }
   .punto { box-shadow: inset 0 3px 0 rgb(255 255 255 / .6), inset 0 -4px 0 rgb(0 0 0 / .16), 0 4px 0 rgb(0 0 0 / .2); }
   .punto, .t3d-mini { border: 0; }
+
+  /* ===== IA (marca: ia1) ===== */
+  .ia-fila { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .ia-btn { min-height: 48px; padding: 0 18px; border-radius: 999px; background: linear-gradient(160deg, #86d4ff, #2f9bea); color: #06304d; font-weight: 800; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border: 0;
+            box-shadow: 0 4px 0 rgb(255 255 255 / .6) inset, 0 -5px 0 rgb(0 0 0 / .14) inset, 0 7px 0 #1b6aa8, 0 16px 20px -10px rgb(27 106 168 / .6); transition: transform .1s ease, box-shadow .1s ease; }
+  .ia-btn:active { transform: translateY(5px); box-shadow: 0 4px 0 rgb(255 255 255 / .6) inset, 0 2px 0 #1b6aa8; }
+  .ia-btn[disabled] { opacity: .6; cursor: progress; }
+  .ia-nota { font-size: 13px; color: #5a5648; font-weight: 600; }
+  .ia-nota.mal { color: #9a3412; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -85,6 +94,7 @@
   <h2><label for="texto">4 · Tu texto (puedes editarlo)</label></h2>
   <textarea id="texto" maxlength="2200"></textarea>
   <p class="cuenta"><span id="nota-red"></span><span id="contador"></span></p>
+  <div class="ia-fila"><button type="button" class="ia-btn" id="ia-mejorar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Mejorar con IA</button><span class="ia-nota" id="ia-nota" aria-live="polite">Reescribe tu texto con otras palabras, con tus mismos datos.</span></div>
 
   <button type="button" class="btn" id="copiar">Copiar texto</button>
   <a class="btn wa" id="wa" href="#" target="_blank" rel="noopener">Compartir por WhatsApp</a>
@@ -179,6 +189,23 @@
   if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) $('wa').target = '_self'; /* en celular pasa directo a la app de WhatsApp */
   pintar();
   window.__compartir = { estado: estado, generar: generar, pintar: pintar };
+})();
+</script>
+<script src="ia-cliente.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var RED = { wa: 'WhatsApp', ig: 'Instagram', fb: 'Facebook', tt: 'TikTok' };
+  $('ia-mejorar').addEventListener('click', function () {
+    var btn = $('ia-mejorar'), nota = $('ia-nota'); nota.className = 'ia-nota'; btn.disabled = true; nota.textContent = 'Escribiendo…';
+    var sel = function (id) { var b = [].slice.call(document.querySelectorAll('#' + id + ' .op')).filter(function (x) { return x.getAttribute('aria-pressed') === 'true'; })[0]; return b ? b.textContent : ''; };
+    var base = $('texto').value.trim();
+    VL_IA.pedir('texto_redes', { negocio: 'Boutique Luna', producto: sel('prods'), red: sel('redes'), detalles: 'Texto base que el vendedor ya tiene (usa solo los datos que aparecen aquí, no agregues otros): ' + base }, 'emprendedor').then(function (r) {
+      btn.disabled = false;
+      if (r.ok) { $('texto').value = r.texto; $('texto').dispatchEvent(new Event('input', { bubbles: true })); nota.textContent = 'Listo. Revísalo antes de publicar.'; }
+      else { nota.textContent = r.mensaje; nota.classList.add('mal'); }
+    });
+  });
 })();
 </script>
 </body>
