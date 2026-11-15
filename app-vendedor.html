@@ -175,7 +175,8 @@
   .acciones { gap: 12px; }
   .accion { min-width: 0; padding: 12px 10px; gap: 10px; font-size: 13.5px; line-height: 1.2; }
   .accion .chip { width: 42px; height: 42px; flex: 0 0 42px; }
-  .accion .tx { min-width: 0; flex: 1; overflow-wrap: break-word; hyphens: auto; }
+  .accion .tx { min-width: 0; flex: 1; overflow-wrap: normal; word-break: keep-all; hyphens: none; }
+  .accion .tx.tres { font-size: 12px; line-height: 1.15; }
   .banner > div:first-child { flex: 1; min-width: 0; padding-right: 66px; }
   .banner b { font-size: 17px; line-height: 1.15; }
   .banner span { line-height: 1.25; display: block; margin-top: 2px; }
@@ -238,7 +239,7 @@
     <div class="acciones">
       <button type="button" class="accion" data-ir="productos"><span class="chip c1"><svg viewBox="0 0 24 24" fill="none" stroke="#2f6a10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="tx">Subir un producto</span></button>
       <button type="button" class="accion" data-hoja="foto-demo.html|Mejorar mi foto"><span class="chip c2"><svg viewBox="0 0 24 24" fill="none" stroke="#b34700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg></span><span class="tx">Tomar y mejorar foto</span></button>
-      <button type="button" class="accion" data-ir="compartir"><span class="chip c3"><svg viewBox="0 0 24 24" fill="none" stroke="#5c6200" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg></span><span class="tx">Compartir mi tienda</span></button>
+      <button type="button" class="accion" data-ir="compartir"><span class="chip c3"><svg viewBox="0 0 24 24" fill="none" stroke="#5c6200" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg></span><span class="tx tres">Compartir<br>mi<br>tienda</span></button>
       <button type="button" class="accion" data-hoja="tienda-demo.html|Mi tienda"><span class="chip c4"><svg viewBox="0 0 24 24" fill="none" stroke="#0b5d8c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 12v8h14v-8"/></svg></span><span class="tx">Ver mi tienda</span></button>
     </div>
 
