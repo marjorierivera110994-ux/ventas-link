@@ -178,8 +178,8 @@
   ];
   var CANTIDADES = [
     { id: 'hasta10', n: 'Hasta 10', plan: 'gratis' },
-    { id: '11a60', n: '11 a 60', plan: 'emprendedor' },
-    { id: 'mas60', n: 'Más de 60', plan: 'pro' },
+    { id: '11a300', n: '11 a 300', plan: 'emprendedor' },
+    { id: 'mas300', n: 'Más de 300', plan: 'pro' },
     { id: 'nose', n: 'Aún no lo sé', plan: 'gratis' }
   ];
   var PAISES = {
@@ -204,13 +204,13 @@
   function bandera(cod, alto) { return '<svg viewBox="0 0 30 20" width="' + Math.round(alto * 1.5) + '" height="' + alto + '" role="img" aria-label="Bandera de ' + PAISES[cod].n + '" style="border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.22);display:block;flex-shrink:0">' + FLAGS[cod] + '</svg>'; }
   var PLANES = {
     gratis: { n: 'Gratis', precio: '$0', pts: ['Hasta 10 productos y 3 secciones', 'Pedidos por WhatsApp sin límite', 'Camino de éxito y mensajes motivadores'], cta: 'Crear mi tienda gratis' },
-    emprendedor: { n: 'Emprendedor', precio: '$4.99', pts: ['Hasta 60 productos y 10 secciones', 'Ofertas y textos listos para redes', '10 plantillas para tu tienda'], cta: 'Probar 7 días gratis' },
-    pro: { n: 'Profesional', precio: '$9.99', pts: ['Hasta 300 productos, secciones sin límite', '50 plantillas y paleta con dorado y plateado', 'Tu logo y tu portada'], cta: 'Probar 7 días gratis' }
+    emprendedor: { n: 'Emprendedor', precio: '$4.99', pts: ['Hasta 300 productos y 300 videoclips', 'Ofertas y textos listos para redes', '10 plantillas para tu tienda'], cta: 'Probar 7 días gratis' },
+    pro: { n: 'Profesional', precio: '$9.99', pts: ['Productos y secciones sin límite', '50 plantillas y paleta con dorado y plateado', 'Tu logo, tu portada y hasta 1.000 videoclips'], cta: 'Probar 7 días gratis' }
   };
   var PORQUE = {
     gratis: 'Con hasta 10 productos, el plan Gratis te alcanza. Puedes subir de plan cuando quieras.',
-    emprendedor: 'Con 11 a 60 productos, Emprendedor te alcanza: hasta 60 productos y 10 secciones.',
-    pro: 'Con más de 60 productos necesitas Profesional: hasta 300 productos y secciones sin límite.'
+    emprendedor: 'Con 11 a 300 productos, Emprendedor te alcanza: hasta 300 productos, 30 secciones y 300 videoclips.',
+    pro: 'Con más de 300 productos necesitas Profesional: productos y secciones sin límite.'
   };
   var FLUJO = ['bienvenida', 'nombre', 'vende', 'cantidad', 'whatsapp', 'armando', 'lista', 'cuenta', 'planes', 'fin'];
   var PREGUNTAS = ['nombre', 'vende', 'cantidad', 'whatsapp'];

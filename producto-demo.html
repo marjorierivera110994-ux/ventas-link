@@ -109,7 +109,7 @@
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
   /* Reglas de los videoclips (hipótesis a validar con costos de almacenamiento y datos) */
-  var PLANES = { gratis: { n: 'Gratis', max: 1, seg: 15 }, emprendedor: { n: 'Emprendedor', max: 10, seg: 15 }, pro: { n: 'Profesional', max: 50, seg: 20 } };
+  var PLANES = { gratis: { n: 'Gratis', max: 1, seg: 15 }, emprendedor: { n: 'Emprendedor', max: 300, seg: 15 }, pro: { n: 'Profesional', max: 1000, seg: 20 } };
   var LIM_MB = 50; var TIPOS = ['video/mp4', 'video/webm', 'video/quicktime'];
   var estado = { plan: 'emprendedor', usados: { gratis: 0, emprendedor: 3, pro: 12 }, video: null, dur: 0, mb: 0, guardado: false };
 
