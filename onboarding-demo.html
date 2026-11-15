@@ -46,6 +46,7 @@
   .error { color: #9a3412; font-size: 14px; font-weight: 700; margin-top: 6px; display: none; }
   .campo.err .error { display: block; }
   .ayuda { font-size: 13px; color: var(--texto-2); margin-top: 6px; }
+  .invita-banner { margin-top: 12px; background: var(--tinta); color: var(--lima); border-radius: 18px; padding: 12px 14px; font-weight: 700; font-size: 14px; }
   .pais-chip { display: flex; align-items: center; gap: 10px; background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 18px; padding: 10px 14px; font-size: 14px; font-weight: 700; }
   .pais-chip small { display: block; font-weight: 500; color: var(--texto-2); font-size: 12.5px; }
   .tel-fila { display: grid; grid-template-columns: 132px 1fr; gap: 10px; }
@@ -218,6 +219,14 @@
   var R = { nombre: '', tipo: null, otro: '', cantidad: null, pais: 'EC', tel: '', plan: 'gratis', plan_rec: 'gratis', email: '' };
   var paso = 'bienvenida'; var ocupado = false; var timers = [];
 
+  /* Programa de invitados: si llegas con un enlace de invitación (#ref=CODIGO) recibes 30 días de plan Emprendedor en vez de 7 */
+  var REF = null; var INVITADORES = { 'BOUTIQUE-LUNA-7K2': 'Boutique Luna' };
+  function leerRef(s) { var m = String(s || '').match(/ref=([A-Za-z0-9-]{3,40})/); return m ? m[1].toUpperCase() : null; }
+  try { REF = leerRef(location.hash + '&' + location.search); } catch (e) { REF = null; }
+  function quienInvita() { return REF ? (INVITADORES[REF] || 'un vendedor de Ventas Link') : null; }
+  function dias(k) { return REF && k === 'emprendedor' ? 30 : 7; }
+  function ctaDe(k) { return k === 'gratis' ? PLANES.gratis.cta : (REF && k === 'emprendedor' ? 'Empezar mis 30 días gratis' : PLANES[k].cta); }
+
   function el(tag, attrs, hijos) {
     var e = document.createElement(tag);
     Object.keys(attrs || {}).forEach(function (k) {
@@ -301,7 +310,8 @@
     var h = el('h1', { 'data-esc': '' }); h.innerHTML = 'Bienvenido a <em>Ventas Link</em>';
     var sub = el('p', { class: 'sub', 'data-esc': '' }); sub.innerHTML = 'Tu tienda en un enlace: <b>lista en 2 minutos</b>, con 4 preguntas rápidas.';
     var mini = el('div', { class: 'mini-tienda', 'data-esc': '', 'aria-hidden': 'true' }); mini.innerHTML = '<div class="mt-ban"><span class="mt-logo">TU</span>Tu tienda</div><div class="mt-prods"><i></i><i></i><i></i></div><span class="mt-wa">Pedido por WhatsApp</span>';
-    var nodo = el('section', { class: 'paso' }, [el('span', { class: 'pildora', 'data-esc': '', text: 'Demostración del recorrido de inicio' }), m, h, sub, mini, ul, pie(cta('Empezar', function () { ir('nombre', 1); }), el('p', { class: 'nota centro', text: 'Sin tarjeta. Sin compromiso.' }))]);
+    var invB = REF ? el('p', { class: 'invita-banner', 'data-esc': '', text: 'Te invitó ' + quienInvita() + ': ganas 30 días de plan Emprendedor, sin tarjeta.' }) : null;
+    var nodo = el('section', { class: 'paso' }, [el('span', { class: 'pildora', 'data-esc': '', text: 'Demostración del recorrido de inicio' }), invB, m, h, sub, mini, ul, pie(cta('Empezar', function () { ir('nombre', 1); }), el('p', { class: 'nota centro', text: 'Sin tarjeta. Sin compromiso.' }))]);
     return nodo;
   }
 
@@ -434,19 +444,21 @@
     var h = el('h1'); h.innerHTML = '<em>' + escapar(nombre) + '</em> lista para vender';
     var sub = el('p', { class: 'sub' }); sub.innerHTML = '<b>Hecho con tus 4 respuestas.</b> Empieza gratis y crece cuando quieras.';
     var ben = el('ul', { class: 'beneficios' }); ['Pedidos por WhatsApp, sin comisión', 'Tu enlace listo para compartir en redes', 'Camino de éxito y mensajes que animan a comprar'].forEach(function (x) { var li = el('li'); li.innerHTML = '<span class="ck">' + CHECK + '</span>'; li.appendChild(document.createTextNode(x)); ben.appendChild(li); });
-    var porque = el('p', { class: 'porque', text: PORQUE[R.plan_rec] });
+    var porque = el('p', { class: 'porque', text: PORQUE[R.plan_rec] + (REF ? ' Tu invitación de ' + quienInvita() + ' te regala 30 días de Emprendedor.' : '') });
     var grupo = el('div', { class: 'planes', role: 'radiogroup', 'aria-label': 'Elige tu plan' });
-    var btn = cta(PLANES[R.plan].cta, function () { ir('fin', 1); });
+    var btn = cta(ctaDe(R.plan), function () { ir('fin', 1); });
     ['gratis', 'emprendedor', 'pro'].forEach(function (k) {
       var pl = PLANES[k]; var o = el('button', { type: 'button', class: 'plan', role: 'radio', 'aria-checked': String(R.plan === k) });
       var ul = el('ul'); pl.pts.forEach(function (x) { ul.appendChild(el('li', { text: x })); });
-      var pr = el('div', { class: 'pr' }); pr.textContent = pl.precio; pr.appendChild(el('small', { text: k === 'gratis' ? 'para siempre' : 'al mes' }));
+      var pr = el('div', { class: 'pr' }); pr.textContent = pl.precio; pr.appendChild(el('small', { text: k === 'gratis' ? 'para siempre' : 'al mes' })); if (REF && k === 'emprendedor') pr.appendChild(el('small', { text: '30 días gratis', style: 'color:var(--verde-texto);font-weight:800' }));
       o.appendChild(el('span', { class: 'rd' })); o.appendChild(el('div', {}, [el('h3', { text: pl.n }), ul])); o.appendChild(pr);
       if (k === R.plan_rec) o.appendChild(el('span', { class: 'rec', text: 'Recomendado para ti' }));
-      o.addEventListener('click', function () { R.plan = k; grupo.querySelectorAll('.plan').forEach(function (x, i) { x.setAttribute('aria-checked', String(['gratis', 'emprendedor', 'pro'][i] === k)); }); btn.textContent = PLANES[k].cta; });
+      o.addEventListener('click', function () { R.plan = k; grupo.querySelectorAll('.plan').forEach(function (x, i) { x.setAttribute('aria-checked', String(['gratis', 'emprendedor', 'pro'][i] === k)); }); btn.textContent = ctaDe(k); pintarVerdad(k); });
       grupo.appendChild(o);
     });
-    var verdad = el('ul', { class: 'verdad' }); ['Hoy no pagas nada', 'No pedimos tarjeta', 'Tras 7 días vuelves al plan gratis, sin cobro automático'].forEach(function (x) { var li = el('li'); li.innerHTML = CHECK; li.appendChild(document.createTextNode(x)); verdad.appendChild(li); });
+    var verdad = el('ul', { class: 'verdad' });
+    function pintarVerdad(k) { verdad.textContent = ''; ['Hoy no pagas nada', 'No pedimos tarjeta', 'Tras ' + dias(k) + ' días vuelves al plan gratis, sin cobro automático'].forEach(function (x) { var li = el('li'); li.innerHTML = CHECK; li.appendChild(document.createTextNode(x)); verdad.appendChild(li); }); }
+    pintarVerdad(R.plan);
     var salida = el('button', { type: 'button', class: 'link', text: 'Ahora no, seguir con el plan gratis', onclick: function () { R.plan = 'gratis'; ir('fin', 1); } });
     var detalle = el('a', { class: 'link', href: 'vista-pagina-ventas.html#planes', target: '_blank', rel: 'noopener', text: 'Ver todo lo que incluye cada plan' });
     var nodo = el('section', { class: 'paso' }, [h, sub, ben, porque, grupo, el('p', { class: 'nota centro', text: 'Precios de lanzamiento en dólares, de prueba. Se confirman antes de cobrar.' }),
@@ -475,19 +487,20 @@
     var nombre = nombreCorto(); var enlace = 'https://ejemplo.com/' + slug(nombre);
     var h = el('h1'); h.innerHTML = '¡Listo, <em>' + escapar(nombre) + '</em>!';
     var sub = el('p', { class: 'sub' }); sub.innerHTML = 'Bienvenido a <b>Ventas Link</b>. Todo gran negocio empezó así: ahora sube tu primer producto.';
-    var planTxt = el('p', { class: 'porque', text: 'Tu plan: ' + PLANES[R.plan].n + (R.plan === 'gratis' ? '' : ' · 7 días de funciones premium, sin cobro') });
+    var planTxt = el('p', { class: 'porque', text: 'Tu plan: ' + PLANES[R.plan].n + (R.plan === 'gratis' ? '' : ' · ' + dias(R.plan) + ' días de funciones premium, sin cobro') });
     var link = el('div', { class: 'enlace' }, [el('b', { text: enlace.replace('https://', '') }), el('button', { type: 'button', class: 'copiar', text: 'Copiar', onclick: function () { copiar(enlace); } })]);
     var lista = el('ol', { class: 'pasos-sig' }); ['Sube tu primer producto', 'Comparte tu enlace en tus redes', 'Revisa tu camino de éxito cada semana'].forEach(function (x, i) { var li = el('li'); li.innerHTML = '<span class="n">' + (i + 1) + '</span>'; li.appendChild(document.createTextNode(x)); lista.appendChild(li); });
     var wa = el('a', { class: 'btn wa', href: 'https://wa.me/?text=' + encodeURIComponent('Mira mi tienda: ' + enlace), target: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? '_self' : '_blank', rel: 'noopener', style: 'text-decoration:none' }); wa.textContent = 'Compartir por WhatsApp';
     var otra = el('button', { type: 'button', class: 'btn claro', text: 'Repetir la demostración', onclick: reiniciar });
     var guia = el('a', { class: 'link', href: 'vista-pagina-ventas.html', target: '_blank', rel: 'noopener', text: 'Ver cómo usar la app' });
-    return el('section', { class: 'paso' }, [h, sub, planTxt, link, el('p', { class: 'nota', text: 'Enlace de ejemplo. Aquí empieza la app real.' }), lista, el('div', { class: 'pie' }, [wa, otra, el('div', { class: 'centro' }, [guia])])]);
+    var invitar = el('a', { class: 'btn', href: 'invita-demo.html', target: '_blank', rel: 'noopener', style: 'text-decoration:none', text: 'Invita y gana 30 días de Emprendedor' });
+    return el('section', { class: 'paso' }, [h, sub, planTxt, link, el('p', { class: 'nota', text: 'Enlace de ejemplo. Aquí empieza la app real.' }), lista, el('div', { class: 'pie' }, [wa, invitar, otra, el('div', { class: 'centro' }, [guia])])]);
   }
   function reiniciar() { R = { nombre: '', tipo: null, otro: '', cantidad: null, pais: 'EC', tel: '', plan: 'gratis', plan_rec: 'gratis', email: '' }; ir('bienvenida', -1); }
 
   $('atras').addEventListener('click', function () { if (!ocupado) anterior(); });
   $('escena').appendChild(construir('bienvenida')); actualizarTope();
-  window.__ob = { R: function () { return R; }, ir: ir, paso: function () { return paso; }, telValido: telValido, telLimpio: telLimpio, slug: slug, planRecomendado: planRecomendado, reiniciar: reiniciar };
+  window.__ob = { setRef: function (c) { REF = leerRef('ref=' + c); }, R: function () { return R; }, ir: ir, paso: function () { return paso; }, telValido: telValido, telLimpio: telLimpio, slug: slug, planRecomendado: planRecomendado, reiniciar: reiniciar };
 })();
 </script>
 </body>

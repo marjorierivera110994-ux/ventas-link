@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ventas Link — invita y gana (demostración)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --verde-texto: #2f6a10; --wa: #25d366;
+          --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45;
+         background-image: radial-gradient(800px 360px at 10% -6%, color-mix(in oklab, var(--pistacho) 45%, transparent), transparent 62%), radial-gradient(600px 300px at 100% 0, color-mix(in oklab, var(--lima) 40%, transparent), transparent 60%); }
+  button, input, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; border: 0; background: none; }
+  :focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+  .app { max-width: 480px; margin: 0 auto; padding: 14px 16px 48px; }
+  h1, h2, h3 { font-family: var(--f-d); letter-spacing: -.015em; }
+  h1 { font-size: clamp(28px, 8vw, 34px); font-weight: 800; line-height: 1.08; margin-top: 12px; }
+  h1 em { font-style: normal; background: linear-gradient(transparent 58%, color-mix(in oklab, var(--lima) 85%, transparent) 58%); }
+  h2 { font-size: 16px; font-weight: 800; margin-top: 24px; }
+  .demo { display: inline-flex; gap: 8px; align-items: center; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; }
+  .sub { font-size: 15px; color: var(--texto-2); margin-top: 8px; }
+  .sub b { color: var(--tinta); }
+  .tarjeta { margin-top: 12px; background: var(--blanco); border-radius: 24px; padding: 16px; box-shadow: 0 14px 30px -18px rgb(40 60 40 / .55); }
+  .tarjeta.negra { background: var(--tinta); color: #fff; }
+  .enlace { display: flex; align-items: center; gap: 10px; background: var(--beige); border-radius: 16px; padding: 10px 12px; margin-top: 10px; }
+  .enlace b { flex: 1; min-width: 0; word-break: break-all; font-size: 15px; }
+  .btn { margin-top: 12px; width: 100%; min-height: 54px; border-radius: 999px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--tinta); color: var(--lima); text-decoration: none; }
+  .btn.wa { background: var(--wa); color: var(--tinta); } .btn.claro { background: var(--beige); color: var(--tinta); } .btn.borde { background: var(--blanco); color: var(--tinta); border: 2px solid var(--tinta); }
+  .copiar { min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--tinta); color: var(--lima); font-weight: 800; font-size: 14px; }
+  .cajas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+  .caja { background: var(--blanco); border-radius: 20px; padding: 12px 14px; box-shadow: 0 10px 24px -16px rgb(40 60 40 / .5); }
+  .caja small { display: block; font-size: 12px; font-weight: 600; color: var(--texto-2); }
+  .caja b { font-family: var(--f-d); font-size: 28px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .caja.lima { background: var(--lima); } .caja.pist { background: var(--pistacho); }
+  .caja.lima small, .caja.pist small { color: #2b3a12; }
+  .medidor { height: 10px; border-radius: 999px; background: color-mix(in oklab, var(--tinta) 14%, transparent); overflow: hidden; margin-top: 10px; }
+  .medidor i { display: block; height: 100%; width: 0; background: var(--tinta); border-radius: 999px; transition: width .4s ease-out; }
+  .hasta { font-size: 14px; margin-top: 6px; } .hasta b { font-family: var(--f-d); }
+  .inv { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid color-mix(in oklab, var(--tinta) 8%, transparent); }
+  .inv:last-child { border-bottom: 0; }
+  .inv .av { width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; background: var(--beige); }
+  .inv h3 { font-size: 15px; font-weight: 800; } .inv p { font-size: 13px; color: var(--texto-2); }
+  .est { border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 800; white-space: nowrap; }
+  .e1 { background: #e4e0d4; color: var(--texto-2); } .e2 { background: var(--lima); } .e3 { background: var(--pistacho); }
+  .pasos { list-style: none; display: grid; gap: 10px; margin-top: 12px; counter-reset: p; }
+  .pasos li { counter-increment: p; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; font-size: 15px; }
+  .pasos li::before { content: counter(p); width: 34px; height: 34px; border-radius: 999px; background: var(--lima); display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; }
+  .pasos b { display: block; }
+  details { background: var(--blanco); border-radius: 18px; padding: 0 16px; margin-top: 10px; }
+  summary { list-style: none; cursor: pointer; min-height: 52px; display: flex; align-items: center; justify-content: space-between; font-weight: 800; font-family: var(--f-d); }
+  summary::-webkit-details-marker { display: none; }
+  details ol { padding: 0 0 14px 18px; display: grid; gap: 8px; font-size: 14px; color: var(--texto-2); }
+  details[open] summary svg { transform: rotate(45deg); }
+  .aviso { margin-top: 12px; font-size: 13px; color: var(--texto-2); background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 16px; padding: 10px 14px; }
+  textarea { width: 100%; min-height: 120px; border: 2px solid transparent; border-radius: 16px; background: var(--beige); padding: 12px 14px; font-size: 15px; line-height: 1.45; margin-top: 10px; resize: vertical; }
+  textarea:focus-visible { border-color: var(--tinta); outline: none; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 5; max-width: 90vw; text-align: center; }
+  .toast.on { display: block; }
+  .confeti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; contain: strict; z-index: 20; }
+  .confeti i { position: absolute; top: 40%; left: 50%; width: 10px; height: 14px; border-radius: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<main class="app">
+  <p class="demo" role="note">Demostración · datos de ejemplo</p>
+  <h1>Invita y <em>gana</em></h1>
+  <p class="sub">Por cada vendedor que invites y publique su primer producto, <b>ganas 30 días de plan Emprendedor</b>. Tu invitado también recibe 30 días.</p>
+
+  <div class="tarjeta negra">
+    <p style="font-size:13px;opacity:.8;font-weight:600">Tu enlace de invitación</p>
+    <div class="enlace" style="color:var(--tinta)"><b id="enlace">ejemplo.com/r/BOUTIQUE-LUNA-7K2</b><button type="button" class="copiar" id="copiar-enlace">Copiar</button></div>
+    <label for="msg" style="display:block;margin-top:14px;font-weight:700;font-size:14px">Mensaje para enviar (puedes editarlo)</label>
+    <textarea id="msg" maxlength="400"></textarea>
+    <a class="btn wa" id="wa" href="#" target="_blank" rel="noopener">Invitar por WhatsApp</a>
+    <button type="button" class="btn claro" id="copiar-msg">Copiar mensaje</button>
+    <a class="btn borde" style="background:transparent;color:#fff;border-color:#fff" href="onboarding-demo.html#ref=BOUTIQUE-LUNA-7K2" target="_blank" rel="noopener">Ver lo que verá tu invitado</a>
+  </div>
+  <p class="aviso">No pedimos acceso a tus contactos. Tú eliges a quién enviar la invitación.</p>
+
+  <h2>Tus invitaciones</h2>
+  <div class="cajas">
+    <div class="caja"><small>Invitaciones enviadas</small><b id="n-env">0</b></div>
+    <div class="caja"><small>Se registraron</small><b id="n-reg">0</b></div>
+    <div class="caja pist"><small>Ya publicaron su 1.er producto</small><b id="n-act">0</b></div>
+    <div class="caja lima"><small>Días de Emprendedor ganados</small><b id="n-dias">0</b></div>
+  </div>
+  <div class="tarjeta">
+    <div class="fila" style="display:flex;justify-content:space-between;font-weight:800;font-size:14px"><span>Premios usados</span><span id="t-prem"></span></div>
+    <div class="medidor" aria-hidden="true"><i id="med"></i></div>
+    <p class="hasta" id="hasta"></p>
+  </div>
+
+  <div class="tarjeta" id="lista" aria-live="polite"></div>
+  <button type="button" class="btn borde" id="sim">Simular: Moda Ana publica su primer producto</button>
+
+  <h2>Cómo funciona</h2>
+  <ol class="pasos">
+    <li><div><b>Comparte tu enlace</b>Envíalo a un amigo o a otro vendedor que conozcas.</div></li>
+    <li><div><b>Tu invitado crea su tienda</b>Recibe 30 días de plan Emprendedor desde que se registra.</div></li>
+    <li><div><b>Publica su primer producto</b>Entonces tú ganas 30 días de plan Emprendedor.</div></li>
+  </ol>
+
+  <details><summary>Reglas del programa <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+    <ol>
+      <li>Tu invitado debe registrarse con tu enlace, crear su tienda y <b>publicar su primer producto</b>. Así premiamos negocios reales, no cuentas vacías.</li>
+      <li>Ambos ganan 30 días de plan Emprendedor: tu invitado desde que se registra y tú cuando él publica su primer producto.</li>
+      <li>Puedes ganar hasta <b>12 premios</b> (360 días) por cuenta.</li>
+      <li>Cada persona, número de WhatsApp o negocio puede ser invitado <b>una sola vez</b>. No valen invitaciones a ti mismo ni cuentas repetidas.</li>
+      <li>Los días no se cambian por dinero. Si ya pagas un plan, los días se suman a tu suscripción.</li>
+      <li>Podemos anular premios si detectamos cuentas falsas o abuso del programa.</li>
+    </ol>
+  </details>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var ENLACE = 'https://ejemplo.com/r/BOUTIQUE-LUNA-7K2'; /* en la app real: enlace único de cada vendedor */
+  var TOPE = 12; var DIAS = 30;
+  /* Estado de cada invitado: 1 = invitación enviada · 2 = se registró · 3 = publicó su primer producto (premio ganado). Nombres de ejemplo. */
+  var INVITADOS = [
+    { n: 'Tienda Sol', e: 3 }, { n: 'Dulce Casa', e: 3 }, { n: 'Moda Ana', e: 2 }, { n: 'Pedro', e: 1 }
+  ];
+  var ETQ = { 1: 'Invitación enviada', 2: 'Se registró', 3: 'Premio ganado' };
+  var DESC = { 1: 'Aún no se registra', 2: 'Falta su primer producto', 3: 'Publicó su primer producto: ganaste 30 días' };
+
+  function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2800); }
+  function esMovil() { return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent); }
+  function mensaje() { return 'Hola, uso Ventas Link para vender por WhatsApp con mi catálogo y pedidos ordenados. Si te registras con mi enlace ganas 30 días de plan Emprendedor gratis: ' + ENLACE; }
+  function copiar(txt, ok) {
+    function r() { var a = document.createElement('textarea'); a.value = txt; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); toast(ok); } catch (e) { toast('Copia el texto manualmente'); } a.remove(); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function () { toast(ok); }, r); else r();
+  }
+  function fechaFin(dias) { var d = new Date(); d.setDate(d.getDate() + dias); return d.toLocaleDateString('es-EC', { day: 'numeric', month: 'long', year: 'numeric' }); }
+
+  function pintar() {
+    var env = INVITADOS.length, reg = INVITADOS.filter(function (i) { return i.e >= 2; }).length, act = INVITADOS.filter(function (i) { return i.e === 3; }).length, dias = Math.min(act, TOPE) * DIAS;
+    $('n-env').textContent = env; $('n-reg').textContent = reg; $('n-act').textContent = act; $('n-dias').textContent = dias;
+    $('t-prem').textContent = Math.min(act, TOPE) + ' de ' + TOPE; $('med').style.width = (Math.min(act, TOPE) / TOPE * 100) + '%';
+    $('hasta').innerHTML = ''; if (dias > 0) { $('hasta').appendChild(document.createTextNode('Tienes plan Emprendedor gratis hasta el ')); var b = document.createElement('b'); b.textContent = fechaFin(dias); $('hasta').appendChild(b); $('hasta').appendChild(document.createTextNode('.')); } else $('hasta').textContent = 'Aún no tienes días ganados. Invita a tu primer vendedor.';
+    var l = $('lista'); l.textContent = '';
+    INVITADOS.forEach(function (i) {
+      var fila = document.createElement('div'); fila.className = 'inv';
+      var av = document.createElement('span'); av.className = 'av'; av.textContent = i.n.charAt(0); av.setAttribute('aria-hidden', 'true');
+      var tx = document.createElement('div'); var h = document.createElement('h3'); h.textContent = i.n; var p = document.createElement('p'); p.textContent = DESC[i.e]; tx.appendChild(h); tx.appendChild(p);
+      var e = document.createElement('span'); e.className = 'est e' + i.e; e.textContent = ETQ[i.e];
+      fila.appendChild(av); fila.appendChild(tx); fila.appendChild(e); l.appendChild(fila);
+    });
+    var pend = INVITADOS.filter(function (i) { return i.n === 'Moda Ana' && i.e === 2; }).length; $('sim').hidden = !pend;
+    $('wa').href = 'https://wa.me/?text=' + encodeURIComponent($('msg').value);
+  }
+  function celebrar() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var c = document.createElement('div'); c.className = 'confeti'; c.setAttribute('aria-hidden', 'true'); document.body.appendChild(c); var cols = ['#a5dc5b', '#e6ee4a', '#ff7a1a', '#131313'];
+    for (var i = 0; i < 22; i++) { var p = document.createElement('i'); p.style.background = cols[i % 4]; c.appendChild(p); var a = Math.PI * 2 * i / 22, d = 70 + Math.random() * 80; p.animate([{ transform: 'translate(0,0)', opacity: 1 }, { transform: 'translate(' + Math.cos(a) * d + 'px,' + (Math.sin(a) * d + 90) + 'px) rotate(300deg)', opacity: 0 }], { duration: 1100, easing: 'cubic-bezier(.2,.8,.3,1)', fill: 'forwards' }); }
+    setTimeout(function () { c.remove(); }, 1500);
+  }
+
+  $('msg').value = mensaje(); if (esMovil()) $('wa').target = '_self';
+  $('msg').addEventListener('input', pintar);
+  $('copiar-enlace').addEventListener('click', function () { copiar(ENLACE, 'Enlace copiado'); });
+  $('copiar-msg').addEventListener('click', function () { copiar($('msg').value, 'Mensaje copiado'); });
+  $('sim').addEventListener('click', function () { INVITADOS.forEach(function (i) { if (i.n === 'Moda Ana') i.e = 3; }); pintar(); celebrar(); toast('¡Ganaste 30 días de Emprendedor! Cada vendedor que ayudas también crece.'); });
+  pintar();
+  window.__inv = { INVITADOS: INVITADOS, pintar: pintar, TOPE: TOPE };
+})();
+</script>
+</body>
+</html>
