@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Ventas Link">
+  <defs><linearGradient id="fondo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9e873"/><stop offset="1" stop-color="#a5dc5b"/></linearGradient></defs>
+  <rect width="512" height="512" fill="url(#fondo)"/>
+  <g transform="translate(256 262) scale(.76) translate(-256 -262)">
+    <path d="M184 190v-26a72 72 0 0 1 144 0v26" fill="none" stroke="#131313" stroke-width="26" stroke-linecap="round"/>
+    <path d="M132 190h248a22 22 0 0 1 22 20l24 200a30 30 0 0 1-30 34H116a30 30 0 0 1-30-34l24-200a22 22 0 0 1 22-20z" fill="#131313"/>
+    <g fill="none" stroke-width="20" stroke-linecap="round">
+      <rect x="148" y="298" width="132" height="64" rx="32" stroke="#e6ee4a" transform="rotate(-18 214 330)"/>
+      <rect x="232" y="298" width="132" height="64" rx="32" stroke="#ff7a1a" transform="rotate(-18 298 330)"/>
+    </g>
+    <circle cx="400" cy="112" r="16" fill="#ff7a1a"/>
+  </g>
+</svg>

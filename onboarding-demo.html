@@ -79,6 +79,7 @@
   .lista-v li { display: flex; gap: 12px; align-items: flex-start; font-size: 16px; font-weight: 600; }
   .lista-v b { display: block; font-size: 16px; font-weight: 800; line-height: 1.2; }
   .lista-v small { display: block; font-size: 14px; font-weight: 500; color: var(--texto-2); margin-top: 1px; }
+  .sticker { display: block; margin: 8px auto 0; width: 132px; height: 132px; }
   .mini-tienda { margin-top: 22px; background: var(--blanco); border-radius: 24px; padding: 10px; box-shadow: 0 22px 40px -22px rgb(40 60 40 / .55); position: relative; }
   .mini-tienda .mt-ban { background: var(--pistacho); border-radius: 16px; padding: 12px; display: flex; align-items: center; gap: 10px; font-family: var(--f-d); font-weight: 800; font-size: 16px; }
   .mini-tienda .mt-logo { width: 36px; height: 36px; border-radius: 999px; background: var(--blanco); display: grid; place-items: center; font-size: 13px; }
@@ -298,7 +299,8 @@
   function cta(texto, fn, deshabilitado) { var b = el('button', { type: 'button', class: 'btn', text: texto, onclick: fn }); if (deshabilitado) b.disabled = true; return b; }
 
   function pBienvenida() {
-    var m = el('div', { class: 'marca', 'data-esc': '' }); m.innerHTML = '<i>' + icono('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>', 22).replace('#131313', '#e6ee4a') + '</i>Ventas Link';
+    var m = el('div', { class: 'marca', 'data-esc': '' }); m.innerHTML = '<img src="logo/ventas-link-icono.svg" alt="" width="34" height="34" style="border-radius:10px;display:block">Ventas Link';
+    var sticker = el('img', { class: 'sticker', src: 'logo/ventas-link-sticker.svg', alt: '', width: '132', height: '132', 'data-esc': '' });
     var items = [
       ['Tu enlace único', 'Compártelo en WhatsApp, Instagram, Facebook y TikTok.', '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'],
       ['Pedidos claros por WhatsApp', 'Con productos, cantidades y total, ya armados.', '<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/>'],
@@ -311,7 +313,7 @@
     var sub = el('p', { class: 'sub', 'data-esc': '' }); sub.innerHTML = 'Tu tienda en un enlace: <b>lista en 2 minutos</b>, con 4 preguntas rápidas.';
     var mini = el('div', { class: 'mini-tienda', 'data-esc': '', 'aria-hidden': 'true' }); mini.innerHTML = '<div class="mt-ban"><span class="mt-logo">TU</span>Tu tienda</div><div class="mt-prods"><i></i><i></i><i></i></div><span class="mt-wa">Pedido por WhatsApp</span>';
     var invB = REF ? el('p', { class: 'invita-banner', 'data-esc': '', text: 'Te invitó ' + quienInvita() + ': ganas 30 días de plan Emprendedor, sin tarjeta.' }) : null;
-    var nodo = el('section', { class: 'paso' }, [el('span', { class: 'pildora', 'data-esc': '', text: 'Demostración del recorrido de inicio' }), invB, m, h, sub, mini, ul, pie(cta('Empezar', function () { ir('nombre', 1); }), el('p', { class: 'nota centro', text: 'Sin tarjeta. Sin compromiso.' }))]);
+    var nodo = el('section', { class: 'paso' }, [el('span', { class: 'pildora', 'data-esc': '', text: 'Demostración del recorrido de inicio' }), invB, m, sticker, h, sub, mini, ul, pie(cta('Empezar', function () { ir('nombre', 1); }), el('p', { class: 'nota centro', text: 'Sin tarjeta. Sin compromiso.' }))]);
     return nodo;
   }
 

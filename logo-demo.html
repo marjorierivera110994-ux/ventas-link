@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ventas Link — logo y sticker</title>
+<link rel="icon" href="logo/ventas-link-icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); line-height: 1.45; }
+  .app { max-width: 520px; margin: 0 auto; padding: 16px 16px 60px; }
+  h1, h2 { font-family: var(--f-d); letter-spacing: -.015em; }
+  h1 { font-size: 26px; font-weight: 800; line-height: 1.1; }
+  h2 { font-size: 17px; font-weight: 800; margin-top: 24px; }
+  .sub { font-size: 14px; color: var(--texto-2); margin-top: 6px; }
+  .fila { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 10px; background: var(--blanco); border-radius: 22px; padding: 16px; }
+  .fila img { display: block; }
+  .redondo { border-radius: 999px; overflow: hidden; }
+  .nombre { font-family: var(--f-d); font-weight: 800; font-size: 18px; }
+  .nombre small { display: block; font-family: var(--f-b); font-weight: 500; font-size: 13px; color: var(--texto-2); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 18px; border-radius: 999px; background: var(--tinta); color: var(--lima); font-weight: 800; text-decoration: none; margin-top: 8px; }
+  .btn.claro { background: var(--beige); color: var(--tinta); }
+  .oscuro { background: var(--tinta); }
+  :focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<main class="app">
+  <h1>Tu logo y tu sticker</h1>
+  <p class="sub">Un bolso de compras con un enlace: vendes y compartes con un toque. En tus colores.</p>
+
+  <h2>Foto de perfil (se ve redonda)</h2>
+  <div class="fila">
+    <div class="redondo"><img src="logo/ventas-link-perfil-1024.png" alt="Logo Ventas Link como foto de perfil" width="96" height="96"></div>
+    <div class="redondo"><img src="logo/ventas-link-perfil-1024.png" alt="" width="56" height="56"></div>
+    <div class="redondo"><img src="logo/ventas-link-perfil-1024.png" alt="" width="36" height="36"></div>
+    <div class="nombre">Ventas Link<small>Así se ve en WhatsApp, Instagram y TikTok</small></div>
+  </div>
+  <a class="btn" href="logo/ventas-link-perfil-1024.png" download>Descargar foto de perfil (PNG)</a>
+
+  <h2>Ícono de la app</h2>
+  <div class="fila"><img src="logo/ventas-link-icono-1024.png" alt="Ícono de la app" width="96" height="96"><div class="nombre">Pantalla de inicio<small>Esquinas redondeadas, fondo transparente</small></div></div>
+  <a class="btn claro" href="logo/ventas-link-icono-1024.png" download>Descargar ícono (PNG)</a>
+
+  <h2>Sticker con movimiento</h2>
+  <div class="fila" style="justify-content:space-around"><img src="logo/ventas-link-sticker.svg" alt="Sticker animado de Ventas Link" width="150" height="150"><img src="logo/ventas-link-sticker.svg" alt="" width="90" height="90"></div>
+  <p class="sub">Salta, mueve el asa y gira los eslabones. Si el celular tiene activado "reducir movimiento", se queda quieto.</p>
+  <a class="btn claro" href="logo/ventas-link-sticker.svg" download>Descargar sticker (SVG animado)</a>
+</main>
+</body>
+</html>

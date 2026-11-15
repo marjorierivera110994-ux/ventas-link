@@ -248,3 +248,9 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Hecho honesto: el plan Gratis NO vence. Lo que termina es la prueba (7 días, o 30 si fue invitado) y los cupos (10 productos, 1 videoclip). El mapa muestra: días que quedan con fecha real, camino (empezaste → te avisamos 2 días antes → estás aquí → termina → plan Gratis sin fin), medidores de cupos, "se mantiene / se pausa". Nunca se borran productos; solo no se agregan más.
 - Escenarios de demo: prueba día 2, día 6, invitado día 12, ya en Gratis. Barra naranja si quedan ≤2 días.
 - Pendiente: aviso real 2 días antes (notificación/WhatsApp, requiere servidor); decidir qué pasa con productos que pasen de 10 al bajar de plan (hipótesis: quedan visibles, no se editan nuevos); enlazar el mapa desde el inicio de la app real.
+
+## LOGO Y STICKER (carpeta logo/)
+- Logo: bolso de compras negro con dos eslabones de cadena (lima + naranja) sobre pistacho, punto naranja. Idea: vender + enlace. Interpreté "logro" como "logo".
+- Archivos: ventas-link-icono.svg/.png (ícono redondeado, fondo transparente), ventas-link-perfil.svg/-1024.png (cuadrado lleno, para foto de perfil que las redes recortan en círculo), ventas-link-sticker.svg (animado: salta, asa y eslabones se mueven; quieto con "reducir movimiento"). Vista: logo-demo.html.
+- Puesto en: bienvenida del recorrido de inicio (sticker grande + ícono en marca) y barra de la página de ventas.
+- Pendiente: sticker de WhatsApp (WebP animado 512×512, lo exige el formato), favicon en todas las páginas, revisar marca/nombre "Ventas Link" (registro y dominio), el usuario no dio referencia de perfil: logo propuesto, puede pedir otra versión.
