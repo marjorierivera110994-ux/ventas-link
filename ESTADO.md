@@ -243,3 +243,8 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Vendedor (cobro-demo, tarjeta "Para ti, hoy"): 15 frases de marketing/ventas/crecimiento personal, cambia en cada entrada y no repite la última (localStorage con fallback).
 - Comprador (tienda-demo, bajo la bandera): 8 frases de la vida en es/en/pt, al azar en cada visita. Reemplazan el saludo anterior.
 - Pendiente: ponerla también en la pantalla de inicio de la app real del vendedor; frases editables en planes de pago; revisar traducciones en/pt con nativos.
+
+## MAPA DE TU PLAN — mi-plan-demo.html
+- Hecho honesto: el plan Gratis NO vence. Lo que termina es la prueba (7 días, o 30 si fue invitado) y los cupos (10 productos, 1 videoclip). El mapa muestra: días que quedan con fecha real, camino (empezaste → te avisamos 2 días antes → estás aquí → termina → plan Gratis sin fin), medidores de cupos, "se mantiene / se pausa". Nunca se borran productos; solo no se agregan más.
+- Escenarios de demo: prueba día 2, día 6, invitado día 12, ya en Gratis. Barra naranja si quedan ≤2 días.
+- Pendiente: aviso real 2 días antes (notificación/WhatsApp, requiere servidor); decidir qué pasa con productos que pasen de 10 al bajar de plan (hipótesis: quedan visibles, no se editan nuevos); enlazar el mapa desde el inicio de la app real.

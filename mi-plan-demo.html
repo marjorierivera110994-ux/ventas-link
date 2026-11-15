@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ventas Link — mapa de tu plan (demostración)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --verde-texto: #2f6a10;
+          --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45;
+         background-image: radial-gradient(800px 360px at 90% -6%, color-mix(in oklab, var(--pistacho) 45%, transparent), transparent 62%); }
+  button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+  :focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+  .app { max-width: 520px; margin: 0 auto; padding: 14px 16px 60px; }
+  h1, h2, h3 { font-family: var(--f-d); letter-spacing: -.015em; }
+  h1 { font-size: 26px; font-weight: 800; line-height: 1.1; margin-top: 12px; }
+  h2 { font-size: 17px; font-weight: 800; margin-top: 24px; }
+  .demo { display: inline-flex; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; }
+  .sub { font-size: 14px; color: var(--texto-2); margin-top: 6px; }
+  .opciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .op { min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--blanco); font-weight: 700; font-size: 14px; }
+  .op[aria-pressed="true"] { background: var(--tinta); color: #fff; }
+  .hero { margin-top: 14px; background: var(--tinta); color: #fff; border-radius: 26px; padding: 18px; }
+  .hero small { color: var(--lima); font-weight: 700; font-size: 12px; }
+  .hero .grande { font-family: var(--f-d); font-weight: 800; font-size: 40px; line-height: 1; margin-top: 6px; }
+  .hero p { font-size: 14px; margin-top: 8px; color: #e9e6da; }
+  .barra { height: 12px; border-radius: 999px; background: rgb(255 255 255 / .18); margin-top: 14px; overflow: hidden; }
+  .barra i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--pistacho), var(--lima)); transition: width .5s ease; }
+  .barra.alerta i { background: var(--naranja); }
+  .mapa { margin-top: 10px; background: var(--blanco); border-radius: 22px; padding: 18px 16px 8px; }
+  .nodo { position: relative; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; padding-bottom: 20px; }
+  .nodo::before { content: ''; position: absolute; left: 16px; top: 34px; bottom: 0; width: 3px; background: repeating-linear-gradient(to bottom, color-mix(in oklab, var(--tinta) 25%, transparent) 0 6px, transparent 6px 12px); }
+  .nodo:last-child::before { display: none; }
+  .nodo.hecho::before { background: var(--pistacho); }
+  .punto { width: 34px; height: 34px; border-radius: 999px; display: grid; place-items: center; font-weight: 800; font-size: 14px; background: color-mix(in oklab, var(--tinta) 10%, white); color: var(--texto-2); z-index: 1; }
+  .hecho .punto { background: var(--pistacho); color: var(--tinta); }
+  .aqui .punto { background: var(--naranja); color: var(--tinta); box-shadow: 0 0 0 6px color-mix(in oklab, var(--naranja) 25%, transparent); }
+  .fin .punto { background: var(--tinta); color: var(--lima); }
+  .nodo h3 { font-size: 16px; font-weight: 800; }
+  .nodo .fecha { font-size: 13px; font-weight: 700; color: var(--verde-texto); }
+  .nodo p { font-size: 14px; color: var(--texto-2); margin-top: 2px; }
+  .etq { display: inline-block; background: var(--naranja); color: var(--tinta); font-weight: 800; font-size: 12px; border-radius: 999px; padding: 2px 10px; margin-left: 6px; vertical-align: middle; }
+  .tarj { margin-top: 10px; background: var(--blanco); border-radius: 20px; padding: 14px 16px; }
+  .med .fila { display: flex; justify-content: space-between; font-weight: 700; font-size: 14px; }
+  .med .tubo { height: 12px; border-radius: 999px; background: color-mix(in oklab, var(--tinta) 10%, white); margin-top: 6px; overflow: hidden; }
+  .med .tubo i { display: block; height: 100%; background: var(--pistacho); border-radius: 999px; }
+  .med.lleno .tubo i { background: var(--naranja); }
+  .med small { display: block; font-size: 13px; color: var(--texto-2); margin-top: 4px; }
+  .dos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+  .dos .tarj { margin-top: 0; font-size: 14px; }
+  .dos h3 { font-size: 14px; margin-bottom: 6px; }
+  .dos ul { list-style: none; display: grid; gap: 6px; }
+  .dos li { padding-left: 18px; position: relative; }
+  .dos li::before { content: ''; position: absolute; left: 0; top: 7px; width: 9px; height: 9px; border-radius: 999px; background: var(--pistacho); }
+  .dos .pausa li::before { background: var(--naranja); }
+  .btn { margin-top: 12px; width: 100%; min-height: 54px; border-radius: 999px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; background: var(--tinta); color: var(--lima); }
+  .btn.claro { background: var(--blanco); color: var(--tinta); }
+  .nota { margin-top: 12px; font-size: 13px; color: var(--texto-2); background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 16px; padding: 10px 14px; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 5; max-width: 90vw; text-align: center; }
+  .toast.on { display: block; }
+  @media (prefers-reduced-motion: reduce) { .barra i { transition: none; } }
+</style>
+</head>
+<body>
+<main class="app">
+  <p class="demo" role="note">Demostración · fechas calculadas desde hoy, no se cobra nada</p>
+  <h1>Mapa de tu plan</h1>
+  <p class="sub">Mira de un vistazo dónde estás, cuándo cambia tu plan y qué te queda por usar.</p>
+
+  <h2 id="h-esc" style="margin-top:16px">Ver como si estuvieras en…</h2>
+  <div class="opciones" id="esc" role="group" aria-labelledby="h-esc"></div>
+
+  <section class="hero" id="hero" aria-live="polite"></section>
+
+  <h2>Tu camino</h2>
+  <div class="mapa" id="mapa"></div>
+
+  <h2>Lo que te queda por usar</h2>
+  <div id="medidores"></div>
+
+  <h2 id="h-cambia">Cuando termine la prueba</h2>
+  <div class="dos" id="dos"></div>
+
+  <p class="nota" id="nota"></p>
+  <button type="button" class="btn" id="subir">Ver planes y subir cuando quieras</button>
+  <button type="button" class="btn claro" id="recordar">Avísame 2 días antes</button>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var DIA = 86400000;
+  var hoy = new Date(); hoy.setHours(12, 0, 0, 0);
+  var fmt = new Intl.DateTimeFormat('es-EC', { weekday: 'long', day: 'numeric', month: 'long' });
+  function fecha(d) { var s = fmt.format(d); return s.charAt(0).toUpperCase() + s.slice(1); }
+  function suma(d, n) { return new Date(d.getTime() + n * DIA); }
+  function hastaDias(a, b) { return Math.round((b.getTime() - a.getTime()) / DIA); }
+
+  var LIM = { productos: 10, videos: 1 };
+  var ESCENARIOS = {
+    d2: { n: 'Prueba, día 2', tipo: 'prueba', total: 7, dia: 2, prod: 4, vid: 0, plan: 'Emprendedor' },
+    d6: { n: 'Prueba, día 6', tipo: 'prueba', total: 7, dia: 6, prod: 9, vid: 1, plan: 'Emprendedor' },
+    inv: { n: 'Invitado, día 12', tipo: 'prueba', total: 30, dia: 12, prod: 7, vid: 1, plan: 'Emprendedor' },
+    gratis: { n: 'Ya en plan Gratis', tipo: 'gratis', prod: 10, vid: 1, plan: 'Gratis' }
+  };
+  var actual = 'd6';
+
+  function el(tag, attrs, hijos) {
+    var e = document.createElement(tag); Object.keys(attrs || {}).forEach(function (k) { if (k === 'text') e.textContent = attrs[k]; else if (k === 'class') e.className = attrs[k]; else e.setAttribute(k, attrs[k]); });
+    (hijos || []).forEach(function (h) { if (h) e.appendChild(h); }); return e;
+  }
+  function nodo(clase, marca, titulo, fch, txt, etiqueta) {
+    var h = el('h3', { text: titulo }); if (etiqueta) h.appendChild(el('span', { class: 'etq', text: etiqueta }));
+    return el('div', { class: 'nodo ' + clase }, [el('div', { class: 'punto', 'aria-hidden': 'true', text: marca }), el('div', {}, [h, fch ? el('div', { class: 'fecha', text: fch }) : null, el('p', { text: txt })])]);
+  }
+
+  function pintar() {
+    var s = ESCENARIOS[actual], hero = $('hero'), mapa = $('mapa'); hero.textContent = ''; mapa.textContent = '';
+    var enPrueba = s.tipo === 'prueba';
+    if (enPrueba) {
+      var inicio = suma(hoy, -(s.dia - 1)), fin = suma(inicio, s.total - 1), quedan = Math.max(0, hastaDias(hoy, fin)), pct = Math.min(100, Math.round(s.dia / s.total * 100));
+      var urgente = quedan <= 2;
+      hero.appendChild(el('small', { text: s.total === 30 ? 'Tus 30 días de Emprendedor (por invitación)' : 'Tu prueba de ' + s.plan }));
+      hero.appendChild(el('div', { class: 'grande', text: quedan === 0 ? 'Termina hoy' : quedan === 1 ? 'Queda 1 día' : 'Quedan ' + quedan + ' días' }));
+      hero.appendChild(el('p', { text: 'Termina el ' + fecha(fin).toLowerCase() + '. Después vuelves al plan Gratis automáticamente. No se cobra nada.' }));
+      var b = el('div', { class: 'barra' + (urgente ? ' alerta' : ''), role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(s.total), 'aria-valuenow': String(s.dia), 'aria-label': 'Días de tu prueba' }); var i = el('i'); i.style.width = pct + '%'; b.appendChild(i); hero.appendChild(b);
+      hero.appendChild(el('p', { text: 'Día ' + s.dia + ' de ' + s.total }));
+      var aviso = suma(fin, -2), pasoAviso = hastaDias(hoy, aviso) <= 0;
+      mapa.appendChild(nodo('hecho', '✓', 'Empezaste tu prueba', fecha(inicio), 'Probaste todas las funciones de ' + s.plan + '.'));
+      mapa.appendChild(nodo(pasoAviso ? 'hecho' : '', pasoAviso ? '✓' : '·', 'Te avisamos', fecha(aviso), 'Un recordatorio 2 días antes, para que decidas con calma.'));
+      mapa.appendChild(nodo('aqui', String(s.dia), 'Estás aquí', fecha(hoy), quedan + (quedan === 1 ? ' día' : ' días') + ' para el cambio.', 'HOY'));
+      mapa.appendChild(nodo('', '→', 'Termina la prueba', fecha(fin), 'Vuelves al plan Gratis. Tus productos no se borran.'));
+      mapa.appendChild(nodo('fin', '∞', 'Plan Gratis', 'Sin fecha de fin', 'Tu tienda sigue activa para siempre, con hasta ' + LIM.productos + ' productos.'));
+      $('h-cambia').textContent = 'El ' + fecha(fin).toLowerCase() + ' cambia esto';
+      $('nota').textContent = 'No necesitas tarjeta y no hay cobro automático. Si quieres seguir con más productos, tú eliges el plan.';
+      $('recordar').hidden = false;
+    } else {
+      hero.appendChild(el('small', { text: 'Tu plan actual' }));
+      hero.appendChild(el('div', { class: 'grande', text: 'Gratis, sin fecha de fin' }));
+      hero.appendChild(el('p', { text: 'Tu tienda está activa. El plan Gratis no vence: lo único que se acaba son los cupos de abajo.' }));
+      mapa.appendChild(nodo('hecho', '✓', 'Tu prueba terminó', null, 'Volviste al plan Gratis sin cobro.'));
+      mapa.appendChild(nodo('aqui', '★', 'Estás aquí: plan Gratis', null, 'Hasta ' + LIM.productos + ' productos y 1 videoclip.', 'HOY'));
+      mapa.appendChild(nodo('fin', '↑', 'Cuando quieras crecer', null, 'Sube a Emprendedor o Profesional y se abren más productos, videoclips, estadísticas y fotos.'));
+      $('h-cambia').textContent = 'Qué incluye cada nivel';
+      $('nota').textContent = 'Subir de plan es siempre decisión tuya. Nunca borramos tus productos por llegar al límite.';
+      $('recordar').hidden = true;
+    }
+    var med = $('medidores'); med.textContent = '';
+    var datos = [['Productos', s.prod, LIM.productos, 'en el plan Gratis'], ['Videoclips', s.vid, LIM.videos, 'en el plan Gratis']];
+    datos.forEach(function (d) {
+      var lleno = d[1] >= d[2], t = el('div', { class: 'tarj med' + (lleno ? ' lleno' : '') });
+      t.appendChild(el('div', { class: 'fila' }, [el('span', { text: d[0] }), el('span', { text: d[1] + ' de ' + d[2] })]));
+      var tubo = el('div', { class: 'tubo' }); var ii = el('i'); ii.style.width = Math.min(100, d[1] / d[2] * 100) + '%'; tubo.appendChild(ii); t.appendChild(tubo);
+      t.appendChild(el('small', { text: lleno ? 'Llegaste al límite ' + d[3] + '. Para agregar más, sube de plan.' : 'Te quedan ' + (d[2] - d[1]) + ' ' + d[3] + '.' }));
+      med.appendChild(t);
+    });
+    var cm = el('div', { class: 'tarj' }); cm.appendChild(el('p', { text: enPrueba ? 'Durante tu prueba tienes los cupos de ' + s.plan + ' (más productos y videoclips). Al terminar, vale lo de arriba.' : 'Mejorar fotos, estadísticas detalladas y más cupos llegan con los planes de pago.', style: 'font-size:14px' })); med.appendChild(cm);
+
+    var dos = $('dos'); dos.textContent = '';
+    var mant = ['Tu tienda y su enlace', 'Todos tus productos y pedidos', 'Tu camino de éxito y frases', 'Tus ventas anteriores'];
+    var paus = ['Agregar más de ' + LIM.productos + ' productos', 'Más de 1 videoclip', 'Mejora de fotos y plantillas', 'Estadísticas detalladas'];
+    dos.appendChild(el('div', { class: 'tarj' }, [el('h3', { text: 'Se mantiene' }), el('ul', {}, mant.map(function (x) { return el('li', { text: x }); }))]));
+    dos.appendChild(el('div', { class: 'tarj pausa' }, [el('h3', { text: 'Se pausa' }), el('ul', {}, paus.map(function (x) { return el('li', { text: x }); }))]));
+    [].slice.call($('esc').querySelectorAll('button')).forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.k === actual)); });
+  }
+
+  var esc = $('esc'); Object.keys(ESCENARIOS).forEach(function (k) { var b = el('button', { type: 'button', class: 'op', 'data-k': k, text: ESCENARIOS[k].n }); b.addEventListener('click', function () { actual = k; pintar(); }); esc.appendChild(b); });
+  function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2600); }
+  $('subir').addEventListener('click', function () { location.href = 'vista-pagina-ventas.html#planes'; });
+  $('recordar').addEventListener('click', function () { toast('Demostración: en la app real te avisaríamos 2 días antes'); });
+  pintar();
+  window.__plan = { pintar: pintar, set: function (k) { actual = k; pintar(); }, ESCENARIOS: ESCENARIOS };
+})();
+</script>
+</body>
+</html>
