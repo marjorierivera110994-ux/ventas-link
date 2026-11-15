@@ -1,5 +1,7 @@
 # IA de Ventas Link — cómo conectarla (en simple)
 
+**La app funciona completa sin IA.** La IA solo ayuda a escribir textos (descripción de productos y publicaciones). Si no pones la llave, esos dos botones avisan que no están conectados y todo lo demás sigue igual.
+
 La IA **ya está programada** y probada con una IA de mentira. Solo falta **tu llave** (como una contraseña que le dice a Anthropic que la cuenta es tuya y a quién cobrar).
 
 ## Qué hace hoy
@@ -17,7 +19,7 @@ La IA **ya está programada** y probada con una IA de mentira. Solo falta **tu l
    - Si alguna vez la pegas por error en un lugar público, bórrala en la consola y crea otra.
 5. En una terminal: `cd servidor` y luego `npm start`. Abre http://localhost:3000.
 
-## Qué modelo usar (decide tú: cambia `AI_MODEL` en `.env`)
+## Qué modelo usa (ya elegido: Haiku, el más barato; se puede cambiar con `AI_MODEL` en `.env`)
 Costo aproximado por texto (estimado: ~200 palabras de entrada y ~100 de salida; los precios cambian, revísalos en la consola):
 | Modelo | Costo por texto | Para qué |
 |---|---|---|

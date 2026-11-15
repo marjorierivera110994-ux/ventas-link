@@ -1,8 +1,8 @@
 // Lógica de la IA de Ventas Link. La llave (ANTHROPIC_API_KEY) vive SOLO en el servidor: nunca se escribe aquí ni llega al navegador.
 import Anthropic from '@anthropic-ai/sdk';
 
-// El modelo se cambia con la variable AI_MODEL (sin tocar el código). Opciones: claude-opus-5-5 | claude-sonnet-5-5 | claude-haiku-5-5
-export const MODELO = process.env.AI_MODEL || 'claude-opus-5-5';
+// Modelo por defecto: Haiku 5.5 (el más barato, sobra para textos cortos de tienda). Se cambia con AI_MODEL sin tocar el código: claude-sonnet-5-5 | claude-opus-5-5
+export const MODELO = process.env.AI_MODEL || 'claude-haiku-5-5';
 const MODELOS_CON_RESPALDO = new Set(['claude-opus-5-5', 'claude-opus-5', 'claude-sonnet-5-5', 'claude-fable-5-2', 'claude-fable-5-1']);
 const MAX_SALIDA = 1500; // tope de palabras generadas por pedido (control de costo)
 
