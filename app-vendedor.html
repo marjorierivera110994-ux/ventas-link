@@ -165,6 +165,20 @@
   .banner { box-shadow: 0 4px 0 rgb(255 255 255 / .45) inset, 0 -5px 0 rgb(0 0 0 / .14) inset, 0 10px 0 #c25000, 0 28px 30px -12px rgb(180 80 0 / .65); }
   .banner.verde { box-shadow: 0 4px 0 rgb(255 255 255 / .55) inset, 0 -5px 0 rgb(0 0 0 / .12) inset, 0 10px 0 #5a9a14, 0 28px 30px -12px rgb(60 120 10 / .65); }
   body::before { opacity: .38; } body::after { opacity: .38; }
+
+  /* ===== Ajustes del usuario (marca: v3d3) ===== */
+  .tarj.oscura, .frase-dia { background: linear-gradient(160deg, #d3f0ff, #8fd3fa) !important; color: #0b2a40 !important; border-color: #eaf8ff !important;
+    box-shadow: 0 4px 0 rgb(255 255 255 / .85) inset, 0 -6px 0 rgb(20 110 180 / .18) inset, 0 10px 0 #4aa8e0, 0 28px 34px -14px rgb(30 110 180 / .55) !important; }
+  .tarj.oscura small, .frase-dia small { color: #07517f !important; font-weight: 800; }
+  .tarj.oscura p, .frase-dia p { color: #0b2a40 !important; }
+
+  .acciones { gap: 12px; }
+  .accion { min-width: 0; padding: 12px 10px; gap: 10px; font-size: 13.5px; line-height: 1.2; }
+  .accion .chip { width: 42px; height: 42px; flex: 0 0 42px; }
+  .accion .tx { min-width: 0; flex: 1; overflow-wrap: break-word; hyphens: auto; }
+  .banner > div:first-child { flex: 1; min-width: 0; padding-right: 66px; }
+  .banner b { font-size: 17px; line-height: 1.15; }
+  .banner span { line-height: 1.25; display: block; margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -222,16 +236,16 @@
 
     <h2 class="acc-titulo">Qué quieres hacer hoy</h2>
     <div class="acciones">
-      <button type="button" class="accion" data-ir="productos"><span class="chip c1"><svg viewBox="0 0 24 24" fill="none" stroke="#2f6a10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>Subir un producto</button>
-      <button type="button" class="accion" data-hoja="foto-demo.html|Mejorar mi foto"><span class="chip c2"><svg viewBox="0 0 24 24" fill="none" stroke="#b34700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg></span>Tomar y mejorar foto</button>
-      <button type="button" class="accion" data-ir="compartir"><span class="chip c3"><svg viewBox="0 0 24 24" fill="none" stroke="#5c6200" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg></span>Compartir mi tienda</button>
-      <button type="button" class="accion" data-hoja="tienda-demo.html|Mi tienda"><span class="chip c4"><svg viewBox="0 0 24 24" fill="none" stroke="#0b5d8c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 12v8h14v-8"/></svg></span>Ver mi tienda</button>
+      <button type="button" class="accion" data-ir="productos"><span class="chip c1"><svg viewBox="0 0 24 24" fill="none" stroke="#2f6a10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="tx">Subir un producto</span></button>
+      <button type="button" class="accion" data-hoja="foto-demo.html|Mejorar mi foto"><span class="chip c2"><svg viewBox="0 0 24 24" fill="none" stroke="#b34700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg></span><span class="tx">Tomar y mejorar foto</span></button>
+      <button type="button" class="accion" data-ir="compartir"><span class="chip c3"><svg viewBox="0 0 24 24" fill="none" stroke="#5c6200" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg></span><span class="tx">Compartir mi tienda</span></button>
+      <button type="button" class="accion" data-hoja="tienda-demo.html|Mi tienda"><span class="chip c4"><svg viewBox="0 0 24 24" fill="none" stroke="#0b5d8c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 12v8h14v-8"/></svg></span><span class="tx">Ver mi tienda</span></button>
     </div>
 
     <button type="button" class="banner" data-ir="plan"><div><b>Te queda 1 día de prueba</b><span>Mira tu mapa del plan</span></div><svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      <svg class="stk" style="right:48px;top:-10px;--r:10deg;animation-delay:1s" aria-hidden="true"><use href="#st-etiqueta"/></svg></button>
+      <svg class="stk" style="right:50px;top:50%;margin-top:-26px;--r:10deg;animation-delay:1s" aria-hidden="true"><use href="#st-etiqueta"/></svg></button>
     <button type="button" class="banner verde" data-hoja="invita-demo.html|Invita y gana"><div><b>Invita y gana 30 días</b><span>Plan Emprendedor gratis por cada amigo</span></div><svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      <svg class="stk" style="right:48px;top:-8px;--r:-8deg;animation-delay:1.6s" aria-hidden="true"><use href="#st-regalo"/></svg></button>
+      <svg class="stk" style="right:50px;top:50%;margin-top:-26px;--r:-8deg;animation-delay:1.6s" aria-hidden="true"><use href="#st-regalo"/></svg></button>
   </div>
 </main>
 
