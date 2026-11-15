@@ -24,6 +24,8 @@
   .app { max-width: 460px; margin: 0 auto; padding: 14px 16px 120px; }
   h1, h2, h3, h4 { font-family: var(--f-d); letter-spacing: -.015em; }
 
+  .pais-barra { position: sticky; top: 0; z-index: 4; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; margin: 0 -16px; padding: 6px 16px; background: color-mix(in oklab, var(--beige) 92%, transparent); backdrop-filter: blur(8px); font-size: 13px; font-weight: 700; border-bottom: 1px solid rgb(0 0 0 / .08); }
+  .pais-barra svg { flex-shrink: 0; }
   .top { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
   .demo { display: flex; gap: 8px; align-items: center; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; min-height: 44px; }
   .region { min-height: 44px; border-radius: 999px; background: var(--blanco); padding: 0 14px; font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 6px; white-space: nowrap; box-shadow: 0 6px 16px -10px rgb(40 60 40 / .5); }
@@ -117,6 +119,7 @@
 <body>
 
 <main class="app">
+  <div class="pais-barra" id="pais-barra" role="status"></div>
   <div class="top">
     <p class="demo" role="note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg><span data-i="demo"></span></p>
     <button type="button" class="region" id="region"></button>
@@ -177,7 +180,7 @@
       verPedido: 'Ver mi pedido', cats: 'Categorías', todo: 'Todo', ropa: 'Ropa', accesorios: 'Accesorios', agotado: 'Agotado',
       agregar: 'Agregar {x}', agotadoAria: '{x} agotado', sinResultados: 'No encontramos productos con esa búsqueda. Prueba con otra palabra.',
       talla: 'Talla', color: 'Color', cantidad: 'Cantidad', agregarPedido: 'Agregar al pedido', mas1: 'Agregar una unidad', menos1: 'Quitar una unidad',
-      agregado: 'Agregaste {n} × {x}', quedan: 'Quedan {n}', solo: 'Solo hay {n} disponibles', descripcion: 'Descripción', ofertaAria: 'Precio anterior {a}, precio actual {b}', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
+      agregado: 'Agregaste {n} × {x}', quedan: 'Quedan {n}', solo: 'Solo hay {n} disponibles', descripcion: 'Descripción', ofertaAria: 'Precio anterior {a}, precio actual {b}', vendeDesde: 'Vende desde {pais}', tuWa: 'Tu WhatsApp (opcional)', ayudaWa: 'Para que el negocio te responda con un toque.', telErr: 'Escribe solo tu número, con el código de país (por ejemplo +593…).', m_wa: 'Mi WhatsApp', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
       subtotal: 'Subtotal', envioNota: 'La entrega y el pago se coordinan por WhatsApp. El costo de envío, si aplica, te lo confirma el negocio.',
       continuar: 'Continuar', seguir: 'Seguir comprando', quitar: 'Quitar', coordina: 'Coordinemos tu pedido',
       aviso: 'Pulsa el botón verde y se abrirá WhatsApp con tu pedido listo. Allí acuerdas con el negocio la entrega y el pago.',
@@ -202,7 +205,7 @@
       verPedido: 'View my order', cats: 'Categories', todo: 'All', ropa: 'Clothing', accesorios: 'Accessories', agotado: 'Sold out',
       agregar: 'Add {x}', agotadoAria: '{x} sold out', sinResultados: 'No products match your search. Try another word.',
       talla: 'Size', color: 'Color', cantidad: 'Quantity', agregarPedido: 'Add to order', mas1: 'Add one unit', menos1: 'Remove one unit',
-      agregado: 'Added {n} × {x}', quedan: '{n} left', solo: 'Only {n} available', descripcion: 'Description', ofertaAria: 'Previous price {a}, current price {b}', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
+      agregado: 'Added {n} × {x}', quedan: '{n} left', solo: 'Only {n} available', descripcion: 'Description', ofertaAria: 'Previous price {a}, current price {b}', vendeDesde: 'Selling from {pais}', tuWa: 'Your WhatsApp (optional)', ayudaWa: 'So the shop can reply to you with one tap.', telErr: 'Enter only your number, with country code (for example +593…).', m_wa: 'My WhatsApp', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
       subtotal: 'Subtotal', envioNota: 'Delivery and payment are arranged on WhatsApp. If shipping applies, the shop will confirm its cost.',
       continuar: 'Continue', seguir: 'Keep shopping', quitar: 'Remove', coordina: 'Let’s arrange your order',
       aviso: 'Tap the green button and WhatsApp will open with your order ready. There you agree on delivery and payment with the shop.',
@@ -226,7 +229,7 @@
       verPedido: 'Ver meu pedido', cats: 'Categorias', todo: 'Tudo', ropa: 'Roupas', accesorios: 'Acessórios', agotado: 'Esgotado',
       agregar: 'Adicionar {x}', agotadoAria: '{x} esgotado', sinResultados: 'Não encontramos produtos com essa busca. Tente outra palavra.',
       talla: 'Tamanho', color: 'Cor', cantidad: 'Quantidade', agregarPedido: 'Adicionar ao pedido', mas1: 'Adicionar uma unidade', menos1: 'Remover uma unidade',
-      agregado: 'Você adicionou {n} × {x}', quedan: 'Restam {n}', solo: 'Só há {n} disponíveis', descripcion: 'Descrição', ofertaAria: 'Preço anterior {a}, preço atual {b}', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
+      agregado: 'Você adicionou {n} × {x}', quedan: 'Restam {n}', solo: 'Só há {n} disponíveis', descripcion: 'Descrição', ofertaAria: 'Preço anterior {a}, preço atual {b}', vendeDesde: 'Vendendo de {pais}', tuWa: 'Seu WhatsApp (opcional)', ayudaWa: 'Para a loja responder a você com um toque.', telErr: 'Digite só o seu número, com código do país (por exemplo +593…).', m_wa: 'Meu WhatsApp', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
       subtotal: 'Subtotal', envioNota: 'Entrega e pagamento são combinados pelo WhatsApp. Se houver frete, a loja confirma o valor.',
       continuar: 'Continuar', seguir: 'Continuar comprando', quitar: 'Remover', coordina: 'Vamos combinar seu pedido',
       aviso: 'Toque no botão verde e o WhatsApp abrirá com seu pedido pronto. Lá você combina a entrega e o pagamento com a loja.',
@@ -288,6 +291,23 @@
   );
   PRODUCTOS.forEach(function (p) { p.hay = p.stock === null || p.stock > 0; });
   var LLAVE = 'tienda-demo-v2';
+
+  /* Banderas simplificadas en SVG (los emojis de bandera no se ven en Windows) */
+  var FLAGS = {
+    EC: '<rect width="30" height="10" fill="#FFDD00"/><rect y="10" width="30" height="5" fill="#034EA2"/><rect y="15" width="30" height="5" fill="#ED1C24"/>',
+    CO: '<rect width="30" height="10" fill="#FCD116"/><rect y="10" width="30" height="5" fill="#003893"/><rect y="15" width="30" height="5" fill="#CE1126"/>',
+    PE: '<rect width="30" height="20" fill="#fff"/><rect width="10" height="20" fill="#D91023"/><rect x="20" width="10" height="20" fill="#D91023"/>',
+    MX: '<rect width="30" height="20" fill="#fff"/><rect width="10" height="20" fill="#006847"/><rect x="20" width="10" height="20" fill="#CE1126"/><circle cx="15" cy="10" r="2.4" fill="#8a6d3b"/>',
+    CL: '<rect width="30" height="20" fill="#fff"/><rect y="10" width="30" height="10" fill="#D52B1E"/><rect width="10" height="10" fill="#0039A6"/><polygon points="5,2.2 5.9,4.3 8.1,4.4 6.4,5.8 7,8 5,6.7 3,8 3.6,5.8 1.9,4.4 4.1,4.3" fill="#fff"/>',
+    AR: '<rect width="30" height="20" fill="#74ACDF"/><rect y="6.7" width="30" height="6.6" fill="#fff"/><circle cx="15" cy="10" r="1.8" fill="#F6B40E"/>',
+    ES: '<rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/>',
+    US: '<rect width="30" height="20" fill="#fff"/>',
+    BR: '<rect width="30" height="20" fill="#009C3B"/><polygon points="15,2.5 27,10 15,17.5 3,10" fill="#FFDF00"/><circle cx="15" cy="10" r="4.2" fill="#002776"/>'
+  };
+  (function () { var s = ''; for (var i = 0; i < 7; i++) s += '<rect y="' + (i * 2 * 20 / 13).toFixed(2) + '" width="30" height="' + (20 / 13).toFixed(2) + '" fill="#B22234"/>'; FLAGS.US += s + '<rect width="12" height="10.8" fill="#3C3B6E"/>'; })();
+  function bandera(cod, alto) {
+    return '<svg viewBox="0 0 30 20" width="' + Math.round(alto * 1.5) + '" height="' + alto + '" role="img" aria-label="Bandera" style="border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.22);display:block">' + (FLAGS[cod] || '') + '</svg>';
+  }
 
   /* Mensajes positivos para quien visita la tienda (el comprador). Animan a comprar sin presionar:
      nada de falsa urgencia ni escasez inventada. El vendedor podrá editarlos en los planes de pago. */
@@ -407,6 +427,8 @@
     document.querySelectorAll('[data-al]').forEach(function (e) { e.setAttribute('aria-label', t(e.getAttribute('data-al'))); });
     $('cats').setAttribute('aria-label', t('cats'));
     $('bienv').textContent = frase('bienvenida');
+    var pb = $('pais-barra'); pb.innerHTML = bandera(estado.pais, 20); var ptx = document.createElement('span');
+    ptx.textContent = t('vendeDesde', { pais: PAISES[estado.pais].n[estado.idioma] || PAISES[estado.pais].n.es }) + ' · ' + estado.moneda; pb.appendChild(ptx);
     $('region').textContent = '';
     $('region').appendChild(document.createTextNode(estado.pais + ' · ' + estado.idioma.toUpperCase() + ' · ' + estado.moneda));
     $('region').setAttribute('aria-label', t('ajustes'));
@@ -527,7 +549,7 @@
   }
 
   function abrirEntrega() {
-    var d = estado.entrega || { nombre: '', modo: 'retiro', direccion: '', pago: pais().pagos[0], nota: '' };
+    var d = estado.entrega || { nombre: '', modo: 'retiro', direccion: '', pago: pais().pagos[0], nota: '', tel: '' };
     if (pais().pagos.indexOf(d.pago) < 0) d.pago = pais().pagos[0];
     abrirHoja(function (h) {
       h.appendChild(cabecera(t('coordina')));
@@ -552,13 +574,17 @@
       h.appendChild(grupo(t('pago'), 'pago', pais().pagos.map(function (k) { return [k, etiquetaPago(k)]; }), pago, function (o) { pago = o; }));
       var nota = el('textarea', { id: 'f-nota', maxlength: '200', rows: '2', placeholder: t('notaPh') }); nota.value = d.nota;
       h.appendChild(el('div', { class: 'campo' }, [el('label', { for: 'f-nota', text: t('nota') }), nota]));
+      var telI = el('input', { type: 'text', id: 'f-tel', inputmode: 'tel', autocomplete: 'tel', maxlength: '20', placeholder: '+593 99 123 4567', value: d.tel || '', 'aria-describedby': 'a-tel e-tel' });
+      var cTel = el('div', { class: 'campo' }, [el('label', { for: 'f-tel', text: t('tuWa') }), telI, el('p', { class: 'ayuda', id: 'a-tel', style: 'font-size:13px;color:var(--texto-2);margin-top:4px', text: t('ayudaWa') }), el('p', { class: 'error', id: 'e-tel', text: t('telErr') })]);
+      h.appendChild(cTel);
       h.appendChild(el('div', { class: 'total', style: 'margin-top:16px' }, [el('div', {}, [el('span', { text: cantidad() + ' ' + (cantidad() === 1 ? t('producto') : t('productos')) }), el('span', { text: dinero(subtotal()) })])]));
       var wa = el('button', { type: 'button', class: 'btn wa', onclick: function () {
         var ok = true;
         var n = nombre.value.trim(); cNombre.classList.toggle('err', !n); if (!n) ok = false;
         var dr = dir.value.trim(); var falta = modo === 'domicilio' && !dr; cDir.classList.toggle('err', falta); if (falta) ok = false;
-        if (!ok) { (!n ? nombre : dir).focus(); return; }
-        estado.entrega = { nombre: n, modo: modo, direccion: modo === 'domicilio' ? dr : '', pago: pago, nota: nota.value.trim() };
+        var tv = telI.value.trim(); var dig = tv.replace(/\D/g, ''); var telMal = tv !== '' && (dig.length < 7 || dig.length > 15 || /[^\d+\s()-]/.test(tv)); cTel.classList.toggle('err', telMal); if (telMal) ok = false;
+        if (!ok) { (!n ? nombre : (falta ? dir : telI)).focus(); return; }
+        estado.entrega = { nombre: n, modo: modo, direccion: modo === 'domicilio' ? dr : '', pago: pago, nota: nota.value.trim(), tel: telI.value.trim() };
         enviar();
       } });
       wa.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg><span></span>';
@@ -579,6 +605,7 @@
     m.push('📍 ' + t('m_entrega') + ': ' + (e.modo === 'domicilio' ? t('domicilio') + ' — ' + e.direccion : t('retiro')));
     m.push('💳 ' + t('m_pago') + ': ' + etiquetaPago(e.pago));
     m.push('🙋 ' + t('m_nombre') + ': ' + e.nombre);
+    if (e.tel) m.push('📱 ' + t('m_wa') + ': ' + e.tel);
     if (e.nota) m.push('📝 ' + t('m_nota') + ': ' + e.nota);
     m.push(''); m.push(t('m_cierre'));
     return m.join('\n');

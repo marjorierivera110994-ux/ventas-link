@@ -82,6 +82,8 @@
   #vista[data-cab="centro"] .v-banner { text-align: center; } #vista[data-cab="centro"] .v-logo { margin: 0 auto; }
   #vista[data-cab="izq"] .v-banner { display: flex; align-items: center; gap: 12px; padding: 14px; } #vista[data-cab="izq"] .v-nombre { margin-top: 0; }
   #vista[data-portada="si"] .v-banner { padding-top: 56px; text-shadow: 0 1px 6px rgba(0,0,0,.55); }
+  .v-paisbar { display: flex; align-items: center; gap: 8px; margin: 10px 14px 0; font-size: 12px; font-weight: 700; color: var(--txt); }
+  select#i-pais { display: block; width: 100%; margin-top: 6px; min-height: 50px; border-radius: 16px; border: 2px solid transparent; background: var(--blanco); padding: 0 14px; font-size: 16px; }
   .v-bienv { margin: 10px 14px 0; font-size: 13px; font-weight: 700; color: var(--txt); background: var(--sur); border-radius: var(--r); padding: 9px 12px; }
   .v-chips { display: flex; gap: 6px; margin: 12px 14px 0; overflow: hidden; }
   .v-chip { border-radius: 999px; padding: 7px 12px; font-size: 12px; font-weight: 700; background: var(--sur); color: var(--txt); white-space: nowrap; }
@@ -113,6 +115,7 @@
           <div class="v-logo" id="v-logo"></div>
           <div><p class="v-nombre" id="v-nombre"></p><p class="v-lema" id="v-lema"></p></div>
         </div></div>
+        <div class="v-paisbar" id="v-paisbar"></div>
         <p class="v-bienv">¡Qué bueno verte por aquí! Encuentra algo que te encante.</p>
         <div class="v-chips"><span class="v-chip on">Todo</span><span class="v-chip">Aretes</span><span class="v-chip">Collares</span><span class="v-chip">Ropa</span></div>
         <h3 class="v-sec">Aretes</h3>
@@ -131,6 +134,9 @@
     <h2 id="h-plan" style="margin-top:0">Ver como si tuvieras el plan</h2>
     <div class="opciones" id="planes" role="group" aria-labelledby="h-plan"></div>
 
+    <label class="campo" for="i-pais">País de tu tienda</label>
+    <select id="i-pais"></select>
+    <p class="sub" id="t-pais"></p>
     <label class="campo" for="i-nombre">Nombre de tu tienda</label>
     <input type="text" id="i-nombre" maxlength="40" value="Boutique Luna" autocomplete="off">
     <label class="campo" for="i-lema">Frase corta (opcional)</label>
@@ -296,6 +302,27 @@
   function boton(txt, pressed, fn, dis) { var b = document.createElement('button'); b.type = 'button'; b.className = 'op'; b.textContent = txt; b.setAttribute('aria-pressed', String(pressed)); if (dis) b.disabled = true; b.addEventListener('click', fn); return b; }
   function aviso(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(aviso.t); aviso.t = setTimeout(function () { x.classList.remove('on'); }, 2400); }
 
+  /* País del vendedor: al elegirlo se activan la bandera y la moneda de su tienda */
+  var PAISES = { EC: ['Ecuador', 'USD'], CO: ['Colombia', 'COP'], PE: ['Perú', 'PEN'], MX: ['México', 'MXN'], CL: ['Chile', 'CLP'], AR: ['Argentina', 'ARS'], ES: ['España', 'EUR'], US: ['Estados Unidos', 'USD'], BR: ['Brasil', 'BRL'] };
+  var FLAGS = {
+    EC: '<rect width="30" height="10" fill="#FFDD00"/><rect y="10" width="30" height="5" fill="#034EA2"/><rect y="15" width="30" height="5" fill="#ED1C24"/>',
+    CO: '<rect width="30" height="10" fill="#FCD116"/><rect y="10" width="30" height="5" fill="#003893"/><rect y="15" width="30" height="5" fill="#CE1126"/>',
+    PE: '<rect width="30" height="20" fill="#fff"/><rect width="10" height="20" fill="#D91023"/><rect x="20" width="10" height="20" fill="#D91023"/>',
+    MX: '<rect width="30" height="20" fill="#fff"/><rect width="10" height="20" fill="#006847"/><rect x="20" width="10" height="20" fill="#CE1126"/><circle cx="15" cy="10" r="2.4" fill="#8a6d3b"/>',
+    CL: '<rect width="30" height="20" fill="#fff"/><rect y="10" width="30" height="10" fill="#D52B1E"/><rect width="10" height="10" fill="#0039A6"/><polygon points="5,2.2 5.9,4.3 8.1,4.4 6.4,5.8 7,8 5,6.7 3,8 3.6,5.8 1.9,4.4 4.1,4.3" fill="#fff"/>',
+    AR: '<rect width="30" height="20" fill="#74ACDF"/><rect y="6.7" width="30" height="6.6" fill="#fff"/><circle cx="15" cy="10" r="1.8" fill="#F6B40E"/>',
+    ES: '<rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/>',
+    US: '<rect width="30" height="20" fill="#fff"/>',
+    BR: '<rect width="30" height="20" fill="#009C3B"/><polygon points="15,2.5 27,10 15,17.5 3,10" fill="#FFDF00"/><circle cx="15" cy="10" r="4.2" fill="#002776"/>'
+  };
+  (function () { var s = ''; for (var i = 0; i < 7; i++) s += '<rect y="' + (i * 2 * 20 / 13).toFixed(2) + '" width="30" height="' + (20 / 13).toFixed(2) + '" fill="#B22234"/>'; FLAGS.US += s + '<rect width="12" height="10.8" fill="#3C3B6E"/>'; })();
+  function bandera(cod, alto) { return '<svg viewBox="0 0 30 20" width="' + Math.round(alto * 1.5) + '" height="' + alto + '" role="img" aria-label="Bandera de ' + PAISES[cod][0] + '" style="border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.22);display:block;flex-shrink:0">' + FLAGS[cod] + '</svg>'; }
+  var paisSel = 'EC';
+  (function () { var s = document.getElementById('i-pais'); Object.keys(PAISES).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = PAISES[k][0]; s.appendChild(o); }); s.addEventListener('change', function () { paisSel = s.value; pintarPais(); }); })();
+  function pintarPais() {
+    var p = PAISES[paisSel]; var b = document.getElementById('v-paisbar'); b.innerHTML = bandera(paisSel, 16) + '<span></span>'; b.querySelector('span').textContent = 'Vende desde ' + p[0] + ' · ' + p[1];
+    document.getElementById('t-pais').textContent = 'Al elegir tu país se activan la bandera y la moneda de tu tienda: ' + p[1] + '.';
+  }
   function pintarPlanes() { var c = $('planes'); c.textContent = ''; Object.keys(PLANES).forEach(function (k) { c.appendChild(boton(PLANES[k], estado.plan === k, function () { cambiarPlan(k); })); }); }
   function cambiarPlan(k) {
     estado.plan = k; estado.pagina = 0;
@@ -412,7 +439,7 @@
       pro: 'Plan Profesional: 50 plantillas, combinaciones profesionales, paleta amplia (elegantes, matizados, brillantes y metálicos), logo, portada y todas las decoraciones.' };
     $('aviso').textContent = m[estado.plan] + ' Los botones, el carrito y el pedido por WhatsApp no cambian: ya vienen listos.';
   }
-  function pintarTodo() { pintarPlanes(); pintarImagenes(); pintarGaleria(); pintarCombos(); pintarColores(); pintarDecos(); pintarAviso(); pintarVista(); }
+  function pintarTodo() { pintarPais(); pintarPlanes(); pintarImagenes(); pintarGaleria(); pintarCombos(); pintarColores(); pintarDecos(); pintarAviso(); pintarVista(); }
 
   $('i-nombre').addEventListener('input', pintarVista); $('i-lema').addEventListener('input', pintarVista);
   $('in-logo').addEventListener('change', function (e) { subirImagen('logo', e.target.files[0]); e.target.value = ''; });

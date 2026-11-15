@@ -46,6 +46,8 @@
   .error { color: #9a3412; font-size: 14px; font-weight: 700; margin-top: 6px; display: none; }
   .campo.err .error { display: block; }
   .ayuda { font-size: 13px; color: var(--texto-2); margin-top: 6px; }
+  .pais-chip { display: flex; align-items: center; gap: 10px; background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 18px; padding: 10px 14px; font-size: 14px; font-weight: 700; }
+  .pais-chip small { display: block; font-weight: 500; color: var(--texto-2); font-size: 12.5px; }
   .tel-fila { display: grid; grid-template-columns: 132px 1fr; gap: 10px; }
 
   .opciones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
@@ -185,6 +187,21 @@
     MX: { n: 'México', cod: '52', largo: [10], c0: false }, CL: { n: 'Chile', cod: '56', largo: [9], c0: false }, AR: { n: 'Argentina', cod: '54', largo: [10], c0: true },
     ES: { n: 'España', cod: '34', largo: [9], c0: false }, US: { n: 'Estados Unidos', cod: '1', largo: [10], c0: false }, BR: { n: 'Brasil', cod: '55', largo: [10, 11], c0: true }
   };
+  /* Al elegir el país se activan la bandera y la moneda de la tienda */
+  var MONEDA = { EC: 'USD', CO: 'COP', PE: 'PEN', MX: 'MXN', CL: 'CLP', AR: 'ARS', ES: 'EUR', US: 'USD', BR: 'BRL' };
+  var FLAGS = {
+    EC: '<rect width="30" height="10" fill="#FFDD00"/><rect y="10" width="30" height="5" fill="#034EA2"/><rect y="15" width="30" height="5" fill="#ED1C24"/>',
+    CO: '<rect width="30" height="10" fill="#FCD116"/><rect y="10" width="30" height="5" fill="#003893"/><rect y="15" width="30" height="5" fill="#CE1126"/>',
+    PE: '<rect width="30" height="20" fill="#fff"/><rect width="10" height="20" fill="#D91023"/><rect x="20" width="10" height="20" fill="#D91023"/>',
+    MX: '<rect width="30" height="20" fill="#fff"/><rect width="10" height="20" fill="#006847"/><rect x="20" width="10" height="20" fill="#CE1126"/><circle cx="15" cy="10" r="2.4" fill="#8a6d3b"/>',
+    CL: '<rect width="30" height="20" fill="#fff"/><rect y="10" width="30" height="10" fill="#D52B1E"/><rect width="10" height="10" fill="#0039A6"/><polygon points="5,2.2 5.9,4.3 8.1,4.4 6.4,5.8 7,8 5,6.7 3,8 3.6,5.8 1.9,4.4 4.1,4.3" fill="#fff"/>',
+    AR: '<rect width="30" height="20" fill="#74ACDF"/><rect y="6.7" width="30" height="6.6" fill="#fff"/><circle cx="15" cy="10" r="1.8" fill="#F6B40E"/>',
+    ES: '<rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/>',
+    US: '<rect width="30" height="20" fill="#fff"/>',
+    BR: '<rect width="30" height="20" fill="#009C3B"/><polygon points="15,2.5 27,10 15,17.5 3,10" fill="#FFDF00"/><circle cx="15" cy="10" r="4.2" fill="#002776"/>'
+  };
+  (function () { var s = ''; for (var i = 0; i < 7; i++) s += '<rect y="' + (i * 2 * 20 / 13).toFixed(2) + '" width="30" height="' + (20 / 13).toFixed(2) + '" fill="#B22234"/>'; FLAGS.US += s + '<rect width="12" height="10.8" fill="#3C3B6E"/>'; })();
+  function bandera(cod, alto) { return '<svg viewBox="0 0 30 20" width="' + Math.round(alto * 1.5) + '" height="' + alto + '" role="img" aria-label="Bandera de ' + PAISES[cod].n + '" style="border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.22);display:block;flex-shrink:0">' + FLAGS[cod] + '</svg>'; }
   var PLANES = {
     gratis: { n: 'Gratis', precio: '$0', pts: ['Hasta 10 productos y 3 secciones', 'Pedidos por WhatsApp sin límite', 'Camino de éxito y mensajes motivadores'], cta: 'Crear mi tienda gratis' },
     emprendedor: { n: 'Emprendedor', precio: '$4.99', pts: ['Hasta 60 productos y 10 secciones', 'Ofertas y textos listos para redes', '10 plantillas para tu tienda'], cta: 'Probar 7 días gratis' },
@@ -339,12 +356,15 @@
     var campo = el('div', { class: 'campo', 'data-esc': '' }, [el('label', { for: 'in-tel', text: 'Tu número de WhatsApp' }), el('div', { class: 'tel-fila' }, [sel, inp]),
       el('p', { class: 'error', id: 'e-tel', text: '' }), el('p', { class: 'ayuda', id: 'a-tel', text: 'Tus clientes te escribirán a este número cuando envíen su pedido.' })]);
     function msgError() { var p = PAISES[R.pais]; return 'Revisa tu número: en ' + p.n + ' tiene ' + p.largo.join(' u ') + ' dígitos' + (p.c0 ? ', sin el 0 inicial' : '') + '.'; }
+    var paisChip = el('div', { class: 'pais-chip', 'data-esc': '', 'aria-live': 'polite' });
+    function actualizarPais() { var p = PAISES[R.pais]; paisChip.innerHTML = bandera(R.pais, 24) + '<div><span></span><small></small></div>'; paisChip.querySelector('span').textContent = 'Tu tienda venderá desde ' + p.n; paisChip.querySelector('small').textContent = 'Moneda activada: ' + MONEDA[R.pais]; }
+    actualizarPais();
     var b = cta('Crear mi tienda', continuar, !telValido());
     function continuar() { R.tel = inp.value; if (!telValido()) { $('e-tel').textContent = msgError(); campo.classList.add('err'); inp.focus(); return; } ir('armando', 1); }
     inp.addEventListener('input', function () { R.tel = inp.value; b.disabled = !telValido(); campo.classList.remove('err'); });
-    sel.addEventListener('change', function () { R.pais = sel.value; b.disabled = !telValido(); campo.classList.remove('err'); });
+    sel.addEventListener('change', function () { R.pais = sel.value; b.disabled = !telValido(); campo.classList.remove('err'); actualizarPais(); });
     inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') continuar(); });
-    return el('section', { class: 'paso' }, [h, el('p', { class: 'sub', 'data-esc': '', text: 'Es lo último. Después armamos tu tienda.' }), el('div', { class: 'cuerpo' }, [campo]), pie(b)]);
+    return el('section', { class: 'paso' }, [h, el('p', { class: 'sub', 'data-esc': '', text: 'Es lo último. Después armamos tu tienda.' }), el('div', { class: 'cuerpo' }, [campo, paisChip]), pie(b)]);
   }
 
   /* ---------- Armando tu tienda (4 a 6 segundos, con datos reales del usuario) ---------- */
@@ -381,6 +401,7 @@
     var h = el('h1'); h.innerHTML = '<em>' + escapar(nombre) + '</em> está lista';
     var sub = el('p', { class: 'sub', 'data-esc': '' }); sub.innerHTML = '<b>Hecho con tus 4 respuestas.</b> Así empieza tu tienda:';
     var ban = el('div', { class: 'ban' }); ban.innerHTML = '<span class="logo"></span><div><p class="nom"></p><p class="tip">Tu catálogo</p></div>'; ban.querySelector('.logo').textContent = iniciales(nombre); ban.querySelector('.nom').textContent = nombre;
+    var tip = ban.querySelector('.tip'); tip.innerHTML = '<span style="display:inline-flex;align-items:center;gap:6px">' + bandera(R.pais, 14) + '<span></span></span>'; tip.querySelector('span span').textContent = 'Vende desde ' + PAISES[R.pais].n + ' · ' + MONEDA[R.pais];
     var secs = el('div', { class: 'secs' }); t.sec.forEach(function (s) { secs.appendChild(el('span', { class: 'sec', text: s })); });
     var vacios = el('div', { class: 'vacios' }, [el('div', { class: 'vacio', text: 'Aquí irá tu primer producto' }), el('div', { class: 'vacio', text: 'Aquí irá tu segundo producto' })]);
     var tienda = el('div', { class: 'tienda', 'data-esc': '' }, [ban, secs, vacios]);
