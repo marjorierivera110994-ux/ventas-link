@@ -141,6 +141,30 @@
   .banner:active { transform: translateY(5px); box-shadow: 0 3px 0 rgb(255 255 255 / .4) inset, 0 2px 0 #c25000; } .banner.verde:active { box-shadow: 0 3px 0 rgb(255 255 255 / .5) inset, 0 2px 0 #5a9a14; }
   .ic-btn { box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -3px 0 rgb(0 0 0 / .06) inset, 0 4px 0 rgb(40 70 20 / .12), 0 12px 14px -8px rgb(30 60 20 / .5); }
   .barra { box-shadow: inset 0 3px 6px rgb(0 0 0 / .18); height: 16px; } .barra i { box-shadow: inset 0 3px 0 rgb(255 255 255 / .55), inset 0 -3px 0 rgb(0 0 0 / .12); }
+
+  /* ===== 3D intenso (marca: v3d2) ===== */
+  .t3d { top: -32px; margin-left: -30px; width: 60px; height: 60px; border-radius: 22px;
+         box-shadow: inset 0 4px 0 rgb(255 255 255 / .7), inset 0 -7px 0 rgb(0 0 0 / .2), 0 10px 0 var(--sh), 0 24px 22px -4px rgb(20 40 10 / .6);
+         animation-duration: 3s; }
+  .t3d::before { left: 5px; right: 5px; top: 4px; height: 48%; border-radius: 18px 18px 50% 50% / 18px 18px 40% 40%; background: linear-gradient(rgb(255 255 255 / .7), rgb(255 255 255 / 0)); }
+  .t3d::after { content: ''; position: absolute; width: 9px; height: 9px; border-radius: 50%; right: 9px; top: 9px; background: rgb(255 255 255 / .85); filter: blur(.5px); }
+  .t3d svg { width: 29px; height: 29px; stroke-width: 2.8; filter: drop-shadow(0 3px 0 rgb(0 0 0 / .3)); }
+  @keyframes bob3d { 0%, 100% { transform: translateY(var(--y)) scale(var(--s)) rotate(-1.5deg); } 50% { transform: translateY(calc(var(--y) - 7px)) scale(var(--s)) rotate(1.5deg); } }
+  .nav { height: 80px; border-radius: 40px; box-shadow: 0 30px 46px -14px rgb(20 50 10 / .6), 0 5px 0 rgb(255 255 255 / .95) inset, 0 -5px 0 rgb(0 0 0 / .06) inset, 0 9px 0 rgb(40 70 20 / .16); }
+  .nav button { padding-bottom: 9px; font-size: 11.5px; }
+  .nav button:active .t3d { transform: translateY(7px) scale(.97); box-shadow: inset 0 4px 0 rgb(255 255 255 / .55), inset 0 -4px 0 rgb(0 0 0 / .2), 0 3px 0 var(--sh), 0 8px 10px -4px rgb(20 40 10 / .5); }
+  .nav button[aria-current="page"] .t3d, .nav button.act .t3d, .nav .ped:not(.vacio-c) .t3d { --y: -14px; --s: 1.18;
+         box-shadow: inset 0 4px 0 rgb(255 255 255 / .7), inset 0 -7px 0 rgb(0 0 0 / .2), 0 11px 0 var(--sh), 0 32px 28px -4px rgb(20 40 10 / .65), 0 0 0 6px rgb(255 255 255 / .85), 0 0 30px 8px rgb(255 255 255 / .6); }
+  .nav .cuenta-n { top: -38px; right: 4px; min-width: 24px; height: 24px; font-size: 12px; }
+  .nav .nuevo::after { top: -36px; right: 8px; width: 12px; height: 12px; }
+  .panel.marco { bottom: 128px; } .inicio { padding-bottom: 170px; } .app { padding-bottom: 170px; }
+  .tarj, .stat, .accion, .prod { box-shadow: 0 4px 0 rgb(255 255 255 / .95) inset, 0 -5px 0 rgb(0 0 0 / .06) inset, 0 10px 0 rgb(40 70 20 / .13), 0 30px 36px -18px rgb(30 60 20 / .55); }
+  .tarj.oscura { box-shadow: 0 4px 0 rgb(255 255 255 / .16) inset, 0 -6px 0 rgb(0 0 0 / .4) inset, 0 10px 0 #000, 0 30px 36px -14px rgb(0 0 0 / .65); }
+  .accion .chip { box-shadow: inset 0 4px 0 rgb(255 255 255 / .7), inset 0 -6px 0 rgb(0 0 0 / .16), 0 7px 0 rgb(0 0 0 / .22), 0 14px 12px -4px rgb(20 40 10 / .45); }
+  .mas { box-shadow: inset 0 4px 0 rgb(255 255 255 / .7), inset 0 -5px 0 rgb(0 0 0 / .16), 0 7px 0 #8a9100, 0 14px 12px -4px rgb(20 40 10 / .45); }
+  .banner { box-shadow: 0 4px 0 rgb(255 255 255 / .45) inset, 0 -5px 0 rgb(0 0 0 / .14) inset, 0 10px 0 #c25000, 0 28px 30px -12px rgb(180 80 0 / .65); }
+  .banner.verde { box-shadow: 0 4px 0 rgb(255 255 255 / .55) inset, 0 -5px 0 rgb(0 0 0 / .12) inset, 0 10px 0 #5a9a14, 0 28px 30px -12px rgb(60 120 10 / .65); }
+  body::before { opacity: .38; } body::after { opacity: .38; }
 </style>
 </head>
 <body>
