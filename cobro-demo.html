@@ -264,7 +264,7 @@
       h.appendChild(el('p', { class: 'sub', text: 'Revisa el mensaje y ajústalo si quieres. Se envía desde tu WhatsApp.' }));
       var ta = el('textarea', { id: 'msg', 'aria-label': 'Mensaje de confirmación', maxlength: '1500' }); ta.value = armarConfirmacion(p); h.appendChild(el('div', { class: 'campo' }, [ta]));
       if (!p.tel) h.appendChild(el('p', { class: 'aviso', text: 'Este cliente no dejó su WhatsApp: al abrir WhatsApp elige su chat, donde ya llegó su pedido.' }));
-      var wa = el('a', { class: 'btn wa', href: '#', target: '_blank', rel: 'noopener', style: 'text-decoration:none', text: 'Abrir WhatsApp y confirmar' });
+      var wa = el('a', { class: 'btn wa', href: '#', target: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? '_self' : '_blank', rel: 'noopener', style: 'text-decoration:none', text: 'Abrir WhatsApp y confirmar' });
       wa.addEventListener('click', function () { wa.href = enlaceWa(p, ta.value); p.estado = 'confirmado'; pintarLista(); toast('Pedido confirmado. Esperando el pago'); setTimeout(function () { abrirPedido(p.id); }, 150); });
       h.appendChild(wa);
       h.appendChild(el('button', { type: 'button', class: 'btn claro', text: 'Copiar mensaje', onclick: function () { copiar(ta.value); } }));

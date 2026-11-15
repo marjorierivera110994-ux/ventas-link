@@ -478,7 +478,7 @@
     var planTxt = el('p', { class: 'porque', text: 'Tu plan: ' + PLANES[R.plan].n + (R.plan === 'gratis' ? '' : ' · 7 días de funciones premium, sin cobro') });
     var link = el('div', { class: 'enlace' }, [el('b', { text: enlace.replace('https://', '') }), el('button', { type: 'button', class: 'copiar', text: 'Copiar', onclick: function () { copiar(enlace); } })]);
     var lista = el('ol', { class: 'pasos-sig' }); ['Sube tu primer producto', 'Comparte tu enlace en tus redes', 'Revisa tu camino de éxito cada semana'].forEach(function (x, i) { var li = el('li'); li.innerHTML = '<span class="n">' + (i + 1) + '</span>'; li.appendChild(document.createTextNode(x)); lista.appendChild(li); });
-    var wa = el('a', { class: 'btn wa', href: 'https://wa.me/?text=' + encodeURIComponent('Mira mi tienda: ' + enlace), target: '_blank', rel: 'noopener', style: 'text-decoration:none' }); wa.textContent = 'Compartir por WhatsApp';
+    var wa = el('a', { class: 'btn wa', href: 'https://wa.me/?text=' + encodeURIComponent('Mira mi tienda: ' + enlace), target: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? '_self' : '_blank', rel: 'noopener', style: 'text-decoration:none' }); wa.textContent = 'Compartir por WhatsApp';
     var otra = el('button', { type: 'button', class: 'btn claro', text: 'Repetir la demostración', onclick: reiniciar });
     var guia = el('a', { class: 'link', href: 'vista-pagina-ventas.html', target: '_blank', rel: 'noopener', text: 'Ver cómo usar la app' });
     return el('section', { class: 'paso' }, [h, sub, planTxt, link, el('p', { class: 'nota', text: 'Enlace de ejemplo. Aquí empieza la app real.' }), lista, el('div', { class: 'pie' }, [wa, otra, el('div', { class: 'centro' }, [guia])])]);

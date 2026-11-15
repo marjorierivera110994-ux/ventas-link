@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ventas Link — nuevo producto con videoclip (demostración)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --verde-texto: #2f6a10;
+          --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45;
+         background-image: radial-gradient(800px 360px at 10% -6%, color-mix(in oklab, var(--pistacho) 45%, transparent), transparent 62%); }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  button { cursor: pointer; border: 0; background: none; }
+  :focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+  .app { max-width: 480px; margin: 0 auto; padding: 14px 16px 40px; }
+  h1, h2 { font-family: var(--f-d); letter-spacing: -.015em; }
+  h1 { font-size: 26px; font-weight: 800; line-height: 1.1; margin-top: 12px; }
+  h2 { font-size: 16px; font-weight: 800; margin-top: 22px; }
+  .demo { display: inline-flex; gap: 8px; align-items: center; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; }
+  .sub { font-size: 14px; color: var(--texto-2); margin-top: 6px; }
+  .opciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .op { min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--blanco); font-weight: 700; font-size: 14px; border: 2px solid transparent; }
+  .op[aria-pressed="true"] { background: var(--tinta); color: #fff; }
+  .campo { display: block; margin-top: 14px; }
+  .campo > label { font-weight: 800; font-size: 14px; display: block; margin-bottom: 6px; font-family: var(--f-d); }
+  .campo input[type=text], .campo textarea, .campo select { width: 100%; background: var(--blanco); border: 2px solid transparent; border-radius: 16px; padding: 12px 14px; min-height: 50px; font-size: 16px; }
+  .campo textarea { min-height: 96px; }
+  .campo input:focus-visible, .campo textarea:focus-visible, .campo select:focus-visible { border-color: var(--tinta); outline: none; }
+  .campo.err input { border-color: #c2410c; }
+  .error { color: #9a3412; font-size: 13px; font-weight: 700; margin-top: 6px; }
+  .fila2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .caja { margin-top: 10px; background: var(--blanco); border-radius: 22px; padding: 14px; box-shadow: 0 10px 24px -16px rgb(40 60 40 / .5); }
+  .video-zona { border: 2px dashed var(--tinta); border-radius: 22px; padding: 16px; margin-top: 10px; background: color-mix(in oklab, var(--pistacho) 35%, white); display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .video-zona b { font-family: var(--f-d); font-size: 17px; }
+  .btn-s { min-height: 48px; padding: 0 20px; border-radius: 999px; background: var(--tinta); color: var(--lima); font-weight: 800; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .btn-s.claro { background: var(--beige); color: var(--tinta); }
+  .btn-s[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+  .oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .consejos { list-style: none; display: grid; gap: 6px; margin-top: 10px; font-size: 14px; }
+  .consejos li { display: flex; gap: 8px; align-items: flex-start; }
+  .consejos svg { flex-shrink: 0; margin-top: 3px; color: var(--verde-texto); }
+  .preview video { width: 100%; max-height: 360px; border-radius: 18px; background: #000; display: block; }
+  .datos { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; font-weight: 700; margin-top: 8px; flex-wrap: wrap; }
+  .aviso { margin-top: 10px; font-size: 13px; color: var(--texto-2); background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 16px; padding: 10px 14px; }
+  .aviso.mal { background: #fde7d9; color: #7c2d12; font-weight: 700; }
+  .medidor { height: 8px; border-radius: 999px; background: color-mix(in oklab, var(--tinta) 14%, transparent); overflow: hidden; margin-top: 8px; }
+  .medidor i { display: block; height: 100%; background: var(--tinta); border-radius: 999px; width: 0; transition: width .2s; }
+  .toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--blanco); border-radius: 16px; padding: 10px 14px; margin-top: 14px; min-height: 52px; font-weight: 700; }
+  .toggle input { width: 28px; height: 28px; accent-color: var(--tinta); }
+  .btn { margin-top: 18px; width: 100%; min-height: 56px; border-radius: 999px; font-weight: 800; font-size: 16px; background: var(--tinta); color: var(--lima); }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 5; max-width: 90vw; text-align: center; }
+  .toast.on { display: block; }
+</style>
+</head>
+<body>
+<main class="app">
+  <p class="demo" role="note">Demostración · el video no sale de tu navegador</p>
+  <h1>Nuevo producto</h1>
+  <p class="sub">Agrega tu producto con foto, descripción y, si quieres, un videoclip corto.</p>
+
+  <h2 id="h-plan" style="margin-top:16px">Ver como si tuvieras el plan</h2>
+  <div class="opciones" id="planes" role="group" aria-labelledby="h-plan"></div>
+
+  <div class="fila2">
+    <div class="campo"><label for="i-nombre">Nombre</label><input type="text" id="i-nombre" maxlength="60" value="Blusa de seda"></div>
+    <div class="campo" id="c-precio"><label for="i-precio">Precio</label><input type="text" id="i-precio" inputmode="decimal" maxlength="10" value="32"></div>
+  </div>
+  <p class="error" id="e-precio" hidden>Escribe el precio con números, por ejemplo 32 o 32.50.</p>
+  <div class="campo"><label for="i-sec">Sección</label><select id="i-sec"><option>Ropa</option><option>Aretes</option><option>Collares</option><option>Bolsos y pulseras</option></select></div>
+  <div class="campo"><label for="i-desc">Descripción</label><textarea id="i-desc" maxlength="300">Seda suave, cae muy bien. Disponible en tallas S, M y L.</textarea></div>
+  <label class="toggle" for="i-stock"><span>Controlar stock (opcional)</span><input type="checkbox" id="i-stock" checked></label>
+
+  <h2 id="h-video">Videoclip del producto <span style="font-weight:600;color:var(--texto-2)">(opcional)</span></h2>
+  <p class="sub" id="t-video"></p>
+  <div class="caja">
+    <ul class="consejos" aria-label="Consejos para grabar">
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Graba en vertical y con buena luz.</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Tres tomas de 5 segundos: de frente, de espalda y un detalle de la tela.</li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No hace falta sonido: el video se ve sin audio.</li>
+    </ul>
+    <div class="video-zona" id="zona">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="14" height="12" rx="3"/><path d="m16 10 6-3v10l-6-3"/></svg>
+      <b id="z-titulo">Agregar videoclip</b>
+      <span id="z-ayuda" class="sub" style="margin:0"></span>
+      <label class="btn-s" id="l-video" for="in-video">Elegir video</label>
+      <input class="oculto" type="file" id="in-video" accept="video/mp4,video/webm,video/quicktime">
+    </div>
+    <p class="aviso mal" id="err-video" role="alert" hidden></p>
+    <div class="preview" id="preview" hidden>
+      <video id="v" muted loop playsinline controls aria-label="Vista previa del videoclip"></video>
+      <div class="datos"><span id="d-dur"></span><span id="d-tam"></span></div>
+      <div style="display:flex;gap:8px;margin-top:10px"><label class="btn-s claro" for="in-video">Cambiar</label><button type="button" class="btn-s claro" id="quitar">Quitar</button></div>
+    </div>
+    <div class="medidor" aria-hidden="true"><i id="med"></i></div>
+    <p class="sub" id="uso" style="margin-top:6px"></p>
+    <p class="aviso">Tu cliente ve el videoclip al tocar "Ver videoclip". No se descarga solo, así no gasta sus datos. Lo optimizamos para que cargue rápido incluso con poco internet.</p>
+  </div>
+
+  <button type="button" class="btn" id="guardar">Guardar producto</button>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  /* Reglas de los videoclips (hipótesis a validar con costos de almacenamiento y datos) */
+  var PLANES = { gratis: { n: 'Gratis', max: 1, seg: 15 }, emprendedor: { n: 'Emprendedor', max: 10, seg: 15 }, pro: { n: 'Profesional', max: 50, seg: 20 } };
+  var LIM_MB = 50; var TIPOS = ['video/mp4', 'video/webm', 'video/quicktime'];
+  var estado = { plan: 'emprendedor', usados: { gratis: 0, emprendedor: 3, pro: 12 }, video: null, dur: 0, mb: 0, guardado: false };
+
+  function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2400); }
+  function plan() { return PLANES[estado.plan]; }
+  function usados() { return estado.usados[estado.plan] + (estado.video && !estado.guardado ? 1 : 0); }
+  function alLimite() { return estado.usados[estado.plan] >= plan().max; }
+
+  function pintar() {
+    var p = plan(); var c = $('planes'); c.textContent = '';
+    Object.keys(PLANES).forEach(function (k) { var b = document.createElement('button'); b.type = 'button'; b.className = 'op'; b.textContent = PLANES[k].n; b.setAttribute('aria-pressed', String(estado.plan === k)); b.addEventListener('click', function () { estado.plan = k; quitar(true); pintar(); }); c.appendChild(b); });
+    $('t-video').textContent = 'Un videoclip corto muestra mejor la tela y el caído. Dura hasta ' + p.seg + ' segundos.';
+    $('z-ayuda').textContent = 'MP4, WebM o MOV · hasta ' + p.seg + ' segundos · máximo ' + LIM_MB + ' MB';
+    var bloqueado = alLimite() && !estado.video; $('l-video').setAttribute('aria-disabled', String(bloqueado)); $('in-video').disabled = bloqueado;
+    var u = estado.usados[estado.plan] + (estado.video && !estado.guardado ? 1 : 0);
+    $('med').style.width = Math.min(100, (u / p.max) * 100) + '%';
+    $('uso').textContent = 'Videoclips usados: ' + u + ' de ' + p.max + ' (plan ' + p.n + ')' + (bloqueado ? '. Llegaste al límite de tu plan: pasa al siguiente para tener más.' : '');
+    $('preview').hidden = !estado.video; $('zona').hidden = !!estado.video;
+  }
+  function error(m) { var e = $('err-video'); e.textContent = m; e.hidden = !m; }
+  function quitar(silencioso) {
+    if (estado.video) { try { URL.revokeObjectURL(estado.video); } catch (e) { /* ok */ } }
+    estado.video = null; estado.dur = 0; estado.mb = 0; var v = $('v'); v.removeAttribute('src'); v.load(); if (!silencioso) { error(''); pintar(); }
+  }
+
+  $('in-video').addEventListener('change', function (e) {
+    var f = e.target.files[0]; e.target.value = ''; error(''); if (!f) return;
+    if (alLimite() && !estado.video) { error('Llegaste al límite de videoclips de tu plan.'); return; }
+    if (TIPOS.indexOf(f.type) < 0) { error('Ese archivo no sirve. Usa un video MP4, WebM o MOV.'); return; }
+    if (f.size > LIM_MB * 1048576) { error('El video pesa ' + (f.size / 1048576).toFixed(0) + ' MB y el máximo es ' + LIM_MB + ' MB. Grábalo más corto o en calidad normal.'); return; }
+    var url = URL.createObjectURL(f); var v = document.createElement('video'); v.preload = 'metadata'; v.muted = true;
+    v.onloadedmetadata = function () {
+      var d = v.duration;
+      if (!isFinite(d) || d <= 0) { URL.revokeObjectURL(url); error('No pudimos leer la duración del video. Prueba con otro archivo MP4.'); return; }
+      if (d > plan().seg + 0.4) { URL.revokeObjectURL(url); error('Tu video dura ' + Math.round(d) + ' segundos y el máximo es ' + plan().seg + '. Recórtalo en tu celular y vuelve a subirlo.'); return; }
+      quitar(true); estado.video = url; estado.dur = d; estado.mb = f.size / 1048576;
+      var pv = $('v'); pv.src = url; pv.muted = true; var pr = pv.play(); if (pr && pr.catch) pr.catch(function () { /* se ve con el botón de play */ });
+      $('d-dur').textContent = 'Duración: ' + (d < 10 ? d.toFixed(1) : Math.round(d)) + ' s'; $('d-tam').textContent = 'Tamaño: ' + (estado.mb < 1 ? Math.max(1, Math.round(estado.mb * 1024)) + ' KB' : estado.mb.toFixed(1) + ' MB');
+      pintar(); toast('Videoclip cargado');
+    };
+    v.onerror = function () { URL.revokeObjectURL(url); error('No pudimos abrir este video. Algunos celulares graban en un formato que el navegador no lee: prueba con un video MP4.'); };
+    v.src = url;
+  });
+  $('quitar').addEventListener('click', function () { quitar(); });
+
+  $('guardar').addEventListener('click', function () {
+    var nombre = $('i-nombre').value.trim(); var precio = $('i-precio').value.trim().replace(',', '.'); var okP = /^\d{1,6}(\.\d{1,2})?$/.test(precio) && parseFloat(precio) > 0;
+    $('e-precio').hidden = okP; $('c-precio').classList.toggle('err', !okP);
+    if (nombre.length < 2) { $('i-nombre').focus(); toast('Escribe el nombre del producto'); return; }
+    if (!okP) { $('i-precio').focus(); return; }
+    if (estado.video && !estado.guardado) { estado.usados[estado.plan] += 1; estado.guardado = true; }
+    toast('Producto guardado' + (estado.video ? ' con videoclip' : '')); estado.video = null; estado.guardado = false; var v = $('v'); v.removeAttribute('src'); pintar();
+  });
+
+  pintar();
+  window.__prod = { estado: estado, PLANES: PLANES, pintar: pintar, quitar: quitar };
+})();
+</script>
+</body>
+</html>

@@ -147,6 +147,7 @@
     function respaldo() { var a = $('texto'); a.select(); try { document.execCommand('copy'); aviso('Texto copiado'); } catch (e) { aviso('Selecciona el texto y cópialo manualmente'); } }
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(function () { aviso('Texto copiado'); }, respaldo); else respaldo();
   });
+  if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) $('wa').target = '_self'; /* en celular pasa directo a la app de WhatsApp */
   pintar();
   window.__compartir = { estado: estado, generar: generar, pintar: pintar };
 })();

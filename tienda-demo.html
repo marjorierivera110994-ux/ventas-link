@@ -62,6 +62,10 @@
   .precio.oferta-p { color: var(--tinta); }
   .oferta { position: absolute; top: 8px; right: 8px; background: var(--naranja); color: var(--tinta); font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
   .vacio { grid-column: 1 / -1; text-align: center; padding: 30px 10px; color: var(--texto-2); }
+  .hecho { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 14px auto 0; min-height: 48px; width: fit-content; padding: 0 18px; border-radius: 999px; background: var(--blanco); color: var(--tinta); text-decoration: none; font-size: 13px; font-weight: 700; box-shadow: 0 8px 20px -14px rgb(40 60 40 / .5); }
+  .hecho b { color: var(--verde-texto); }
+  .video-caja { margin-top: 10px; }
+  .video-caja video { width: 100%; max-height: 360px; border-radius: 18px; background: #000; display: block; }
   .pie { margin-top: 22px; font-size: 12px; color: var(--texto-2); text-align: center; }
 
   .barra { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 16px calc(14px + env(safe-area-inset-bottom)); display: none; justify-content: center; z-index: 5; pointer-events: none; }
@@ -138,6 +142,7 @@
 
   <div id="grid" aria-live="polite"></div>
   <p class="pie" data-i="pie"></p>
+  <a class="hecho" id="hecho" href="onboarding-demo.html"></a>
 </main>
 
 <div class="barra" id="barra"><button type="button" id="abrir-carrito">
@@ -180,7 +185,7 @@
       verPedido: 'Ver mi pedido', cats: 'Categorías', todo: 'Todo', ropa: 'Ropa', accesorios: 'Accesorios', agotado: 'Agotado',
       agregar: 'Agregar {x}', agotadoAria: '{x} agotado', sinResultados: 'No encontramos productos con esa búsqueda. Prueba con otra palabra.',
       talla: 'Talla', color: 'Color', cantidad: 'Cantidad', agregarPedido: 'Agregar al pedido', mas1: 'Agregar una unidad', menos1: 'Quitar una unidad',
-      agregado: 'Agregaste {n} × {x}', quedan: 'Quedan {n}', solo: 'Solo hay {n} disponibles', descripcion: 'Descripción', ofertaAria: 'Precio anterior {a}, precio actual {b}', vendeDesde: 'Vende desde {pais}', tuWa: 'Tu WhatsApp (opcional)', ayudaWa: 'Para que el negocio te responda con un toque.', telErr: 'Escribe solo tu número, con el código de país (por ejemplo +593…).', m_wa: 'Mi WhatsApp', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
+      agregado: 'Agregaste {n} × {x}', quedan: 'Quedan {n}', solo: 'Solo hay {n} disponibles', descripcion: 'Descripción', ofertaAria: 'Precio anterior {a}, precio actual {b}', vendeDesde: 'Vende desde {pais}', tuWa: 'Tu WhatsApp (opcional)', ayudaWa: 'Para que el negocio te responda con un toque.', telErr: 'Escribe solo tu número, con el código de país (por ejemplo +593…).', m_wa: 'Mi WhatsApp', verVideo: 'Ver videoclip ({n} s)', videoCargando: 'Preparando videoclip de ejemplo…', videoNo: 'Tu navegador no puede mostrar el videoclip de ejemplo.', hechoCon: 'Tienda creada con Ventas Link', creaLa: 'Crea la tuya gratis', miPedido: 'Mi pedido', vacio: 'Tu pedido está vacío. Agrega productos con el botón + y vuelve aquí.', verProductos: 'Ver productos',
       subtotal: 'Subtotal', envioNota: 'La entrega y el pago se coordinan por WhatsApp. El costo de envío, si aplica, te lo confirma el negocio.',
       continuar: 'Continuar', seguir: 'Seguir comprando', quitar: 'Quitar', coordina: 'Coordinemos tu pedido',
       aviso: 'Pulsa el botón verde y se abrirá WhatsApp con tu pedido listo. Allí acuerdas con el negocio la entrega y el pago.',
@@ -205,7 +210,7 @@
       verPedido: 'View my order', cats: 'Categories', todo: 'All', ropa: 'Clothing', accesorios: 'Accessories', agotado: 'Sold out',
       agregar: 'Add {x}', agotadoAria: '{x} sold out', sinResultados: 'No products match your search. Try another word.',
       talla: 'Size', color: 'Color', cantidad: 'Quantity', agregarPedido: 'Add to order', mas1: 'Add one unit', menos1: 'Remove one unit',
-      agregado: 'Added {n} × {x}', quedan: '{n} left', solo: 'Only {n} available', descripcion: 'Description', ofertaAria: 'Previous price {a}, current price {b}', vendeDesde: 'Selling from {pais}', tuWa: 'Your WhatsApp (optional)', ayudaWa: 'So the shop can reply to you with one tap.', telErr: 'Enter only your number, with country code (for example +593…).', m_wa: 'My WhatsApp', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
+      agregado: 'Added {n} × {x}', quedan: '{n} left', solo: 'Only {n} available', descripcion: 'Description', ofertaAria: 'Previous price {a}, current price {b}', vendeDesde: 'Selling from {pais}', tuWa: 'Your WhatsApp (optional)', ayudaWa: 'So the shop can reply to you with one tap.', telErr: 'Enter only your number, with country code (for example +593…).', m_wa: 'My WhatsApp', verVideo: 'Watch video clip ({n} s)', videoCargando: 'Preparing the sample video clip…', videoNo: 'Your browser can’t play the sample video clip.', hechoCon: 'Store made with Ventas Link', creaLa: 'Create yours for free', miPedido: 'My order', vacio: 'Your order is empty. Add products with the + button and come back.', verProductos: 'See products',
       subtotal: 'Subtotal', envioNota: 'Delivery and payment are arranged on WhatsApp. If shipping applies, the shop will confirm its cost.',
       continuar: 'Continue', seguir: 'Keep shopping', quitar: 'Remove', coordina: 'Let’s arrange your order',
       aviso: 'Tap the green button and WhatsApp will open with your order ready. There you agree on delivery and payment with the shop.',
@@ -229,7 +234,7 @@
       verPedido: 'Ver meu pedido', cats: 'Categorias', todo: 'Tudo', ropa: 'Roupas', accesorios: 'Acessórios', agotado: 'Esgotado',
       agregar: 'Adicionar {x}', agotadoAria: '{x} esgotado', sinResultados: 'Não encontramos produtos com essa busca. Tente outra palavra.',
       talla: 'Tamanho', color: 'Cor', cantidad: 'Quantidade', agregarPedido: 'Adicionar ao pedido', mas1: 'Adicionar uma unidade', menos1: 'Remover uma unidade',
-      agregado: 'Você adicionou {n} × {x}', quedan: 'Restam {n}', solo: 'Só há {n} disponíveis', descripcion: 'Descrição', ofertaAria: 'Preço anterior {a}, preço atual {b}', vendeDesde: 'Vendendo de {pais}', tuWa: 'Seu WhatsApp (opcional)', ayudaWa: 'Para a loja responder a você com um toque.', telErr: 'Digite só o seu número, com código do país (por exemplo +593…).', m_wa: 'Meu WhatsApp', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
+      agregado: 'Você adicionou {n} × {x}', quedan: 'Restam {n}', solo: 'Só há {n} disponíveis', descripcion: 'Descrição', ofertaAria: 'Preço anterior {a}, preço atual {b}', vendeDesde: 'Vendendo de {pais}', tuWa: 'Seu WhatsApp (opcional)', ayudaWa: 'Para a loja responder a você com um toque.', telErr: 'Digite só o seu número, com código do país (por exemplo +593…).', m_wa: 'Meu WhatsApp', verVideo: 'Ver videoclipe ({n} s)', videoCargando: 'Preparando o videoclipe de exemplo…', videoNo: 'Seu navegador não consegue mostrar o videoclipe de exemplo.', hechoCon: 'Loja criada com Ventas Link', creaLa: 'Crie a sua grátis', miPedido: 'Meu pedido', vacio: 'Seu pedido está vazio. Adicione produtos com o botão + e volte aqui.', verProductos: 'Ver produtos',
       subtotal: 'Subtotal', envioNota: 'Entrega e pagamento são combinados pelo WhatsApp. Se houver frete, a loja confirma o valor.',
       continuar: 'Continuar', seguir: 'Continuar comprando', quitar: 'Remover', coordina: 'Vamos combinar seu pedido',
       aviso: 'Toque no botão verde e o WhatsApp abrirá com seu pedido pronto. Lá você combina a entrega e o pagamento com a loja.',
@@ -269,7 +274,7 @@
   /* stock: número = el vendedor controla el inventario (la tienda marca "Agotado" sola al llegar a 0);
      null = sin control de stock (opcional). */
   var PRODUCTOS = [
-    { id: 'camisa', n: { es: 'Camisa de lino', en: 'Linen shirt', pt: 'Camisa de linho' }, base: 24, antes: 30, cat: 'ropa', color: '#a5dc5b', arte: 'camisa', variantes: TALLAS, stock: 5,
+    { id: 'camisa', n: { es: 'Camisa de lino', en: 'Linen shirt', pt: 'Camisa de linho' }, base: 24, antes: 30, cat: 'ropa', color: '#a5dc5b', arte: 'camisa', variantes: TALLAS, stock: 5, video: 4,
       desc: { es: 'Lino suave y fresco, de corte holgado. Lavar a mano. Ideal para días calurosos.', en: 'Soft, breathable linen with a relaxed fit. Hand wash. Great for warm days.', pt: 'Linho macio e fresco, de corte solto. Lavar à mão. Ideal para dias quentes.' } },
     { id: 'bolso', n: { es: 'Bolso tejido', en: 'Woven bag', pt: 'Bolsa tecida' }, base: 35, cat: 'otros', color: '#ffd84a', arte: 'bolso', stock: null,
       variantes: { clave: 'color', ops: [{ id: 'crudo', n: { es: 'Crudo', en: 'Natural', pt: 'Cru' } }, { id: 'mostaza', n: { es: 'Mostaza', en: 'Mustard', pt: 'Mostarda' } }] },
@@ -278,7 +283,7 @@
       desc: { es: 'Hechos a mano, livianos y con cierre de seguridad. Vienen en caja de regalo.', en: 'Handmade, lightweight, with a secure clasp. Comes in a gift box.', pt: 'Feitos à mão, leves e com fecho de segurança. Acompanham caixa de presente.' } },
     { id: 'pulsera', n: { es: 'Pulsera tejida', en: 'Woven bracelet', pt: 'Pulseira tecida' }, base: 9, cat: 'otros', color: '#e6ee4a', arte: 'pulsera', stock: 12,
       desc: { es: 'Hilo encerado en colores vivos. Ajustable, para toda ocasión.', en: 'Waxed thread in bright colors. Adjustable, for any occasion.', pt: 'Fio encerado em cores vivas. Ajustável, para qualquer ocasião.' } },
-    { id: 'falda', n: { es: 'Falda midi', en: 'Midi skirt', pt: 'Saia midi' }, base: 32, cat: 'ropa', color: '#a5dc5b', arte: 'falda', variantes: TALLAS, stock: null,
+    { id: 'falda', n: { es: 'Falda midi', en: 'Midi skirt', pt: 'Saia midi' }, base: 32, cat: 'ropa', color: '#a5dc5b', arte: 'falda', variantes: TALLAS, stock: null, video: 4,
       desc: { es: 'Falda midi con cintura elástica y caída suelta. Disponible en tallas S, M y L.', en: 'Midi skirt with an elastic waist and a loose drape. Available in sizes S, M and L.', pt: 'Saia midi com cintura elástica e caimento solto. Disponível nos tamanhos P, M e G.' } },
     { id: 'collar', n: { es: 'Collar artesanal', en: 'Handmade necklace', pt: 'Colar artesanal' }, base: 18, cat: 'collares', color: '#ffd84a', arte: 'collar', stock: 0,
       desc: { es: 'Collar artesanal con dije de cerámica pintado a mano.', en: 'Handmade necklace with a hand-painted ceramic pendant.', pt: 'Colar artesanal com pingente de cerâmica pintado à mão.' } }
@@ -291,6 +296,11 @@
   );
   PRODUCTOS.forEach(function (p) { p.hay = p.stock === null || p.stock > 0; });
   var LLAVE = 'tienda-demo-v2';
+
+  /* En celulares WhatsApp se abre en la MISMA pestaña (el teléfono pasa directo a la app, sin dejar una pestaña vacía);
+     en computadora se abre en una pestaña nueva (WhatsApp Web o la app de escritorio). */
+  function esMovil() { return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 820); }
+  function abrirWa(url) { if (esMovil()) { try { window.location.assign(url); return true; } catch (e) { return false; } } return window.open(url, '_blank', 'noopener'); }
 
   /* Banderas simplificadas en SVG (los emojis de bandera no se ven en Windows) */
   var FLAGS = {
@@ -427,6 +437,8 @@
     document.querySelectorAll('[data-al]').forEach(function (e) { e.setAttribute('aria-label', t(e.getAttribute('data-al'))); });
     $('cats').setAttribute('aria-label', t('cats'));
     $('bienv').textContent = frase('bienvenida');
+    var hc = $('hecho'); hc.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span></span>';
+    hc.querySelector('span').textContent = t('hechoCon') + ' · '; var cb = document.createElement('b'); cb.textContent = t('creaLa'); hc.querySelector('span').appendChild(cb);
     var pb = $('pais-barra'); pb.innerHTML = bandera(estado.pais, 20); var ptx = document.createElement('span');
     ptx.textContent = t('vendeDesde', { pais: PAISES[estado.pais].n[estado.idioma] || PAISES[estado.pais].n.es }) + ' · ' + estado.moneda; pb.appendChild(ptx);
     $('region').textContent = '';
@@ -500,11 +512,48 @@
     });
   }
 
+  /* Videoclip de EJEMPLO: se genera en el navegador (una prenda que gira) para mostrar cómo se vería. En la app real es el video que sube el vendedor. */
+  function videoDemo(p) {
+    if (p._videoUrl) return Promise.resolve(p._videoUrl);
+    return new Promise(function (ok, no) {
+      try {
+        var c = document.createElement('canvas'); c.width = 270; c.height = 360; var x = c.getContext('2d');
+        if (!c.captureStream || typeof MediaRecorder === 'undefined') { no(); return; }
+        var rec = new MediaRecorder(c.captureStream(30)); var trozos = [];
+        rec.ondataavailable = function (e) { if (e.data.size) trozos.push(e.data); };
+        rec.onstop = function () { p._videoUrl = URL.createObjectURL(new Blob(trozos, { type: rec.mimeType || 'video/webm' })); ok(p._videoUrl); };
+        var t0 = performance.now(); var dur = p.video * 1000;
+        var dib = function (ahora) {
+          var t = ahora - t0; var ang = (t / dur) * Math.PI * 2;
+          x.fillStyle = p.color; x.fillRect(0, 0, 270, 360); x.fillStyle = 'rgba(255,255,255,.35)'; x.beginPath(); x.arc(135, 180, 120, 0, 7); x.fill();
+          x.save(); x.translate(135, 175); x.scale(Math.abs(Math.cos(ang)) < 0.04 ? 0.04 : Math.cos(ang), 1); x.fillStyle = '#fff'; x.strokeStyle = '#131313'; x.lineWidth = 6; x.lineJoin = 'round';
+          x.beginPath(); x.moveTo(-70, -80); x.lineTo(-110, -50); x.lineTo(-85, -5); x.lineTo(-60, -20); x.lineTo(-60, 95); x.lineTo(60, 95); x.lineTo(60, -20); x.lineTo(85, -5); x.lineTo(110, -50); x.lineTo(70, -80); x.quadraticCurveTo(0, -55, -70, -80); x.closePath(); x.fill(); x.stroke(); x.restore();
+          x.fillStyle = '#131313'; x.font = '700 18px sans-serif'; x.textAlign = 'center'; x.fillText('Videoclip de ejemplo', 135, 338);
+          if (t < dur) requestAnimationFrame(dib); else rec.stop();
+        };
+        rec.start(); requestAnimationFrame(dib);
+      } catch (e) { no(e); }
+    });
+  }
+
   function abrirProducto(p) {
     var variante = p.variantes ? p.variantes.ops[0].id : ''; var cant = 1;
     abrirHoja(function (h) {
       h.appendChild(cabecera(nm(p)));
       var foto = el('div', { class: 'foto', style: 'background:' + p.color + ';height:140px;margin-top:12px' }); foto.innerHTML = svgHtml(p.arte, 74, 1.4); h.appendChild(foto);
+      if (p.video) {
+        var caja = el('div', { class: 'video-caja' });
+        var bv = el('button', { type: 'button', class: 'btn claro', style: 'margin-top:10px' });
+        bv.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#131313" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span></span>'; bv.querySelector('span').textContent = t('verVideo', { n: p.video });
+        bv.addEventListener('click', function () {
+          bv.disabled = true; bv.querySelector('span').textContent = t('videoCargando');
+          videoDemo(p).then(function (url) {
+            var v = document.createElement('video'); v.src = url; v.muted = true; v.loop = true; v.playsInline = true; v.controls = true; v.setAttribute('aria-label', nm(p));
+            caja.textContent = ''; caja.appendChild(v); var pr = v.play(); if (pr && pr.catch) pr.catch(function () { /* el usuario puede tocar play */ });
+          }, function () { bv.disabled = false; bv.querySelector('span').textContent = t('videoNo'); });
+        });
+        caja.appendChild(bv); h.appendChild(caja);
+      }
       var pb = precioBloque(p); pb.style.marginTop = '12px'; pb.querySelector('.precio').style.fontSize = '26px'; h.appendChild(pb);
       if (stockBajo(p)) h.appendChild(el('p', { class: 'abierto', text: t('quedan', { n: p.stock }) }));
       h.appendChild(el('p', { class: 'desc', style: 'margin-top:8px;color:var(--tinta)', text: p.desc[estado.idioma] || p.desc.es }));
@@ -614,7 +663,7 @@
   function enviar() {
     var msg = armarMensaje(); var url = enlaceWa(msg);
     window.ultimoEnlaceWa = url;
-    var w = window.open(url, '_blank', 'noopener');
+    var w = abrirWa(url);
     abrirHoja(function (h) {
       h.appendChild(cabecera(t('ultimo')));
       var ok = el('div', { class: 'ok' }); ok.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'; h.appendChild(ok);
@@ -623,7 +672,7 @@
       h.appendChild(el('p', { class: 'centro', style: 'margin-top:6px;color:var(--texto-2);font-size:14px', text: w ? t('okTxt') : t('bloqueado') }));
       if (!NEGOCIO.whatsapp) h.appendChild(el('p', { class: 'aviso', text: t('demoModo') }));
       h.appendChild(el('div', { class: 'vista-msg', text: msg }));
-      var a = el('a', { class: 'btn wa', href: url, target: '_blank', rel: 'noopener', style: 'text-decoration:none' }); a.textContent = t('reabrir'); h.appendChild(a);
+      var a = el('a', { class: 'btn wa', href: url, target: esMovil() ? '_self' : '_blank', rel: 'noopener', style: 'text-decoration:none' }); a.textContent = t('reabrir'); h.appendChild(a);
       h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('yaEnvie'), onclick: function () { estado.carrito = []; estado.entrega = null; guardar(); pintarBarra(); cerrarHoja(); toast(t('vaciado')); } }));
       h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('editar'), onclick: abrirCarrito }));
     });
