@@ -180,6 +180,20 @@
   .banner > div:first-child { flex: 1; min-width: 0; padding-right: 66px; }
   .banner b { font-size: 17px; line-height: 1.15; }
   .banner span { line-height: 1.25; display: block; margin-top: 2px; }
+
+  /* ===== Consejos inteligentes (marca: cons1) ===== */
+  .auto { display: inline-flex; align-items: center; gap: 6px; font-size: 12px !important; font-weight: 800 !important; color: #07517f !important; background: #d3f0ff; border-radius: 999px; padding: 4px 10px 4px 6px; }
+  .t3d-mini { width: 20px; height: 20px; border-radius: 7px; display: grid; place-items: center; color: #fff; background: linear-gradient(160deg, #86d4ff, #2f9bea); box-shadow: inset 0 2px 0 rgb(255 255 255 / .6), 0 2px 0 #1b6aa8; }
+  .t3d-mini svg { width: 13px; height: 13px; stroke-width: 2.8; }
+  .cons-sub { font-size: 13px; color: var(--texto-2); margin-top: 4px; }
+  .consejos { list-style: none; display: grid; gap: 10px; margin-top: 12px; }
+  .consejo { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; background: color-mix(in oklab, var(--beige) 55%, white); border-radius: 20px; padding: 10px 12px; text-align: left; width: 100%; box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 4px 0 rgb(40 70 20 / .1); transition: transform .1s ease; }
+  .consejo:active { transform: translateY(3px); }
+  .consejo .ic { width: 44px; height: 44px; border-radius: 15px; display: grid; place-items: center; color: #fff; box-shadow: inset 0 3px 0 rgb(255 255 255 / .6), inset 0 -4px 0 rgb(0 0 0 / .14), 0 5px 0 rgb(0 0 0 / .2); }
+  .consejo .ic svg { width: 23px; height: 23px; stroke-width: 2.8; filter: drop-shadow(0 2px 0 rgb(0 0 0 / .28)); }
+  .consejo .ic.v { background: linear-gradient(160deg, #b8ee62, #4fae12); } .consejo .ic.n { background: linear-gradient(160deg, #ffb83a, #ff6a00); } .consejo .ic.c { background: linear-gradient(160deg, #86d4ff, #2f9bea); }
+  .consejo b { display: block; font-family: var(--f-d); font-size: 15px; line-height: 1.2; }
+  .consejo span.d { display: block; font-size: 13px; color: var(--texto-2); line-height: 1.3; margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -234,6 +248,13 @@
       <div class="stat"><small>Visitas</small><b>126</b><em>+18%</em></div>
       <div class="stat"><small>Producto top</small><b style="font-size:16px;line-height:1.2;margin-top:4px">Blusa de seda</b></div>
     </div>
+
+
+    <section class="tarj" aria-labelledby="t-cons" id="consejos-caja">
+      <div class="meta-cab"><h2 id="t-cons">Consejos para ti</h2><span class="auto"><span class="t3d-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></span>Automáticos</span></div>
+      <p class="cons-sub">Con tus ventas de esta semana. Cambian solos cuando cambian tus números.</p>
+      <ul class="consejos" id="consejos"></ul>
+    </section>
 
     <h2 class="acc-titulo">Qué quieres hacer hoy</h2>
     <div class="acciones">
@@ -303,6 +324,25 @@
   $('perfil').addEventListener('click', function () { abrirHoja('personalizar-demo.html', 'Mi tienda y mi perfil'); });
 
   function animarBarra() { var b = $('barra'); b.style.width = '0'; requestAnimationFrame(function () { requestAnimationFrame(function () { b.style.width = '92%'; }); }); }
+
+
+  /* Consejos: reglas simples sobre los datos reales de la semana (sin IA de pago, sin inventar cifras). */
+  var DATOS = { venta: 184, meta: 200, nuevos: 3, top: 'Blusa de seda', diasPrueba: 1 };
+  (function () {
+    var lista = $('consejos'); if (!lista) return; var t = [];
+    var falta = DATOS.meta - DATOS.venta;
+    if (falta > 0) t.push({ c: 'v', icono: 'M3 17l6-6 4 4 8-8M15 7h6v6', t: 'Te faltan $' + falta + ' para tu meta', d: 'Comparte hoy tu producto top, ' + DATOS.top + ', y llega.', ir: 'compartir' });
+    else t.push({ c: 'v', icono: 'M5 13l4 4L19 7', t: '¡Cumpliste tu meta de la semana!', d: 'Súbela un poquito para la próxima semana.', ir: 'compartir' });
+    if (DATOS.nuevos > 0) t.push({ c: 'n', icono: 'M6 7h12l-1 13H7zM9 7a3 3 0 0 1 6 0', t: 'Tienes ' + DATOS.nuevos + ' pedidos por responder', d: 'Contestar rápido hace que más clientes compren.', ir: 'pedidos' });
+    t.push({ c: 'c', icono: 'M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z', t: 'Mejora la foto de ' + DATOS.top, d: 'Con fondo blanco y buena luz se ve más profesional.', hoja: 'foto-demo.html|Mejorar mi foto' });
+    t.forEach(function (x) {
+      var li = document.createElement('li'), b = document.createElement('button'); b.type = 'button'; b.className = 'consejo';
+      b.innerHTML = '<span class="ic ' + x.c + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + x.icono + '"/></svg></span><span><b></b><span class="d"></span></span>';
+      b.querySelector('b').textContent = x.t; b.querySelector('.d').textContent = x.d;
+      b.addEventListener('click', function () { if (x.ir) ir(x.ir); else { var p = x.hoja.split('|'); abrirHoja(p[0], p[1]); } });
+      li.appendChild(b); lista.appendChild(li);
+    });
+  })();
 
   var splash = $('splash'), quieto = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function quitarSplash() { splash.classList.add('fuera'); animarBarra(); }

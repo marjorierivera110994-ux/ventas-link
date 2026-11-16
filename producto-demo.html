@@ -92,6 +92,13 @@
   .ia-btn[disabled] { opacity: .6; cursor: progress; }
   .ia-nota { font-size: 13px; color: #5a5648; font-weight: 600; }
   .ia-nota.mal { color: #9a3412; font-weight: 700; }
+
+  /* ===== Sugerencia sin costo (marca: sug1) ===== */
+  .sug-fila { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .sug-btn { min-height: 48px; padding: 0 18px; border-radius: 999px; background: linear-gradient(160deg, #86d4ff, #2f9bea); color: #06304d; font-weight: 800; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border: 0;
+             box-shadow: 0 4px 0 rgb(255 255 255 / .6) inset, 0 -5px 0 rgb(0 0 0 / .14) inset, 0 7px 0 #1b6aa8, 0 16px 20px -10px rgb(27 106 168 / .6); transition: transform .1s ease, box-shadow .1s ease; }
+  .sug-btn:active { transform: translateY(5px); box-shadow: 0 4px 0 rgb(255 255 255 / .6) inset, 0 2px 0 #1b6aa8; }
+  .ia-fila.on ~ .sug-fila, .sug-fila.oculto { display: none; }
 </style>
 </head>
 <body>
@@ -110,6 +117,7 @@
   <p class="error" id="e-precio" hidden>Escribe el precio con números, por ejemplo 32 o 32.50.</p>
   <div class="campo"><label for="i-sec">Sección</label><select id="i-sec"><option>Ropa</option><option>Aretes</option><option>Collares</option><option>Bolsos y pulseras</option></select></div>
   <div class="campo"><label for="i-desc">Descripción</label><textarea id="i-desc" maxlength="300">Seda suave, cae muy bien. Disponible en tallas S, M y L.</textarea>
+    <div class="sug-fila"><button type="button" class="sug-btn" id="sug-desc"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Sugerir descripción</button><span class="ia-nota" id="sug-nota" aria-live="polite">Se arma sola con tus datos. Tú la revisas.</span></div>
     <div class="ia-fila"><button type="button" class="ia-btn" id="ia-desc"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Escribir con IA</button><span class="ia-nota" id="ia-nota" aria-live="polite">Usa el nombre, la sección y lo que ya escribiste.</span></div></div>
   <label class="toggle" for="i-stock"><span>Controlar stock (opcional)</span><input type="checkbox" id="i-stock" checked></label>
 
@@ -222,6 +230,29 @@
       if (r.ok) { $('i-desc').value = r.texto.slice(0, 300); nota.textContent = 'Listo. Léelo y cámbialo si quieres: es tu descripción.'; $('i-desc').dispatchEvent(new Event('input', { bubbles: true })); }
       else { nota.textContent = r.mensaje; nota.classList.add('mal'); }
     });
+  });
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  /* Descripción armada con plantillas y SOLO los datos que escribió el vendedor: no inventa materiales, tallas ni promesas. */
+  function armar(nombre, seccion, detalles) {
+    var base = { 'Ropa': 'de nuestra colección de ropa', 'Aretes': 'de nuestra línea de aretes', 'Collares': 'de nuestra línea de collares', 'Bolsos y pulseras': 'de nuestra línea de bolsos y pulseras' }[seccion] || 'de nuestra tienda';
+    var d = (detalles || '').replace(/\s+/g, ' ').trim();
+    var partes = [nombre + ' ' + base + '.'];
+    if (d && d.toLowerCase().indexOf(nombre.toLowerCase()) !== 0) partes.push(d.charAt(0).toUpperCase() + d.slice(1) + (/[.!?]$/.test(d) ? '' : '.'));
+    else if (d) partes = [d.charAt(0).toUpperCase() + d.slice(1) + (/[.!?]$/.test(d) ? '' : '.')];
+    partes.push('Pídelo por WhatsApp y coordinamos la entrega.');
+    return partes.join(' ').slice(0, 300);
+  }
+  $('sug-desc').addEventListener('click', function () {
+    var nota = $('sug-nota'), nombre = $('i-nombre').value.trim(); nota.className = 'ia-nota';
+    if (!nombre) { nota.textContent = 'Escribe primero el nombre del producto.'; nota.classList.add('mal'); $('i-nombre').focus(); return; }
+    var detalles = $('i-desc').value.trim();
+    $('i-desc').value = armar(nombre, $('i-sec').value, detalles); $('i-desc').dispatchEvent(new Event('input', { bubbles: true }));
+    nota.textContent = detalles ? 'Listo. Usé lo que ya escribiste. Revísala.' : 'Listo. Agrega material, tallas o colores para que quede mejor.';
   });
 })();
 </script>

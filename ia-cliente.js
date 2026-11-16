@@ -19,7 +19,7 @@
   function mostrarSiHayIA() {
     if (location.protocol === 'file:') return;
     fetch('/api/estado').then(function (r) { return r.json(); }).then(function (j) {
-      if (j && j.ia) [].slice.call(document.querySelectorAll('.ia-fila')).forEach(function (e) { e.classList.add('on'); });
+      if (j && j.ia) [].slice.call(document.querySelectorAll('.ia-fila')).forEach(function (e) { e.classList.add('on'); }); [].slice.call(document.querySelectorAll('.sug-fila')).forEach(function (e) { e.classList.add('oculto'); });
     }).catch(function () { /* sin servidor: los botones siguen ocultos */ });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mostrarSiHayIA); else mostrarSiHayIA();
