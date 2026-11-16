@@ -15,5 +15,13 @@
       .catch(function () { return { ok: false, motivo: 'red', mensaje: 'No hay conexión con el servidor. Revisa tu internet e intenta de nuevo.' }; })
       .then(function (res) { clearTimeout(t); return res; });
   }
+  /* Los botones de IA están ocultos y solo aparecen si el servidor tiene una llave conectada. */
+  function mostrarSiHayIA() {
+    if (location.protocol === 'file:') return;
+    fetch('/api/estado').then(function (r) { return r.json(); }).then(function (j) {
+      if (j && j.ia) [].slice.call(document.querySelectorAll('.ia-fila')).forEach(function (e) { e.classList.add('on'); });
+    }).catch(function () { /* sin servidor: los botones siguen ocultos */ });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mostrarSiHayIA); else mostrarSiHayIA();
   window.VL_IA = { pedir: pedir };
 })();
