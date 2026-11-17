@@ -24,7 +24,7 @@
     sin_servicio: 'No pudimos conectar con Ventas Link. Intenta de nuevo en un momento.',
     correo_invalido: 'Revisa tu correo: parece que está mal escrito.',
     muchos_correos: 'Estamos enviando muchos correos en este momento. Espera unos minutos e intenta de nuevo.',
-    espera: 'Acabamos de enviarte un código. Espera {s} segundos para pedir otro.',
+    espera: 'Acabamos de enviarte un correo. Espera {s} segundos para pedir otro.',
     correo_no_habilitado: 'Todavía no podemos enviar correos a esta dirección. Estamos terminando de preparar la app: vuelve pronto.',
     codigo_malo: 'El código no es correcto o ya venció. Pide uno nuevo.',
     registro_cerrado: 'Por ahora no estamos aceptando cuentas nuevas. Vuelve pronto.',
@@ -60,7 +60,7 @@
   /* ---------- Cuenta ---------- */
   function sesion() { var c = cliente(); if (!c) return Promise.resolve(null); return c.auth.getSession().then(function (r) { return (r.data && r.data.session) || null; }).catch(function () { return null; }); }
   function alCambiar(fn) { var c = cliente(); if (c) c.auth.onAuthStateChange(function (evento, s) { fn(evento, s || null); }); }
-  /* Envía al correo un código y un enlace para entrar. Si la persona es nueva, se crea su cuenta: la respuesta es la misma en los dos casos. */
+  /* Envía el correo para entrar (con botón; y con código si la plantilla lo trae). Si la persona es nueva, se crea su cuenta: la respuesta es la misma en los dos casos. */
   function enviarCodigo(correo) {
     var c = cliente(); if (!c) return sinCliente();
     if (!correoValido(correo)) return Promise.resolve(fallo({ code: 'email_address_invalid' }));
@@ -94,7 +94,7 @@
     var h = String(location.hash || '') + '&' + String(location.search || '').replace(/^\?/, '');
     if (!/error(_code|_description)?=/.test(h)) return null;
     try { history.replaceState(null, '', location.pathname); } catch (e) { /* sin historial */ }
-    return 'Ese enlace ya venció o ya se usó. Pide un código nuevo.';
+    return 'Ese enlace ya venció o ya se usó. Pide un correo nuevo.';
   }
 
   /* ---------- Tienda ---------- */
@@ -140,7 +140,7 @@
     return c.rpc('iniciar_prueba', { p_plan: plan === 'pro' ? 'profesional' : plan }).then(function (r) { return r.error ? fallo(r.error) : { ok: true, plan: r.data }; }).catch(fallo);
   }
 
-  window.VL = { listo: !!(window.supabase && C.url && C.llave) && location.protocol !== 'file:', cliente: cliente, sesion: sesion, alCambiar: alCambiar, enviarCodigo: enviarCodigo, verificarCodigo: verificarCodigo,
+  window.VL = { conCodigo: C.correoConCodigo === true, listo: !!(window.supabase && C.url && C.llave) && location.protocol !== 'file:', cliente: cliente, sesion: sesion, alCambiar: alCambiar, enviarCodigo: enviarCodigo, verificarCodigo: verificarCodigo,
     conGoogle: conGoogle, metodos: metodos, salir: salir, errorDeEnlace: errorDeEnlace, correoValido: correoValido, miTienda: miTienda, crearTienda: crearTienda, slugDe: slugDe, enlaceTienda: enlaceTienda,
     miPlan: miPlan, iniciarPrueba: iniciarPrueba, _fallo: fallo };
 })();

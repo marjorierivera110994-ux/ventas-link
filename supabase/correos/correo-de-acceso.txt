@@ -1,3 +1,6 @@
+OJO: Supabase NO deja cambiar el correo hasta conectar un servicio de correo propio (Authentication > Emails > SMTP Settings).
+Cuando eso exista: pegar este texto en "Confirm sign up" y en "Magic link or OTP", y poner correoConCodigo: true en vl-config.js.
+
 ASUNTO (va en la casilla "Subject"):
 Tu código para entrar a Ventas Link
 

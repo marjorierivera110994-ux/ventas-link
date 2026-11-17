@@ -249,7 +249,7 @@
   var paso = 'bienvenida'; var ocupado = false; var timers = [];
 
   /* ---------- Cuenta real: si hay conexión con la base, la tienda se guarda de verdad. Sin conexión, todo sigue como demostración. ---------- */
-  var VL = window.VL, REAL = !!(VL && VL.listo), SESION = null, TIENDA = null, PLAN_REAL = null, LLAVE_R = 'vl-recorrido', relojCuenta = null;
+  var VL = window.VL, REAL = !!(VL && VL.listo), SESION = null, TIENDA = null, PLAN_REAL = null, LLAVE_R = 'vl-recorrido', relojCuenta = null, alEntrar = null;
   function guardarRespuestas() { if (!REAL || TIENDA) return; try { localStorage.setItem(LLAVE_R, JSON.stringify({ nombre: R.nombre, tipo: R.tipo, otro: R.otro, cantidad: R.cantidad, pais: R.pais, tel: R.tel, t: Date.now() })); } catch (e) { /* sin almacenamiento */ } }
   function leerRespuestas() {
     try {
@@ -330,7 +330,7 @@
     if (ocupado) return; ocupado = true; limpiarTimers();
     var esc = $('escena'); var viejo = esc.firstElementChild; dir = dir || 1;
     function montar() {
-      clearInterval(relojCuenta); paso = destino; guardarRespuestas(); esc.textContent = ''; var nodo = construir(destino); esc.appendChild(nodo); actualizarTope(); animar(nodo, dir);
+      clearInterval(relojCuenta); alEntrar = null; paso = destino; guardarRespuestas(); esc.textContent = ''; var nodo = construir(destino); esc.appendChild(nodo); actualizarTope(); animar(nodo, dir);
       var h = nodo.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
       var auto = nodo.querySelector('input:not([type=hidden]), select'); if (auto && PREGUNTAS.indexOf(destino) >= 0) { try { auto.focus({ preventScroll: true }); } catch (e) { /* ok */ } }
       window.scrollTo(0, 0); ocupado = false; if (destino === 'armando') arrancarArmado(); if (destino === 'lista') celebrar();
@@ -553,11 +553,11 @@
       b.textContent = 'Crear mi tienda'; b.disabled = false; accion = crear; extra.textContent = '';
     }
     function vistaCorreo() {
-      sub.innerHTML = 'Te enviamos un código a tu correo para entrar, <b>sin contraseña</b>.';
+      sub.innerHTML = 'Te enviamos un correo para entrar, <b>sin contraseña</b>.';
       var inp = el('input', { type: 'email', id: 'in-mail', inputmode: 'email', autocomplete: 'email', autocapitalize: 'none', spellcheck: 'false', maxlength: '120', placeholder: 'tucorreo@ejemplo.com', value: correo });
       var campo = el('div', { class: 'campo' }, [el('label', { for: 'in-mail', text: 'Tu correo' }), inp, el('p', { class: 'error', text: 'Escribe un correo válido, por ejemplo nombre@correo.com.' })]);
       poner([campo, aviso, el('p', { class: 'porque', text: 'Es gratis y no pedimos tarjeta. En el último paso eliges tu plan.' })]);
-      b.textContent = 'Enviarme el código'; b.disabled = !VL.correoValido(inp.value); extra.textContent = '';
+      alEntrar = null; b.textContent = 'Enviarme el correo'; b.disabled = !VL.correoValido(inp.value); extra.textContent = '';
       inp.addEventListener('input', function () { b.disabled = !VL.correoValido(inp.value); campo.classList.remove('err'); error(''); });
       inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') accion(); });
       accion = function () {
@@ -566,7 +566,7 @@
         VL.enviarCodigo(correo).then(function (r) {
           trabajando = false;
           if (r.ok || r.codigo === 'espera') { vistaCodigo(r.ok ? 60 : (r.espera || 60), r.ok ? '' : r.mensaje); return; }
-          b.disabled = false; b.textContent = 'Enviarme el código'; error(r.mensaje);
+          b.disabled = false; b.textContent = 'Enviarme el correo'; error(r.mensaje);
         });
       };
       VL.metodos().then(function (m) {
@@ -576,22 +576,31 @@
       });
     }
     function vistaCodigo(seg, msg) {
-      sub.textContent = ''; sub.appendChild(document.createTextNode('Enviamos un código a ')); sub.appendChild(el('b', { text: correo })); sub.appendChild(document.createTextNode('. Escríbelo aquí, o toca el botón que viene en el correo.'));
+      var conCodigo = VL.conCodigo;
+      sub.textContent = ''; sub.appendChild(document.createTextNode('Te enviamos un correo a ')); sub.appendChild(el('b', { text: correo }));
+      sub.appendChild(document.createTextNode(conCodigo ? '. Escribe aquí el código que trae, o toca el botón del correo.' : '. Ábrelo y toca el botón que trae. Después vuelve a esta pantalla.'));
+      /* Si el correo se confirma en otra pestaña de este mismo navegador, esta pantalla se entera sola. */
+      alEntrar = function (s) { SESION = s || true; clearInterval(relojCuenta); alEntrar = null; VL.miTienda().then(function (t) { if (t.ok && t.tienda) { olvidarRespuestas(); location.replace('app-vendedor.html'); return; } if (paso === 'cuenta') { error(''); vistaCrear(); } }); };
       var inp = el('input', { type: 'text', id: 'in-cod', class: 'codigo', inputmode: 'numeric', autocomplete: 'one-time-code', pattern: '[0-9]*', maxlength: '10', placeholder: '000000' });
       var campo = el('div', { class: 'campo' }, [el('label', { for: 'in-cod', text: 'Código del correo' }), inp]);
-      var reenviar = el('button', { type: 'button', class: 'link', text: 'Reenviar código' });
+      var reenviar = el('button', { type: 'button', class: 'link', text: 'Reenviar correo' });
       var cambiar = el('button', { type: 'button', class: 'link', text: 'Cambiar correo', onclick: function () { clearInterval(relojCuenta); error(''); vistaCorreo(); } });
-      poner([campo, aviso, el('p', { class: 'nota', text: '¿No llega? Mira en Spam o Correo no deseado. El código dura poco tiempo.' })]); error(msg);
-      b.textContent = 'Confirmar y guardar mi tienda'; b.disabled = true;
+      poner((conCodigo ? [campo] : []).concat([aviso, el('p', { class: 'nota', text: conCodigo ? '¿No llega? Mira en Spam o Correo no deseado. El código dura poco tiempo.' : 'Por ahora el correo llega en inglés: el botón dice «Sign in» o «Confirm email address». ¿No llega? Mira en Spam o Correo no deseado.' })])); error(msg);
+      b.textContent = conCodigo ? 'Confirmar y guardar mi tienda' : 'Ya toqué el botón del correo'; b.disabled = conCodigo;
       function cuenta(s) {
         var fin = Date.now() + s * 1000; clearInterval(relojCuenta);
-        function pinta() { var q = Math.ceil((fin - Date.now()) / 1000); if (q <= 0) { clearInterval(relojCuenta); reenviar.disabled = false; reenviar.textContent = 'Reenviar código'; } else { reenviar.disabled = true; reenviar.textContent = 'Reenviar en ' + q + ' s'; } }
+        function pinta() { var q = Math.ceil((fin - Date.now()) / 1000); if (q <= 0) { clearInterval(relojCuenta); reenviar.disabled = false; reenviar.textContent = 'Reenviar correo'; } else { reenviar.disabled = true; reenviar.textContent = 'Reenviar en ' + q + ' s'; } }
         pinta(); relojCuenta = setInterval(pinta, 500);
       }
       inp.addEventListener('input', function () { var x = inp.value.replace(/\D/g, '').slice(0, 10); if (x !== inp.value) inp.value = x; b.disabled = x.length < 6; campo.classList.remove('err'); });
       inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') accion(); });
       reenviar.addEventListener('click', function () { if (reenviar.disabled) return; reenviar.disabled = true; VL.enviarCodigo(correo).then(function (r) { error(r.ok ? '' : r.mensaje); cuenta(r.ok ? 60 : (r.espera || 60)); }); });
       accion = function () {
+        if (!conCodigo) {          /* correo solo con botón: se comprueba si ya se confirmó */
+          if (trabajando) return; trabajando = true; error('');
+          VL.sesion().then(function (s) { trabajando = false; if (s && alEntrar) alEntrar(s); else if (!s) error('Todavía no vemos tu confirmación. Abre el correo, toca el botón y vuelve a esta pantalla. Si lo abriste en otro navegador, continúa allí.'); });
+          return;
+        }
         var cod = inp.value.replace(/\D/g, ''); if (trabajando || cod.length < 6) return;
         trabajando = true; b.disabled = true; b.textContent = 'Confirmando…'; error('');
         VL.verificarCodigo(correo, cod).then(function (r) {
@@ -602,7 +611,7 @@
         });
       };
       extra.textContent = ''; extra.appendChild(el('div', { class: 'fila-links' }, [reenviar, cambiar]));
-      cuenta(seg); try { inp.focus({ preventScroll: true }); } catch (e) { /* ok */ }
+      cuenta(seg); if (conCodigo) { try { inp.focus({ preventScroll: true }); } catch (e) { /* ok */ } }
     }
     if (SESION) vistaCrear(); else vistaCorreo();
     return el('section', { class: 'paso' }, [h, sub, cuerpo, pie(b, extra)]);
@@ -654,6 +663,7 @@
   $('atras').addEventListener('click', function () { if (!ocupado) anterior(); });
   $('escena').appendChild(construir('bienvenida')); actualizarTope();
   if (REAL) {
+    VL.alCambiar(function (evento, s) { if (evento === 'SIGNED_IN' && s && alEntrar) alEntrar(s); });
     var habia = leerRespuestas();
     VL.sesion().then(function (s) {
       if (!s) return; SESION = s;
