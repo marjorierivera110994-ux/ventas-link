@@ -304,3 +304,19 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Mensaje de pedido por WhatsApp (es/en/pt) orientado a cierre: "Quiero confirmar mi compra…".
 - Decisión técnica: `publicar.mjs` copia también frases-arte.js. Vista previa local: `.claude/launch.json` en la carpeta Xiomara (servidor en puerto 3000).
 - Sin verificar: compartir a estados en celular real; logo real del negocio en la imagen (hoy van iniciales).
+
+## BASE DE DATOS EN SUPABASE (16-nov-2026) — CREADA Y PROBADA
+- Proyecto vqhkbijlnpjtklnlvvuf. 5 migraciones aplicadas y guardadas en `supabase/migrations/` (mismo nombre y versión que en Supabase). Referencia para conectar pantallas: `supabase/LEEME.md`.
+- Tablas: planes, tiendas, tienda_privado, suscripciones, secciones, productos, pedidos, pedido_items, visitas_dia + almacén de fotos `media`.
+- Decisiones técnicas (cosa juzgada salvo evidencia):
+  - El público NO tiene permisos sobre tablas (solo lee `planes`). Entra por funciones: tienda_publica, crear_pedido, registrar_visita, slug_disponible. Así nadie puede listar todas las tiendas ni cosechar los WhatsApp.
+  - Una tienda por cuenta (owner_id único). El enlace (slug) NO se puede cambiar (evita que otro tome un enlace viejo y reciba pedidos ajenos); hay lista de enlaces reservados.
+  - Datos de cobro y metas en `tienda_privado` (solo la dueña). El plan vive en `suscripciones` y la vendedora no lo puede escribir.
+  - Plan vigente = pagado > prueba > gratis, calculado al momento (la prueba vence sola, sin cobro ni tarea programada). Prueba: 7 días, una vez por tienda (`iniciar_prueba`).
+  - Límites del plan vigilados DENTRO de la base (10/300/5000 productos; 3/30/300 secciones). Tope técnico de "sin límite" en Profesional: 5000 productos y 300 secciones (decisión mía). Al bajar de plan no se borra nada: solo no se agregan más.
+  - Ofertas: solo planes de pago, 5-90 %, con fecha de fin futura. `precio_desde` guarda desde cuándo rige el precio; la regla de "mínimo 7 días publicado" NO se aplica aún (pendiente de abogado).
+  - Pedidos: los crea el comprador con `crear_pedido` (precio y total calculados en la base, copia de nombre/precio, clave anti-duplicado, freno de 30 pedidos/10 min y 500/día por tienda). Estados solicitado→confirmado→pagado→entregado/cancelado solo con `actualizar_estado_pedido`; el stock baja al ENTREGAR. No se borran pedidos.
+  - Fotos: almacén público por enlace, solo JPG/PNG/WebP, 4 MB, carpeta = id de la tienda, tope de archivos por plan (2×productos + 20).
+  - Videoclips: columna y almacén NO creados todavía (falta la conversión en servidor).
+- Probado: `supabase/pruebas/seguridad.sql` → 50 de 50 (aislamiento entre vendedoras, público sin acceso, límites, prueba única, pedido con total correcto 36.00, doble envío sin duplicar, stock 5→3 al entregar). Revisión automática de Supabase: 0 errores; solo avisos esperados (funciones públicas a propósito) e índices sin uso (base nueva).
+- PENDIENTE: 1) registro e ingreso (correo con enlace / Google) y ajustar la dirección del sitio en Supabase; 2) conectar pantallas (recorrido, productos, tienda, pedidos, mi plan) con supabase-js; 3) función de resumen del inicio (ventas de la semana, visitas, producto top); 4) camino de éxito semanal; 5) programa de invitados (tablas y premios); 6) paginar catálogos de más de 300 productos; 7) verificación real del tipo de archivo en servidor y quitar ubicación de las fotos; 8) cobro de planes (proveedor por aprobar) que escribe `suscripciones`; 9) política de cuánto tiempo se guardan los datos de compradores; 10) plan gratis de Supabase: se pausa tras 7 días sin uso y no tiene copias al segundo → antes de vender, plan de pago de Supabase.
