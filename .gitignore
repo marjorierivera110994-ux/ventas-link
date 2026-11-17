@@ -3,3 +3,5 @@
 !.env.example
 node_modules/
 APP 1/
+.netlify
+dist/
