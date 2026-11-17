@@ -214,6 +214,27 @@
   .consejo .ic.v { background: linear-gradient(160deg, #b8ee62, #4fae12); } .consejo .ic.n { background: linear-gradient(160deg, #ffb83a, #ff6a00); } .consejo .ic.c { background: linear-gradient(160deg, #86d4ff, #2f9bea); }
   .consejo b { display: block; font-family: var(--f-d); font-size: 15px; line-height: 1.2; }
   .consejo span.d { display: block; font-size: 13px; color: var(--texto-2); line-height: 1.3; margin-top: 2px; }
+
+  /* Mi cuenta (marca: cta1) */
+  .cuenta[hidden], .cuenta-fondo[hidden], .cuenta [hidden] { display: none !important; }
+  .cuenta-fondo { position: fixed; inset: 0; z-index: 70; background: rgb(19 19 19 / .45); }
+  .cuenta { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 71; width: min(100%, 480px); background: var(--beige); border-radius: 28px 28px 0 0; padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
+            display: grid; gap: 12px; box-shadow: 0 -24px 40px -20px rgb(19 19 19 / .5); animation: cuenta-sube .3s cubic-bezier(.2, .8, .2, 1); }
+  @keyframes cuenta-sube { from { transform: translate(-50%, 100%); } }
+  .cuenta-cab { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: center; margin-bottom: 4px; }
+  .cuenta-cab .avatar { width: 52px; height: 52px; font-size: 18px; }
+  .cuenta-cab h2 { font-size: 20px; line-height: 1.15; overflow-wrap: anywhere; }
+  .cuenta-cab p { font-size: 14px; color: var(--texto-2); overflow-wrap: anywhere; }
+  .cuenta-enlace { background: var(--blanco); border-radius: 16px; padding: 12px 14px; font-size: 14px; font-weight: 700; overflow-wrap: anywhere; box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(40 70 20 / .1); }
+  .cuenta-enlace small { display: block; font-weight: 500; color: var(--texto-2); font-size: 13px; margin-top: 2px; }
+  .cuenta-btn { min-height: 52px; border-radius: 999px; font-weight: 800; font-size: 16px; background: var(--tinta); color: var(--lima);
+                box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), inset 0 -4px 0 rgb(0 0 0 / .5), 0 6px 0 #000, 0 16px 18px -10px rgb(19 19 19 / .55); transition: transform .1s ease, box-shadow .1s ease; }
+  .cuenta-btn:active { transform: translateY(4px); box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), 0 2px 0 #000; }
+  .cuenta-btn.claro, .cuenta-btn.salir { background: var(--blanco); color: var(--tinta); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -4px 0 rgb(0 0 0 / .06), 0 6px 0 rgb(40 70 20 / .16), 0 16px 18px -10px rgb(30 60 20 / .45); }
+  .cuenta-btn.claro:active, .cuenta-btn.salir:active { box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 2px 0 rgb(40 70 20 / .16); }
+  .cuenta-btn.salir { color: #9a3412; }
+  .cuenta-btn[disabled] { opacity: .6; }
+  @media (prefers-reduced-motion: reduce) { .cuenta { animation: none; } .cuenta-btn { transition: none; } }
 </style>
 </head>
 <body>
@@ -313,7 +334,20 @@
 </div>
 <div class="toast" id="toast" role="status"></div>
 
+<div class="cuenta-fondo" id="cuenta-fondo" hidden></div>
+<section class="cuenta" id="cuenta" role="dialog" aria-modal="true" aria-labelledby="cuenta-t" hidden>
+  <div class="cuenta-cab"><span class="ic-btn avatar" id="cuenta-av" aria-hidden="true">BL</span><div><h2 id="cuenta-t">Boutique Luna</h2><p id="cuenta-correo">Demostración · datos de ejemplo</p></div></div>
+  <p class="cuenta-enlace" id="cuenta-enlace" hidden></p>
+  <button type="button" class="cuenta-btn" id="cuenta-entrar" hidden>Entrar a mi tienda</button>
+  <button type="button" class="cuenta-btn claro" id="cuenta-pers">Personalizar mi tienda</button>
+  <button type="button" class="cuenta-btn salir" id="cuenta-salir" hidden>Cerrar sesión</button>
+  <button type="button" class="cuenta-btn claro" id="cuenta-cerrar">Cerrar</button>
+</section>
+
 <script src="frases-arte.js"></script>
+<script src="vendor/supabase.js"></script>
+<script src="vl-config.js"></script>
+<script src="vl-datos.js"></script>
 <script>
 (function () {
   'use strict';
@@ -364,7 +398,39 @@
   $('volver').addEventListener('click', cerrarHoja);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && hoja.classList.contains('on')) cerrarHoja(); });
   $('campana').addEventListener('click', function () { ir('pedidos'); });
-  $('perfil').addEventListener('click', function () { abrirHoja('personalizar-demo.html', 'Mi tienda y mi perfil'); });
+  /* ---------- Mi cuenta: con sesión se muestra la tienda real; sin sesión esta pantalla sigue siendo la demostración ---------- */
+  var VL = window.VL, focoAntes = null;
+  function iniciales(n) { var p = String(n || '').trim().split(/\s+/).filter(Boolean); return ((p[0] || 'T').charAt(0) + (p[1] ? p[1].charAt(0) : '')).toUpperCase(); }
+  function abrirCuenta() { focoAntes = document.activeElement; $('cuenta').hidden = false; $('cuenta-fondo').hidden = false; $('cuenta-cerrar').focus(); }
+  function cerrarCuenta() { $('cuenta').hidden = true; $('cuenta-fondo').hidden = true; if (focoAntes && focoAntes.focus) focoAntes.focus(); }
+  $('perfil').addEventListener('click', abrirCuenta);
+  $('cuenta-cerrar').addEventListener('click', cerrarCuenta); $('cuenta-fondo').addEventListener('click', cerrarCuenta);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('cuenta').hidden) cerrarCuenta(); });
+  $('cuenta-pers').addEventListener('click', function () { cerrarCuenta(); abrirHoja('personalizar-demo.html', 'Mi tienda y mi perfil'); });
+  $('cuenta-entrar').addEventListener('click', function () { location.href = 'entrar.html'; });
+  $('cuenta-salir').addEventListener('click', function () { var b = this; b.disabled = true; b.textContent = 'Cerrando sesión…'; VL.salir().then(function () { location.replace('entrar.html'); }); });
+  function ponerTienda(t, correo) {
+    var ini = iniciales(t.nombre); MARCA = t.nombre;
+    document.querySelector('.saludo h1').textContent = t.nombre; $('perfil').textContent = ini; $('cuenta-av').textContent = ini; $('cuenta-t').textContent = t.nombre;
+    $('cuenta-correo').textContent = correo || 'Sesión iniciada';
+    var e = $('cuenta-enlace'), s = document.createElement('small'); e.textContent = VL.enlaceTienda(t.slug).replace(/^https?:\/\//, '');
+    s.textContent = 'Tu enlace. Empieza a funcionar cuando subas tu primer producto.'; e.appendChild(s); e.hidden = false;
+    $('cuenta-salir').hidden = false; $('cuenta-entrar').hidden = true;
+    var d = document.querySelector('.inicio .demo'); if (d) d.textContent = 'Tu cuenta es real · números de ejemplo';
+    document.title = t.nombre + ' — Ventas Link';
+  }
+  if (VL && VL.listo) {
+    $('cuenta-entrar').hidden = false;
+    VL.sesion().then(function (s) {
+      if (!s) return;
+      VL.miTienda().then(function (r) {
+        if (!r.ok) return;
+        if (!r.tienda) { location.replace('onboarding-demo.html'); return; }
+        ponerTienda(r.tienda, s.user && s.user.email);
+      });
+    });
+    VL.alCambiar(function (evento) { if (evento === 'SIGNED_OUT') location.replace('entrar.html'); });
+  }
 
   function animarBarra() { var b = $('barra'); b.style.width = '0'; requestAnimationFrame(function () { requestAnimationFrame(function () { b.style.width = '92%'; }); }); }
 
@@ -392,6 +458,7 @@
   splash.addEventListener('click', quitarSplash);
   setTimeout(quitarSplash, quieto ? 600 : 2800);
   var hh = (location.hash || '').slice(1); if (tabs.indexOf(hh) > 0) { ir(hh); } if (hh) { quitarSplash(); }
+  window.__cuenta = { ponerTienda: ponerTienda, abrir: abrirCuenta, cerrar: cerrarCuenta };
   window.__app = { ir: ir, abrirHoja: abrirHoja, cerrarHoja: cerrarHoja, quitarSplash: quitarSplash };
 })();
 </script>

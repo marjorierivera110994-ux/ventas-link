@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Entra a tu tienda — Ventas Link</title>
+<meta name="description" content="Entra a tu tienda de Ventas Link con tu correo, sin contraseña.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4ecdb">
+<link rel="icon" href="logo/ventas-link-icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --verde-texto: #2f6a10; --cielo: #d6f0ff; --error: #9a3412;
+          --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; --ease: cubic-bezier(.16, 1, .3, 1); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45; overflow-x: hidden;
+         background-image: radial-gradient(620px 340px at 0% -6%, color-mix(in oklab, var(--pistacho) 55%, transparent), transparent 62%),
+                           radial-gradient(520px 320px at 108% 22%, color-mix(in oklab, var(--naranja) 30%, transparent), transparent 60%),
+                           radial-gradient(560px 360px at 20% 104%, color-mix(in oklab, var(--cielo) 90%, transparent), transparent 62%); background-attachment: fixed; }
+  button, input { font: inherit; color: inherit; } button { cursor: pointer; border: 0; background: none; } a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; }
+  h1, h2 { font-family: var(--f-d); letter-spacing: -.02em; }
+  .app { max-width: 460px; margin: 0 auto; min-height: 100dvh; padding: 16px 16px max(24px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; }
+
+  .tope { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; }
+  .tope a { min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px; background: var(--blanco); font-weight: 700; font-size: 14px; text-decoration: none;
+            box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -3px 0 rgb(0 0 0 / .06), 0 5px 0 rgb(40 70 20 / .12), 0 14px 16px -10px rgb(30 60 20 / .5); transition: transform .1s ease; }
+  .tope a:active { transform: translateY(3px); }
+
+  .hero { position: relative; margin-top: 24px; padding-right: 104px; min-height: 112px; }
+  .hero h1 { font-size: 32px; line-height: 1.05; font-weight: 800; text-wrap: balance; }
+  .hero h1 em { font-style: normal; color: var(--verde-texto); }
+  .hero .sub { margin-top: 8px; font-size: 16px; color: var(--texto-2); } .hero .sub b { color: var(--tinta); font-weight: 600; }
+  .bolsito { position: absolute; right: 0; top: -8px; width: 96px; height: 96px; filter: drop-shadow(0 12px 10px rgb(30 60 20 / .28)); animation: flota 4.2s ease-in-out infinite; }
+  .estrella { position: absolute; right: 84px; top: 60px; width: 30px; height: 30px; filter: drop-shadow(0 4px 4px rgb(160 70 0 / .3)); animation: flota 3.4s ease-in-out -1.2s infinite; }
+  @keyframes flota { 50% { transform: translateY(-7px) rotate(3deg); } }
+
+  .tarj { margin-top: 24px; background: var(--blanco); border-radius: 24px; padding: 24px 16px 16px; border: 1px solid rgb(255 255 255 / .95);
+          box-shadow: inset 0 4px 0 rgb(255 255 255 / .95), inset 0 -5px 0 rgb(0 0 0 / .06), 0 10px 0 rgb(40 70 20 / .13), 0 30px 36px -18px rgb(30 60 20 / .55); }
+  .tarj h2 { font-size: 20px; font-weight: 800; line-height: 1.15; }
+  .tarj .txt { font-size: 15px; color: var(--texto-2); margin-top: 6px; overflow-wrap: anywhere; } .tarj .txt b { color: var(--tinta); font-weight: 700; }
+  .campo { margin-top: 16px; }
+  .campo label { font-weight: 700; font-size: 14px; display: block; margin-bottom: 8px; }
+  .campo input { width: 100%; min-height: 58px; border-radius: 18px; border: 2px solid transparent; background: color-mix(in oklab, var(--beige) 60%, white); padding: 0 16px; font-size: 18px;
+                 box-shadow: inset 0 4px 8px rgb(60 50 20 / .16), inset 0 -2px 0 rgb(255 255 255 / .9); }
+  .campo input:focus-visible { border-color: var(--tinta); outline: none; }
+  .campo.err input { border-color: #c2410c; }
+  #in-codigo { font-family: var(--f-d); font-weight: 800; font-size: 28px; letter-spacing: .28em; text-align: center; padding: 0 8px; font-variant-numeric: tabular-nums; }
+  #in-codigo::placeholder { color: color-mix(in oklab, var(--tinta) 22%, transparent); letter-spacing: .28em; }
+  .aviso { margin-top: 12px; border-radius: 16px; padding: 12px 14px; font-size: 14px; font-weight: 700; color: var(--error); background: color-mix(in oklab, var(--naranja) 16%, white); display: flex; gap: 10px; align-items: flex-start; }
+  .aviso svg { width: 20px; height: 20px; flex: 0 0 20px; margin-top: 1px; }
+  .aviso[hidden] { display: none; }
+
+  .btn { margin-top: 16px; width: 100%; min-height: 58px; border-radius: 999px; font-weight: 800; font-size: 17px; display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--tinta); color: var(--lima); text-decoration: none;
+         box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), inset 0 -5px 0 rgb(0 0 0 / .55), 0 7px 0 #000, 0 20px 24px -12px rgb(19 19 19 / .6); transition: transform .1s ease, box-shadow .1s ease, opacity .2s ease; }
+  .btn:active { transform: translateY(5px); box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), 0 2px 0 #000; }
+  .btn[disabled] { opacity: .45; cursor: not-allowed; }
+  .btn.claro { background: var(--blanco); color: var(--tinta); border: 2px solid color-mix(in oklab, var(--tinta) 12%, transparent);
+               box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -4px 0 rgb(0 0 0 / .06), 0 6px 0 rgb(40 70 20 / .16), 0 16px 18px -10px rgb(30 60 20 / .45); }
+  .btn.claro:active { box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 1px 0 rgb(40 70 20 / .16); }
+  .btn svg { width: 20px; height: 20px; flex: 0 0 20px; }
+  .o { display: flex; align-items: center; gap: 12px; margin-top: 16px; color: var(--texto-2); font-size: 13px; font-weight: 700; }
+  .o::before, .o::after { content: ''; flex: 1; height: 2px; border-radius: 2px; background: color-mix(in oklab, var(--tinta) 10%, transparent); }
+  .fila { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .link { min-height: 44px; padding: 0 4px; font-weight: 700; font-size: 14px; color: var(--tinta); text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; }
+  .link[disabled] { color: var(--texto-2); text-decoration: none; cursor: default; }
+  .nota { font-size: 13px; color: var(--texto-2); margin-top: 8px; }
+
+  .esq { display: grid; gap: 12px; } .esq i { display: block; border-radius: 16px; background: linear-gradient(100deg, #efe7d6 30%, #f8f3e8 50%, #efe7d6 70%); background-size: 220% 100%; animation: brillo 1.3s linear infinite; }
+  @keyframes brillo { to { background-position: -220% 0; } }
+
+  .confianza { list-style: none; margin-top: 32px; display: grid; gap: 12px; }
+  .confianza li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; font-size: 15px; font-weight: 600; }
+  .confianza .ic { width: 44px; height: 44px; border-radius: 15px; display: grid; place-items: center; color: #fff;
+                   box-shadow: inset 0 3px 0 rgb(255 255 255 / .6), inset 0 -4px 0 rgb(0 0 0 / .14), 0 5px 0 rgb(0 0 0 / .2), 0 10px 10px -4px rgb(20 40 10 / .4); }
+  .confianza .ic svg { width: 23px; height: 23px; stroke-width: 2.8; filter: drop-shadow(0 2px 0 rgb(0 0 0 / .28)); }
+  .confianza .v { background: linear-gradient(160deg, #b8ee62, #4fae12); } .confianza .n { background: linear-gradient(160deg, #ffb83a, #ff6a00); } .confianza .c { background: linear-gradient(160deg, #86d4ff, #2f9bea); }
+  .confianza small { display: block; font-weight: 500; font-size: 13px; color: var(--texto-2); }
+
+  .abajo { margin-top: auto; padding-top: 32px; text-align: center; font-size: 15px; color: var(--texto-2); }
+  .abajo a { font-weight: 800; color: var(--tinta); text-underline-offset: 3px; display: inline-flex; min-height: 44px; align-items: center; }
+
+  .entra > * { animation: sube .42s var(--ease) both; } .entra > *:nth-child(2) { animation-delay: .06s; } .entra > *:nth-child(3) { animation-delay: .12s; } .entra > *:nth-child(4) { animation-delay: .18s; } .entra > *:nth-child(5) { animation-delay: .24s; }
+  @keyframes sube { from { opacity: 0; transform: translateY(12px); } }
+  .cambia { animation: sube .3s var(--ease) both; }
+  @media (prefers-reduced-motion: reduce) { .bolsito, .estrella, .esq i, .entra > *, .cambia { animation: none; } .btn, .tope a { transition: none; } }
+</style>
+</head>
+<body>
+<main class="app entra">
+  <header class="tope">
+    <img src="logo/ventas-link-horizontal.svg" alt="Ventas Link" width="138" height="36">
+    <a href="vista-pagina-ventas.html">Cómo funciona</a>
+  </header>
+
+  <section class="hero">
+    <h1>Entra a <em>tu tienda</em></h1>
+    <p class="sub"><b>Sin contraseña.</b> Te enviamos un código a tu correo.</p>
+    <img class="bolsito" src="logo/ventas-link-icono.svg" alt="" width="96" height="96">
+    <svg class="estrella" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g-or" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb12a"/><stop offset="1" stop-color="#ff6a00"/></linearGradient></defs><path d="M32 5l7.4 18.6 20 1.4-15.4 12.8 5 19.4L32 45.6 15 57.2l5-19.4L4.6 25l20-1.4z" fill="url(#g-or)" stroke="#fff" stroke-width="5" stroke-linejoin="round" paint-order="stroke"/></svg>
+  </section>
+
+  <section class="tarj" id="caja" aria-live="polite" aria-busy="true">
+    <div class="esq" id="v-carga" role="status"><span style="position:absolute;clip:rect(0 0 0 0)">Cargando…</span><i style="height:22px;width:55%"></i><i style="height:58px"></i><i style="height:58px;border-radius:999px"></i></div>
+
+    <form id="v-correo" hidden novalidate>
+      <h2>Escribe tu correo</h2>
+      <p class="txt">Si ya tienes tienda, entras. Si eres nueva, la creamos contigo.</p>
+      <div class="campo" id="c-correo"><label for="in-correo">Tu correo</label>
+        <input type="email" id="in-correo" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" maxlength="120" placeholder="tucorreo@ejemplo.com" aria-describedby="e-correo"></div>
+      <p class="aviso" id="e-correo" role="alert" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span></span></p>
+      <button type="submit" class="btn" id="b-enviar">Enviarme el código</button>
+      <div id="google-caja" hidden>
+        <p class="o">o</p>
+        <button type="button" class="btn claro" id="b-google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.2a5.3 5.3 0 0 1-2.3 3.5v2.9h3.7c2.2-2 3.4-5 3.4-8.5z"/><path fill="#34A853" d="M12 23.5c3.1 0 5.7-1 7.6-2.8l-3.7-2.9c-1 .7-2.3 1.1-3.9 1.1-3 0-5.5-2-6.4-4.7H1.8v3A11.5 11.5 0 0 0 12 23.5z"/><path fill="#FBBC05" d="M5.6 14.2a6.9 6.9 0 0 1 0-4.4v-3H1.8a11.5 11.5 0 0 0 0 10.4l3.8-3z"/><path fill="#EA4335" d="M12 5.1c1.7 0 3.2.6 4.4 1.7l3.3-3.3A11.5 11.5 0 0 0 1.8 6.8l3.8 3c.9-2.7 3.4-4.7 6.4-4.7z"/></svg>Continuar con Google</button>
+      </div>
+    </form>
+
+    <form id="v-codigo" hidden novalidate>
+      <h2>Revisa tu correo</h2>
+      <p class="txt">Enviamos un código a <b id="tx-correo"></b>. Escríbelo aquí, o toca el botón que viene en el correo.</p>
+      <div class="campo" id="c-codigo"><label for="in-codigo">Código del correo</label>
+        <input type="text" id="in-codigo" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="10" placeholder="000000" aria-describedby="e-codigo"></div>
+      <p class="aviso" id="e-codigo" role="alert" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span></span></p>
+      <button type="submit" class="btn" id="b-entrar" disabled>Entrar</button>
+      <div class="fila"><button type="button" class="link" id="b-reenviar" disabled>Reenviar código</button><button type="button" class="link" id="b-cambiar">Cambiar correo</button></div>
+      <p class="nota">¿No llega? Mira en Spam o Correo no deseado. El código dura poco tiempo.</p>
+    </form>
+
+    <div id="v-listo" hidden>
+      <h2 id="listo-t">¡Bienvenida!</h2>
+      <p class="txt" id="listo-s">Abriendo tu tienda…</p>
+      <div class="esq" style="margin-top:16px"><i style="height:58px;border-radius:999px"></i></div>
+    </div>
+
+    <div id="v-caido" hidden>
+      <h2>No pudimos conectar</h2>
+      <p class="txt">Revisa tu internet y vuelve a intentarlo.</p>
+      <button type="button" class="btn" id="b-reintentar">Intentar de nuevo</button>
+    </div>
+  </section>
+
+  <ul class="confianza">
+    <li><span class="ic v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span><span>Sin contraseñas que recordar<small>Entras con un código que llega a tu correo.</small></span></li>
+    <li><span class="ic c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span>Tu tienda es solo tuya<small>Tus pedidos y tus datos de cobro solo los ves tú.</small></span></li>
+    <li><span class="ic n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7c-1.5-3.2-5-3-5-.6S10.5 7 12 7zm0 0c1.5-3.2 5-3 5-.6S13.500 7 12 7z"/></svg></span><span>Gratis para empezar<small>No pedimos tarjeta.</small></span></li>
+  </ul>
+
+  <p class="abajo">¿Aún no tienes tienda? <a href="onboarding-demo.html">Créala gratis</a></p>
+</main>
+
+<script src="vendor/supabase.js"></script>
+<script src="vl-config.js"></script>
+<script src="vl-datos.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var VL = window.VL, VISTAS = ['v-carga', 'v-correo', 'v-codigo', 'v-listo', 'v-caido'];
+  var correo = '', ocupado = false, saliendo = false, reloj = null;
+
+  function ver(id) {
+    VISTAS.forEach(function (v) { $(v).hidden = v !== id; });
+    $('caja').setAttribute('aria-busy', String(id === 'v-carga' || id === 'v-listo'));
+    $(id).classList.remove('cambia'); void $(id).offsetWidth; $(id).classList.add('cambia');
+  }
+  function aviso(id, m) { var a = $(id); a.querySelector('span').textContent = m || ''; a.hidden = !m; }
+
+  /* Ya con sesión: quien tiene tienda va a su app; quien no, termina de crearla. */
+  function seguir() {
+    if (saliendo) return; saliendo = true; ver('v-listo');
+    VL.miTienda().then(function (r) {
+      if (!r.ok) { saliendo = false; ver('v-caido'); return; }
+      if (r.tienda) { $('listo-t').textContent = '¡Hola de nuevo!'; $('listo-s').textContent = 'Abriendo ' + r.tienda.nombre + '…'; location.replace('app-vendedor.html'); }
+      else { $('listo-t').textContent = '¡Bienvenida!'; $('listo-s').textContent = 'Vamos a crear tu tienda…'; location.replace('onboarding-demo.html'); }
+    });
+  }
+
+  function cuentaAtras(seg) {
+    var b = $('b-reenviar'), fin = Date.now() + seg * 1000; clearInterval(reloj);
+    function pinta() { var s = Math.ceil((fin - Date.now()) / 1000); if (s <= 0) { clearInterval(reloj); b.disabled = false; b.textContent = 'Reenviar código'; } else { b.disabled = true; b.textContent = 'Reenviar en ' + s + ' s'; } }
+    pinta(); reloj = setInterval(pinta, 500);
+  }
+
+  function enviar(desdeReenvio) {
+    if (ocupado) return; var v = $('in-correo').value.trim();
+    if (!desdeReenvio) {
+      if (!VL.correoValido(v)) { $('c-correo').classList.add('err'); aviso('e-correo', 'Escribe un correo válido, por ejemplo nombre@correo.com.'); $('in-correo').focus(); return; }
+      correo = v.toLowerCase();
+    }
+    ocupado = true; var b = desdeReenvio ? $('b-reenviar') : $('b-enviar'), antes = b.textContent; b.disabled = true; b.textContent = 'Enviando…'; aviso('e-correo', ''); aviso('e-codigo', '');
+    VL.enviarCodigo(correo).then(function (r) {
+      ocupado = false; b.textContent = antes; if (!desdeReenvio) b.disabled = false;
+      if (r.ok || r.codigo === 'espera') {          /* "espera" = ya hay un código reciente en camino: se pasa igual a escribirlo */
+        $('tx-correo').textContent = correo; if (!desdeReenvio) { ver('v-codigo'); $('in-codigo').value = ''; $('b-entrar').disabled = true; }
+        cuentaAtras(r.ok ? 60 : (r.espera || 60)); if (!r.ok) aviso('e-codigo', r.mensaje);
+        try { $('in-codigo').focus({ preventScroll: true }); } catch (e) { /* ok */ }
+        return;
+      }
+      if (desdeReenvio) { aviso('e-codigo', r.mensaje); b.disabled = false; } else aviso('e-correo', r.mensaje);
+    });
+  }
+  function entrar() {
+    if (ocupado) return; var cod = $('in-codigo').value.replace(/\D/g, '');
+    if (cod.length < 6) { $('c-codigo').classList.add('err'); aviso('e-codigo', 'Escribe el código completo que llegó a tu correo.'); return; }
+    ocupado = true; var b = $('b-entrar'); b.disabled = true; b.textContent = 'Entrando…'; aviso('e-codigo', '');
+    VL.verificarCodigo(correo, cod).then(function (r) {
+      ocupado = false; b.textContent = 'Entrar';
+      if (r.ok) { seguir(); return; }
+      b.disabled = false; $('c-codigo').classList.add('err'); aviso('e-codigo', r.mensaje); $('in-codigo').select();
+    });
+  }
+
+  $('v-correo').addEventListener('submit', function (e) { e.preventDefault(); enviar(false); });
+  $('v-codigo').addEventListener('submit', function (e) { e.preventDefault(); entrar(); });
+  $('in-correo').addEventListener('input', function () { $('c-correo').classList.remove('err'); aviso('e-correo', ''); });
+  $('in-codigo').addEventListener('input', function () { var x = this.value.replace(/\D/g, '').slice(0, 10); if (x !== this.value) this.value = x; $('c-codigo').classList.remove('err'); $('b-entrar').disabled = x.length < 6; });
+  $('b-reenviar').addEventListener('click', function () { enviar(true); });
+  $('b-cambiar').addEventListener('click', function () { clearInterval(reloj); aviso('e-codigo', ''); ver('v-correo'); $('in-correo').focus(); });
+  $('b-google').addEventListener('click', function () { if (ocupado) return; ocupado = true; this.disabled = true; var b = this; VL.conGoogle().then(function (r) { if (!r.ok) { ocupado = false; b.disabled = false; aviso('e-correo', r.mensaje); } }); });
+  $('b-reintentar').addEventListener('click', function () { location.reload(); });
+  window.addEventListener('offline', function () { if (!$('v-correo').hidden) aviso('e-correo', 'No hay conexión. Revisa tu internet e intenta de nuevo.'); });
+  window.addEventListener('online', function () { if (!$('v-correo').hidden) aviso('e-correo', ''); });
+
+  function arrancar() {
+    if (!VL || !VL.listo) { ver('v-caido'); return; }
+    var vencido = VL.errorDeEnlace();
+    VL.alCambiar(function (evento, s) { if (evento === 'SIGNED_IN' && s) seguir(); });
+    VL.sesion().then(function (s) {
+      if (s) { seguir(); return; }
+      ver('v-correo'); if (vencido) aviso('e-correo', vencido);
+      VL.metodos().then(function (m) { $('google-caja').hidden = !m.google; });
+    });
+  }
+  arrancar();
+  window.__entrar = { ver: ver, aviso: aviso, cuentaAtras: cuentaAtras };
+})();
+</script>
+</body>
+</html>

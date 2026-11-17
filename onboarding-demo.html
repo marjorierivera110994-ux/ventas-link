@@ -168,6 +168,13 @@
   .btn.wa { box-shadow: 0 4px 0 rgb(255 255 255 / .45) inset, 0 -5px 0 rgb(0 0 0 / .14) inset, 0 9px 0 #138a45, 0 24px 28px -10px rgb(19 138 69 / .55); }
   .lista-v .ic { box-shadow: inset 0 4px 0 rgb(255 255 255 / .7), inset 0 -5px 0 rgb(0 0 0 / .14), 0 6px 0 rgb(40 70 20 / .2), 0 12px 12px -4px rgb(20 40 10 / .35); }
   .mini-tienda { box-shadow: 0 4px 0 rgb(255 255 255 / .95) inset, 0 10px 0 rgb(40 70 20 / .12), 0 32px 40px -20px rgb(30 60 20 / .65); }
+
+  /* Cuenta real (marca: cta1) */
+  .aviso-err { border-radius: 16px; padding: 12px 14px; font-size: 14px; font-weight: 700; color: #9a3412; background: color-mix(in oklab, var(--naranja) 16%, white); }
+  .aviso-err[hidden] { display: none; }
+  .campo input.codigo { font-family: var(--f-d); font-weight: 800; font-size: 28px; letter-spacing: .28em; text-align: center; padding: 0 8px; font-variant-numeric: tabular-nums; }
+  .fila-links { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .link[disabled] { text-decoration: none; opacity: .7; cursor: default; }
 </style>
 </head>
 <body>
@@ -181,6 +188,9 @@
 </div>
 <div class="toast" id="toast" role="status"></div>
 
+<script src="vendor/supabase.js"></script>
+<script src="vl-config.js"></script>
+<script src="vl-datos.js"></script>
 <script>
 (function () {
   'use strict';
@@ -238,10 +248,29 @@
   var R = { nombre: '', tipo: null, otro: '', cantidad: null, pais: 'EC', tel: '', plan: 'gratis', plan_rec: 'gratis', email: '' };
   var paso = 'bienvenida'; var ocupado = false; var timers = [];
 
+  /* ---------- Cuenta real: si hay conexión con la base, la tienda se guarda de verdad. Sin conexión, todo sigue como demostración. ---------- */
+  var VL = window.VL, REAL = !!(VL && VL.listo), SESION = null, TIENDA = null, PLAN_REAL = null, LLAVE_R = 'vl-recorrido', relojCuenta = null;
+  function guardarRespuestas() { if (!REAL || TIENDA) return; try { localStorage.setItem(LLAVE_R, JSON.stringify({ nombre: R.nombre, tipo: R.tipo, otro: R.otro, cantidad: R.cantidad, pais: R.pais, tel: R.tel, t: Date.now() })); } catch (e) { /* sin almacenamiento */ } }
+  function leerRespuestas() {
+    try {
+      var d = JSON.parse(localStorage.getItem(LLAVE_R) || 'null'); if (!d || typeof d !== 'object' || Date.now() - d.t > 86400000) return false;
+      if (typeof d.nombre === 'string') R.nombre = d.nombre.slice(0, 60);
+      if (typeof d.otro === 'string') R.otro = d.otro.slice(0, 40);
+      if (typeof d.tel === 'string') R.tel = d.tel.slice(0, 20);
+      if (TIPOS.some(function (x) { return x.id === d.tipo; })) R.tipo = d.tipo;
+      if (CANTIDADES.some(function (x) { return x.id === d.cantidad; })) R.cantidad = d.cantidad;
+      if (PAISES[d.pais]) R.pais = d.pais;
+      return true;
+    } catch (e) { return false; }
+  }
+  function olvidarRespuestas() { try { localStorage.removeItem(LLAVE_R); } catch (e) { /* sin almacenamiento */ } }
+  function respuestasCompletas() { return R.nombre.trim().length >= 2 && !!R.tipo && telValido(); }
+
   /* Programa de invitados: si llegas con un enlace de invitación (#ref=CODIGO) recibes 30 días de plan Emprendedor en vez de 7 */
   var REF = null; var INVITADORES = { 'BOUTIQUE-LUNA-7K2': 'Boutique Luna' };
   function leerRef(s) { var m = String(s || '').match(/ref=([A-Za-z0-9-]{3,40})/); return m ? m[1].toUpperCase() : null; }
   try { REF = leerRef(location.hash + '&' + location.search); } catch (e) { REF = null; }
+  if (REAL) REF = null; /* los 30 días por invitación todavía no están conectados a la base: no se prometen con cuentas reales */
   function quienInvita() { return REF ? (INVITADORES[REF] || 'un vendedor de Ventas Link') : null; }
   function dias(k) { return REF && k === 'emprendedor' ? 30 : 7; }
   function ctaDe(k) { return k === 'gratis' ? PLANES.gratis.cta : (REF && k === 'emprendedor' ? 'Empezar mis 30 días gratis' : PLANES[k].cta); }
@@ -301,7 +330,7 @@
     if (ocupado) return; ocupado = true; limpiarTimers();
     var esc = $('escena'); var viejo = esc.firstElementChild; dir = dir || 1;
     function montar() {
-      paso = destino; esc.textContent = ''; var nodo = construir(destino); esc.appendChild(nodo); actualizarTope(); animar(nodo, dir);
+      clearInterval(relojCuenta); paso = destino; guardarRespuestas(); esc.textContent = ''; var nodo = construir(destino); esc.appendChild(nodo); actualizarTope(); animar(nodo, dir);
       var h = nodo.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
       var auto = nodo.querySelector('input:not([type=hidden]), select'); if (auto && PREGUNTAS.indexOf(destino) >= 0) { try { auto.focus({ preventScroll: true }); } catch (e) { /* ok */ } }
       window.scrollTo(0, 0); ocupado = false; if (destino === 'armando') arrancarArmado(); if (destino === 'lista') celebrar();
@@ -434,8 +463,10 @@
     var secs = el('div', { class: 'secs' }); t.sec.forEach(function (s) { secs.appendChild(el('span', { class: 'sec', text: s })); });
     var vacios = el('div', { class: 'vacios' }, [el('div', { class: 'vacio', text: 'Aquí irá tu primer producto' }), el('div', { class: 'vacio', text: 'Aquí irá tu segundo producto' })]);
     var tienda = el('div', { class: 'tienda', 'data-esc': '' }, [ban, secs, vacios]);
-    var enlace = el('div', { class: 'enlace', 'data-esc': '' }, [el('b', { text: 'ejemplo.com/' + slug(nombre) }), el('button', { type: 'button', class: 'copiar', text: 'Copiar', onclick: function () { copiar('https://ejemplo.com/' + slug(nombre)); } })]);
-    var nota = el('p', { class: 'nota', 'data-esc': '', text: 'Este enlace es de ejemplo. En la app real recibes el tuyo.' });
+    var enlace = REAL
+      ? el('div', { class: 'enlace', 'data-esc': '' }, [el('b', { text: location.host + '/t/' + VL.slugDe(nombre) })])
+      : el('div', { class: 'enlace', 'data-esc': '' }, [el('b', { text: 'ejemplo.com/' + slug(nombre) }), el('button', { type: 'button', class: 'copiar', text: 'Copiar', onclick: function () { copiar('https://ejemplo.com/' + slug(nombre)); } })]);
+    var nota = el('p', { class: 'nota', 'data-esc': '', text: REAL ? 'Así será tu enlace. Se reserva al guardar tu tienda; si ese nombre ya está tomado, te damos uno parecido.' : 'Este enlace es de ejemplo. En la app real recibes el tuyo.' });
     return el('section', { class: 'paso' }, [h, sub, tienda, enlace, nota, pie(cta('Guardar mi tienda', function () { ir('cuenta', 1); }))]);
   }
   function escapar(s) { return s.replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -465,7 +496,16 @@
     var ben = el('ul', { class: 'beneficios' }); ['Pedidos por WhatsApp, sin comisión', 'Tu enlace listo para compartir en redes', 'Camino de éxito y mensajes que animan a comprar'].forEach(function (x) { var li = el('li'); li.innerHTML = '<span class="ck">' + CHECK + '</span>'; li.appendChild(document.createTextNode(x)); ben.appendChild(li); });
     var porque = el('p', { class: 'porque', text: PORQUE[R.plan_rec] + (REF ? ' Tu invitación de ' + quienInvita() + ' te regala 30 días de Emprendedor.' : '') });
     var grupo = el('div', { class: 'planes', role: 'radiogroup', 'aria-label': 'Elige tu plan' });
-    var btn = cta(ctaDe(R.plan), function () { ir('fin', 1); });
+    var avisoPlan = el('p', { class: 'aviso-err', role: 'alert' }); avisoPlan.hidden = true;
+    var btn = cta(ctaDe(R.plan), function () {
+      if (!REAL || !TIENDA || R.plan === 'gratis') { ir('fin', 1); return; }
+      var antes = btn.textContent; btn.disabled = true; btn.textContent = 'Activando tu prueba…'; avisoPlan.hidden = true;
+      VL.iniciarPrueba(R.plan).then(function (r) {
+        btn.disabled = false; btn.textContent = antes;
+        if (r.ok) { PLAN_REAL = r.plan; ir('fin', 1); return; }
+        avisoPlan.textContent = r.mensaje; avisoPlan.hidden = false;
+      });
+    });
     ['gratis', 'emprendedor', 'pro'].forEach(function (k) {
       var pl = PLANES[k]; var o = el('button', { type: 'button', class: 'plan', role: 'radio', 'aria-checked': String(R.plan === k) });
       var ul = el('ul'); pl.pts.forEach(function (x) { ul.appendChild(el('li', { text: x })); });
@@ -481,13 +521,93 @@
     var salida = el('button', { type: 'button', class: 'link', text: 'Ahora no, seguir con el plan gratis', onclick: function () { R.plan = 'gratis'; ir('fin', 1); } });
     var detalle = el('a', { class: 'link', href: 'vista-pagina-ventas.html#planes', target: '_blank', rel: 'noopener', text: 'Ver todo lo que incluye cada plan' });
     var nodo = el('section', { class: 'paso' }, [h, sub, ben, porque, grupo, el('p', { class: 'nota centro', text: 'Precios de lanzamiento en dólares, de prueba. Se confirman antes de cobrar.' }),
-      el('div', { class: 'centro' }, [detalle]), pie(btn, el('div', {}, [verdad, el('div', { class: 'centro' }, [salida])]))]);
+      el('div', { class: 'centro' }, [detalle]), pie(btn, el('div', {}, [avisoPlan, verdad, el('div', { class: 'centro' }, [salida])]))]);
     nodo.insertBefore(el('div', { style: 'margin-left:-8px;margin-top:-6px' }, [cerrar]), nodo.firstChild);
     return nodo;
   }
 
   /* ---------- Cuenta (el último paso) ---------- */
   function pCuenta() {
+    if (!REAL) return pCuentaDemo();
+    var h = el('h1'); h.innerHTML = 'Guarda <em>tu tienda</em>';
+    var sub = el('p', { class: 'sub' }), cuerpo = el('div', { class: 'cuerpo' }), extra = el('div', { class: 'centro' });
+    var aviso = el('p', { class: 'aviso-err', role: 'alert' }); aviso.hidden = true;
+    var accion = function () {}, b = cta('', function () { accion(); });
+    var correo = R.email, trabajando = false;
+    function error(m) { aviso.textContent = m || ''; aviso.hidden = !m; }
+    function poner(hijos) { cuerpo.textContent = ''; hijos.forEach(function (x) { cuerpo.appendChild(x); }); }
+
+    /* Crea la tienda en la base con las 4 respuestas. Si este correo ya tenía tienda, no se crea otra. */
+    function crear() {
+      if (trabajando) return; trabajando = true; b.disabled = true; b.textContent = 'Creando tu tienda…'; error('');
+      var t = tipoActual();
+      VL.crearTienda({ nombre: R.nombre.trim(), tipo: t.id === 'otra' ? (R.otro.trim() || 'Otra cosa') : t.n, whatsapp: PAISES[R.pais].cod + telLimpio(), pais: R.pais, moneda: MONEDA[R.pais], secciones: t.sec }).then(function (r) {
+        trabajando = false;
+        if (!r.ok) { b.disabled = false; b.textContent = 'Crear mi tienda'; accion = crear; error(r.mensaje); return; }
+        TIENDA = r.tienda; olvidarRespuestas(); ir('planes', 1);
+      });
+    }
+    function vistaCrear() {
+      sub.innerHTML = '<b>Tu correo ya está confirmado.</b> Solo falta guardar tu tienda.';
+      poner([el('p', { class: 'porque', text: nombreCorto() + ' · ' + etiquetaTipo() + ' · WhatsApp ' + telOculto() }), aviso]);
+      b.textContent = 'Crear mi tienda'; b.disabled = false; accion = crear; extra.textContent = '';
+    }
+    function vistaCorreo() {
+      sub.innerHTML = 'Te enviamos un código a tu correo para entrar, <b>sin contraseña</b>.';
+      var inp = el('input', { type: 'email', id: 'in-mail', inputmode: 'email', autocomplete: 'email', autocapitalize: 'none', spellcheck: 'false', maxlength: '120', placeholder: 'tucorreo@ejemplo.com', value: correo });
+      var campo = el('div', { class: 'campo' }, [el('label', { for: 'in-mail', text: 'Tu correo' }), inp, el('p', { class: 'error', text: 'Escribe un correo válido, por ejemplo nombre@correo.com.' })]);
+      poner([campo, aviso, el('p', { class: 'porque', text: 'Es gratis y no pedimos tarjeta. En el último paso eliges tu plan.' })]);
+      b.textContent = 'Enviarme el código'; b.disabled = !VL.correoValido(inp.value); extra.textContent = '';
+      inp.addEventListener('input', function () { b.disabled = !VL.correoValido(inp.value); campo.classList.remove('err'); error(''); });
+      inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') accion(); });
+      accion = function () {
+        if (trabajando) return; if (!VL.correoValido(inp.value)) { campo.classList.add('err'); inp.focus(); return; }
+        correo = inp.value.trim().toLowerCase(); R.email = correo; trabajando = true; b.disabled = true; b.textContent = 'Enviando…'; error('');
+        VL.enviarCodigo(correo).then(function (r) {
+          trabajando = false;
+          if (r.ok || r.codigo === 'espera') { vistaCodigo(r.ok ? 60 : (r.espera || 60), r.ok ? '' : r.mensaje); return; }
+          b.disabled = false; b.textContent = 'Enviarme el código'; error(r.mensaje);
+        });
+      };
+      VL.metodos().then(function (m) {
+        if (!m.google || paso !== 'cuenta' || extra.firstChild) return;
+        var g = el('button', { type: 'button', class: 'btn claro', text: 'Continuar con Google', style: 'margin-top:10px', onclick: function () { guardarRespuestas(); VL.conGoogle().then(function (r) { if (!r.ok) error(r.mensaje); }); } });
+        extra.appendChild(g);
+      });
+    }
+    function vistaCodigo(seg, msg) {
+      sub.textContent = ''; sub.appendChild(document.createTextNode('Enviamos un código a ')); sub.appendChild(el('b', { text: correo })); sub.appendChild(document.createTextNode('. Escríbelo aquí, o toca el botón que viene en el correo.'));
+      var inp = el('input', { type: 'text', id: 'in-cod', class: 'codigo', inputmode: 'numeric', autocomplete: 'one-time-code', pattern: '[0-9]*', maxlength: '10', placeholder: '000000' });
+      var campo = el('div', { class: 'campo' }, [el('label', { for: 'in-cod', text: 'Código del correo' }), inp]);
+      var reenviar = el('button', { type: 'button', class: 'link', text: 'Reenviar código' });
+      var cambiar = el('button', { type: 'button', class: 'link', text: 'Cambiar correo', onclick: function () { clearInterval(relojCuenta); error(''); vistaCorreo(); } });
+      poner([campo, aviso, el('p', { class: 'nota', text: '¿No llega? Mira en Spam o Correo no deseado. El código dura poco tiempo.' })]); error(msg);
+      b.textContent = 'Confirmar y guardar mi tienda'; b.disabled = true;
+      function cuenta(s) {
+        var fin = Date.now() + s * 1000; clearInterval(relojCuenta);
+        function pinta() { var q = Math.ceil((fin - Date.now()) / 1000); if (q <= 0) { clearInterval(relojCuenta); reenviar.disabled = false; reenviar.textContent = 'Reenviar código'; } else { reenviar.disabled = true; reenviar.textContent = 'Reenviar en ' + q + ' s'; } }
+        pinta(); relojCuenta = setInterval(pinta, 500);
+      }
+      inp.addEventListener('input', function () { var x = inp.value.replace(/\D/g, '').slice(0, 10); if (x !== inp.value) inp.value = x; b.disabled = x.length < 6; campo.classList.remove('err'); });
+      inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') accion(); });
+      reenviar.addEventListener('click', function () { if (reenviar.disabled) return; reenviar.disabled = true; VL.enviarCodigo(correo).then(function (r) { error(r.ok ? '' : r.mensaje); cuenta(r.ok ? 60 : (r.espera || 60)); }); });
+      accion = function () {
+        var cod = inp.value.replace(/\D/g, ''); if (trabajando || cod.length < 6) return;
+        trabajando = true; b.disabled = true; b.textContent = 'Confirmando…'; error('');
+        VL.verificarCodigo(correo, cod).then(function (r) {
+          trabajando = false;
+          if (!r.ok) { b.disabled = false; b.textContent = 'Confirmar y guardar mi tienda'; campo.classList.add('err'); error(r.mensaje); inp.select(); return; }
+          SESION = r.sesion || true; clearInterval(relojCuenta);
+          VL.miTienda().then(function (t) { if (t.ok && t.tienda) { olvidarRespuestas(); location.replace('app-vendedor.html'); return; } crear(); });
+        });
+      };
+      extra.textContent = ''; extra.appendChild(el('div', { class: 'fila-links' }, [reenviar, cambiar]));
+      cuenta(seg); try { inp.focus({ preventScroll: true }); } catch (e) { /* ok */ }
+    }
+    if (SESION) vistaCrear(); else vistaCorreo();
+    return el('section', { class: 'paso' }, [h, sub, cuerpo, pie(b, extra)]);
+  }
+  function pCuentaDemo() {
     var h = el('h1'); h.innerHTML = 'Guarda <em>tu tienda</em>';
     var sub = el('p', { class: 'sub' }); sub.innerHTML = 'Te enviamos un enlace a tu correo para entrar, <b>sin contraseña</b>.';
     var inp = el('input', { type: 'text', id: 'in-mail', inputmode: 'email', autocomplete: 'email', placeholder: 'tucorreo@ejemplo.com', value: R.email, 'aria-describedby': 'e-mail' });
@@ -503,6 +623,7 @@
 
   /* ---------- Fin ---------- */
   function pFin() {
+    if (REAL && TIENDA) return pFinReal();
     var nombre = nombreCorto(); var enlace = 'https://ejemplo.com/' + slug(nombre);
     var h = el('h1'); h.innerHTML = '¡Listo, <em>' + escapar(nombre) + '</em>!';
     var sub = el('p', { class: 'sub' }); sub.innerHTML = 'Bienvenido a <b>Ventas Link</b>. Todo gran negocio empezó así: ahora sube tu primer producto.';
@@ -515,10 +636,33 @@
     var invitar = el('a', { class: 'btn', href: 'invita-demo.html', target: '_blank', rel: 'noopener', style: 'text-decoration:none', text: 'Invita y gana 30 días de Emprendedor' });
     return el('section', { class: 'paso' }, [h, sub, planTxt, link, el('p', { class: 'nota', text: 'Enlace de ejemplo. Aquí empieza la app real.' }), lista, el('div', { class: 'pie' }, [wa, invitar, otra, el('div', { class: 'centro' }, [guia])])]);
   }
+  function pFinReal() {
+    var nombre = TIENDA.nombre, enlace = VL.enlaceTienda(TIENDA.slug);
+    var h = el('h1'); h.innerHTML = '¡Listo, <em>' + escapar(nombre) + '</em>!';
+    var sub = el('p', { class: 'sub' }); sub.innerHTML = 'Tu tienda ya está guardada en <b>Ventas Link</b>. Todo gran negocio empezó así: ahora sube tu primer producto.';
+    var enPrueba = PLAN_REAL && PLAN_REAL.origen === 'prueba', hasta = '';
+    if (enPrueba) { try { hasta = new Date(PLAN_REAL.vence).toLocaleDateString('es', { day: 'numeric', month: 'long' }); } catch (e) { hasta = ''; } }
+    var planTxt = el('p', { class: 'porque', text: enPrueba ? 'Tu plan: ' + (PLAN_REAL.plan === 'profesional' ? 'Profesional' : 'Emprendedor') + ' · prueba gratis' + (hasta ? ' hasta el ' + hasta : '') + ', sin cobro. Después sigues en el plan Gratis.' : 'Tu plan: Gratis, para siempre. Puedes probar un plan de pago cuando quieras.' });
+    var link = el('div', { class: 'enlace' }, [el('b', { text: enlace.replace(/^https?:\/\//, '') })]);
+    var lista = el('ol', { class: 'pasos-sig' }); ['Sube tu primer producto', 'Comparte tu enlace en tus redes', 'Revisa tu camino de éxito cada semana'].forEach(function (x, i) { var li = el('li'); li.innerHTML = '<span class="n">' + (i + 1) + '</span>'; li.appendChild(document.createTextNode(x)); lista.appendChild(li); });
+    var ira = el('a', { class: 'btn', href: 'app-vendedor.html', style: 'text-decoration:none', text: 'Ir a mi app' });
+    var guia = el('a', { class: 'link', href: 'vista-pagina-ventas.html', target: '_blank', rel: 'noopener', text: 'Ver cómo usar la app' });
+    return el('section', { class: 'paso' }, [h, sub, planTxt, link, el('p', { class: 'nota', text: 'Este enlace ya es tuyo. Empieza a funcionar cuando subas tu primer producto.' }), lista, el('div', { class: 'pie' }, [ira, el('div', { class: 'centro' }, [guia])])]);
+  }
   function reiniciar() { R = { nombre: '', tipo: null, otro: '', cantidad: null, pais: 'EC', tel: '', plan: 'gratis', plan_rec: 'gratis', email: '' }; ir('bienvenida', -1); }
 
   $('atras').addEventListener('click', function () { if (!ocupado) anterior(); });
   $('escena').appendChild(construir('bienvenida')); actualizarTope();
+  if (REAL) {
+    var habia = leerRespuestas();
+    VL.sesion().then(function (s) {
+      if (!s) return; SESION = s;
+      VL.miTienda().then(function (r) {
+        if (r.ok && r.tienda) { location.replace('app-vendedor.html'); return; }
+        if (habia && respuestasCompletas() && paso === 'bienvenida') ir('cuenta', 1);
+      });
+    });
+  }
   window.__ob = { setRef: function (c) { REF = leerRef('ref=' + c); }, R: function () { return R; }, ir: ir, paso: function () { return paso; }, telValido: telValido, telLimpio: telLimpio, slug: slug, planRecomendado: planRecomendado, reiniciar: reiniciar };
 })();
 </script>
