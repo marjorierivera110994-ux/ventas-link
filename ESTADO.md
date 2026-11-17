@@ -288,3 +288,8 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - DECISIÓN (usuario, 15-nov-2026): la app NO usa IA por ahora (sin llave ni presupuesto). Los botones de IA quedan OCULTOS y solo aparecen si el servidor tiene llave conectada (ia-cliente.js consulta /api/estado). El código de IA queda guardado y apagado; no cuesta nada. El usuario enviará los enlaces de GitHub/Supabase/Vercel (NO claves por chat/Drive: se le avisó rotar las claves del archivo de Drive que compartió). servidor/.env existe vacío y está ignorado por git.
 - INTELIGENCIA SIN COSTO (usuario: "que sea inteligente, pro y muy bonita"): (1) Inicio del vendedor: tarjeta "Consejos para ti" con reglas sobre datos reales de la semana (meta, pedidos por responder, mejorar foto del producto top), cada consejo lleva a la pantalla correcta; etiqueta "Automáticos" (no se dice IA). (2) Producto: botón "Sugerir descripción" por plantillas con SOLO los datos del vendedor (no inventa). Si algún día hay llave de IA, aparece el botón de IA y se oculta el de plantillas. Aclaración dada al usuario: la IA real SÍ cuesta (centavos por uso, necesita saldo); por eso queda apagada.
 - LECCIÓN técnica: en String.replace usar función como reemplazo cuando el texto contiene "$'" (se interpreta como patrón especial y corrompe el archivo).
+
+## AJUSTE BOTONES (16-nov)
+- Botones "Qué quieres hacer hoy": ícono arriba, texto centrado 15.5px (marca acc2). "Compartir / mi tienda" en 2 líneas.
+- Tarjeta celeste "Para ti, hoy": sticker de rayo eliminado, queda solo la estrella.
+- Publicado en Netlify: grand-halva-1b3001.netlify.app (privado, login Netlify). GitHub: marjorierivera110994-ux/ventas-link (privado).
