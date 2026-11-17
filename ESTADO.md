@@ -293,3 +293,14 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Botones "Qué quieres hacer hoy": ícono arriba, texto centrado 15.5px (marca acc2). "Compartir / mi tienda" en 2 líneas.
 - Tarjeta celeste "Para ti, hoy": sticker de rayo eliminado, queda solo la estrella.
 - Publicado en Netlify: grand-halva-1b3001.netlify.app (privado, login Netlify). GitHub: marjorierivera110994-ux/ventas-link (privado).
+
+## FRASES CON FONDOS PROFESIONALES (16-nov) — marca CSS: arte1
+- Nuevo `frases-arte.js` (compartido): 120 frases ORIGINALES (40 ventas, 40 redes de mercadeo, 40 vida; sin citas atribuidas a famosos) + 36 paletas x 12 diseños dibujados en canvas con semilla aleatoria. API `window.VL_ARTE` (frase, pintarFondo, imagen, compartir).
+- Vendedor (app-vendedor): tarjeta "Para ti, hoy" con fondo que cambia, botón "Compartir" (imagen 1080x1920 con nombre del negocio, Web Share o descarga) y botón "otra frase".
+- Comprador (tienda-demo): frase SOLO de vida con fondo; en/pt usan las 8 frases traducidas.
+- Compartir (compartir-demo): paso 5 "Imagen positiva" (1080x1350) que se comparte junto al texto y enlace.
+- Vista previa del enlace: `logo/compartir-tienda.png` (1200x630) + metadatos og en tienda-demo. PENDIENTE: la URL apunta a grand-halva-1b3001.netlify.app (cambiar si se renombra) y solo se verá cuando el sitio sea público; imagen por tienda (logo real) requiere backend.
+- Editor de fotos: 9 fondos de estudio nuevos (Estudio, Rosa, Celeste, Menta, Lila, Atardecer, Aurora, Mármol, Mesa de madera) en la plantilla Limpio.
+- Mensaje de pedido por WhatsApp (es/en/pt) orientado a cierre: "Quiero confirmar mi compra…".
+- Decisión técnica: `publicar.mjs` copia también frases-arte.js. Vista previa local: `.claude/launch.json` en la carpeta Xiomara (servidor en puerto 3000).
+- Sin verificar: compartir a estados en celular real; logo real del negocio en la imagen (hoy van iniciales).

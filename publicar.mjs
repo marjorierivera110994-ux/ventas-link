@@ -3,6 +3,6 @@
 import { cpSync, rmSync, mkdirSync, readdirSync } from 'node:fs';
 rmSync('dist', { recursive: true, force: true });
 mkdirSync('dist');
-for (const f of readdirSync('.')) if (f.endsWith('.html') || f === 'ia-cliente.js') cpSync(f, 'dist/' + f);
+for (const f of readdirSync('.')) if (f.endsWith('.html') || f === 'ia-cliente.js' || f === 'frases-arte.js') cpSync(f, 'dist/' + f);
 cpSync('logo', 'dist/logo', { recursive: true });
 console.log('dist listo');

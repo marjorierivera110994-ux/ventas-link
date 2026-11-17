@@ -116,6 +116,7 @@
       <div class="control"><label for="color">Color <span id="v-color">100</span>%</label><input type="range" id="color" min="0" max="200" value="105"></div>
 
       <h2>3 · Fondo</h2>
+      <p class="aviso" style="margin-top:6px">Elige un fondo de estudio y tu producto se ve como foto profesional.</p>
       <div class="opciones" id="fondos" role="group" aria-label="Fondo"></div>
       <div class="control"><label for="sens">Sensibilidad del fondo <span id="v-sens">45</span></label><input type="range" id="sens" min="15" max="110" value="45"></div>
       <div class="control"><label class="toggle" for="sombra">Sombra suave<input type="checkbox" id="sombra" checked></label></div>
@@ -147,7 +148,14 @@
   var $ = function (id) { return document.getElementById(id); };
   var PLANES = { gratis: 'Gratis', emprendedor: 'Emprendedor', pro: 'Profesional' };
   var estado = { plan: 'pro', src: null, ver: 'despues', fondo: 'blanco', formato: '1:1', plantilla: 'limpio', cacheMask: null };
-  var FONDOS = [['original', 'Original', null], ['blanco', 'Blanco', '#ffffff'], ['crema', 'Crema', '#f4ecdb'], ['marca', 'Color de tu marca', '#a5dc5b']];
+  /* Fondos de estudio: se dibujan en el celular, detrás del producto ya recortado. Todos son claros para que el nombre y el precio se lean. */
+  function fEstudio(c1, c2, piso) { return function (x, W, H) { var g = x.createRadialGradient(W / 2, H * .34, W * .05, W / 2, H * .4, Math.max(W, H) * .78); g.addColorStop(0, c1); g.addColorStop(1, c2); x.fillStyle = g; x.fillRect(0, 0, W, H); var y = Math.round(H * .66), s = x.createLinearGradient(0, y, 0, H); s.addColorStop(0, piso); s.addColorStop(1, c1); x.fillStyle = s; x.fillRect(0, y, W, H - y); var l = x.createLinearGradient(0, y - 26, 0, y + 26); l.addColorStop(0, 'rgba(0,0,0,0)'); l.addColorStop(.5, 'rgba(0,0,0,.07)'); l.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = l; x.fillRect(0, y - 26, W, 52); }; }
+  function fDegrade(a, b, c) { return function (x, W, H) { var g = x.createLinearGradient(0, 0, W * .4, H); g.addColorStop(0, a); g.addColorStop(.55, b); g.addColorStop(1, c); x.fillStyle = g; x.fillRect(0, 0, W, H); var o = x.createRadialGradient(W * .78, H * .16, 0, W * .78, H * .16, W * .6); o.addColorStop(0, 'rgba(255,255,255,.55)'); o.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = o; x.fillRect(0, 0, W, H); }; }
+  function fMarmol(x, W, H) { x.fillStyle = '#f7f6f3'; x.fillRect(0, 0, W, H); var s = 7; function r() { s = (s * 16807) % 2147483647; return s / 2147483647; } x.lineCap = 'round'; for (var i = 0; i < 16; i++) { var px = r() * W, py = r() * H; x.strokeStyle = 'rgba(120,125,135,' + (.05 + r() * .12) + ')'; x.lineWidth = 1 + r() * 5; x.beginPath(); x.moveTo(px, py); for (var k = 0; k < 6; k++) { px += (r() - .3) * W * .22; py += (r() - .4) * H * .2; x.lineTo(px, py); } x.stroke(); } var g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, 'rgba(255,255,255,.5)'); g.addColorStop(1, 'rgba(225,228,234,.35)'); x.fillStyle = g; x.fillRect(0, 0, W, H); }
+  function fMadera(x, W, H) { var y = Math.round(H * .62); var p = x.createLinearGradient(0, 0, 0, y); p.addColorStop(0, '#fbf6ee'); p.addColorStop(1, '#f0e6d6'); x.fillStyle = p; x.fillRect(0, 0, W, y); var s = 11; function r() { s = (s * 16807) % 2147483647; return s / 2147483647; } var alto = Math.ceil((H - y) / 5); for (var i = 0; i < 5; i++) { var ty = y + i * alto; x.fillStyle = ['#ecd6b3', '#e6cda6', '#efdbbb', '#e3c99f', '#ead2ad'][i]; x.fillRect(0, ty, W, alto); x.strokeStyle = 'rgba(120,80,30,.16)'; x.lineWidth = 2; x.beginPath(); x.moveTo(0, ty); x.lineTo(W, ty); x.stroke(); for (var k = 0; k < 7; k++) { x.strokeStyle = 'rgba(140,95,40,' + (.05 + r() * .08) + ')'; x.lineWidth = 1 + r() * 2; var gy = ty + r() * alto, gx = r() * W; x.beginPath(); x.moveTo(gx, gy); x.bezierCurveTo(gx + W * .1, gy - 6, gx + W * .2, gy + 6, gx + W * .32, gy); x.stroke(); } } var l = x.createLinearGradient(0, y - 30, 0, y + 30); l.addColorStop(0, 'rgba(0,0,0,0)'); l.addColorStop(.5, 'rgba(60,40,10,.12)'); l.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = l; x.fillRect(0, y - 30, W, 60); }
+  var FONDOS = [['original', 'Original', null], ['blanco', 'Blanco', '#ffffff'], ['crema', 'Crema', '#f4ecdb'], ['marca', 'Color de tu marca', '#a5dc5b'],
+    ['estudio', 'Estudio', fEstudio('#ffffff', '#e4e6ea', '#eceef1')], ['rosa', 'Rosa suave', fEstudio('#fff5f8', '#ffd3e1', '#ffe3ec')], ['cielo', 'Celeste', fEstudio('#f3fbff', '#bfe6ff', '#d9f1ff')], ['menta', 'Menta', fEstudio('#f4fff9', '#bdf0d9', '#d8f8ea')], ['lila', 'Lila', fEstudio('#faf7ff', '#dccfff', '#ebe3ff')],
+    ['atardecer', 'Atardecer', fDegrade('#fff0d9', '#ffd3b0', '#ffc0b8')], ['aurora', 'Aurora', fDegrade('#e6fbff', '#d9e4ff', '#f3dcff')], ['marmol', 'Mármol', fMarmol], ['madera', 'Mesa de madera', fMadera]];
   var FORMATOS = { '1:1': [1080, 1080], '4:5': [1080, 1350], '9:16': [1080, 1920] };
   var USD = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' });
   var MAXLADO = 1400;
@@ -284,7 +292,7 @@
   }
   function texto(x, t, px, py, tam, color, alin, peso, max) { x.fillStyle = color; x.textAlign = alin || 'left'; x.textBaseline = 'alphabetic'; x.font = (peso || 800) + ' ' + tam + 'px "Bricolage Grotesque", sans-serif'; var s = tam; while (x.measureText(t).width > max && s > 24) { s -= 2; x.font = (peso || 800) + ' ' + s + 'px "Bricolage Grotesque", sans-serif'; } x.fillText(t, px, py); }
   var PLANTILLAS = [
-    { id: 'limpio', n: 'Limpio', d: 'Fondo liso, producto al centro', ok: function () { return true; } },
+    { id: 'limpio', n: 'Limpio', d: 'Con el fondo que elijas', ok: function () { return true; } },
     { id: 'precio', n: 'Precio grande', d: 'Pistacho con el precio en grande', ok: function () { return true; } },
     { id: 'oferta', n: 'Oferta', d: 'Con tu precio anterior real', ok: function (o) { return o.antes && o.antes > o.precio; }, no: 'Escribe un precio anterior MAYOR al precio actual (el precio real de antes).' },
     { id: 'nuevo', n: 'Nuevo', d: 'Sello de producto nuevo', ok: function () { return true; } },
@@ -296,7 +304,7 @@
   function dibujar(x, W, H, s, o, id, fondoColor) {
     var area = { x: 90, y: 90, w: W - 180, h: Math.round(H * 0.6) }, base = area.y + area.h + 70, nom = o.nombre || 'Tu producto';
     var fm = function (v) { return USD.format(v); };
-    if (id === 'limpio') { x.fillStyle = fondoColor || '#ffffff'; x.fillRect(0, 0, W, H); colocar(x, s, area, o.sombra); texto(x, nom, 80, base, 62, '#131313', 'left', 700, W - 160); texto(x, fm(o.precio), 80, base + 96, 84, '#131313', 'left', 800, W - 160); }
+    if (id === 'limpio') { if (typeof fondoColor === 'function') fondoColor(x, W, H); else { x.fillStyle = fondoColor || '#ffffff'; x.fillRect(0, 0, W, H); } colocar(x, s, area, o.sombra); texto(x, nom, 80, base, 62, '#131313', 'left', 700, W - 160); texto(x, fm(o.precio), 80, base + 96, 84, '#131313', 'left', 800, W - 160); }
     else if (id === 'precio') { x.fillStyle = '#a5dc5b'; x.fillRect(0, 0, W, H); colocar(x, s, { x: 90, y: 90, w: W - 180, h: Math.round(H * 0.52) }, o.sombra); var b2 = 90 + Math.round(H * 0.52) + 70; texto(x, nom, 80, b2, 56, '#131313', 'left', 700, W - 160); texto(x, fm(o.precio), 80, b2 + 150, 170, '#131313', 'left', 800, W - 160); }
     else if (id === 'oferta') { x.fillStyle = '#ff7a1a'; x.fillRect(0, 0, W, H); colocar(x, s, area, o.sombra); var pct = Math.round((1 - o.precio / o.antes) * 100); x.fillStyle = '#131313'; x.beginPath(); x.arc(W - 190, 190, 120, 0, 7); x.fill(); texto(x, '-' + pct + '%', W - 190, 215, 90, '#e6ee4a', 'center', 800, 200); texto(x, nom, 80, base, 56, '#131313', 'left', 700, W - 160); texto(x, 'Antes ' + fm(o.antes), 80, base + 70, 44, 'rgba(19,19,19,.7)', 'left', 500, 520); var tw = x.measureText('Antes ' + fm(o.antes)).width; x.fillStyle = 'rgba(19,19,19,.75)'; x.fillRect(80, base + 56, tw, 4); texto(x, 'Hoy ' + fm(o.precio), 80, base + 160, 110, '#131313', 'left', 800, W - 160); }
     else if (id === 'nuevo') { x.fillStyle = '#e6ee4a'; x.fillRect(0, 0, W, H); colocar(x, s, area, o.sombra); x.save(); x.translate(W - 210, 170); x.rotate(.2); x.fillStyle = '#131313'; rr(x, -130, -50, 260, 100, 30); x.fill(); texto(x, 'NUEVO', 0, 24, 64, '#e6ee4a', 'center', 800, 230); x.restore(); texto(x, nom, 80, base, 62, '#131313', 'left', 700, W - 160); texto(x, fm(o.precio), 80, base + 96, 84, '#131313', 'left', 800, W - 160); }
@@ -323,7 +331,7 @@
   }
   function btn(txt, sub, pressed, fn, dis) { var b = document.createElement('button'); b.type = 'button'; b.className = 'op'; b.setAttribute('aria-pressed', String(pressed)); var t = document.createElement('span'); t.textContent = txt; b.appendChild(t); if (sub) { var s = document.createElement('small'); s.textContent = sub; b.appendChild(s); } if (dis) b.disabled = true; b.addEventListener('click', fn); return b; }
   function pintarBotones(o) {
-    var f = $('fondos'); f.textContent = ''; FONDOS.forEach(function (z) { f.appendChild(btn(z[1], '', estado.fondo === z[0], function () { estado.fondo = z[0]; pintar(); })); });
+    var f = $('fondos'); f.textContent = ''; FONDOS.forEach(function (z) { f.appendChild(btn(z[1], '', estado.fondo === z[0], function () { estado.fondo = z[0]; if (typeof z[2] === 'function') estado.plantilla = 'limpio'; pintar(); })); });
     var m = $('formatos'); m.textContent = ''; Object.keys(FORMATOS).forEach(function (k) { m.appendChild(btn(k === '1:1' ? 'Cuadrada 1:1' : k === '4:5' ? 'Vertical 4:5' : 'Historia 9:16', '', estado.formato === k, function () { estado.formato = k; pintar(); })); });
     var p = $('plantillas'); p.textContent = ''; PLANTILLAS.forEach(function (z) { p.appendChild(btn(z.n, z.d, estado.plantilla === z.id, function () { estado.plantilla = z.id; pintar(); }, !z.ok(o))); });
   }

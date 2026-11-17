@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tienda de demostración — Boutique Luna</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Boutique Luna — tienda en línea">
+<meta property="og:description" content="Mira mis productos y haz tu pedido por WhatsApp.">
+<meta property="og:image" content="https://grand-halva-1b3001.netlify.app/logo/compartir-tienda.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="logo/ventas-link-icono.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -207,6 +214,13 @@
   .banner { box-shadow: 0 4px 0 rgb(255 255 255 / .45) inset, 0 -5px 0 rgb(0 0 0 / .14) inset, 0 10px 0 #c25000, 0 28px 30px -12px rgb(180 80 0 / .65); }
   .banner.verde { box-shadow: 0 4px 0 rgb(255 255 255 / .55) inset, 0 -5px 0 rgb(0 0 0 / .12) inset, 0 10px 0 #5a9a14, 0 28px 30px -12px rgb(60 120 10 / .65); }
   body::before { opacity: .38; } body::after { opacity: .38; }
+
+  /* Frase positiva con fondo profesional (marca: arte1) */
+  .bienv-arte { position: relative; margin-top: 12px; }
+  .bienv-arte canvas { display: none; }
+  .bienv-arte.on { border-radius: 24px; overflow: hidden; min-height: 116px; display: flex; align-items: center; border: 1px solid rgb(255 255 255 / .6); box-shadow: inset 0 3px 0 rgb(255 255 255 / .3), 0 6px 0 rgb(20 30 40 / .16), 0 22px 26px -16px rgb(20 30 40 / .55); }
+  .bienv-arte.on canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .bienv-arte.on .bienvenida { position: relative; z-index: 1; margin: 0; background: transparent; box-shadow: none; padding: 18px 20px; font-family: var(--f-d, inherit); font-size: 19px; font-weight: 800; line-height: 1.24; text-wrap: balance; }
 </style>
 </head>
 <body>
@@ -225,7 +239,7 @@
     <svg class="stk" style="right:2px;top:-4px;--r:8deg" aria-hidden="true"><use href="#st-estrella"/></svg>
   </header>
   <p class="desc" data-i="desc"></p>
-  <p class="bienvenida" id="bienv"></p>
+  <div class="bienv-arte" id="bienv-arte"><canvas id="bienv-fondo" width="720" height="320" aria-hidden="true"></canvas><p class="bienvenida" id="bienv"></p></div>
 
   <label class="buscar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="q" type="search" data-ph="buscar" data-al="buscar" autocomplete="off"></label>
@@ -248,6 +262,7 @@
 <div class="fondo" id="fondo"><div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-t"></div></div>
 <div class="toast" id="toast" role="status"></div>
 
+<script src="frases-arte.js"></script>
 <script>
 (function () {
   'use strict';
@@ -297,8 +312,8 @@
       ajustes: 'País, idioma y moneda', pais: 'País', idioma: 'Idioma', moneda: 'Moneda', aplicar: 'Listo',
       ajustesNota: 'En tu tienda real, el vendedor elige su país y su moneda y escribe sus precios en ella; tus clientes pueden cambiar el idioma. La app no convierte monedas. Aquí los precios son de ejemplo.',
       /* Mensaje de WhatsApp */
-      m_hola: '¡Hola, {negocio}! 👋 Me interesan estos productos de tu tienda:', m_total: 'Total', m_entrega: 'Entrega', m_pago: 'Forma de pago que prefiero', m_nombre: 'Mi nombre', m_nota: 'Nota',
-      m_cierre: '¿Me confirmas por favor tu número de cuenta o los datos para hacerte el pago, y coordinamos la entrega? Apenas me confirmes la disponibilidad, realizo el pago. ¡Muchas gracias! 😊'
+      m_hola: '¡Hola, {negocio}! 👋 Quiero hacer este pedido de tu tienda:', m_total: 'Total', m_entrega: 'Entrega', m_pago: 'Forma de pago que prefiero', m_nombre: 'Mi nombre', m_nota: 'Nota',
+      m_cierre: '✅ Quiero confirmar mi compra. ¿Me confirmas que está disponible y me envías los datos para el pago? Apenas me respondas, pago y coordinamos la entrega. ¡Muchas gracias! 😊'
     },
     en: {
       demo: 'Demo store · sample products', abierto: 'Open today · 9:00 am to 6:00 pm',
@@ -321,8 +336,8 @@
       reabrir: 'Open WhatsApp again', yaEnvie: 'Already sent: new order', editar: 'Edit my order', vaciado: 'Cart emptied. Thank you!', cerrar: 'Close',
       ajustes: 'Country, language and currency', pais: 'Country', idioma: 'Language', moneda: 'Currency', aplicar: 'Done',
       ajustesNota: 'In your real store, the seller chooses their country and currency and writes prices in it; customers can change the language. The app does not convert currencies. Prices here are samples.',
-      m_hola: 'Hi, {negocio}! 👋 I’m interested in these products from your store:', m_total: 'Total', m_entrega: 'Delivery', m_pago: 'Preferred payment method', m_nombre: 'My name', m_nota: 'Note',
-      m_cierre: 'Could you please confirm your account number or the details to send the payment, and we arrange the delivery? As soon as you confirm availability, I will pay. Thank you so much! 😊'
+      m_hola: 'Hi, {negocio}! 👋 I’d like to place this order from your store:', m_total: 'Total', m_entrega: 'Delivery', m_pago: 'Preferred payment method', m_nombre: 'My name', m_nota: 'Note',
+      m_cierre: '✅ I’d like to confirm my purchase. Could you confirm it’s available and send me the payment details? As soon as you reply, I’ll pay and we arrange the delivery. Thank you so much! 😊'
     },
     pt: {
       demo: 'Loja de demonstração · produtos de exemplo', abierto: 'Aberto hoje · 9h às 18h',
@@ -345,8 +360,8 @@
       reabrir: 'Abrir o WhatsApp de novo', yaEnvie: 'Já enviei: novo pedido', editar: 'Editar meu pedido', vaciado: 'Carrinho esvaziado. Obrigado!', cerrar: 'Fechar',
       ajustes: 'País, idioma e moeda', pais: 'País', idioma: 'Idioma', moneda: 'Moeda', aplicar: 'Pronto',
       ajustesNota: 'Na sua loja real, o vendedor escolhe seu país e sua moeda e escreve os preços nela; os clientes podem mudar o idioma. O app não converte moedas. Aqui os preços são de exemplo.',
-      m_hola: 'Olá, {negocio}! 👋 Tenho interesse nestes produtos da sua loja:', m_total: 'Total', m_entrega: 'Entrega', m_pago: 'Forma de pagamento que prefiro', m_nombre: 'Meu nome', m_nota: 'Observação',
-      m_cierre: 'Você pode me confirmar, por favor, o número da conta ou os dados para eu fazer o pagamento, e combinamos a entrega? Assim que você confirmar a disponibilidade, eu pago. Muito obrigado! 😊'
+      m_hola: 'Olá, {negocio}! 👋 Quero fazer este pedido da sua loja:', m_total: 'Total', m_entrega: 'Entrega', m_pago: 'Forma de pagamento que prefiro', m_nombre: 'Meu nome', m_nota: 'Observação',
+      m_cierre: '✅ Quero confirmar minha compra. Você pode confirmar que está disponível e me enviar os dados para o pagamento? Assim que você responder, eu pago e combinamos a entrega. Muito obrigado! 😊'
     }
   };
 
@@ -441,6 +456,7 @@
       gracias: ['Obrigado por escolher {negocio}!']
     }
   };
+  var arteB = null;
   var rot = { eleccion: 0, carrito: 0, ultimo: 0, gracias: 0, bienvenida: Math.floor(Math.random() * 8) };
   function frase(tipo) {
     var lista = (FRASES[estado.idioma] || FRASES.es)[tipo]; var i = rot[tipo] % lista.length; if (tipo !== 'bienvenida') rot[tipo] += 1; return lista[i];
@@ -533,7 +549,14 @@
     document.querySelectorAll('[data-ph]').forEach(function (e) { e.placeholder = t(e.getAttribute('data-ph')); });
     document.querySelectorAll('[data-al]').forEach(function (e) { e.setAttribute('aria-label', t(e.getAttribute('data-al'))); });
     $('cats').setAttribute('aria-label', t('cats'));
-    $('bienv').textContent = frase('bienvenida');
+    /* Frase positiva de la vida (nunca de ventas) sobre un fondo que cambia en cada visita. */
+    var A = window.VL_ARTE;
+    if (A) {
+      if (!arteB) arteB = { semilla: A.nuevaSemilla(), es: A.frase(['vida'], 'vl-frase-cliente').texto };
+      var eB = A.pintarFondo($('bienv-fondo'), arteB.semilla);
+      $('bienv').textContent = estado.idioma === 'es' ? arteB.es : frase('bienvenida');
+      $('bienv').style.color = eB.tinta; $('bienv-arte').classList.add('on');
+    } else $('bienv').textContent = frase('bienvenida');
     var hc = $('hecho'); hc.innerHTML = '<img src="logo/ventas-link-icono.svg" alt="" width="26" height="26" style="display:block;border-radius:8px"><span></span>';
     hc.querySelector('span').textContent = t('hechoCon') + ' · '; var cb = document.createElement('b'); cb.textContent = t('creaLa'); hc.querySelector('span').appendChild(cb);
     var pb = $('pais-barra'); pb.innerHTML = bandera(estado.pais, 20); var ptx = document.createElement('span');

@@ -179,6 +179,21 @@
   .accion .tx.tres { font-size: 12px; line-height: 1.15; }
   .tarj.oscura { padding-bottom: 78px; }
   .tarj.oscura .stk { width: 88px !important; height: 59px !important; right: 10px !important; bottom: 8px !important; }
+  /* Frase con fondo profesional que se puede compartir (marca: arte1) */
+  .tarj.oscura { position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 228px; padding-bottom: 14px; }
+  .arte-fondo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; border-radius: inherit; }
+  .tarj.oscura > small, .tarj.oscura > p, .arte-acc { position: relative; z-index: 1; }
+  .tarj.oscura > small { letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; }
+  .tarj.oscura > p { font-family: var(--f-d); font-size: 21px; font-weight: 800; line-height: 1.22; margin-top: 8px; text-wrap: balance; }
+  .tarj.oscura .stk { z-index: 1; }
+  .arte-acc { margin-top: auto; padding-top: 14px; display: flex; gap: 8px; align-items: flex-end; min-height: 62px; max-width: calc(100% - 92px); }
+  .arte-btn { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; font-weight: 800; font-size: 14px; color: #14202b; background: rgb(255 255 255 / .94);
+              box-shadow: 0 3px 0 rgb(255 255 255 / .9) inset, 0 -3px 0 rgb(0 0 0 / .08) inset, 0 5px 0 rgb(0 0 0 / .22), 0 12px 16px -8px rgb(0 0 0 / .45); transition: transform .1s ease, box-shadow .1s ease; }
+  .arte-btn:active { transform: translateY(4px); box-shadow: 0 3px 0 rgb(255 255 255 / .9) inset, 0 1px 0 rgb(0 0 0 / .22); }
+  .arte-btn svg { width: 18px; height: 18px; flex: 0 0 18px; }
+  .arte-btn.solo { width: 44px; padding: 0; justify-content: center; }
+  .arte-btn[disabled] { opacity: .6; }
+  @media (prefers-reduced-motion: reduce) { .arte-btn { transition: none; } }
   /* Botones de acción: ícono arriba, texto centrado y legible (marca: acc2) */
   .accion { flex-direction: column; justify-content: center; text-align: center; gap: 8px; min-height: 112px; padding: 14px 8px 12px; }
   .accion .tx, .accion .tx.tres { flex: 0 0 auto; width: 100%; min-height: 2.5em; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--f-d); font-size: 15.5px; font-weight: 800; line-height: 1.25; letter-spacing: -.005em; color: var(--tinta); }
@@ -240,7 +255,8 @@
     <span class="demo" role="note">Demostración · datos de ejemplo</span>
     <div class="saludo"><small id="hora">Buenos días</small><h1>Boutique Luna</h1></div>
 
-    <aside class="tarj oscura" aria-label="Frase para ti"><small>Para ti, hoy</small><p id="frase"></p>
+    <aside class="tarj oscura" aria-label="Frase para ti" id="arte"><canvas class="arte-fondo" id="arte-fondo" width="720" height="560" aria-hidden="true"></canvas><small id="arte-cat">Para ti, hoy</small><p id="frase"></p>
+      <div class="arte-acc"><button type="button" class="arte-btn" id="arte-comp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg>Compartir</button><button type="button" class="arte-btn solo" id="arte-otra" aria-label="Ver otra frase con otro fondo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div>
       <svg class="stk" style="right:8px;bottom:6px;width:104px;height:70px;--r:-6deg;animation-delay:.6s" aria-hidden="true"><use href="#st-fugaz"/></svg></aside>
 
     <section class="tarj" aria-labelledby="t-meta">
@@ -297,15 +313,35 @@
 </div>
 <div class="toast" id="toast" role="status"></div>
 
+<script src="frases-arte.js"></script>
 <script>
 (function () {
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
-  var FRASES = ['Una foto clara vende más que mil explicaciones.', 'Responder rápido es la mejor publicidad.', 'No vendes productos: resuelves problemas y alegras días.', 'Cada cliente feliz te trae otro. Cuida el trato.', 'Publica hoy, aunque no salga perfecto.', 'La constancia le gana al talento que no se mueve.', 'Comparte tu tienda con una persona más hoy.', 'Pequeños pasos cada día construyen un gran negocio.', 'Tu historia también vende: cuenta por qué empezaste.', 'Si hoy no vendiste, hoy aprendiste. Sigue.', 'Confía en ti: ya diste el paso que muchos solo imaginan.', 'Mide lo que haces: lo que se mide, mejora.'];
-  var ult = -1; try { ult = parseInt(localStorage.getItem('vl-ultima-frase'), 10); } catch (e) { ult = -1; }
-  var i; do { i = Math.floor(Math.random() * FRASES.length); } while (i === ult);
-  try { localStorage.setItem('vl-ultima-frase', String(i)); } catch (e) { /* sin almacenamiento */ }
-  $('frase').textContent = FRASES[i];
+  /* Frase del día: frases de ventas, de redes de mercadeo y de la vida, sobre un fondo que cambia en cada visita. */
+  var MARCA = 'Boutique Luna', CATS = { ventas: 'Ventas · para ti, hoy', network: 'Tu red · para ti, hoy', vida: 'Vida · para ti, hoy' }, arte = { texto: '', semilla: 1 };
+  function nuevaFrase() {
+    var A = window.VL_ARTE, tarj = $('arte');
+    if (!A) { $('frase').textContent = 'Responder rápido es la mejor publicidad.'; return; }
+    var f = A.frase(['ventas', 'network', 'vida'], 'vl-ultima-frase'); arte.texto = f.texto; arte.semilla = A.nuevaSemilla();
+    var e = A.pintarFondo($('arte-fondo'), arte.semilla);
+    $('frase').textContent = f.texto; $('arte-cat').textContent = CATS[f.cat];
+    $('frase').style.setProperty('color', e.tinta, 'important'); $('arte-cat').style.setProperty('color', e.tinta, 'important'); $('arte-cat').style.opacity = '.9';
+    tarj.style.setProperty('border-color', 'rgb(255 255 255 / ' + (e.oscuro ? '.35' : '.95') + ')', 'important');
+    tarj.style.setProperty('box-shadow', 'inset 0 4px 0 rgb(255 255 255 / .28), 0 10px 0 ' + (e.oscuro ? e.paleta[0] : e.acento) + ', 0 30px 36px -18px rgb(20 30 40 / .55)', 'important');
+  }
+  nuevaFrase();
+  $('arte-otra').addEventListener('click', nuevaFrase);
+  $('arte-comp').addEventListener('click', function () {
+    var A = window.VL_ARTE, b = this; if (!A || !arte.texto) return; b.disabled = true;
+    A.conFuente().then(function () {
+      var c = A.imagen({ texto: arte.texto, marca: MARCA, semilla: arte.semilla, w: 1080, h: 1920 });
+      return A.compartir(c, 'frase-' + MARCA.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.png');
+    }).then(function (r) {
+      b.disabled = false;
+      if (r === 'descargado') toast('Imagen guardada. Súbela a tu estado de WhatsApp.'); else if (r === 'error') toast('No pudimos crear la imagen. Intenta de nuevo.');
+    });
+  });
   var h = new Date().getHours(); $('hora').textContent = h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches';
 
   function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2400); }

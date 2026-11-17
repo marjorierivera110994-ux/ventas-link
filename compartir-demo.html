@@ -73,6 +73,13 @@
   .ia-btn[disabled] { opacity: .6; cursor: progress; }
   .ia-nota { font-size: 13px; color: #5a5648; font-weight: 600; }
   .ia-nota.mal { color: #9a3412; font-weight: 700; }
+
+  /* Imagen positiva para compartir (marca: arte1) */
+  .img-sub { font-size: 14px; color: #5a5648; margin-top: 4px; }
+  .img-caja { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 14px; align-items: center; margin-top: 12px; }
+  .img-caja canvas { width: 132px; height: 165px; border-radius: 18px; display: block; box-shadow: 0 6px 0 rgb(20 30 40 / .16), 0 20px 24px -14px rgb(20 30 40 / .55); }
+  .img-acc { display: grid; gap: 10px; } .img-acc .btn { margin-top: 0; width: 100%; font-size: 15px; padding-inline: 10px; }
+  .btn.claro { background: #fff; color: #131313; }
 </style>
 </head>
 <body>
@@ -98,6 +105,11 @@
 
   <button type="button" class="btn" id="copiar">Copiar texto</button>
   <a class="btn wa" id="wa" href="#" target="_blank" rel="noopener">Compartir por WhatsApp</a>
+
+  <h2 id="h-img">5 · Imagen positiva para acompañar</h2>
+  <p class="img-sub">Una frase bonita con el nombre de tu negocio. Va junto a tu texto y tu enlace.</p>
+  <div class="img-caja"><canvas id="img-prev" width="540" height="675" role="img" aria-label="Vista previa de la imagen con una frase positiva"></canvas>
+    <div class="img-acc"><button type="button" class="btn" id="img-comp">Compartir con imagen</button><button type="button" class="btn claro" id="img-otra">Cambiar imagen</button></div></div>
 
   <p class="aviso">Las plantillas de <b>oferta</b> y <b>últimas unidades</b> solo se activan con datos reales: el producto debe tener una oferta publicada o un stock bajo. Así tus clientes siempre ven información verdadera.</p>
 </main>
@@ -189,6 +201,26 @@
   if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) $('wa').target = '_self'; /* en celular pasa directo a la app de WhatsApp */
   pintar();
   window.__compartir = { estado: estado, generar: generar, pintar: pintar };
+})();
+</script>
+<script src="frases-arte.js"></script>
+<script>
+(function () {
+  'use strict';
+  var A = window.VL_ARTE, $ = function (id) { return document.getElementById(id); }; if (!A) return;
+  var MARCA = 'Boutique Luna', act = { texto: '', semilla: 1 };
+  function aviso(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(aviso.t); aviso.t = setTimeout(function () { x.classList.remove('on'); }, 2600); }
+  function hacer(w, h) { return A.imagen({ texto: act.texto, marca: MARCA, pie: 'Mira mi tienda y pide por WhatsApp', semilla: act.semilla, w: w, h: h }); }
+  function nueva() { act.texto = A.frase(['vida'], 'vl-frase-compartir').texto; act.semilla = A.nuevaSemilla(); A.conFuente().then(function () { var c = $('img-prev'); c.getContext('2d').drawImage(hacer(540, 675), 0, 0); c.setAttribute('aria-label', 'Imagen con la frase: ' + act.texto); }); }
+  $('img-otra').addEventListener('click', nueva);
+  $('img-comp').addEventListener('click', function () {
+    var b = this; b.disabled = true;
+    A.conFuente().then(function () { return A.compartir(hacer(1080, 1350), 'boutique-luna.png', $('texto').value); }).then(function (r) {
+      b.disabled = false;
+      if (r === 'descargado') aviso('Imagen guardada. Adjúntala junto a tu texto.'); else if (r === 'error') aviso('No pudimos crear la imagen. Intenta de nuevo.');
+    });
+  });
+  nueva();
 })();
 </script>
 <script src="ia-cliente.js"></script>
