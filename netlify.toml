@@ -2,6 +2,12 @@
   command = "node publicar.mjs"
   publish = "dist"
 
+# Enlace público de cada tienda: /t/nombre-de-la-tienda
+[[redirects]]
+  from = "/t/*"
+  to = "/tienda-demo.html"
+  status = 200
+
 # La página principal abre la app del vendedor
 [[redirects]]
   from = "/"

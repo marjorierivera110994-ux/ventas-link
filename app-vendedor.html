@@ -338,6 +338,7 @@
 <section class="cuenta" id="cuenta" role="dialog" aria-modal="true" aria-labelledby="cuenta-t" hidden>
   <div class="cuenta-cab"><span class="ic-btn avatar" id="cuenta-av" aria-hidden="true">BL</span><div><h2 id="cuenta-t">Boutique Luna</h2><p id="cuenta-correo">Demostración · datos de ejemplo</p></div></div>
   <p class="cuenta-enlace" id="cuenta-enlace" hidden></p>
+  <button type="button" class="cuenta-btn" id="cuenta-ver" hidden>Ver mi tienda</button>
   <button type="button" class="cuenta-btn" id="cuenta-entrar" hidden>Entrar a mi tienda</button>
   <button type="button" class="cuenta-btn claro" id="cuenta-pers">Personalizar mi tienda</button>
   <button type="button" class="cuenta-btn salir" id="cuenta-salir" hidden>Cerrar sesión</button>
@@ -414,7 +415,21 @@
     document.querySelector('.saludo h1').textContent = t.nombre; $('perfil').textContent = ini; $('cuenta-av').textContent = ini; $('cuenta-t').textContent = t.nombre;
     $('cuenta-correo').textContent = correo || 'Sesión iniciada';
     var e = $('cuenta-enlace'), s = document.createElement('small'); e.textContent = VL.enlaceTienda(t.slug).replace(/^https?:\/\//, '');
-    s.textContent = 'Tu enlace. Empieza a funcionar cuando subas tu primer producto.'; e.appendChild(s); e.hidden = false;
+    s.textContent = 'Tu enlace para compartir con tus clientes.'; e.appendChild(s); e.hidden = false;
+    /* marca: prod1 — con sesión, Productos y "Ver mi tienda" usan los datos reales */
+    var tiendaUrl = 't/' + t.slug + '?yo=1';
+    var fp = document.querySelector('#p-productos iframe'); fp.dataset.src = 'productos.html'; if (fp.src && !/productos.html/.test(fp.src)) fp.src = 'productos.html';
+    [].slice.call(document.querySelectorAll('[data-hoja^="tienda-demo.html"]')).forEach(function (b) { b.dataset.hoja = tiendaUrl + '|Mi tienda'; });
+    $('cuenta-ver').hidden = false; $('cuenta-ver').onclick = function () { cerrarCuenta(); abrirHoja(tiendaUrl, 'Mi tienda'); };
+    var subir = document.querySelector('.accion[data-ir="productos"]');
+    if (subir && !subir.dataset.real) {
+      subir.dataset.real = '1';
+      subir.addEventListener('click', function (ev) {
+        ev.stopImmediatePropagation();
+        try { var w = fp.contentWindow; if (w && w.__prod && w.__prod.D.tienda) { ir('productos'); w.__prod.abrirForm(null); return; } } catch (x) { /* se abre de nuevo abajo */ }
+        fp.src = 'productos.html#nuevo'; ir('productos');
+      }, true);
+    }
     $('cuenta-salir').hidden = false; $('cuenta-entrar').hidden = true;
     var d = document.querySelector('.inicio .demo'); if (d) d.textContent = 'Tu cuenta es real · números de ejemplo';
     document.title = t.nombre + ' — Ventas Link';

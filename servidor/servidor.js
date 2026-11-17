@@ -81,6 +81,7 @@ async function api(req, res) {
 function estatico(req, res) {
   let ruta = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   if (ruta === '/') ruta = '/vista-pagina-ventas.html';
+  else if (/^\/t\/[a-z0-9-]{3,40}\/?$/.test(ruta)) ruta = '/tienda-demo.html'; // enlace público de cada tienda (igual que en Netlify)
   const archivo = path.normalize(path.join(RAIZ, ruta));
   const rel = path.relative(RAIZ, archivo);
   const ext = path.extname(archivo).toLowerCase();

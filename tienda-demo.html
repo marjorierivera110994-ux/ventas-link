@@ -2,11 +2,12 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<script>/* marca: real1 — enlace público /t/mi-tienda: archivos desde la raíz */ if (/^\/t\/[a-z0-9-]{3,40}\/?$/.test(location.pathname)) document.write('<base href="/">');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tienda de demostración — Boutique Luna</title>
 <meta property="og:type" content="website">
-<meta property="og:title" content="Boutique Luna — tienda en línea">
-<meta property="og:description" content="Mira mis productos y haz tu pedido por WhatsApp.">
+<meta property="og:title" content="Mira esta tienda en Ventas Link">
+<meta property="og:description" content="Mira los productos y haz tu pedido por WhatsApp.">
 <meta property="og:image" content="https://grand-halva-1b3001.netlify.app/logo/compartir-tienda.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -221,6 +222,25 @@
   .bienv-arte.on { border-radius: 24px; overflow: hidden; min-height: 116px; display: flex; align-items: center; border: 1px solid rgb(255 255 255 / .6); box-shadow: inset 0 3px 0 rgb(255 255 255 / .3), 0 6px 0 rgb(20 30 40 / .16), 0 22px 26px -16px rgb(20 30 40 / .55); }
   .bienv-arte.on canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .bienv-arte.on .bienvenida { position: relative; z-index: 1; margin: 0; background: transparent; box-shadow: none; padding: 18px 20px; font-family: var(--f-d, inherit); font-size: 19px; font-weight: 800; line-height: 1.24; text-wrap: balance; }
+
+  /* Tienda real (marca: real1) */
+  [hidden] { display: none !important; }
+  .top .region { margin-left: auto; }
+  .foto.con-img { height: auto; aspect-ratio: 1 / 1; overflow: hidden; background: #fff !important; }
+  .foto.con-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .foto.con-img.grande { max-height: 62vh; aspect-ratio: auto; }
+  .foto.con-img.grande img { max-height: 62vh; object-fit: contain; background: #fff; }
+  .mini.con-img { overflow: hidden; background: #fff !important; } .mini.con-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .logo img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; }
+  .logo { overflow: hidden; }
+  .nuevo-etq { position: absolute; left: 8px; top: 8px; background: var(--lima); color: var(--tinta); font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; box-shadow: 0 2px 0 #8a9100; }
+  .esq-t { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; } .esq-t i { display: block; height: 220px; border-radius: 22px; background: linear-gradient(100deg, #efe7d6 30%, #f8f3e8 50%, #efe7d6 70%); background-size: 220% 100%; animation: brillo-t 1.3s linear infinite; }
+  @keyframes brillo-t { to { background-position: -220% 0; } }
+  .estado-t { margin-top: 18px; background: var(--blanco); border-radius: 24px; padding: 24px 16px; text-align: center; box-shadow: 0 4px 0 rgb(255 255 255 / .95) inset, 0 -5px 0 rgb(0 0 0 / .06) inset, 0 10px 0 rgb(40 70 20 / .13), 0 30px 36px -18px rgb(30 60 20 / .55); }
+  .estado-t h2 { font-size: 21px; line-height: 1.2; } .estado-t p { color: var(--texto-2); margin-top: 8px; font-size: 15px; } .estado-t .btn { margin-top: 16px; }
+  body.sin-tienda .cab, body.sin-tienda .desc, body.sin-tienda .bienv-arte, body.sin-tienda .buscar, body.sin-tienda .cats, body.sin-tienda .pie, body.sin-tienda .nav, body.sin-tienda .barra, body.sin-tienda .top .region, body.sin-tienda .pais-barra, body.sin-tienda .hecho { display: none !important; }
+  body.cargando-t .buscar, body.cargando-t .cats, body.cargando-t .pie, body.cargando-t .bienv-arte, body.cargando-t .desc { visibility: hidden; }
+  @media (prefers-reduced-motion: reduce) { .esq-t i { animation: none; } }
 </style>
 </head>
 <body>
@@ -262,6 +282,7 @@
 <div class="fondo" id="fondo"><div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-t"></div></div>
 <div class="toast" id="toast" role="status"></div>
 
+<script src="vl-config.js"></script>
 <script src="frases-arte.js"></script>
 <script>
 (function () {
@@ -269,6 +290,18 @@
   /* Configuración del negocio. En una tienda real, el número es el WhatsApp del vendedor en formato
      internacional, sin "+" ni espacios (Ecuador: 593…, Colombia: 57…, México: 52…). Vacío = demostración. */
   var NEGOCIO = { nombre: 'Boutique Luna', whatsapp: '' };
+
+  /* ---------- TIENDA REAL: /t/enlace (o ?t=enlace). Sin enlace, esta página es la demostración. ---------- */
+  var SLUG = (function () { var m = location.pathname.match(/^\/t\/([a-z0-9-]{3,40})\/?$/) || String(location.search).match(/[?&]t=([a-z0-9-]{3,40})(?:&|$)/); return m ? m[1] : null; })();
+  var CFG = window.VL_CONFIG || {}, REAL = !!(SLUG && CFG.url && CFG.llave);
+  var TIENDA = null, PAGOS_TIENDA = null, ENTREGAS_TIENDA = null, ULTIMO_ENVIO = null;
+  /* Llama a una función pública de la base. keepalive: el aviso del pedido llega aunque el celular salte a WhatsApp. */
+  function rpc(fn, args, keepalive) {
+    return fetch(CFG.url + '/rest/v1/rpc/' + fn, { method: 'POST', keepalive: !!keepalive, headers: { apikey: CFG.llave, 'Content-Type': 'application/json' }, body: JSON.stringify(args || {}) })
+      .then(function (r) { return r.text().then(function (s) { var j = null; try { j = s ? JSON.parse(s) : null; } catch (e) { j = null; } if (!r.ok) throw (j || { message: 'HTTP ' + r.status }); return j; }); });
+  }
+  function fotoUrl(p) { return CFG.url + '/storage/v1/object/public/media/' + String(p).split('/').map(encodeURIComponent).join('/'); }
+  function nuevaClave() { return window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); }); }
 
   /* ---------- Países: moneda, idioma y medios de pago de ejemplo ---------- */
   var PAISES = {
@@ -407,7 +440,7 @@
       desc: { es: 'Semillas naturales ensartadas a mano. Largo ajustable.', en: 'Natural seeds strung by hand. Adjustable length.', pt: 'Sementes naturais enfiadas à mão. Comprimento ajustável.' } }
   );
   PRODUCTOS.forEach(function (p) { p.hay = p.stock === null || p.stock > 0; });
-  var LLAVE = 'tienda-demo-v2';
+  var LLAVE = REAL ? 'vl-carrito-' + SLUG : 'tienda-demo-v2';
 
   /* En celulares WhatsApp se abre en la MISMA pestaña (el teléfono pasa directo a la app, sin dejar una pestaña vacía);
      en computadora se abre en una pestaña nueva (WhatsApp Web o la app de escritorio). */
@@ -470,15 +503,15 @@
   function t(k, v) { var s = (I[estado.idioma] && I[estado.idioma][k]) || I.es[k] || k; if (v) Object.keys(v).forEach(function (x) { s = s.split('{' + x + '}').join(v[x]); }); return s; }
   function nm(o) { return o.n[estado.idioma] || o.n.es; }
   function pais() { return PAISES[estado.pais]; }
-  function precioDe(p) { return Math.round(p.base * (FACTOR_EJEMPLO[estado.moneda] || 1)); }
+  function precioDe(p) { return REAL ? p.base : Math.round(p.base * (FACTOR_EJEMPLO[estado.moneda] || 1)); }
   function dinero(n) {
     var loc = estado.idioma === 'en' ? 'en-US' : estado.idioma === 'pt' ? 'pt-BR' : pais().loc;
     try { return new Intl.NumberFormat(loc, { style: 'currency', currency: estado.moneda }).format(n); } catch (e) { return n + ' ' + estado.moneda; }
   }
   /* Ofertas: "antes" es el precio REAL que el vendedor tenía publicado. La app lo mostrará solo si ese precio
      estuvo publicado de verdad (historial de precios); aquí en la demo es un dato de ejemplo. */
-  function antesDe(p) { return p.antes ? Math.round(p.antes * (FACTOR_EJEMPLO[estado.moneda] || 1)) : null; }
-  function pctOferta(p) { return p.antes ? Math.round((1 - p.base / p.antes) * 100) : 0; }
+  function antesDe(p) { return p.antes ? (REAL ? p.antes : Math.round(p.antes * (FACTOR_EJEMPLO[estado.moneda] || 1))) : null; }
+  function pctOferta(p) { return p.pct || (p.antes ? Math.round((1 - p.base / p.antes) * 100) : 0); }
   function precioBloque(p) {
     var box = el('div', { class: 'precio-box' });
     if (p.antes) {
@@ -494,10 +527,10 @@
     try {
       var d = JSON.parse(localStorage.getItem(LLAVE) || 'null');
       if (d && Array.isArray(d.carrito)) {
-        estado.carrito = d.carrito.filter(function (l) { return porId(l.id) && l.cant > 0 && l.cant <= 20; });
-        if (PAISES[d.pais]) estado.pais = d.pais;
+        estado.carrito = d.carrito.filter(function (l) { var p = porId(l.id); return p && p.hay && l.cant > 0 && l.cant <= 20 && (!l.variante || opcion(p, l.variante)); });
+        if (!REAL && PAISES[d.pais]) estado.pais = d.pais;
         if (I[d.idioma]) estado.idioma = d.idioma;
-        if (MONEDAS.indexOf(d.moneda) >= 0) estado.moneda = d.moneda;
+        if (!REAL && MONEDAS.indexOf(d.moneda) >= 0) estado.moneda = d.moneda;
       }
     } catch (e) { /* sin almacenamiento: todo vive solo en esta página */ }
   }
@@ -591,6 +624,8 @@
   function tarjeta(p) {
     {
       var foto = el('div', { class: 'foto', style: 'background:' + p.color }); foto.innerHTML = svgHtml(p.arte, 54);
+      if (p.img) { foto.textContent = ''; foto.classList.add('con-img'); foto.appendChild(el('img', { src: p.img, alt: nm(p), loading: 'lazy', decoding: 'async' })); }
+      if (p.nuevo && p.hay && !p.antes) foto.appendChild(el('span', { class: 'nuevo-etq', text: estado.idioma === 'en' ? 'New' : (estado.idioma === 'pt' ? 'Novo' : 'Nuevo') }));
       if (!p.hay) foto.appendChild(el('span', { class: 'agotado', text: t('agotado') }));
       if (p.antes && p.hay) foto.appendChild(el('span', { class: 'oferta', text: '-' + pctOferta(p) + '%' }));
       var mas = el('button', { type: 'button', class: 'mas', 'aria-label': p.hay ? t('agregar', { x: nm(p) }) : t('agotadoAria', { x: nm(p) }), onclick: function (e) { abridor = e.currentTarget; abrirProducto(p); } });
@@ -621,6 +656,12 @@
         var s = el('select', { id: id }); opciones.forEach(function (o) { var op = el('option', { value: o[0], text: o[1] }); if (o[0] === actual) op.selected = true; s.appendChild(op); });
         s.addEventListener('change', function () { alCambiar(s.value); });
         return el('div', { class: 'campo' }, [el('label', { for: id, text: etq }), s]);
+      }
+      if (REAL) {
+        h.appendChild(selector(t('idioma'), 's-idioma', Object.keys(IDIOMAS).map(function (k) { return [k, IDIOMAS[k]]; }), estado.idioma, function (v) { estado.idioma = v; guardar(); aplicarIdioma(); abrirAjustes(); }));
+        h.appendChild(el('p', { class: 'aviso', text: t('vendeDesde', { pais: nm(PAISES[estado.pais]) }) + ' · ' + estado.moneda + '. ' + (estado.idioma === 'en' ? 'Prices are set by the store.' : estado.idioma === 'pt' ? 'Os preços são definidos pela loja.' : 'Los precios los pone la tienda.') }));
+        h.appendChild(el('button', { type: 'button', class: 'btn', text: t('aplicar'), onclick: cerrarHoja }));
+        return;
       }
       h.appendChild(selector(t('pais'), 's-pais', Object.keys(PAISES).map(function (k) { return [k, nm(PAISES[k])]; }), estado.pais, function (v) {
         estado.pais = v; estado.moneda = PAISES[v].moneda; estado.idioma = PAISES[v].idioma; estado.entrega = null; guardar(); aplicarIdioma(); abrirAjustes();
@@ -660,7 +701,9 @@
     var variante = p.variantes ? p.variantes.ops[0].id : ''; var cant = 1;
     abrirHoja(function (h) {
       h.appendChild(cabecera(nm(p)));
-      var foto = el('div', { class: 'foto', style: 'background:' + p.color + ';height:140px;margin-top:12px' }); foto.innerHTML = svgHtml(p.arte, 74, 1.4); h.appendChild(foto);
+      var foto = el('div', { class: 'foto', style: 'background:' + p.color + ';height:140px;margin-top:12px' }); foto.innerHTML = svgHtml(p.arte, 74, 1.4);
+      if (p.img) { foto.textContent = ''; foto.className = 'foto con-img grande'; foto.style.height = ''; foto.appendChild(el('img', { src: p.img, alt: nm(p), decoding: 'async' })); }
+      h.appendChild(foto);
       if (p.video) {
         var caja = el('div', { class: 'video-caja' });
         var bv = el('button', { type: 'button', class: 'btn claro', style: 'margin-top:10px' });
@@ -676,7 +719,7 @@
       }
       var pb = precioBloque(p); pb.style.marginTop = '12px'; pb.querySelector('.precio').style.fontSize = '26px'; h.appendChild(pb);
       if (stockBajo(p)) h.appendChild(el('p', { class: 'abierto', text: t('quedan', { n: p.stock }) }));
-      h.appendChild(el('p', { class: 'desc', style: 'margin-top:8px;color:var(--tinta)', text: p.desc[estado.idioma] || p.desc.es }));
+      if (p.desc[estado.idioma] || p.desc.es) h.appendChild(el('p', { class: 'desc', style: 'margin-top:8px;color:var(--tinta)', text: p.desc[estado.idioma] || p.desc.es }));
       if (p.variantes) {
         var fs = el('fieldset', { class: 'campo' }, [el('legend', { text: t(p.variantes.clave) })]); var ops = el('div', { class: 'opciones' });
         p.variantes.ops.forEach(function (o, i) {
@@ -703,6 +746,7 @@
       h.appendChild(el('p', { class: 'pos', text: frase('carrito') }));
       ls.forEach(function (x) {
         var mini = el('div', { class: 'mini', style: 'background:' + x.p.color }); mini.innerHTML = svgHtml(x.p.arte, 32);
+        if (x.p.img) { mini.textContent = ''; mini.classList.add('con-img'); mini.appendChild(el('img', { src: x.p.img, alt: '' })); }
         var num = el('span', { text: String(x.l.cant) });
         var menos = el('button', { type: 'button', 'aria-label': t('menos1') + ': ' + nm(x.p), text: '−', onclick: function () { x.l.cant -= 1; if (x.l.cant <= 0) quitar(x.l); guardar(); pintarBarra(); abrirCarrito(); } });
         var masb = el('button', { type: 'button', 'aria-label': t('mas1') + ': ' + nm(x.p), text: '+', onclick: function () { if (maxMas(x.p) <= 0) { toast(t('solo', { n: x.p.stock })); return; } x.l.cant += 1; guardar(); pintarBarra(); abrirCarrito(); } });
@@ -718,8 +762,10 @@
   }
 
   function abrirEntrega() {
-    var d = estado.entrega || { nombre: '', modo: 'retiro', direccion: '', pago: pais().pagos[0], nota: '', tel: '' };
-    if (pais().pagos.indexOf(d.pago) < 0) d.pago = pais().pagos[0];
+    var pagosOk = REAL ? PAGOS_TIENDA : pais().pagos, modosOk = REAL ? ENTREGAS_TIENDA : ['retiro', 'domicilio'];
+    var d = estado.entrega || { nombre: '', modo: modosOk[0], direccion: '', pago: pagosOk[0], nota: '', tel: '' };
+    if (pagosOk.indexOf(d.pago) < 0) d.pago = pagosOk[0];
+    if (modosOk.indexOf(d.modo) < 0) d.modo = modosOk[0];
     abrirHoja(function (h) {
       h.appendChild(cabecera(t('coordina')));
       h.appendChild(el('p', { class: 'pos', text: frase('ultimo') }));
@@ -738,9 +784,9 @@
       }
       var modo = d.modo, pago = d.pago;
       h.appendChild(cNombre);
-      h.appendChild(grupo(t('como'), 'modo', [['retiro', t('retiro')], ['domicilio', t('domicilio')]], modo, function (o) { modo = o; cDir.style.display = o === 'domicilio' ? '' : 'none'; }));
+      h.appendChild(grupo(t('como'), 'modo', modosOk.map(function (k) { return [k, t(k)]; }), modo, function (o) { modo = o; cDir.style.display = o === 'domicilio' ? '' : 'none'; }));
       h.appendChild(cDir);
-      h.appendChild(grupo(t('pago'), 'pago', pais().pagos.map(function (k) { return [k, etiquetaPago(k)]; }), pago, function (o) { pago = o; }));
+      h.appendChild(grupo(t('pago'), 'pago', pagosOk.map(function (k) { return [k, etiquetaPago(k)]; }), pago, function (o) { pago = o; }));
       var nota = el('textarea', { id: 'f-nota', maxlength: '200', rows: '2', placeholder: t('notaPh') }); nota.value = d.nota;
       h.appendChild(el('div', { class: 'campo' }, [el('label', { for: 'f-nota', text: t('nota') }), nota]));
       var telI = el('input', { type: 'text', id: 'f-tel', inputmode: 'tel', autocomplete: 'tel', maxlength: '20', placeholder: '+593 99 123 4567', value: d.tel || '', 'aria-describedby': 'a-tel e-tel' });
@@ -780,8 +826,17 @@
     return m.join('\n');
   }
   function enlaceWa(msg) { var num = String(NEGOCIO.whatsapp || '').replace(/\D/g, ''); return 'https://wa.me/' + num + '?text=' + encodeURIComponent(msg); }
+  function registrarPedido(msg) {
+    if (!REAL) return;
+    if (!ULTIMO_ENVIO || ULTIMO_ENVIO.msg !== msg) ULTIMO_ENVIO = { msg: msg, clave: nuevaClave() };   /* el mismo pedido enviado dos veces no se duplica */
+    var e = estado.entrega, INV = { transfer: 'transferencia', cash: 'efectivo', card: 'tarjeta' };
+    var items = estado.carrito.map(function (l) { return { producto_id: l.id, variante: l.variante || '', cantidad: l.cant }; });
+    rpc('crear_pedido', { p_slug: SLUG, p_clave: ULTIMO_ENVIO.clave, p_items: items, p_nombre: e.nombre, p_entrega: e.modo, p_pago: INV[e.pago] || 'billetera',
+      p_direccion: e.direccion || '', p_tel: e.tel ? e.tel.replace(/\D/g, '') : null, p_nota: e.nota || '', p_idioma: estado.idioma }, true).catch(function () { /* si falla, el pedido igual llega por WhatsApp */ });
+  }
   function enviar() {
     var msg = armarMensaje(); var url = enlaceWa(msg);
+    registrarPedido(msg);
     window.ultimoEnlaceWa = url;
     var w = abrirWa(url);
     abrirHoja(function (h) {
@@ -793,7 +848,7 @@
       if (!NEGOCIO.whatsapp) h.appendChild(el('p', { class: 'aviso', text: t('demoModo') }));
       h.appendChild(el('div', { class: 'vista-msg', text: msg }));
       var a = el('a', { class: 'btn wa', href: url, target: esMovil() ? '_self' : '_blank', rel: 'noopener', style: 'text-decoration:none' }); a.textContent = t('reabrir'); h.appendChild(a);
-      h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('yaEnvie'), onclick: function () { estado.carrito = []; estado.entrega = null; guardar(); pintarBarra(); cerrarHoja(); toast(t('vaciado')); } }));
+      h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('yaEnvie'), onclick: function () { estado.carrito = []; estado.entrega = null; ULTIMO_ENVIO = null; guardar(); pintarBarra(); cerrarHoja(); toast(t('vaciado')); } }));
       h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('editar'), onclick: abrirCarrito }));
     });
   }
@@ -804,8 +859,67 @@
   $('fondo').addEventListener('click', function (e) { if (e.target === $('fondo')) cerrarHoja(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && $('fondo').classList.contains('on')) cerrarHoja(); });
 
-  aplicarIdioma();
-  window.__tienda = { agregar: agregar, abrirCarrito: abrirCarrito, abrirEntrega: abrirEntrega, estado: estado, armarMensaje: armarMensaje, enlaceWa: enlaceWa, aplicarIdioma: aplicarIdioma, PAISES: PAISES };
+  function pintarCabecera() {
+    var t0 = TIENDA, ini = String(t0.nombre).trim().split(/\s+/).slice(0, 2).map(function (w) { return w.charAt(0).toUpperCase(); }).join('');
+    var logo = document.querySelector('.cab .logo'); logo.textContent = ini || 'T';
+    if (t0.logo_path) { logo.textContent = ''; logo.appendChild(el('img', { src: fotoUrl(t0.logo_path), alt: '' })); }
+    document.querySelector('.cab h1').textContent = t0.nombre;
+    var ab = document.querySelector('.cab .abierto'); ab.removeAttribute('data-i'); ab.textContent = t0.horario || ''; ab.hidden = !t0.horario;
+    var ds = document.querySelector('p.desc'); ds.removeAttribute('data-i'); ds.textContent = t0.descripcion || ''; ds.hidden = !t0.descripcion;
+    var dm = document.querySelector('.top .demo'); if (dm) dm.hidden = true;
+    document.title = t0.nombre + ' — tienda en línea';
+  }
+  function aplicarDatos(d) {
+    var t0 = d.tienda; TIENDA = t0; NEGOCIO.nombre = t0.nombre; NEGOCIO.whatsapp = t0.whatsapp;
+    if (PAISES[t0.pais]) estado.pais = t0.pais; estado.moneda = t0.moneda || PAISES[estado.pais].moneda; estado.idioma = I[t0.idioma] ? t0.idioma : 'es';
+    var billetera = PAISES[estado.pais].pagos.filter(function (k) { return ['transfer', 'cash', 'card'].indexOf(k) < 0; })[0] || null;
+    var MAPA = { transferencia: 'transfer', efectivo: 'cash', tarjeta: 'card', billetera: billetera };
+    PAGOS_TIENDA = (t0.pagos || []).map(function (k) { return MAPA[k]; }).filter(Boolean); if (!PAGOS_TIENDA.length) PAGOS_TIENDA = ['transfer', 'cash'];
+    ENTREGAS_TIENDA = (t0.entregas || []).filter(function (k) { return k === 'retiro' || k === 'domicilio'; }); if (!ENTREGAS_TIENDA.length) ENTREGAS_TIENDA = ['retiro', 'domicilio'];
+    var COLORES = ['#a5dc5b', '#e6ee4a', '#ffd84a', '#ff7a1a'];
+    SECCIONES = (d.secciones || []).map(function (s) { return { id: s.id, n: { es: s.nombre } }; });
+    var conSeccion = function (id) { return SECCIONES.some(function (s) { return s.id === id; }); };
+    if ((d.productos || []).some(function (p) { return !conSeccion(p.seccion_id); })) SECCIONES.push({ id: '_otros', n: SECCIONES.length ? { es: 'Más productos', en: 'More products', pt: 'Mais produtos' } : { es: 'Productos', en: 'Products', pt: 'Produtos' } });
+    PRODUCTOS = (d.productos || []).map(function (p, i) {
+      var oferta = !!p.oferta_pct;
+      return { id: p.id, n: { es: p.nombre }, base: Number(p.precio_final), antes: oferta ? Number(p.precio) : null, pct: p.oferta_pct || 0, cat: conSeccion(p.seccion_id) ? p.seccion_id : '_otros',
+        color: COLORES[i % COLORES.length], arte: 'bolso', stock: p.stock === null || p.stock === undefined ? null : Number(p.stock), desc: { es: p.descripcion || '' },
+        variantes: p.variantes && p.variantes.length ? { clave: p.variante_tipo || 'Opción', ops: p.variantes.map(function (v) { return { id: v, n: { es: v } }; }) } : null,
+        img: p.foto_path ? fotoUrl(p.foto_path) : '', nuevo: !!p.nuevo };
+    });
+    PRODUCTOS.forEach(function (p) { p.hay = p.stock === null || p.stock > 0; });
+  }
+  function estadoTienda(titulo, texto, boton) {
+    var g = $('grid'); g.textContent = '';
+    var c = el('div', { class: 'estado-t' }, [el('h2', { text: titulo }), el('p', { text: texto })]); if (boton) c.appendChild(boton); g.appendChild(c);
+  }
+  function cargarTiendaReal() {
+    document.body.classList.add('cargando-t'); document.body.classList.remove('sin-tienda');
+    document.querySelector('.cab h1').textContent = ''; var dm = document.querySelector('.top .demo'); if (dm) dm.hidden = true;
+    $('grid').innerHTML = '<div class="esq-t" role="status" aria-label="Cargando la tienda"><i></i><i></i><i></i><i></i></div>';
+    rpc('tienda_publica', { p_slug: SLUG }).then(function (d) {
+      document.body.classList.remove('cargando-t');
+      if (!d || !d.tienda) {
+        document.body.classList.add('sin-tienda'); document.title = 'Tienda no encontrada — Ventas Link';
+        estadoTienda('No encontramos esta tienda', 'Revisa el enlace o pídele a la tienda que te lo envíe de nuevo.', el('a', { class: 'btn', href: 'onboarding-demo.html', style: 'text-decoration:none', text: '¿Vendes algo? Crea tu tienda gratis' }));
+        return;
+      }
+      aplicarDatos(d); cargar(); pintarCabecera(); aplicarIdioma();
+      if (!PRODUCTOS.length) {
+        var wa = el('a', { class: 'btn wa', href: 'https://wa.me/' + NEGOCIO.whatsapp + '?text=' + encodeURIComponent('¡Hola, ' + NEGOCIO.nombre + '! Vi tu tienda en Ventas Link y quiero saber qué tienes disponible.'), target: esMovil() ? '_self' : '_blank', rel: 'noopener', style: 'text-decoration:none' });
+        wa.textContent = 'Escribir por WhatsApp';
+        estadoTienda('Esta tienda está preparando su catálogo', 'Muy pronto verás sus productos aquí. Mientras tanto, puedes escribirle por WhatsApp.', wa);
+        document.querySelector('.buscar').hidden = true; $('cats').hidden = true;
+      }
+      if (!/[?&]yo=1(?:&|$)/.test(location.search)) { try { if (!sessionStorage.getItem('vl-visita-' + SLUG)) { sessionStorage.setItem('vl-visita-' + SLUG, '1'); rpc('registrar_visita', { p_slug: SLUG }).catch(function () { /* la visita no es crítica */ }); } } catch (e) { /* sin almacenamiento */ } }
+    }).catch(function () {
+      document.body.classList.remove('cargando-t'); document.body.classList.add('sin-tienda');
+      estadoTienda('No pudimos cargar la tienda', 'Revisa tu internet e intenta de nuevo.', el('button', { type: 'button', class: 'btn', text: 'Intentar de nuevo', onclick: cargarTiendaReal }));
+    });
+  }
+
+  if (REAL) cargarTiendaReal(); else aplicarIdioma();
+  window.__tienda = { real: function () { return { REAL: REAL, SLUG: SLUG, TIENDA: TIENDA, PRODUCTOS: PRODUCTOS, SECCIONES: SECCIONES, PAGOS: PAGOS_TIENDA, ENTREGAS: ENTREGAS_TIENDA, ULTIMO_ENVIO: ULTIMO_ENVIO }; }, agregar: agregar, abrirCarrito: abrirCarrito, abrirEntrega: abrirEntrega, estado: estado, armarMensaje: armarMensaje, enlaceWa: enlaceWa, aplicarIdioma: aplicarIdioma, PAISES: PAISES };
 })();
 </script>
 <script>

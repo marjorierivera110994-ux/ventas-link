@@ -35,6 +35,13 @@
     PLAN_INVALIDO: 'Ese plan no está disponible.',
     LIMITE_PRODUCTOS: 'Llegaste al máximo de productos de tu plan.',
     LIMITE_SECCIONES: 'Llegaste al máximo de secciones de tu plan.',
+    FUNCION_DE_PAGO: 'Las ofertas con fecha son del plan Emprendedor. Puedes probarlo gratis 7 días.',
+    OFERTA_FECHA_INVALIDA: 'La oferta debe terminar en una fecha futura.',
+    seccion_repetida: 'Ya tienes una sección con ese nombre.',
+    foto_grande: 'La foto pesa demasiado. Prueba con otra.',
+    foto_cupo: 'Llegaste al máximo de fotos de tu plan.',
+    foto_tipo: 'Ese archivo no es una foto. Usa JPG, PNG o WebP.',
+    precio_invalido: 'Revisa el precio: debe ser mayor a 0.',
     nombre_tienda: 'El nombre de tu tienda debe tener entre 2 y 60 letras.',
     whatsapp_tienda: 'Revisa tu número de WhatsApp: no parece estar completo.',
     general: 'Algo salió mal. Intenta de nuevo en un momento.'
@@ -50,7 +57,12 @@
     else if (c === 'otp_expired' || c === 'otp_disabled' || /expired|invalid.*token|token.*invalid/i.test(txt)) cod = 'codigo_malo';
     else if (c === 'email_address_invalid' || c === 'validation_failed' || /validate email|invalid format|email.*invalid/i.test(txt)) cod = 'correo_invalido';
     else if (c === 'signup_disabled' || c === 'email_provider_disabled') cod = 'registro_cerrado';
-    else if (c === '23514' && /nombre/.test(txt)) cod = 'nombre_tienda';
+    else if (c === '23505' && /secciones_nombre/.test(txt)) cod = 'seccion_repetida';
+    else if (st === 413 || e.statusCode === '413' || /exceeded the maximum allowed size|too large/i.test(txt)) cod = 'foto_grande';
+    else if (/mime type|invalid_mime/i.test(txt)) cod = 'foto_tipo';
+    else if (/row-level security|violates row level/i.test(txt) && /object|storage/i.test(txt + ' ' + (e.name || ''))) cod = 'foto_cupo';
+    else if (c === '23514' && /precio/.test(txt)) cod = 'precio_invalido';
+    else if (c === '23514' && /nombre/.test(txt) && /tiendas/.test(txt)) cod = 'nombre_tienda';
     else if (c === '23514' && /whatsapp/.test(txt)) cod = 'whatsapp_tienda';
     return { ok: false, codigo: cod, espera: seg, mensaje: MENSAJES[cod].replace('{s}', String(seg)) };
   }
@@ -132,6 +144,8 @@
     }).catch(fallo);
   }
   function enlaceTienda(slug) { return origen() + '/t/' + slug; }
+  /* Dirección pública de una foto guardada (el catálogo es público por enlace). */
+  function fotoUrl(path) { return path ? C.url + '/storage/v1/object/public/media/' + String(path).split('/').map(encodeURIComponent).join('/') : ''; }
 
   /* ---------- Plan ---------- */
   function miPlan() { var c = cliente(); if (!c) return sinCliente(); return c.rpc('mi_plan').then(function (r) { return r.error ? fallo(r.error) : { ok: true, plan: r.data }; }).catch(fallo); }
@@ -141,6 +155,6 @@
   }
 
   window.VL = { conCodigo: C.correoConCodigo === true, listo: !!(window.supabase && C.url && C.llave) && location.protocol !== 'file:', cliente: cliente, sesion: sesion, alCambiar: alCambiar, enviarCodigo: enviarCodigo, verificarCodigo: verificarCodigo,
-    conGoogle: conGoogle, metodos: metodos, salir: salir, errorDeEnlace: errorDeEnlace, correoValido: correoValido, miTienda: miTienda, crearTienda: crearTienda, slugDe: slugDe, enlaceTienda: enlaceTienda,
+    conGoogle: conGoogle, metodos: metodos, salir: salir, errorDeEnlace: errorDeEnlace, correoValido: correoValido, miTienda: miTienda, crearTienda: crearTienda, slugDe: slugDe, enlaceTienda: enlaceTienda, fotoUrl: fotoUrl,
     miPlan: miPlan, iniciarPrueba: iniciarPrueba, _fallo: fallo };
 })();

@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mis productos — Ventas Link</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4ecdb">
+<link rel="icon" href="logo/ventas-link-icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --verde-texto: #2f6a10; --cielo: #d6f0ff; --error: #9a3412;
+          --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; --ease: cubic-bezier(.16, 1, .3, 1);
+          --relieve: inset 0 4px 0 rgb(255 255 255 / .95), inset 0 -5px 0 rgb(0 0 0 / .06), 0 8px 0 rgb(40 70 20 / .12), 0 26px 30px -18px rgb(30 60 20 / .5);
+          --hundido: inset 0 4px 8px rgb(60 50 20 / .16), inset 0 -2px 0 rgb(255 255 255 / .9); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45; overflow-x: hidden;
+         background-image: radial-gradient(560px 320px at 0% -6%, color-mix(in oklab, var(--pistacho) 50%, transparent), transparent 62%),
+                           radial-gradient(480px 300px at 110% 30%, color-mix(in oklab, var(--cielo) 90%, transparent), transparent 60%); background-attachment: fixed; }
+  button, input, select, textarea { font: inherit; color: inherit; } button { cursor: pointer; border: 0; background: none; } a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; }
+  h1, h2, h3 { font-family: var(--f-d); letter-spacing: -.02em; }
+  h1[tabindex]:focus { outline: none; }
+  .app { max-width: 520px; margin: 0 auto; min-height: 100dvh; padding: 16px 16px calc(120px + env(safe-area-inset-bottom)); }
+
+  /* ---------- Botones ---------- */
+  .btn { width: 100%; min-height: 56px; border-radius: 999px; font-weight: 800; font-size: 17px; display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--tinta); color: var(--lima); text-decoration: none;
+         box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), inset 0 -5px 0 rgb(0 0 0 / .55), 0 7px 0 #000, 0 20px 24px -12px rgb(19 19 19 / .6); transition: transform .1s ease, box-shadow .1s ease, opacity .2s ease; }
+  .btn:active { transform: translateY(5px); box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), 0 2px 0 #000; }
+  .btn[disabled] { opacity: .5; cursor: not-allowed; }
+  .btn.claro { background: var(--blanco); color: var(--tinta); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -4px 0 rgb(0 0 0 / .06), 0 6px 0 rgb(40 70 20 / .16), 0 16px 18px -10px rgb(30 60 20 / .45); }
+  .btn.claro:active { box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 1px 0 rgb(40 70 20 / .16); }
+  .btn.peligro { background: var(--blanco); color: var(--error); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -4px 0 rgb(0 0 0 / .06), 0 6px 0 rgb(154 52 18 / .25), 0 16px 18px -10px rgb(154 52 18 / .35); }
+  .btn svg { width: 22px; height: 22px; flex: 0 0 22px; }
+  .link { min-height: 44px; padding: 0 4px; font-weight: 700; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; }
+
+  /* ---------- Cabecera de la lista ---------- */
+  .cab { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 8px; }
+  .cab h1 { font-size: 30px; line-height: 1.05; font-weight: 800; }
+  .cab .sub { font-size: 15px; color: var(--texto-2); margin-top: 6px; }
+  .cupo { margin-top: 16px; background: var(--blanco); border-radius: 24px; padding: 16px; box-shadow: var(--relieve); border: 1px solid rgb(255 255 255 / .95); }
+  .cupo .fila { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 14px; color: var(--texto-2); }
+  .cupo .fila b { font-family: var(--f-d); font-size: 24px; color: var(--tinta); font-variant-numeric: tabular-nums; }
+  .tubo { height: 12px; border-radius: 999px; background: color-mix(in oklab, var(--tinta) 8%, transparent); margin-top: 10px; overflow: hidden; box-shadow: inset 0 3px 6px rgb(0 0 0 / .18); }
+  .tubo i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--pistacho), var(--lima)); box-shadow: inset 0 3px 0 rgb(255 255 255 / .55); transition: width .6s var(--ease); }
+  .tubo.lleno i { background: linear-gradient(90deg, #ffb83a, var(--naranja)); }
+  .cupo .nota { font-size: 13px; margin-top: 8px; color: var(--texto-2); }
+  .cupo .nota a { font-weight: 800; color: var(--tinta); }
+  .acc-nuevo { margin-top: 16px; }
+
+  /* ---------- Chips de secciones ---------- */
+  .chips { display: flex; gap: 8px; overflow-x: auto; margin: 16px -16px 0; padding: 4px 16px 10px; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: 0 0 auto; min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--blanco); font-weight: 700; font-size: 14px;
+          box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(40 70 20 / .12); }
+  .chip[aria-pressed="true"] { background: var(--tinta); color: var(--lima); box-shadow: inset 0 3px 0 rgb(255 255 255 / .2), 0 4px 0 #000; }
+
+  /* ---------- Lista de productos ---------- */
+  .lista { list-style: none; display: grid; gap: 12px; margin-top: 8px; }
+  .item { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 12px; align-items: center; background: var(--blanco); border-radius: 22px; padding: 10px; border: 1px solid rgb(255 255 255 / .95); box-shadow: var(--relieve); }
+  .item.oculto { opacity: .62; }
+  .miniatura { width: 76px; height: 76px; border-radius: 16px; overflow: hidden; background: color-mix(in oklab, var(--pistacho) 45%, white); display: grid; place-items: center; box-shadow: inset 0 3px 0 rgb(255 255 255 / .45), inset 0 -4px 0 rgb(0 0 0 / .08); }
+  .miniatura img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .miniatura svg { width: 34px; height: 34px; }
+  .item-abrir { text-align: left; min-width: 0; min-height: 76px; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+  .item h3 { font-size: 16px; line-height: 1.2; overflow-wrap: anywhere; }
+  .item .precio { font-family: var(--f-d); font-weight: 800; font-size: 18px; font-variant-numeric: tabular-nums; }
+  .item .precio s { font-family: var(--f-b); font-weight: 500; font-size: 13px; color: var(--texto-2); margin-left: 6px; }
+  .item .meta { font-size: 13px; color: var(--texto-2); overflow-wrap: anywhere; }
+  .etq { display: inline-block; font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 999px; margin-left: 4px; vertical-align: 1px; }
+  .etq.of { background: var(--naranja); color: var(--tinta); } .etq.ag { background: var(--tinta); color: var(--lima); } .etq.oc { background: color-mix(in oklab, var(--tinta) 10%, transparent); }
+  .ojo { width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; background: color-mix(in oklab, var(--beige) 70%, white); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(40 70 20 / .12); }
+  .ojo svg { width: 20px; height: 20px; }
+
+  /* ---------- Estados ---------- */
+  .tarj { margin-top: 16px; background: var(--blanco); border-radius: 24px; padding: 24px 16px; border: 1px solid rgb(255 255 255 / .95); box-shadow: var(--relieve); text-align: center; }
+  .tarj h2 { font-size: 22px; line-height: 1.15; }
+  .tarj p { font-size: 15px; color: var(--texto-2); margin-top: 8px; }
+  .tarj .btn { margin-top: 16px; }
+  .vacio-ilus { position: relative; width: 120px; height: 120px; margin: 0 auto 8px; }
+  .vacio-ilus img { width: 120px; height: 120px; filter: drop-shadow(0 12px 10px rgb(30 60 20 / .25)); animation: flota 4s ease-in-out infinite; }
+  .vacio-pasos { list-style: none; display: grid; gap: 8px; margin-top: 16px; text-align: left; }
+  .vacio-pasos li { display: flex; gap: 10px; align-items: center; font-size: 14px; font-weight: 600; }
+  .vacio-pasos .n { width: 28px; height: 28px; flex: 0 0 28px; border-radius: 999px; background: var(--lima); display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; box-shadow: inset 0 2px 0 rgb(255 255 255 / .6), 0 3px 0 #8a9100; }
+  @keyframes flota { 50% { transform: translateY(-6px) rotate(2deg); } }
+  .esq { display: grid; gap: 12px; margin-top: 16px; } .esq i { display: block; height: 96px; border-radius: 22px; background: linear-gradient(100deg, #efe7d6 30%, #f8f3e8 50%, #efe7d6 70%); background-size: 220% 100%; animation: brillo 1.3s linear infinite; }
+  @keyframes brillo { to { background-position: -220% 0; } }
+  .aviso { margin-top: 12px; border-radius: 16px; padding: 12px 14px; font-size: 14px; font-weight: 700; color: var(--error); background: color-mix(in oklab, var(--naranja) 16%, white); text-align: left; }
+
+  /* ---------- Formulario ---------- */
+  .form-cab { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; }
+  .form-cab h1 { font-size: 26px; line-height: 1.1; }
+  .volver { width: 44px; height: 44px; border-radius: 999px; background: var(--blanco); display: grid; place-items: center; box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(40 70 20 / .12), 0 12px 14px -8px rgb(30 60 20 / .5); }
+  .volver svg { width: 20px; height: 20px; }
+  .bloque { margin-top: 16px; background: var(--blanco); border-radius: 24px; padding: 16px; border: 1px solid rgb(255 255 255 / .95); box-shadow: var(--relieve); display: grid; gap: 16px; }
+  .bloque > h2 { font-size: 17px; }
+  .campo label, .campo .lbl { font-weight: 700; font-size: 14px; display: block; margin-bottom: 8px; }
+  .campo input[type=text], .campo input[type=date], .campo select, .campo textarea { width: 100%; min-height: 52px; border-radius: 16px; border: 2px solid transparent; background: color-mix(in oklab, var(--beige) 60%, white); padding: 12px 14px; font-size: 16px; box-shadow: var(--hundido); }
+  .campo textarea { min-height: 96px; resize: vertical; line-height: 1.4; }
+  .campo input:focus-visible, .campo select:focus-visible, .campo textarea:focus-visible { border-color: var(--tinta); outline: none; }
+  .campo.err input, .campo.err select, .campo.err textarea { border-color: #c2410c; }
+  .campo .error { color: var(--error); font-size: 13px; font-weight: 700; margin-top: 6px; display: none; }
+  .campo.err .error { display: block; }
+  .campo .ayuda { font-size: 13px; color: var(--texto-2); margin-top: 6px; }
+  .campo .cont { float: right; font-weight: 500; color: var(--texto-2); font-size: 13px; }
+  .con-prefijo { position: relative; } .con-prefijo span { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 800; font-family: var(--f-d); color: var(--texto-2); pointer-events: none; }
+  .con-prefijo input { padding-left: 56px !important; font-family: var(--f-d); font-weight: 800; font-size: 20px !important; font-variant-numeric: tabular-nums; }
+  .dos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+
+  .foto-zona { border-radius: 20px; border: 2px dashed color-mix(in oklab, var(--tinta) 22%, transparent); background: color-mix(in oklab, var(--beige) 50%, white); padding: 16px; display: grid; gap: 12px; text-align: center; }
+  .foto-zona p { font-size: 14px; color: var(--texto-2); }
+  .foto-zona .botones { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .foto-zona .btn { min-height: 52px; font-size: 15px; }
+  .foto-prev { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 1 / 1; background: #fff; box-shadow: var(--hundido); }
+  .foto-prev img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .foto-prev .trabajando { position: absolute; inset: 0; display: grid; place-items: center; background: rgb(255 255 255 / .7); font-weight: 800; }
+  .foto-acc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .foto-acc .btn { min-height: 48px; font-size: 15px; }
+  .privado { font-size: 13px; color: var(--texto-2); display: flex; gap: 8px; align-items: center; }
+  .privado svg { width: 16px; height: 16px; flex: 0 0 16px; }
+
+  .interruptor { display: grid; grid-template-columns: minmax(0, 1fr) 56px; gap: 12px; align-items: center; min-height: 48px; cursor: pointer; }
+  .interruptor b { display: block; font-size: 15px; } .interruptor small { display: block; font-size: 13px; color: var(--texto-2); }
+  .interruptor input { position: absolute; opacity: 0; pointer-events: none; }
+  .sw { width: 56px; height: 32px; border-radius: 999px; background: color-mix(in oklab, var(--tinta) 16%, transparent); position: relative; box-shadow: inset 0 3px 6px rgb(0 0 0 / .18); transition: background .2s ease; }
+  .sw::after { content: ''; position: absolute; left: 3px; top: 3px; width: 26px; height: 26px; border-radius: 999px; background: #fff; box-shadow: 0 3px 0 rgb(0 0 0 / .15); transition: transform .2s var(--ease); }
+  .interruptor input:checked + .sw { background: var(--pistacho); }
+  .interruptor input:checked + .sw::after { transform: translateX(24px); }
+  .interruptor input:focus-visible + .sw { outline: 3px solid var(--tinta); outline-offset: 3px; }
+
+  .var-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .var-chip { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; padding: 0 4px 0 14px; border-radius: 999px; background: var(--lima); font-weight: 800; box-shadow: inset 0 2px 0 rgb(255 255 255 / .6), 0 3px 0 #8a9100; }
+  .var-chip button { width: 36px; height: 36px; border-radius: 999px; display: grid; place-items: center; }
+  .var-chip svg { width: 14px; height: 14px; }
+  .var-add { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+  .var-add .btn { width: auto; min-height: 52px; padding: 0 18px; font-size: 15px; }
+  .rapidos { display: flex; flex-wrap: wrap; gap: 8px; }
+  .rapido { min-height: 40px; padding: 0 14px; border-radius: 999px; background: color-mix(in oklab, var(--cielo) 80%, white); font-size: 13px; font-weight: 700; box-shadow: inset 0 2px 0 rgb(255 255 255 / .8), 0 3px 0 rgb(27 106 168 / .25); }
+  .sug-btn { min-height: 44px; padding: 0 16px; border-radius: 999px; background: linear-gradient(160deg, #86d4ff, #2f9bea); color: #06304d; font-weight: 800; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;
+             box-shadow: inset 0 3px 0 rgb(255 255 255 / .6), inset 0 -4px 0 rgb(0 0 0 / .14), 0 5px 0 #1b6aa8; margin-top: 8px; }
+  .sug-btn svg { width: 16px; height: 16px; }
+  .bloqueado-plan { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; font-size: 14px; }
+  .bloqueado-plan .ic { width: 44px; height: 44px; border-radius: 15px; display: grid; place-items: center; color: #fff; background: linear-gradient(160deg, #ffb83a, #ff6a00); box-shadow: inset 0 3px 0 rgb(255 255 255 / .6), inset 0 -4px 0 rgb(0 0 0 / .14), 0 5px 0 rgb(0 0 0 / .2); }
+  .bloqueado-plan .ic svg { width: 22px; height: 22px; }
+  .bloqueado-plan b { display: block; font-size: 15px; } .bloqueado-plan a { font-weight: 800; }
+  .vista-oferta { font-size: 14px; color: var(--texto-2); } .vista-oferta b { color: var(--tinta); font-family: var(--f-d); font-size: 18px; }
+
+  .guardar-fijo { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--beige) 30%); }
+  .guardar-fijo .in { max-width: 520px; margin: 0 auto; }
+
+  /* ---------- Confirmar y celebrar ---------- */
+  dialog { border: 0; border-radius: 24px; padding: 24px 16px 16px; width: min(calc(100% - 32px), 420px); background: var(--beige); color: var(--tinta); box-shadow: 0 30px 60px -20px rgb(0 0 0 / .5); margin: auto; }
+  dialog::backdrop { background: rgb(19 19 19 / .5); }
+  dialog h2 { font-size: 21px; line-height: 1.2; overflow-wrap: anywhere; } dialog p { font-size: 15px; color: var(--texto-2); margin-top: 8px; }
+  dialog .acciones { display: grid; gap: 12px; margin-top: 20px; }
+  .celebra { text-align: center; }
+  .celebra .estrella { width: 72px; height: 72px; margin: 0 auto 8px; display: block; animation: pop .6s var(--ease) both; }
+  @keyframes pop { from { transform: scale(.3) rotate(-30deg); opacity: 0; } }
+
+  .toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 12px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; z-index: 60; max-width: calc(100% - 32px); text-align: center; opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+  .toast.on { opacity: 1; }
+
+  .entra > * { animation: sube .4s var(--ease) both; } .entra > *:nth-child(2) { animation-delay: .05s; } .entra > *:nth-child(3) { animation-delay: .1s; } .entra > *:nth-child(4) { animation-delay: .15s; } .entra > *:nth-child(5) { animation-delay: .2s; }
+  .lista > li { animation: sube .35s var(--ease) both; }
+  @keyframes sube { from { opacity: 0; transform: translateY(10px); } }
+  @media (prefers-reduced-motion: reduce) { .entra > *, .lista > li, .vacio-ilus img, .esq i, .celebra .estrella { animation: none; } .btn, .tubo i, .sw, .sw::after { transition: none; } }
+</style>
+</head>
+<body>
+<main class="app">
+  <!-- Cargando -->
+  <section id="v-carga" aria-busy="true"><div class="esq" role="status"><span style="position:absolute;clip:rect(0 0 0 0)">Cargando tus productos…</span><i style="height:64px"></i><i></i><i></i><i></i></div></section>
+
+  <!-- Sin sesión -->
+  <section id="v-sin" class="entra" hidden>
+    <div class="tarj">
+      <div class="vacio-ilus"><img src="logo/ventas-link-icono.svg" alt="" width="120" height="120"></div>
+      <h2>Entra para subir tus productos</h2>
+      <p>Tus productos se guardan en tu tienda y aparecen en tu enlace.</p>
+      <a class="btn" href="entrar.html" target="_top">Entrar a mi tienda</a>
+      <a class="link" href="producto-demo.html" style="margin-top:8px">Ver la demostración</a>
+    </div>
+  </section>
+
+  <!-- Sin conexión / error -->
+  <section id="v-error" hidden>
+    <div class="tarj"><h2>No pudimos cargar tus productos</h2><p id="error-txt">Revisa tu internet e intenta de nuevo.</p><button type="button" class="btn" id="b-reintentar">Intentar de nuevo</button></div>
+  </section>
+
+  <!-- Lista -->
+  <section id="v-lista" class="entra" hidden>
+    <header class="cab"><div><h1>Mis productos</h1><p class="sub" id="sub-tienda"></p></div></header>
+    <div class="cupo" id="cupo">
+      <div class="fila"><span>Productos en tu plan <span id="cupo-plan"></span></span><b id="cupo-n">0 / 10</b></div>
+      <div class="tubo" id="tubo" role="progressbar" aria-label="Productos usados de tu plan" aria-valuemin="0"><i id="tubo-i"></i></div>
+      <p class="nota" id="cupo-nota" hidden></p>
+    </div>
+    <button type="button" class="btn acc-nuevo" id="b-nuevo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Subir un producto</button>
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por sección" hidden></div>
+    <ul class="lista" id="lista" aria-live="polite"></ul>
+    <div id="vacio" class="tarj" hidden>
+      <div class="vacio-ilus"><img src="logo/ventas-link-icono.svg" alt="" width="120" height="120"></div>
+      <h2>Tu vitrina está lista</h2>
+      <p>Sube tu primer producto: con una foto, un nombre y un precio basta.</p>
+      <ol class="vacio-pasos"><li><span class="n">1</span>Toma una foto con buena luz</li><li><span class="n">2</span>Escribe el nombre y el precio</li><li><span class="n">3</span>Comparte tu enlace y recibe pedidos</li></ol>
+      <button type="button" class="btn" id="b-primero">Subir mi primer producto</button>
+    </div>
+  </section>
+
+  <!-- Formulario -->
+  <section id="v-form" hidden>
+    <header class="form-cab"><button type="button" class="volver" id="b-volver" aria-label="Volver a mis productos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><h1 id="form-t" tabindex="-1">Nuevo producto</h1></header>
+
+    <div class="bloque">
+      <h2>Foto</h2>
+      <div class="foto-zona" id="foto-zona">
+        <p>Una foto clara vende más. Usa buena luz y un fondo limpio.</p>
+        <div class="botones">
+          <button type="button" class="btn" id="b-camara"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>Tomar foto</button>
+          <button type="button" class="btn claro" id="b-galeria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 16l5-5 4 4 3-3 6 6M15 9h.01"/></svg>Galería</button>
+        </div>
+      </div>
+      <div id="foto-lista" hidden>
+        <div class="foto-prev"><img id="foto-img" alt=""><div class="trabajando" id="foto-trab" hidden>Preparando foto…</div></div>
+        <div class="foto-acc" style="margin-top:12px"><button type="button" class="btn claro" id="b-cambiar">Cambiar foto</button><button type="button" class="btn peligro" id="b-quitar-foto">Quitar foto</button></div>
+      </div>
+      <p class="privado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Guardamos tu foto sin la ubicación de tu celular.</p>
+      <p class="aviso" id="e-foto" role="alert" hidden></p>
+      <input type="file" id="in-camara" accept="image/*" capture="environment" hidden>
+      <input type="file" id="in-galeria" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden>
+    </div>
+
+    <div class="bloque">
+      <h2>Datos</h2>
+      <div class="campo" id="c-nombre"><label for="f-nombre">Nombre del producto</label><input type="text" id="f-nombre" maxlength="80" autocomplete="off" placeholder="Ej.: Blusa de lino"><p class="error">Escribe el nombre del producto.</p></div>
+      <div class="campo" id="c-precio"><label for="f-precio">Precio</label><div class="con-prefijo"><span id="moneda">USD</span><input type="text" id="f-precio" inputmode="decimal" maxlength="12" autocomplete="off" placeholder="0,00"></div><p class="error">Escribe un precio mayor a 0, por ejemplo 24 o 24,50.</p></div>
+      <div class="campo" id="c-seccion"><label for="f-seccion">Sección</label><select id="f-seccion"></select>
+        <div class="var-add" id="nueva-sec" style="margin-top:8px" hidden><input type="text" id="f-nueva-sec" maxlength="40" placeholder="Nombre de la sección" aria-label="Nombre de la sección nueva" style="width:100%;min-height:52px;border-radius:16px;border:2px solid transparent;background:color-mix(in oklab, var(--beige) 60%, white);padding:12px 14px;font-size:16px;box-shadow:var(--hundido)"><button type="button" class="btn" id="b-crear-sec">Crear</button></div>
+        <p class="error" id="e-sec"></p>
+      </div>
+      <div class="campo" id="c-desc"><label for="f-desc">Descripción <span class="cont" id="cont-desc">0 / 300</span></label><textarea id="f-desc" maxlength="300" placeholder="Material, medidas, colores, cuidados…"></textarea>
+        <button type="button" class="sug-btn" id="b-sugerir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Sugerir descripción</button>
+        <p class="ayuda" id="sug-nota" aria-live="polite">Se arma con tus datos. Tú la revisas.</p>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <label class="interruptor"><span><b>Tiene tallas o colores</b><small>El cliente elige una opción al pedir.</small></span><input type="checkbox" id="f-tiene-var"><span class="sw" aria-hidden="true"></span></label>
+      <div id="var-caja" hidden style="display:grid;gap:12px">
+        <div class="campo"><label for="f-var-tipo">¿Qué elige el cliente?</label><input type="text" id="f-var-tipo" maxlength="20" placeholder="Talla, Color, Sabor…"></div>
+        <div class="rapidos"><button type="button" class="rapido" data-tipo="Talla" data-ops="S,M,L">Tallas S, M, L</button><button type="button" class="rapido" data-tipo="Talla" data-ops="XS,S,M,L,XL">XS a XL</button><button type="button" class="rapido" data-tipo="Color" data-ops="">Colores</button></div>
+        <div class="campo"><span class="lbl" id="l-ops">Opciones</span><div class="var-chips" id="var-chips" aria-labelledby="l-ops"></div></div>
+        <div class="var-add"><input type="text" id="f-var-op" maxlength="30" placeholder="Escribe una opción" aria-label="Nueva opción" style="width:100%;min-height:52px;border-radius:16px;border:2px solid transparent;background:color-mix(in oklab, var(--beige) 60%, white);padding:12px 14px;font-size:16px;box-shadow:var(--hundido)"><button type="button" class="btn" id="b-var-add">Agregar</button></div>
+        <p class="aviso" id="e-var" role="alert" hidden></p>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <label class="interruptor"><span><b>Controlar stock</b><small>Tu tienda marca "Agotado" sola al llegar a 0.</small></span><input type="checkbox" id="f-tiene-stock"><span class="sw" aria-hidden="true"></span></label>
+      <div class="campo" id="c-stock" hidden><label for="f-stock">Unidades disponibles</label><input type="text" id="f-stock" inputmode="numeric" maxlength="6" placeholder="Ej.: 10"><p class="error">Escribe un número de 0 o más.</p></div>
+    </div>
+
+    <div class="bloque" id="b-oferta">
+      <div class="bloqueado-plan" id="oferta-bloq" hidden><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12l-8 8-9-9V3h8zM7.5 7.5h.01"/></svg></span><span><b>Ofertas con fecha</b>Disponible en el plan Emprendedor. <a href="mi-plan-demo.html" id="a-plan">Ver mi plan</a></span></div>
+      <div id="oferta-caja">
+        <label class="interruptor"><span><b>Poner en oferta</b><small>Un descuento real, con fecha de fin.</small></span><input type="checkbox" id="f-oferta"><span class="sw" aria-hidden="true"></span></label>
+        <div id="oferta-campos" hidden style="display:grid;gap:12px;margin-top:12px">
+          <div class="dos">
+            <div class="campo"><label for="f-pct">Descuento</label><select id="f-pct"><option value="10">10 %</option><option value="15">15 %</option><option value="20" selected>20 %</option><option value="25">25 %</option><option value="30">30 %</option><option value="40">40 %</option><option value="50">50 %</option></select></div>
+            <div class="campo" id="c-hasta"><label for="f-hasta">Termina el</label><input type="date" id="f-hasta"><p class="error">Elige una fecha futura.</p></div>
+          </div>
+          <p class="vista-oferta" id="vista-oferta"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <label class="interruptor"><span><b>Visible en mi tienda</b><small>Si lo apagas, el producto queda guardado pero tus clientes no lo ven.</small></span><input type="checkbox" id="f-activo" checked><span class="sw" aria-hidden="true"></span></label>
+    </div>
+
+    <div class="bloque" id="zona-borrar" hidden><button type="button" class="btn peligro" id="b-borrar">Borrar este producto</button></div>
+    <p class="aviso" id="e-guardar" role="alert" hidden></p>
+    <div class="guardar-fijo"><div class="in"><button type="button" class="btn" id="b-guardar">Guardar producto</button></div></div>
+  </section>
+</main>
+
+<dialog id="dlg-borrar" aria-labelledby="dlg-borrar-t">
+  <h2 id="dlg-borrar-t">¿Borrar este producto?</h2>
+  <p>Se quita de tu tienda y no se puede deshacer. Los pedidos que ya recibiste no se borran.</p>
+  <div class="acciones"><button type="button" class="btn peligro" id="b-borrar-si">Sí, borrar</button><button type="button" class="btn claro" id="b-borrar-no">No, mantenerlo</button></div>
+</dialog>
+
+<dialog id="dlg-primero" class="celebra" aria-labelledby="dlg-primero-t">
+  <svg class="estrella" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g-or" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb12a"/><stop offset="1" stop-color="#ff6a00"/></linearGradient></defs><path d="M32 5l7.4 18.6 20 1.4-15.4 12.8 5 19.4L32 45.6 15 57.2l5-19.4L4.6 25l20-1.4z" fill="url(#g-or)" stroke="#fff" stroke-width="5" stroke-linejoin="round" paint-order="stroke"/></svg>
+  <h2 id="dlg-primero-t">¡Tu primer producto ya está en tu tienda!</h2>
+  <p>Todo gran negocio empezó así. Mira cómo lo ven tus clientes.</p>
+  <div class="acciones"><a class="btn" id="a-ver-tienda" href="#" target="_blank" rel="noopener">Ver mi tienda</a><button type="button" class="btn claro" id="b-otro">Subir otro producto</button></div>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="vendor/supabase.js"></script>
+<script src="vl-config.js"></script>
+<script src="vl-datos.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var VL = window.VL, sb = null;
+  var D = { tienda: null, plan: null, secciones: [], productos: [] }, filtro = 'todo';
+  var F = null;            /* estado del formulario: { prod, foto: { blob, ext, tipo, url } | null, quitarFoto, variantes: [] } */
+  var guardando = false, borrando = false;
+  var VISTAS = ['v-carga', 'v-sin', 'v-error', 'v-lista', 'v-form'];
+  var NOMBRE_PLAN = { gratis: 'Gratis', emprendedor: 'Emprendedor', profesional: 'Profesional' };
+  var ICONO_BOLSO = '<svg viewBox="0 0 24 24" fill="none" stroke="#2f6a10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7zM9 7a3 3 0 0 1 6 0"/></svg>';
+
+  function ver(id) { VISTAS.forEach(function (v) { $(v).hidden = v !== id; }); window.scrollTo(0, 0); }
+  function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2600); }
+  function aviso(id, m) { $(id).textContent = m || ''; $(id).hidden = !m; }
+  function el(tag, attrs, hijos) {
+    var e = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) { if (k === 'class') e.className = attrs[k]; else if (k === 'text') e.textContent = attrs[k]; else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), attrs[k]); else e.setAttribute(k, attrs[k]); });
+    (hijos || []).forEach(function (h) { if (h) e.appendChild(typeof h === 'string' ? document.createTextNode(h) : h); });
+    return e;
+  }
+  function dinero(n) { try { return new Intl.NumberFormat('es-EC', { style: 'currency', currency: (D.tienda && D.tienda.moneda) || 'USD' }).format(n); } catch (e) { return String(n); } }
+  function numero(v) { var s = String(v || '').trim().replace(/\s/g, ''); if (/^\d{1,3}(\.\d{3})+(,\d{1,2})?$/.test(s)) s = s.replace(/\./g, ''); s = s.replace(',', '.'); return /^\d{1,8}(\.\d{1,2})?$/.test(s) ? parseFloat(s) : NaN; }
+  function precioFinal(p) { return p.oferta_pct && p.oferta_hasta && new Date(p.oferta_hasta) > new Date() ? Math.round(p.precio * (100 - p.oferta_pct)) / 100 : null; }
+  function secNombre(id) { for (var i = 0; i < D.secciones.length; i++) if (D.secciones[i].id === id) return D.secciones[i].nombre; return ''; }
+  function limite() { return D.plan && D.plan.limites ? D.plan.limites.productos : 10; }
+  function esGratis() { return !D.plan || D.plan.plan === 'gratis'; }
+  function fallo(e) { return VL._fallo(e).mensaje; }
+  /* Dentro de la app, los enlaces al plan cambian de pestaña en vez de salir de la app. */
+  function irPlan(e) { try { if (window.parent !== window && window.parent.__app) { e.preventDefault(); window.parent.__app.ir('plan'); } } catch (x) { /* abre el enlace normal */ } }
+
+  /* ---------- Cargar todo ---------- */
+  function cargar() {
+    ver('v-carga');
+    if (!VL || !VL.listo) { ver('v-sin'); return; }
+    sb = VL.cliente();
+    VL.sesion().then(function (s) {
+      if (!s) { ver('v-sin'); return; }
+      return Promise.all([
+        VL.miTienda(), VL.miPlan(),
+        sb.from('secciones').select('id, nombre, orden').order('orden').order('created_at'),
+        sb.from('productos').select('id, seccion_id, nombre, descripcion, precio, oferta_pct, oferta_hasta, variante_tipo, variantes, stock, activo, foto_path, orden, created_at').order('orden').order('created_at', { ascending: false })
+      ]).then(function (r) {
+        if (!r[0].ok) throw r[0];
+        if (!r[0].tienda) { window.top.location.href = 'onboarding-demo.html'; return; }
+        if (r[2].error) throw r[2].error; if (r[3].error) throw r[3].error;
+        D.tienda = r[0].tienda; D.plan = r[1].ok ? r[1].plan : null; D.secciones = r[2].data || []; D.productos = r[3].data || [];
+        pintarLista(); ver('v-lista');
+        if (location.hash === '#nuevo') { try { history.replaceState(null, '', location.pathname); } catch (e) { /* ok */ } abrirForm(null); }
+      });
+    }).catch(function (e) { $('error-txt').textContent = (e && e.mensaje) || fallo(e); ver('v-error'); });
+  }
+
+  /* ---------- Lista ---------- */
+  function pintarLista() {
+    var n = D.productos.length, max = limite(), pct = Math.min(100, Math.round(n / max * 100));
+    $('sub-tienda').textContent = D.tienda.nombre;
+    $('cupo-plan').textContent = NOMBRE_PLAN[D.plan ? D.plan.plan : 'gratis'] || 'Gratis';
+    $('cupo-n').textContent = n + ' / ' + max;
+    $('tubo').setAttribute('aria-valuemax', String(max)); $('tubo').setAttribute('aria-valuenow', String(n));
+    $('tubo').classList.toggle('lleno', n >= max); requestAnimationFrame(function () { $('tubo-i').style.width = pct + '%'; });
+    var nota = $('cupo-nota'); nota.textContent = '';
+    if (n >= max) { nota.appendChild(document.createTextNode('Llegaste al máximo de tu plan. ')); nota.appendChild(el('a', { href: 'mi-plan-demo.html', text: 'Ver cómo subir más', onclick: irPlan })); nota.hidden = false; }
+    else if (D.plan && D.plan.origen === 'prueba') { nota.textContent = 'Estás en tu prueba de ' + (NOMBRE_PLAN[D.plan.plan] || '') + '. Al terminar sigues con el plan Gratis y no se borra nada.'; nota.hidden = false; }
+    else nota.hidden = true;
+    $('b-nuevo').disabled = n >= max; $('b-nuevo').hidden = n === 0;
+    $('cupo').hidden = n === 0;
+
+    var chips = $('chips'); chips.textContent = '';
+    var usadas = D.secciones.filter(function (s) { return D.productos.some(function (p) { return p.seccion_id === s.id; }); });
+    if (filtro !== 'todo' && !usadas.some(function (s) { return s.id === filtro; })) filtro = 'todo';
+    chips.hidden = usadas.length < 2;
+    [{ id: 'todo', nombre: 'Todos' }].concat(usadas).forEach(function (s) { chips.appendChild(el('button', { type: 'button', class: 'chip', 'aria-pressed': String(filtro === s.id), text: s.nombre, onclick: function () { filtro = s.id; pintarLista(); } })); });
+
+    var ul = $('lista'); ul.textContent = '';
+    D.productos.filter(function (p) { return filtro === 'todo' || p.seccion_id === filtro; }).forEach(function (p, i) {
+      var mini = el('span', { class: 'miniatura' });
+      if (p.foto_path) mini.appendChild(el('img', { src: VL.fotoUrl(p.foto_path), alt: '', loading: 'lazy', width: '76', height: '76' })); else mini.innerHTML = ICONO_BOLSO;
+      var pf = precioFinal(p), precio = el('span', { class: 'precio', text: dinero(pf !== null ? pf : p.precio) });
+      if (pf !== null) precio.appendChild(el('s', { text: dinero(p.precio) }));
+      var h3 = el('h3', { text: p.nombre });
+      if (pf !== null) h3.appendChild(el('span', { class: 'etq of', text: '-' + p.oferta_pct + '%' }));
+      if (p.stock === 0) h3.appendChild(el('span', { class: 'etq ag', text: 'Agotado' }));
+      if (!p.activo) h3.appendChild(el('span', { class: 'etq oc', text: 'Oculto' }));
+      var meta = [secNombre(p.seccion_id) || 'Sin sección'];
+      if (p.stock !== null && p.stock > 0) meta.push('Quedan ' + p.stock); if (p.variantes && p.variantes.length) meta.push((p.variante_tipo || 'Opciones') + ': ' + (p.variantes.length > 4 ? p.variantes.slice(0, 4).join(', ') + '…' : p.variantes.join(', ')));
+      var abrir = el('button', { type: 'button', class: 'item-abrir', 'aria-label': 'Editar ' + p.nombre, onclick: function () { abrirForm(p); } }, [h3, precio, el('span', { class: 'meta', text: meta.join(' · ') })]);
+      var ojo = el('button', { type: 'button', class: 'ojo', 'aria-label': (p.activo ? 'Ocultar ' : 'Mostrar ') + p.nombre + ' en mi tienda', 'aria-pressed': String(!p.activo), onclick: function () { alternarVisible(p, ojo); } });
+      ojo.innerHTML = p.activo ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>'
+                               : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6C3.9 8.4 2 12 2 12s3.6 7 10 7a9.6 9.6 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
+      var li = el('li', { class: 'item' + (p.activo ? '' : ' oculto') }, [mini, abrir, ojo]); li.style.animationDelay = Math.min(i, 8) * 40 + 'ms';
+      ul.appendChild(li);
+    });
+    $('vacio').hidden = n > 0;
+  }
+  function alternarVisible(p, b) {
+    b.disabled = true;
+    sb.from('productos').update({ activo: !p.activo }).eq('id', p.id).select('activo').single().then(function (r) {
+      b.disabled = false; if (r.error) { toast(fallo(r.error)); return; }
+      p.activo = r.data.activo; pintarLista(); toast(p.activo ? 'Ahora tus clientes lo ven' : 'Oculto: tus clientes ya no lo ven');
+    });
+  }
+
+  /* ---------- Formulario ---------- */
+  function opcionesSeccion(sel) {
+    var s = $('f-seccion'); s.textContent = '';
+    s.appendChild(el('option', { value: '', text: 'Sin sección' }));
+    D.secciones.forEach(function (x) { s.appendChild(el('option', { value: x.id, text: x.nombre })); });
+    s.appendChild(el('option', { value: '__nueva', text: '+ Crear una sección nueva' }));
+    s.value = sel || ''; $('nueva-sec').hidden = true; $('e-sec').textContent = ''; $('c-seccion').classList.remove('err');
+  }
+  function pintarFoto() {
+    var url = F.foto ? F.foto.url : (!F.quitarFoto && F.prod && F.prod.foto_path ? VL.fotoUrl(F.prod.foto_path) : '');
+    $('foto-zona').hidden = !!url; $('foto-lista').hidden = !url;
+    if (url) { $('foto-img').src = url; $('foto-img').alt = 'Foto de ' + ($('f-nombre').value.trim() || 'tu producto'); }
+  }
+  function pintarVariantes() {
+    var c = $('var-chips'); c.textContent = '';
+    if (!F.variantes.length) c.appendChild(el('span', { class: 'ayuda', style: 'font-size:13px;color:var(--texto-2)', text: 'Todavía no hay opciones.' }));
+    F.variantes.forEach(function (v, i) {
+      var x = el('button', { type: 'button', 'aria-label': 'Quitar ' + v, onclick: function () { F.variantes.splice(i, 1); pintarVariantes(); } });
+      x.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+      c.appendChild(el('span', { class: 'var-chip' }, [v, x]));
+    });
+  }
+  function vistaOferta() {
+    var pr = numero($('f-precio').value), pct = parseInt($('f-pct').value, 10), v = $('vista-oferta'); v.textContent = '';
+    if (!(pr > 0)) { v.textContent = 'Escribe el precio para ver cómo queda.'; return; }
+    v.appendChild(document.createTextNode('Tus clientes verán: antes ' + dinero(pr) + ', ahora ')); v.appendChild(el('b', { text: dinero(Math.round(pr * (100 - pct)) / 100) }));
+  }
+  function fechaLocal(d) { function p(n) { return (n < 10 ? '0' : '') + n; } return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+  function enDias(n) { var d = new Date(); d.setDate(d.getDate() + n); return fechaLocal(d); }
+  function mañana() { return enDias(1); }
+  function abrirForm(p) {
+    F = { prod: p, foto: null, quitarFoto: false, variantes: p && p.variantes ? p.variantes.slice() : [] };
+    $('form-t').textContent = p ? 'Editar producto' : 'Nuevo producto';
+    $('f-nombre').value = p ? p.nombre : ''; $('f-precio').value = p ? Number(p.precio).toFixed(2).replace('.', ',') : '';
+    $('f-desc').value = p ? p.descripcion : ''; $('cont-desc').textContent = $('f-desc').value.length + ' / 300';
+    opcionesSeccion(p ? p.seccion_id : (filtro !== 'todo' ? filtro : ''));
+    $('f-tiene-var').checked = !!(p && p.variantes && p.variantes.length); $('var-caja').hidden = !$('f-tiene-var').checked; $('f-var-tipo').value = p ? p.variante_tipo : ''; $('f-var-op').value = '';
+    $('f-tiene-stock').checked = !!(p && p.stock !== null); $('c-stock').hidden = !$('f-tiene-stock').checked; $('f-stock').value = p && p.stock !== null ? String(p.stock) : '';
+    var conOferta = !!(p && p.oferta_pct && p.oferta_hasta && new Date(p.oferta_hasta) > new Date());
+    $('oferta-bloq').hidden = !esGratis() || conOferta; $('oferta-caja').hidden = esGratis() && !conOferta;
+    $('f-oferta').checked = conOferta; $('oferta-campos').hidden = !conOferta;
+    $('f-pct').value = conOferta ? String(p.oferta_pct) : '20'; if (!$('f-pct').value) $('f-pct').value = '20';
+    $('f-hasta').min = mañana(); $('f-hasta').value = conOferta ? fechaLocal(new Date(p.oferta_hasta)) : enDias(7);
+    $('f-activo').checked = p ? p.activo : true;
+    $('zona-borrar').hidden = !p; $('b-guardar').textContent = p ? 'Guardar cambios' : 'Publicar producto'; $('b-guardar').disabled = false;
+    ['c-nombre', 'c-precio', 'c-stock', 'c-hasta', 'c-seccion'].forEach(function (c) { $(c).classList.remove('err'); });
+    aviso('e-foto', ''); aviso('e-guardar', ''); aviso('e-var', ''); $('sug-nota').textContent = 'Se arma con tus datos. Tú la revisas.';
+    pintarFoto(); pintarVariantes(); vistaOferta(); ver('v-form'); $('form-t').focus({ preventScroll: true });
+  }
+  function cerrarForm() { if (F && F.foto) URL.revokeObjectURL(F.foto.url); F = null; pintarLista(); ver('v-lista'); }
+
+  /* La foto se vuelve a dibujar en el celular: queda liviana (máx. 1280 px) y sin datos ocultos como la ubicación. */
+  function procesarFoto(archivo) {
+    return new Promise(function (ok, no) {
+      if (!archivo) { no(''); return; }
+      if (archivo.size > 30 * 1024 * 1024) { no('La foto pesa demasiado. Prueba con otra.'); return; }
+      var url = URL.createObjectURL(archivo), im = new Image();
+      im.onload = function () {
+        var w = im.naturalWidth, h = im.naturalHeight; URL.revokeObjectURL(url);
+        if (w < 200 || h < 200) { no('La foto es muy pequeña. Usa una de al menos 200 píxeles.'); return; }
+        var k = Math.min(1, 1280 / Math.max(w, h)); w = Math.round(w * k); h = Math.round(h * k);
+        var c = document.createElement('canvas'); c.width = w; c.height = h; var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(im, 0, 0, w, h);
+        c.toBlob(function (b) {
+          if (b && b.type === 'image/webp') { ok({ blob: b, ext: 'webp', tipo: 'image/webp', url: URL.createObjectURL(b) }); return; }
+          c.toBlob(function (j) { if (j) ok({ blob: j, ext: 'jpg', tipo: 'image/jpeg', url: URL.createObjectURL(j) }); else no('No pudimos preparar la foto. Prueba con otra.'); }, 'image/jpeg', 0.85);
+        }, 'image/webp', 0.82);
+      };
+      im.onerror = function () { URL.revokeObjectURL(url); no('Ese archivo no se puede abrir como foto. Prueba con otra (JPG o PNG).'); };
+      im.src = url;
+    });
+  }
+  function alElegirFoto(e) {
+    var a = e.target.files && e.target.files[0]; e.target.value = ''; if (!a || !F) return;
+    aviso('e-foto', ''); $('foto-zona').hidden = true; $('foto-lista').hidden = false; $('foto-trab').hidden = false;
+    procesarFoto(a).then(function (f) { if (!F) return; if (F.foto) URL.revokeObjectURL(F.foto.url); F.foto = f; F.quitarFoto = false; $('foto-trab').hidden = true; pintarFoto(); },
+      function (m) { $('foto-trab').hidden = true; if (F) pintarFoto(); aviso('e-foto', m || 'No pudimos abrir esa foto.'); });
+  }
+
+  function crearSeccion() {
+    var n = $('f-nueva-sec').value.trim(), b = $('b-crear-sec');
+    if (!n) { $('f-nueva-sec').focus(); return; }
+    b.disabled = true; $('e-sec').textContent = ''; $('c-seccion').classList.remove('err');
+    sb.from('secciones').insert({ tienda_id: D.tienda.id, nombre: n, orden: D.secciones.length }).select('id, nombre, orden').single().then(function (r) {
+      b.disabled = false;
+      if (r.error) { $('e-sec').textContent = fallo(r.error); $('c-seccion').classList.add('err'); return; }
+      D.secciones.push(r.data); opcionesSeccion(r.data.id); $('f-nueva-sec').value = ''; toast('Sección "' + r.data.nombre + '" creada');
+    });
+  }
+
+  function sugerir() {
+    var nombre = $('f-nombre').value.trim(), nota = $('sug-nota'), d = $('f-desc').value.replace(/\s+/g, ' ').trim(), sec = $('f-seccion').value && $('f-seccion').value !== '__nueva' ? secNombre($('f-seccion').value) : '';
+    if (!nombre) { nota.textContent = 'Escribe primero el nombre del producto.'; $('f-nombre').focus(); return; }
+    var partes = [nombre + (sec ? ', de nuestra sección ' + sec : '') + '.'];
+    if (d && d.toLowerCase().indexOf(nombre.toLowerCase()) !== 0) partes.push(d.charAt(0).toUpperCase() + d.slice(1) + (/[.!?]$/.test(d) ? '' : '.'));
+    else if (d) partes = [d.charAt(0).toUpperCase() + d.slice(1) + (/[.!?]$/.test(d) ? '' : '.')];
+    if (F.variantes.length) partes.push('Disponible en ' + ($('f-var-tipo').value.trim() || 'opciones').toLowerCase() + ': ' + F.variantes.join(', ') + '.');
+    partes.push('Pídelo por WhatsApp y coordinamos la entrega.');
+    $('f-desc').value = partes.join(' ').slice(0, 300); $('cont-desc').textContent = $('f-desc').value.length + ' / 300';
+    nota.textContent = d ? 'Listo. Usé lo que ya escribiste. Revísala.' : 'Listo. Agrega material, medidas o colores para que quede mejor.';
+  }
+
+  function agregarVariante(texto) {
+    var v = String(texto || '').replace(/\s+/g, ' ').trim().slice(0, 30); aviso('e-var', '');
+    if (!v) return;
+    if (F.variantes.some(function (x) { return x.toLowerCase() === v.toLowerCase(); })) { aviso('e-var', 'Esa opción ya está.'); return; }
+    if (F.variantes.length >= 20) { aviso('e-var', 'Máximo 20 opciones por producto.'); return; }
+    if ((F.variantes.join(',') + ',' + v).length > 500) { aviso('e-var', 'Las opciones son muy largas. Usa nombres más cortos.'); return; }
+    F.variantes.push(v); pintarVariantes();
+  }
+
+  /* ---------- Guardar ---------- */
+  function validar() {
+    var ok = true, primero = null;
+    function mal(c, foco) { $(c).classList.add('err'); ok = false; if (!primero) primero = foco; }
+    ['c-nombre', 'c-precio', 'c-stock', 'c-hasta'].forEach(function (c) { $(c).classList.remove('err'); }); aviso('e-var', '');
+    var nombre = $('f-nombre').value.replace(/\s+/g, ' ').trim(); if (!nombre) mal('c-nombre', $('f-nombre'));
+    var precio = numero($('f-precio').value); if (!(precio > 0)) mal('c-precio', $('f-precio'));
+    var stock = null; if ($('f-tiene-stock').checked) { var sv = $('f-stock').value.trim(); if (!/^\d{1,6}$/.test(sv)) mal('c-stock', $('f-stock')); else stock = parseInt(sv, 10); }
+    var conVar = $('f-tiene-var').checked && F.variantes.length > 0;
+    if ($('f-tiene-var').checked && !F.variantes.length) { aviso('e-var', 'Agrega al menos una opción, o apaga "Tiene tallas o colores".'); ok = false; if (!primero) primero = $('f-var-op'); }
+    var ofertaPct = null, ofertaHasta = null;
+    if (!$('oferta-caja').hidden && $('f-oferta').checked) {
+      var fh = $('f-hasta').value; if (!fh || fh < mañana()) mal('c-hasta', $('f-hasta'));
+      else { ofertaPct = parseInt($('f-pct').value, 10); ofertaHasta = new Date(fh + 'T23:59:59').toISOString(); }
+    }
+    var sec = $('f-seccion').value; if (sec === '__nueva') sec = '';
+    if (!ok) { if (primero) { primero.focus(); primero.scrollIntoView({ block: 'center', behavior: 'smooth' }); } return null; }
+    return { nombre: nombre, precio: precio, descripcion: $('f-desc').value.trim().slice(0, 300), seccion_id: sec || null,
+             variante_tipo: conVar ? ($('f-var-tipo').value.trim().slice(0, 20) || 'Opción') : '', variantes: conVar ? F.variantes.slice() : [],
+             stock: stock, oferta_pct: ofertaPct, oferta_hasta: ofertaHasta, activo: $('f-activo').checked };
+  }
+  function subirFoto(f) {
+    var ruta = D.tienda.id + '/p/' + (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2)) + '.' + f.ext;
+    return sb.storage.from('media').upload(ruta, f.blob, { contentType: f.tipo, cacheControl: '31536000', upsert: false }).then(function (r) { if (r.error) throw r.error; return ruta; });
+  }
+  function borrarFoto(ruta) { if (ruta) sb.storage.from('media').remove([ruta]).catch(function () { /* queda una foto sin usar: no afecta a la tienda */ }); }
+  function guardar() {
+    if (guardando || !F) return; var datos = validar(); if (!datos) return;
+    guardando = true; var b = $('b-guardar'), antes = b.textContent, eraPrimero = !F.prod && D.productos.length === 0; b.disabled = true; aviso('e-guardar', '');
+    var vieja = F.prod ? F.prod.foto_path : null, nueva = null;
+    b.textContent = F.foto ? 'Subiendo foto…' : 'Guardando…';
+    (F.foto ? subirFoto(F.foto) : Promise.resolve(null)).then(function (ruta) {
+      nueva = ruta; b.textContent = 'Guardando…';
+      if (ruta) datos.foto_path = ruta; else if (F.quitarFoto) datos.foto_path = null;
+      var q = F.prod ? sb.from('productos').update(datos).eq('id', F.prod.id) : sb.from('productos').insert(Object.assign({ tienda_id: D.tienda.id }, datos));
+      return q.select('id, seccion_id, nombre, descripcion, precio, oferta_pct, oferta_hasta, variante_tipo, variantes, stock, activo, foto_path, orden, created_at').single();
+    }).then(function (r) {
+      if (r.error) throw r.error;
+      if (vieja && (nueva || F.quitarFoto)) borrarFoto(vieja);
+      if (F.prod) { var i = D.productos.indexOf(F.prod); D.productos[i] = r.data; } else D.productos.unshift(r.data);
+      guardando = false; b.textContent = antes; var editado = !!F.prod; cerrarForm();
+      if (eraPrimero) { $('a-ver-tienda').href = VL.enlaceTienda(D.tienda.slug); $('dlg-primero').showModal(); }
+      else toast(editado ? 'Cambios guardados' : '¡Listo! Ya está en tu tienda');
+      VL.miPlan().then(function (p) { if (p.ok) { D.plan = p.plan; pintarLista(); } });
+    }).catch(function (e) {
+      if (nueva) borrarFoto(nueva);           /* si el producto no se guardó, no dejamos la foto suelta */
+      guardando = false; b.disabled = false; b.textContent = antes;
+      var m = fallo(e); if (e && /LIMITE_PRODUCTOS/.test(e.message || '')) m = 'Llegaste al máximo de ' + limite() + ' productos de tu plan. Puedes ocultar o borrar uno, o subir de plan.';
+      aviso('e-guardar', m); $('e-guardar').scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+  }
+  function borrar() {
+    if (borrando || !F || !F.prod) return; borrando = true; var p = F.prod, b = $('b-borrar-si'); b.disabled = true; b.textContent = 'Borrando…';
+    sb.from('productos').delete().eq('id', p.id).then(function (r) {
+      borrando = false; b.disabled = false; b.textContent = 'Sí, borrar'; $('dlg-borrar').close();
+      if (r.error) { aviso('e-guardar', fallo(r.error)); return; }
+      borrarFoto(p.foto_path); D.productos = D.productos.filter(function (x) { return x.id !== p.id; }); cerrarForm(); toast('Producto borrado');
+      VL.miPlan().then(function (x) { if (x.ok) { D.plan = x.plan; pintarLista(); } });
+    });
+  }
+
+  /* ---------- Eventos ---------- */
+  $('b-nuevo').addEventListener('click', function () { abrirForm(null); });
+  $('b-primero').addEventListener('click', function () { abrirForm(null); });
+  $('b-volver').addEventListener('click', cerrarForm);
+  $('b-reintentar').addEventListener('click', cargar);
+  $('b-camara').addEventListener('click', function () { $('in-camara').click(); });
+  $('b-galeria').addEventListener('click', function () { $('in-galeria').click(); });
+  $('b-cambiar').addEventListener('click', function () { $('in-galeria').click(); });
+  $('b-quitar-foto').addEventListener('click', function () { if (F.foto) { URL.revokeObjectURL(F.foto.url); F.foto = null; } F.quitarFoto = true; pintarFoto(); });
+  $('in-camara').addEventListener('change', alElegirFoto); $('in-galeria').addEventListener('change', alElegirFoto);
+  $('f-seccion').addEventListener('change', function () { var n = this.value === '__nueva'; $('nueva-sec').hidden = !n; if (n) $('f-nueva-sec').focus(); });
+  $('b-crear-sec').addEventListener('click', crearSeccion);
+  $('f-nueva-sec').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); crearSeccion(); } });
+  $('f-desc').addEventListener('input', function () { $('cont-desc').textContent = this.value.length + ' / 300'; });
+  $('b-sugerir').addEventListener('click', sugerir);
+  $('f-tiene-var').addEventListener('change', function () { $('var-caja').hidden = !this.checked; if (this.checked && !$('f-var-tipo').value) $('f-var-tipo').value = 'Talla'; });
+  [].forEach.call(document.querySelectorAll('.rapido'), function (b) { b.addEventListener('click', function () { $('f-var-tipo').value = b.dataset.tipo; if (b.dataset.ops) b.dataset.ops.split(',').forEach(agregarVariante); else $('f-var-op').focus(); }); });
+  $('b-var-add').addEventListener('click', function () { agregarVariante($('f-var-op').value); $('f-var-op').value = ''; $('f-var-op').focus(); });
+  $('f-var-op').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); agregarVariante(this.value); this.value = ''; } });
+  $('f-tiene-stock').addEventListener('change', function () { $('c-stock').hidden = !this.checked; if (this.checked) $('f-stock').focus(); });
+  $('f-oferta').addEventListener('change', function () { $('oferta-campos').hidden = !this.checked; vistaOferta(); });
+  $('f-pct').addEventListener('change', vistaOferta); $('f-precio').addEventListener('input', function () { $('c-precio').classList.remove('err'); vistaOferta(); });
+  $('f-nombre').addEventListener('input', function () { $('c-nombre').classList.remove('err'); });
+  $('b-guardar').addEventListener('click', guardar);
+  $('b-borrar').addEventListener('click', function () { $('dlg-borrar').showModal(); $('b-borrar-no').focus(); });
+  $('b-borrar-no').addEventListener('click', function () { $('dlg-borrar').close(); });
+  $('b-borrar-si').addEventListener('click', borrar);
+  $('b-otro').addEventListener('click', function () { $('dlg-primero').close(); abrirForm(null); });
+  $('a-plan').addEventListener('click', irPlan);
+
+  cargar();
+  window.__prod = { D: D, abrirForm: abrirForm, pintarLista: pintarLista, ver: ver, procesarFoto: procesarFoto, numero: numero, recargar: cargar };
+})();
+</script>
+</body>
+</html>
