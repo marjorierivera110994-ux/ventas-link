@@ -73,10 +73,10 @@
   function sesion() { var c = cliente(); if (!c) return Promise.resolve(null); return c.auth.getSession().then(function (r) { return (r.data && r.data.session) || null; }).catch(function () { return null; }); }
   function alCambiar(fn) { var c = cliente(); if (c) c.auth.onAuthStateChange(function (evento, s) { fn(evento, s || null); }); }
   /* Envía el correo para entrar (con botón; y con código si la plantilla lo trae). Si la persona es nueva, se crea su cuenta: la respuesta es la misma en los dos casos. */
-  function enviarCodigo(correo) {
+  function enviarCodigo(correo, destino) {
     var c = cliente(); if (!c) return sinCliente();
     if (!correoValido(correo)) return Promise.resolve(fallo({ code: 'email_address_invalid' }));
-    return c.auth.signInWithOtp({ email: String(correo).trim().toLowerCase(), options: { shouldCreateUser: true, emailRedirectTo: origen() + '/entrar.html' } })
+    return c.auth.signInWithOtp({ email: String(correo).trim().toLowerCase(), options: { shouldCreateUser: true, emailRedirectTo: origen() + '/' + (/^[a-z-]+\.html$/.test(destino || '') ? destino : 'entrar.html') } })
       .then(function (r) { return r.error ? fallo(r.error) : { ok: true }; }).catch(fallo);
   }
   function verificarCodigo(correo, codigo) {
@@ -127,7 +127,7 @@
       return c.rpc('slug_disponible', { p_slug: s }).then(function (r) {
         if (r.error) throw r.error;
         if (!r.data && i < 9) return intentar(i + 1);
-        return c.from('tiendas').insert({ slug: s, nombre: String(d.nombre).trim(), tipo: String(d.tipo || '').slice(0, 40), whatsapp: String(d.whatsapp || '').replace(/\D/g, ''), pais: d.pais || 'EC', moneda: d.moneda || 'USD' })
+        return c.from('tiendas').insert({ slug: s, nombre: String(d.nombre).trim(), tipo: String(d.tipo || '').slice(0, 40), whatsapp: String(d.whatsapp || '').replace(/\D/g, ''), pais: d.pais || 'EC', moneda: d.moneda || 'USD', fuente: /^[a-z0-9_:.-]{1,40}$/.test(d.fuente || '') ? d.fuente : 'directo' })
           .select(COLUMNAS).single().then(function (q) {
             if (!q.error) return { ok: true, tienda: q.data, nueva: true };
             if (q.error.code !== '23505') throw q.error;
@@ -148,6 +148,10 @@
   function fotoUrl(path) { return path ? C.url + '/storage/v1/object/public/media/' + String(path).split('/').map(encodeURIComponent).join('/') : ''; }
 
   /* ---------- Plan ---------- */
+  /* ¿Esta cuenta es la dueña? (lo decide la base; se usa solo para llevarla a su panel) */
+  function esAdmin() { var c = cliente(); if (!c) return Promise.resolve(false); return c.rpc('soy_admin').then(function (r) { return !r.error && r.data === true; }).catch(function () { return false; }); }
+  /* Sin tienda: la dueña va a su panel; las demás, a crear su tienda */
+  function irSinTienda() { return esAdmin().then(function (si) { location.replace(si ? 'admin.html' : 'onboarding-demo.html'); }); }
   function miPlan() { var c = cliente(); if (!c) return sinCliente(); return c.rpc('mi_plan').then(function (r) { return r.error ? fallo(r.error) : { ok: true, plan: r.data }; }).catch(fallo); }
   function iniciarPrueba(plan) {
     var c = cliente(); if (!c) return sinCliente();
@@ -156,5 +160,5 @@
 
   window.VL = { conCodigo: C.correoConCodigo === true, listo: !!(window.supabase && C.url && C.llave) && location.protocol !== 'file:', cliente: cliente, sesion: sesion, alCambiar: alCambiar, enviarCodigo: enviarCodigo, verificarCodigo: verificarCodigo,
     conGoogle: conGoogle, metodos: metodos, salir: salir, errorDeEnlace: errorDeEnlace, correoValido: correoValido, miTienda: miTienda, crearTienda: crearTienda, slugDe: slugDe, enlaceTienda: enlaceTienda, fotoUrl: fotoUrl,
-    miPlan: miPlan, iniciarPrueba: iniciarPrueba, _fallo: fallo };
+    miPlan: miPlan, esAdmin: esAdmin, irSinTienda: irSinTienda, iniciarPrueba: iniciarPrueba, _fallo: fallo };
 })();

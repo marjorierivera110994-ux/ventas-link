@@ -32,3 +32,7 @@ Proyecto: `vqhkbijlnpjtklnlvvuf` (us-west-2, Postgres 17). Las migraciones de `m
 
 ## Prueba de seguridad
 `pruebas/seguridad.sql` — 50 comprobaciones con dos vendedoras de mentira y un visitante. No deja datos (se deshace sola). Última corrida: 2026-11-16, 50 de 50 correctas. **Se corre tras cada cambio de la base.**
+
+## Panel de la dueña
+Funciones admin_* (resumen, vendedoras, costos, config, bitácora) solo responden a la cuenta que está en private.admins. Para agregar a la dueña: insert into private.admins (user_id) select id from auth.users where email = 'CORREO';
+Función de servidor admin-usuarios: crea cuentas y enlaces de entrada (supabase/functions/admin-usuarios). Prueba: pruebas/panel.sql.

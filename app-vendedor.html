@@ -349,6 +349,7 @@
 <script src="vendor/supabase.js"></script>
 <script src="vl-config.js"></script>
 <script src="vl-datos.js"></script>
+<script src="vl-registro.js"></script>
 <script>
 (function () {
   'use strict';
@@ -374,6 +375,7 @@
       return A.compartir(c, 'frase-' + MARCA.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.png');
     }).then(function (r) {
       b.disabled = false;
+      if ((r === 'compartido' || r === 'descargado') && window.VL_REG) VL_REG.evento('frase_compartida', { como: r });
       if (r === 'descargado') toast('Imagen guardada. Súbela a tu estado de WhatsApp.'); else if (r === 'error') toast('No pudimos crear la imagen. Intenta de nuevo.');
     });
   });
@@ -440,8 +442,9 @@
       if (!s) return;
       VL.miTienda().then(function (r) {
         if (!r.ok) return;
-        if (!r.tienda) { location.replace('onboarding-demo.html'); return; }
+        if (!r.tienda) { VL.irSinTienda(); return; }
         ponerTienda(r.tienda, s.user && s.user.email);
+        if (window.VL_REG) VL_REG.sesionDiaria();
       });
     });
     VL.alCambiar(function (evento) { if (evento === 'SIGNED_OUT') location.replace('entrar.html'); });

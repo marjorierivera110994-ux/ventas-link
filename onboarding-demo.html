@@ -191,6 +191,7 @@
 <script src="vendor/supabase.js"></script>
 <script src="vl-config.js"></script>
 <script src="vl-datos.js"></script>
+<script src="vl-registro.js"></script>
 <script>
 (function () {
   'use strict';
@@ -330,12 +331,19 @@
     if (ocupado) return; ocupado = true; limpiarTimers();
     var esc = $('escena'); var viejo = esc.firstElementChild; dir = dir || 1;
     function montar() {
-      clearInterval(relojCuenta); alEntrar = null; paso = destino; guardarRespuestas(); esc.textContent = ''; var nodo = construir(destino); esc.appendChild(nodo); actualizarTope(); animar(nodo, dir);
+      clearInterval(relojCuenta); alEntrar = null; medir(paso, destino); paso = destino; guardarRespuestas(); esc.textContent = ''; var nodo = construir(destino); esc.appendChild(nodo); actualizarTope(); animar(nodo, dir);
       var h = nodo.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
       var auto = nodo.querySelector('input:not([type=hidden]), select'); if (auto && PREGUNTAS.indexOf(destino) >= 0) { try { auto.focus({ preventScroll: true }); } catch (e) { /* ok */ } }
       window.scrollTo(0, 0); ocupado = false; if (destino === 'armando') arrancarArmado(); if (destino === 'lista') celebrar();
     }
     if (viejo && viejo.animate && !REDUCIDO) { var a = viejo.animate([{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(' + (-24 * dir) + 'px)', opacity: 0 }], { duration: 200, easing: 'ease-in', fill: 'forwards' }); a.onfinish = montar; } else montar();
+  }
+  /* Registro para el panel de la dueña: solo avances reales (volver atrás no cuenta) */
+  function medir(de, a) {
+    var R0 = window.VL_REG; if (!R0 || de === a) return;
+    if (de === 'bienvenida' && a === 'nombre') R0.unaVezPorVisita('onboarding_iniciado');
+    if (PREGUNTAS.indexOf(de) >= 0 && FLUJO.indexOf(a) > FLUJO.indexOf(de)) R0.evento('onboarding_paso_completado', { paso: de });
+    if (a === 'planes') R0.unaVezPorVisita('onboarding_planes_visto');
   }
   function siguiente() { ir(FLUJO[FLUJO.indexOf(paso) + 1], 1); }
   function anterior() { var i = FLUJO.indexOf(paso); if (paso === 'lista') { ir('whatsapp', -1); return; } if (i > 0) ir(FLUJO[i - 1], -1); }
@@ -541,7 +549,7 @@
     function crear() {
       if (trabajando) return; trabajando = true; b.disabled = true; b.textContent = 'Creando tu tienda…'; error('');
       var t = tipoActual();
-      VL.crearTienda({ nombre: R.nombre.trim(), tipo: t.id === 'otra' ? (R.otro.trim() || 'Otra cosa') : t.n, whatsapp: PAISES[R.pais].cod + telLimpio(), pais: R.pais, moneda: MONEDA[R.pais], secciones: t.sec }).then(function (r) {
+      VL.crearTienda({ nombre: R.nombre.trim(), tipo: t.id === 'otra' ? (R.otro.trim() || 'Otra cosa') : t.n, whatsapp: PAISES[R.pais].cod + telLimpio(), pais: R.pais, moneda: MONEDA[R.pais], secciones: t.sec, fuente: window.VL_REG ? VL_REG.fuente() : 'directo' }).then(function (r) {
         trabajando = false;
         if (!r.ok) { b.disabled = false; b.textContent = 'Crear mi tienda'; accion = crear; error(r.mensaje); return; }
         TIENDA = r.tienda; olvidarRespuestas(); ir('planes', 1);

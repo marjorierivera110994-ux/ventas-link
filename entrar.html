@@ -155,6 +155,7 @@
 <script src="vendor/supabase.js"></script>
 <script src="vl-config.js"></script>
 <script src="vl-datos.js"></script>
+<script src="vl-registro.js"></script>
 <script>
 (function () {
   'use strict';
@@ -175,7 +176,7 @@
     VL.miTienda().then(function (r) {
       if (!r.ok) { saliendo = false; ver('v-caido'); return; }
       if (r.tienda) { $('listo-t').textContent = '¡Hola de nuevo!'; $('listo-s').textContent = 'Abriendo ' + r.tienda.nombre + '…'; location.replace('app-vendedor.html'); }
-      else { $('listo-t').textContent = '¡Bienvenida!'; $('listo-s').textContent = 'Vamos a crear tu tienda…'; location.replace('onboarding-demo.html'); }
+      else { $('listo-t').textContent = '¡Bienvenida!'; $('listo-s').textContent = 'Vamos a crear tu tienda…'; VL.irSinTienda(); }
     });
   }
 
