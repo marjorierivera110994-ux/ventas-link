@@ -646,7 +646,7 @@
   function cargarBitacora() {
     sb.rpc('admin_bitacora', { p_limite: 15 }).then(function (r) {
       var c = $('bitacora-caja'); if (!c) return; c.textContent = ''; if (r.error) return;
-      var N = { vendedora_creada: 'Creaste una cuenta', enlace_acceso: 'Generaste un enlace de acceso', costo_guardado: 'Guardaste un gasto', costo_borrado: 'Borraste un gasto', costos_copiados: 'Copiaste los gastos del mes anterior', config_guardada: 'Cambiaste los datos de impuestos y comisión' };
+      var N = { vendedora_creada: 'Creaste una cuenta', enlace_acceso: 'Generaste un enlace de acceso', costo_guardado: 'Guardaste un gasto', costo_borrado: 'Borraste un gasto', costos_copiados: 'Copiaste los gastos del mes anterior', config_guardada: 'Cambiaste los datos de impuestos y comisión', duena_activada: 'Tu cuenta quedó activada como dueña' };
       var ul = el('ul', { class: 'costos' });
       (r.data || []).forEach(function (a) { ul.appendChild(el('li', { style: 'grid-template-columns:minmax(0,1fr) auto' }, [el('span', {}, [N[a.accion] || a.accion, a.detalle && a.detalle.correo ? el('small', { text: a.detalle.correo }) : null]), el('span', { class: 'ayuda', text: fecha(a.cuando, true) })])); });
       c.appendChild(tarjeta('Lo último que hiciste en el panel', 'queda registrado', (r.data || []).length ? [ul] : [el('p', { style: 'margin-top:12px' }, [sinDatos('Nada todavía')])]));
