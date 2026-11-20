@@ -73,6 +73,11 @@
   .vacio { grid-column: 1 / -1; text-align: center; padding: 30px 10px; color: var(--texto-2); }
   .hecho { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 14px auto 0; min-height: 48px; width: fit-content; padding: 0 18px; border-radius: 999px; background: var(--blanco); color: var(--tinta); text-decoration: none; font-size: 13px; font-weight: 700; box-shadow: 0 8px 20px -14px rgb(40 60 40 / .5); }
   .hecho b { color: var(--verde-texto); }
+  /* marca legal1: enlaces legales y aviso de datos del comprador */
+  .legal-pie { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 16px; margin-top: 8px; font-size: 12.5px; }
+  .legal-pie a { min-height: 44px; display: inline-flex; align-items: center; color: var(--texto-2); font-weight: 600; text-underline-offset: 3px; }
+  .priv { margin-top: 12px; font-size: 12.5px; color: var(--texto-2); text-align: center; line-height: 1.45; }
+  .priv a { color: var(--verde-texto); font-weight: 700; text-underline-offset: 3px; }
   .video-caja { margin-top: 10px; }
   .video-caja video { width: 100%; max-height: 360px; border-radius: 18px; background: #000; display: block; }
   .pie { margin-top: 22px; font-size: 12px; color: var(--texto-2); text-align: center; }
@@ -268,6 +273,7 @@
   <div id="grid" aria-live="polite"></div>
   <p class="pie" data-i="pie"></p>
   <a class="hecho" id="hecho" href="onboarding-demo.html"></a>
+  <nav class="legal-pie" aria-label="Legal"><a href="privacidad.html#compradores" data-i="lPriv"></a><a href="terminos.html#compradores" data-i="lTerm"></a><a href="terminos.html#reportar" data-i="lRep"></a></nav>
 </main>
 
 <div class="barra" id="barra"><button type="button" id="abrir-carrito">
@@ -327,7 +333,7 @@
     es: {
       demo: 'Tienda de demostración · productos de ejemplo', abierto: 'Abierto hoy · 9:00 a 18:00',
       desc: 'Ropa y accesorios hechos a mano. Arma tu pedido y lo coordinamos por WhatsApp: entrega y pago los acordamos contigo.',
-      buscar: 'Buscar productos', pie: 'El pedido no queda confirmado hasta que el negocio te responda y acuerden disponibilidad, pago y entrega.',
+      buscar: 'Buscar productos', pie: 'El pedido no queda confirmado hasta que el negocio te responda y acuerden disponibilidad, pago y entrega.', lPriv: 'Privacidad', lTerm: 'Términos', lRep: 'Reportar esta tienda', privAviso: 'Al enviar, tus datos se guardan para que {negocio} atienda tu pedido.', privLink: 'Ver privacidad',
       verPedido: 'Ver mi pedido', cats: 'Categorías', todo: 'Todo', ropa: 'Ropa', accesorios: 'Accesorios', agotado: 'Agotado',
       agregar: 'Agregar {x}', agotadoAria: '{x} agotado', sinResultados: 'No encontramos productos con esa búsqueda. Prueba con otra palabra.',
       talla: 'Talla', color: 'Color', cantidad: 'Cantidad', agregarPedido: 'Agregar al pedido', mas1: 'Agregar una unidad', menos1: 'Quitar una unidad',
@@ -352,7 +358,7 @@
     en: {
       demo: 'Demo store · sample products', abierto: 'Open today · 9:00 am to 6:00 pm',
       desc: 'Handmade clothing and accessories. Build your order and we will arrange delivery and payment with you on WhatsApp.',
-      buscar: 'Search products', pie: 'Your order is not confirmed until the shop replies and you agree on availability, payment and delivery.',
+      buscar: 'Search products', pie: 'Your order is not confirmed until the shop replies and you agree on availability, payment and delivery.', lPriv: 'Privacy', lTerm: 'Terms', lRep: 'Report this shop', privAviso: 'When you send it, your details are saved so {negocio} can handle your order.', privLink: 'See privacy',
       verPedido: 'View my order', cats: 'Categories', todo: 'All', ropa: 'Clothing', accesorios: 'Accessories', agotado: 'Sold out',
       agregar: 'Add {x}', agotadoAria: '{x} sold out', sinResultados: 'No products match your search. Try another word.',
       talla: 'Size', color: 'Color', cantidad: 'Quantity', agregarPedido: 'Add to order', mas1: 'Add one unit', menos1: 'Remove one unit',
@@ -376,7 +382,7 @@
     pt: {
       demo: 'Loja de demonstração · produtos de exemplo', abierto: 'Aberto hoje · 9h às 18h',
       desc: 'Roupas e acessórios feitos à mão. Monte seu pedido e combinamos a entrega e o pagamento com você pelo WhatsApp.',
-      buscar: 'Buscar produtos', pie: 'O pedido só é confirmado quando a loja responder e vocês combinarem disponibilidade, pagamento e entrega.',
+      buscar: 'Buscar produtos', pie: 'O pedido só é confirmado quando a loja responder e vocês combinarem disponibilidade, pagamento e entrega.', lPriv: 'Privacidade', lTerm: 'Termos', lRep: 'Denunciar esta loja', privAviso: 'Ao enviar, seus dados são salvos para que {negocio} atenda seu pedido.', privLink: 'Ver privacidade',
       verPedido: 'Ver meu pedido', cats: 'Categorias', todo: 'Tudo', ropa: 'Roupas', accesorios: 'Acessórios', agotado: 'Esgotado',
       agregar: 'Adicionar {x}', agotadoAria: '{x} esgotado', sinResultados: 'Não encontramos produtos com essa busca. Tente outra palavra.',
       talla: 'Tamanho', color: 'Cor', cantidad: 'Quantidade', agregarPedido: 'Adicionar ao pedido', mas1: 'Adicionar uma unidade', menos1: 'Remover uma unidade',
@@ -805,6 +811,10 @@
       } });
       wa.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg><span></span>';
       wa.lastChild.textContent = t('enviar');
+      /* Aviso de datos del comprador (LOPDP: informar al recoger el dato) */
+      var priv = el('p', { class: 'priv' }); priv.appendChild(document.createTextNode(t('privAviso', { negocio: NEGOCIO.nombre }) + ' '));
+      priv.appendChild(el('a', { href: 'privacidad.html#compradores', target: '_blank', rel: 'noopener', text: t('privLink') }));
+      h.appendChild(priv);
       h.appendChild(wa);
       h.appendChild(el('button', { type: 'button', class: 'btn claro', text: t('volver'), onclick: abrirCarrito }));
     });

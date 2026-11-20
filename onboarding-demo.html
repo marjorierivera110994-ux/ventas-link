@@ -120,6 +120,17 @@
   .enlace b { font-size: 15px; word-break: break-all; flex: 1; min-width: 0; }
   .copiar { min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--tinta); color: var(--lima); font-weight: 800; font-size: 14px; }
   .nota { font-size: 13px; color: var(--texto-2); margin-top: 8px; }
+  /* Aceptación de Términos y Privacidad (casilla NO marcada de inicio) — marca legal1 */
+  .acepto { margin-top: 14px; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; align-items: start; font-size: 14px; line-height: 1.4; cursor: pointer; }
+  .acepto input { appearance: none; -webkit-appearance: none; width: 28px; height: 28px; margin: 0; border-radius: 9px; border: 2px solid color-mix(in oklab, var(--tinta) 45%, transparent); background: var(--blanco); display: grid; place-items: center; cursor: pointer;
+                  box-shadow: inset 0 3px 6px rgb(60 50 20 / .12); transition: background .15s ease, border-color .15s ease; }
+  .acepto input::after { content: ''; width: 12px; height: 7px; border: 3px solid var(--lima); border-top: 0; border-right: 0; transform: rotate(-45deg) translate(1px, -1px); opacity: 0; }
+  .acepto input:checked { background: var(--tinta); border-color: var(--tinta); }
+  .acepto input:checked::after { opacity: 1; }
+  .acepto input:focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; }
+  .acepto a { font-weight: 700; color: var(--verde-texto); }
+  .acepto.err input { border-color: #c2410c; }
+  .acepto small { display: block; color: var(--texto-2); font-size: 12.5px; margin-top: 2px; }
   .confeti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; contain: strict; z-index: 20; }
   .confeti i { position: absolute; top: 38%; left: 50%; width: 10px; height: 14px; border-radius: 3px; }
 
@@ -192,6 +203,7 @@
 <script src="vl-config.js"></script>
 <script src="vl-datos.js"></script>
 <script src="vl-registro.js"></script>
+<script src="vl-legal.js"></script>
 <script>
 (function () {
   'use strict';
@@ -234,13 +246,13 @@
   (function () { var s = ''; for (var i = 0; i < 7; i++) s += '<rect y="' + (i * 2 * 20 / 13).toFixed(2) + '" width="30" height="' + (20 / 13).toFixed(2) + '" fill="#B22234"/>'; FLAGS.US += s + '<rect width="12" height="10.8" fill="#3C3B6E"/>'; })();
   function bandera(cod, alto) { return '<svg viewBox="0 0 30 20" width="' + Math.round(alto * 1.5) + '" height="' + alto + '" role="img" aria-label="Bandera de ' + PAISES[cod].n + '" style="border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.22);display:block;flex-shrink:0">' + FLAGS[cod] + '</svg>'; }
   var PLANES = {
-    gratis: { n: 'Gratis', precio: '$0', pts: ['Hasta 10 productos y 3 secciones', 'Pedidos por WhatsApp sin límite', 'Camino de éxito y mensajes motivadores'], cta: 'Crear mi tienda gratis' },
-    emprendedor: { n: 'Emprendedor', precio: '$4.99', pts: ['Hasta 300 productos y 300 videoclips', 'Ofertas y textos listos para redes', '10 plantillas para tu tienda'], cta: 'Probar 7 días gratis' },
-    pro: { n: 'Profesional', precio: '$9.99', pts: ['Productos y secciones sin límite', '50 plantillas y paleta con dorado y plateado', 'Tu logo, tu portada y hasta 1.000 videoclips'], cta: 'Probar 7 días gratis' }
+    gratis: { n: 'Gratis', precio: '$0', pts: ['Hasta 10 productos y 3 secciones', 'Pedidos por WhatsApp sin límite', 'Mensajes que animan a tus clientes a comprar'], cta: 'Crear mi tienda gratis' },
+    emprendedor: { n: 'Emprendedor', precio: '$4.99', pts: ['Hasta 300 productos y 30 secciones', 'Ofertas reales con fecha de fin', '10 plantillas para tu tienda (pronto)'], cta: 'Probar 7 días gratis' },
+    pro: { n: 'Profesional', precio: '$9.99', pts: ['Productos y secciones sin límite', 'Mejora de fotos y plantillas para tus fotos', '50 plantillas, tu logo y tu portada (pronto)'], cta: 'Probar 7 días gratis' }
   };
   var PORQUE = {
     gratis: 'Con hasta 10 productos, el plan Gratis te alcanza. Puedes subir de plan cuando quieras.',
-    emprendedor: 'Con 11 a 300 productos, Emprendedor te alcanza: hasta 300 productos, 30 secciones y 300 videoclips.',
+    emprendedor: 'Con 11 a 300 productos, Emprendedor te alcanza: hasta 300 productos y 30 secciones.',
     pro: 'Con más de 300 productos necesitas Profesional: productos y secciones sin límite.'
   };
   var FLUJO = ['bienvenida', 'nombre', 'vende', 'cantidad', 'whatsapp', 'armando', 'lista', 'cuenta', 'planes', 'fin'];
@@ -251,7 +263,19 @@
 
   /* ---------- Cuenta real: si hay conexión con la base, la tienda se guarda de verdad. Sin conexión, todo sigue como demostración. ---------- */
   var VL = window.VL, REAL = !!(VL && VL.listo), SESION = null, TIENDA = null, PLAN_REAL = null, LLAVE_R = 'vl-recorrido', relojCuenta = null, alEntrar = null;
-  function guardarRespuestas() { if (!REAL || TIENDA) return; try { localStorage.setItem(LLAVE_R, JSON.stringify({ nombre: R.nombre, tipo: R.tipo, otro: R.otro, cantidad: R.cantidad, pais: R.pais, tel: R.tel, t: Date.now() })); } catch (e) { /* sin almacenamiento */ } }
+  /* R.legal = versión que la persona aceptó al marcar la casilla en ESTE recorrido; viaja 24 h solo para registrarla al crear la tienda (nunca premarca la casilla). */
+  function guardarRespuestas() { if (!REAL || TIENDA) return; try { localStorage.setItem(LLAVE_R, JSON.stringify({ nombre: R.nombre, tipo: R.tipo, otro: R.otro, cantidad: R.cantidad, pais: R.pais, tel: R.tel, legal: R.legal || null, t: Date.now() })); } catch (e) { /* sin almacenamiento */ } }
+  function versionLegal() { return (window.VL_LEGAL && VL_LEGAL.version) || '2026-11-20'; }
+  /* Casilla de aceptación (no viene marcada). alCambiar(marcada) avisa para activar el botón. */
+  function casillaLegal(alCambiar) {
+    var inp = el('input', { type: 'checkbox', id: 'in-acepto' });
+    var txt = el('span'); txt.innerHTML = 'Tengo 18 años o más y acepto los <a href="terminos.html" target="_blank" rel="noopener">Términos</a> y la <a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a>.<small>Tus datos se guardan con proveedores en Estados Unidos, como explica la política.</small>';
+    var lab = el('label', { class: 'acepto', for: 'in-acepto' }, [inp, txt]);
+    inp.addEventListener('change', function () { lab.classList.remove('err'); R.legal = inp.checked ? versionLegal() : null; if (alCambiar) alCambiar(inp.checked); });
+    lab.marcada = function () { return inp.checked; };
+    lab.marcar = function () { lab.classList.add('err'); try { inp.focus({ preventScroll: false }); } catch (e) { inp.focus(); } };
+    return lab;
+  }
   function leerRespuestas() {
     try {
       var d = JSON.parse(localStorage.getItem(LLAVE_R) || 'null'); if (!d || typeof d !== 'object' || Date.now() - d.t > 86400000) return false;
@@ -261,6 +285,7 @@
       if (TIPOS.some(function (x) { return x.id === d.tipo; })) R.tipo = d.tipo;
       if (CANTIDADES.some(function (x) { return x.id === d.cantidad; })) R.cantidad = d.cantidad;
       if (PAISES[d.pais]) R.pais = d.pais;
+      if (typeof d.legal === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d.legal)) R.legal = d.legal;
       return true;
     } catch (e) { return false; }
   }
@@ -501,7 +526,7 @@
     cerrar.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
     var h = el('h1'); h.innerHTML = '<em>' + escapar(nombre) + '</em> lista para vender';
     var sub = el('p', { class: 'sub' }); sub.innerHTML = '<b>Hecho con tus 4 respuestas.</b> Empieza gratis y crece cuando quieras.';
-    var ben = el('ul', { class: 'beneficios' }); ['Pedidos por WhatsApp, sin comisión', 'Tu enlace listo para compartir en redes', 'Camino de éxito y mensajes que animan a comprar'].forEach(function (x) { var li = el('li'); li.innerHTML = '<span class="ck">' + CHECK + '</span>'; li.appendChild(document.createTextNode(x)); ben.appendChild(li); });
+    var ben = el('ul', { class: 'beneficios' }); ['Pedidos por WhatsApp, sin comisión', 'Tu enlace listo para compartir en redes', 'Mensajes que animan a tus clientes a comprar'].forEach(function (x) { var li = el('li'); li.innerHTML = '<span class="ck">' + CHECK + '</span>'; li.appendChild(document.createTextNode(x)); ben.appendChild(li); });
     var porque = el('p', { class: 'porque', text: PORQUE[R.plan_rec] + (REF ? ' Tu invitación de ' + quienInvita() + ' te regala 30 días de Emprendedor.' : '') });
     var grupo = el('div', { class: 'planes', role: 'radiogroup', 'aria-label': 'Elige tu plan' });
     var avisoPlan = el('p', { class: 'aviso-err', role: 'alert' }); avisoPlan.hidden = true;
@@ -547,9 +572,11 @@
 
     /* Crea la tienda en la base con las 4 respuestas. Si este correo ya tenía tienda, no se crea otra. */
     function crear() {
-      if (trabajando) return; trabajando = true; b.disabled = true; b.textContent = 'Creando tu tienda…'; error('');
+      if (trabajando) return;
+      if (!R.legal) { vistaCrear(); error('Para guardar tu tienda, marca la casilla de Términos y Privacidad.'); return; }
+      trabajando = true; b.disabled = true; b.textContent = 'Creando tu tienda…'; error('');
       var t = tipoActual();
-      VL.crearTienda({ nombre: R.nombre.trim(), tipo: t.id === 'otra' ? (R.otro.trim() || 'Otra cosa') : t.n, whatsapp: PAISES[R.pais].cod + telLimpio(), pais: R.pais, moneda: MONEDA[R.pais], secciones: t.sec, fuente: window.VL_REG ? VL_REG.fuente() : 'directo' }).then(function (r) {
+      VL.crearTienda({ nombre: R.nombre.trim(), tipo: t.id === 'otra' ? (R.otro.trim() || 'Otra cosa') : t.n, whatsapp: PAISES[R.pais].cod + telLimpio(), pais: R.pais, moneda: MONEDA[R.pais], secciones: t.sec, fuente: window.VL_REG ? VL_REG.fuente() : 'directo', legal: R.legal }).then(function (r) {
         trabajando = false;
         if (!r.ok) { b.disabled = false; b.textContent = 'Crear mi tienda'; accion = crear; error(r.mensaje); return; }
         TIENDA = r.tienda; olvidarRespuestas(); ir('planes', 1);
@@ -557,19 +584,25 @@
     }
     function vistaCrear() {
       sub.innerHTML = '<b>Tu correo ya está confirmado.</b> Solo falta guardar tu tienda.';
-      poner([el('p', { class: 'porque', text: nombreCorto() + ' · ' + etiquetaTipo() + ' · WhatsApp ' + telOculto() }), aviso]);
-      b.textContent = 'Crear mi tienda'; b.disabled = false; accion = crear; extra.textContent = '';
+      /* Si la casilla no se marcó en este recorrido (por ejemplo, ya tenías sesión), se pide aquí. */
+      var casilla = R.legal ? null : casillaLegal(function (si) { b.disabled = !si; if (si) error(''); });
+      poner([el('p', { class: 'porque', text: nombreCorto() + ' · ' + etiquetaTipo() + ' · WhatsApp ' + telOculto() }), casilla, aviso]);
+      b.textContent = 'Crear mi tienda'; b.disabled = !R.legal; accion = crear; extra.textContent = '';
     }
     function vistaCorreo() {
       sub.innerHTML = 'Te enviamos un correo para entrar, <b>sin contraseña</b>.';
       var inp = el('input', { type: 'email', id: 'in-mail', inputmode: 'email', autocomplete: 'email', autocapitalize: 'none', spellcheck: 'false', maxlength: '120', placeholder: 'tucorreo@ejemplo.com', value: correo });
       var campo = el('div', { class: 'campo' }, [el('label', { for: 'in-mail', text: 'Tu correo' }), inp, el('p', { class: 'error', text: 'Escribe un correo válido, por ejemplo nombre@correo.com.' })]);
-      poner([campo, aviso, el('p', { class: 'porque', text: 'Es gratis y no pedimos tarjeta. En el último paso eliges tu plan.' })]);
-      alEntrar = null; b.textContent = 'Enviarme el correo'; b.disabled = !VL.correoValido(inp.value); extra.textContent = '';
-      inp.addEventListener('input', function () { b.disabled = !VL.correoValido(inp.value); campo.classList.remove('err'); error(''); });
+      R.legal = null;            /* la casilla empieza SIEMPRE sin marcar */
+      var casilla = casillaLegal(function () { b.disabled = !VL.correoValido(inp.value) || !casilla.marcada(); });
+      poner([campo, casilla, aviso, el('p', { class: 'porque', text: 'Es gratis y no pedimos tarjeta. En el último paso eliges tu plan.' })]);
+      alEntrar = null; b.textContent = 'Enviarme el correo'; b.disabled = true; extra.textContent = '';
+      inp.addEventListener('input', function () { b.disabled = !VL.correoValido(inp.value) || !casilla.marcada(); campo.classList.remove('err'); error(''); });
       inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') accion(); });
       accion = function () {
         if (trabajando) return; if (!VL.correoValido(inp.value)) { campo.classList.add('err'); inp.focus(); return; }
+        if (!casilla.marcada()) { casilla.marcar(); error('Marca la casilla para aceptar los Términos y la Política de privacidad.'); return; }
+        guardarRespuestas();
         correo = inp.value.trim().toLowerCase(); R.email = correo; trabajando = true; b.disabled = true; b.textContent = 'Enviando…'; error('');
         VL.enviarCodigo(correo).then(function (r) {
           trabajando = false;
@@ -579,7 +612,7 @@
       };
       VL.metodos().then(function (m) {
         if (!m.google || paso !== 'cuenta' || extra.firstChild) return;
-        var g = el('button', { type: 'button', class: 'btn claro', text: 'Continuar con Google', style: 'margin-top:10px', onclick: function () { guardarRespuestas(); VL.conGoogle().then(function (r) { if (!r.ok) error(r.mensaje); }); } });
+        var g = el('button', { type: 'button', class: 'btn claro', text: 'Continuar con Google', style: 'margin-top:10px', onclick: function () { if (!R.legal) { error('Marca la casilla para aceptar los Términos y la Política de privacidad.'); return; } guardarRespuestas(); VL.conGoogle().then(function (r) { if (!r.ok) error(r.mensaje); }); } });
         extra.appendChild(g);
       });
     }
@@ -631,11 +664,13 @@
     var campo = el('div', { class: 'campo' }, [el('label', { for: 'in-mail', text: 'Tu correo' }), inp, el('p', { class: 'error', id: 'e-mail', text: 'Escribe un correo válido, por ejemplo nombre@correo.com.' })]);
     var b = cta('Crear mi cuenta', continuar, true);
     function valido(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); }
-    function continuar() { if (!valido(inp.value)) { campo.classList.add('err'); inp.focus(); return; } R.email = inp.value.trim(); ir('planes', 1); }
-    inp.addEventListener('input', function () { b.disabled = !valido(inp.value); campo.classList.remove('err'); });
+    R.legal = null;
+    var casilla = casillaLegal(function () { b.disabled = !valido(inp.value) || !casilla.marcada(); });
+    function continuar() { if (!valido(inp.value)) { campo.classList.add('err'); inp.focus(); return; } if (!casilla.marcada()) { casilla.marcar(); return; } R.email = inp.value.trim(); ir('planes', 1); }
+    inp.addEventListener('input', function () { b.disabled = !valido(inp.value) || !casilla.marcada(); campo.classList.remove('err'); });
     inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') continuar(); });
     var resumen = el('p', { class: 'porque', text: 'Es gratis y no pedimos tarjeta. En el último paso eliges tu plan.' });
-    return el('section', { class: 'paso' }, [h, sub, el('div', { class: 'cuerpo' }, [campo, resumen, el('p', { class: 'nota', text: 'Demostración: no se envía ningún correo ni se guarda tu dato.' })]), pie(b)]);
+    return el('section', { class: 'paso' }, [h, sub, el('div', { class: 'cuerpo' }, [campo, casilla, resumen, el('p', { class: 'nota', text: 'Demostración: no se envía ningún correo ni se guarda tu dato.' })]), pie(b)]);
   }
 
   /* ---------- Fin ---------- */

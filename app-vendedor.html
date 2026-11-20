@@ -235,6 +235,24 @@
   .cuenta-btn.salir { color: #9a3412; }
   .cuenta-btn[disabled] { opacity: .6; }
   @media (prefers-reduced-motion: reduce) { .cuenta { animation: none; } .cuenta-btn { transition: none; } }
+  /* Legal y eliminar cuenta (marca: legal1) */
+  .cuenta-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 16px; font-size: 13.5px; }
+  .cuenta-legal a { min-height: 44px; display: inline-flex; align-items: center; color: var(--texto-2); font-weight: 600; text-underline-offset: 3px; }
+  .cuenta-borrar { min-height: 44px; font-size: 14px; font-weight: 700; color: #9a3412; text-decoration: underline; text-underline-offset: 3px; justify-self: center; padding: 0 12px; }
+  .cuenta-baja { display: none; gap: 12px; }
+  .cuenta.modo-baja > :not(.cuenta-baja) { display: none !important; }
+  .cuenta.modo-baja .cuenta-baja { display: grid; }
+  .cuenta-baja h2 { font-size: 22px; line-height: 1.15; }
+  .cuenta-baja p, .cuenta-baja li { font-size: 15px; color: var(--texto-2); }
+  .cuenta-baja b { color: var(--tinta); }
+  .cuenta-baja ul { padding-left: 20px; display: grid; gap: 4px; }
+  .baja-campo label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--tinta); }
+  .baja-campo input { width: 100%; min-height: 54px; border-radius: 16px; border: 2px solid transparent; background: var(--blanco); padding: 0 16px; font: inherit; font-size: 18px; font-weight: 700; letter-spacing: .08em;
+                      box-shadow: inset 0 4px 8px rgb(60 50 20 / .16); }
+  .baja-campo input:focus-visible { border-color: var(--tinta); outline: none; }
+  .baja-error { font-size: 14px; font-weight: 700; color: #9a3412; background: color-mix(in oklab, var(--naranja) 16%, white); border-radius: 14px; padding: 10px 12px; }
+  .cuenta-btn.borrar { background: #9a3412; color: #fff; box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), inset 0 -5px 0 rgb(0 0 0 / .35), 0 6px 0 #5c1f0a, 0 16px 18px -10px rgb(90 30 10 / .5); }
+  .cuenta-btn.borrar[disabled] { opacity: .45; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -343,6 +361,22 @@
   <button type="button" class="cuenta-btn claro" id="cuenta-pers">Personalizar mi tienda</button>
   <button type="button" class="cuenta-btn salir" id="cuenta-salir" hidden>Cerrar sesión</button>
   <button type="button" class="cuenta-btn claro" id="cuenta-cerrar">Cerrar</button>
+  <nav class="cuenta-legal" aria-label="Documentos legales"><a href="terminos.html">Términos</a><a href="privacidad.html">Privacidad</a><a href="reembolsos.html">Planes y reembolsos</a></nav>
+  <button type="button" class="cuenta-borrar" id="cuenta-borrar" hidden>Eliminar mi cuenta</button>
+  <div class="cuenta-baja" id="cuenta-baja">
+    <h2 id="baja-t">¿Eliminar tu cuenta?</h2>
+    <p>Se borra <b>todo y para siempre</b>, y no se puede deshacer:</p>
+    <ul>
+      <li>tu tienda, tus productos, tus fotos y tus secciones;</li>
+      <li>tus pedidos y los datos de tus clientes;</li>
+      <li>tu enlace dejará de funcionar y nadie más podrá usarlo.</li>
+    </ul>
+    <div class="baja-campo"><label for="baja-in">Para confirmar, escribe <b>ELIMINAR</b></label>
+      <input id="baja-in" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12" placeholder="ELIMINAR"></div>
+    <p class="baja-error" id="baja-error" role="alert" hidden></p>
+    <button type="button" class="cuenta-btn borrar" id="baja-si" disabled>Eliminar mi cuenta para siempre</button>
+    <button type="button" class="cuenta-btn claro" id="baja-no">No, volver</button>
+  </div>
 </section>
 
 <script src="frases-arte.js"></script>
@@ -405,7 +439,29 @@
   var VL = window.VL, focoAntes = null;
   function iniciales(n) { var p = String(n || '').trim().split(/\s+/).filter(Boolean); return ((p[0] || 'T').charAt(0) + (p[1] ? p[1].charAt(0) : '')).toUpperCase(); }
   function abrirCuenta() { focoAntes = document.activeElement; $('cuenta').hidden = false; $('cuenta-fondo').hidden = false; $('cuenta-cerrar').focus(); }
-  function cerrarCuenta() { $('cuenta').hidden = true; $('cuenta-fondo').hidden = true; if (focoAntes && focoAntes.focus) focoAntes.focus(); }
+  function cerrarCuenta() { if (borrando) return; salirDeBaja(); $('cuenta').hidden = true; $('cuenta-fondo').hidden = true; if (focoAntes && focoAntes.focus) focoAntes.focus(); }
+  /* Eliminar mi cuenta (derecho de eliminación): pide escribir ELIMINAR; borra todo en el servidor y cierra la sesión. */
+  var borrando = false;
+  function salirDeBaja() { $('cuenta').classList.remove('modo-baja'); $('cuenta').setAttribute('aria-labelledby', 'cuenta-t'); $('baja-in').value = ''; $('baja-si').disabled = true; $('baja-error').hidden = true; }
+  $('cuenta-borrar').addEventListener('click', function () { $('cuenta').classList.add('modo-baja'); $('cuenta').setAttribute('aria-labelledby', 'baja-t'); $('cuenta').scrollTop = 0; $('baja-in').focus(); });
+  $('baja-no').addEventListener('click', function () { if (borrando) return; salirDeBaja(); $('cuenta-borrar').focus(); });
+  $('baja-in').addEventListener('input', function () { $('baja-si').disabled = this.value.trim().toUpperCase() !== 'ELIMINAR'; $('baja-error').hidden = true; });
+  $('baja-si').addEventListener('click', function () {
+    var b = this; if (borrando || $('baja-in').value.trim().toUpperCase() !== 'ELIMINAR') return;
+    borrando = true; b.disabled = true; $('baja-no').disabled = true; b.textContent = 'Eliminando…';
+    VL.borrarCuenta().then(function (r) {
+      if (r.ok) {
+        var caja = $('cuenta-baja'); caja.textContent = '';
+        var h = document.createElement('h2'); h.id = 'baja-t'; h.textContent = 'Tu cuenta fue eliminada'; h.tabIndex = -1;
+        var p = document.createElement('p'); p.textContent = 'Borramos tu tienda, tus productos, tus fotos y tus pedidos. Gracias por haber vendido con Ventas Link.';
+        caja.appendChild(h); caja.appendChild(p); h.focus();
+        setTimeout(function () { location.replace('vista-pagina-ventas.html'); }, 3500);
+        return;
+      }
+      borrando = false; b.disabled = false; $('baja-no').disabled = false; b.textContent = 'Eliminar mi cuenta para siempre';
+      $('baja-error').textContent = r.mensaje; $('baja-error').hidden = false;
+    });
+  });
   $('perfil').addEventListener('click', abrirCuenta);
   $('cuenta-cerrar').addEventListener('click', cerrarCuenta); $('cuenta-fondo').addEventListener('click', cerrarCuenta);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('cuenta').hidden) cerrarCuenta(); });
@@ -432,7 +488,7 @@
         fp.src = 'productos.html#nuevo'; ir('productos');
       }, true);
     }
-    $('cuenta-salir').hidden = false; $('cuenta-entrar').hidden = true;
+    $('cuenta-salir').hidden = false; $('cuenta-entrar').hidden = true; $('cuenta-borrar').hidden = false;
     var d = document.querySelector('.inicio .demo'); if (d) d.textContent = 'Tu cuenta es real · números de ejemplo';
     document.title = t.nombre + ' — Ventas Link';
   }

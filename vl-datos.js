@@ -137,11 +137,30 @@
       });
     }
     return intentar(0).then(function (res) {
+      /* Aceptación de Términos + Privacidad (la casilla que la vendedora marcó): queda registrada con su versión. */
+      return (d.legal ? aceptarLegal(d.legal, 'recorrido') : Promise.resolve()).then(function () { return res; });
+    }).then(function (res) {
       var secs = (d.secciones || []).slice(0, 3);
       if (!res.nueva || !secs.length) return res;
       /* Secciones sugeridas: si fallan no se pierde la tienda (la vendedora las crea luego). */
       return c.from('secciones').insert(secs.map(function (n, k) { return { tienda_id: res.tienda.id, nombre: String(n).slice(0, 40), orden: k }; })).then(function () { return res; }, function () { return res; });
     }).catch(fallo);
+  }
+  /* Registra que esta cuenta aceptó la versión vigente de Términos + Privacidad. Si falla, no frena a la vendedora. */
+  function aceptarLegal(version, origenTxt) {
+    var c = cliente(); if (!c || !/^\d{4}-\d{2}-\d{2}$/.test(version || '')) return Promise.resolve({ ok: false });
+    return c.rpc('registrar_consentimiento', { p_version: version, p_origen: origenTxt || '' }).then(function (r) { return { ok: !r.error }; }, function () { return { ok: false }; });
+  }
+  /* Elimina la cuenta de quien tiene la sesión: tienda, productos, fotos y pedidos (función de servidor borrar-cuenta). */
+  function borrarCuenta() {
+    var c = cliente(); if (!c) return sinCliente();
+    return c.functions.invoke('borrar-cuenta', { body: { confirmo: 'ELIMINAR' } }).then(function (r) {
+      if (!r.error) return c.auth.signOut().catch(function () { /* la sesión ya no existe */ }).then(function () { try { localStorage.removeItem('vl-recorrido'); } catch (e) { /* ok */ } return { ok: true }; });
+      var st = r.error && r.error.context && r.error.context.status;
+      if (st === 409) return { ok: false, mensaje: 'Esta es la cuenta de la dueña del panel: no se puede borrar desde aquí.' };
+      if (st === 401) return { ok: false, mensaje: 'Tu sesión venció. Vuelve a entrar e inténtalo de nuevo.' };
+      return { ok: false, mensaje: 'No pudimos eliminar tu cuenta. Revisa tu conexión e inténtalo de nuevo; si sigue fallando, escríbenos.' };
+    }).catch(function () { return { ok: false, mensaje: 'No hay conexión. Revisa tu internet e inténtalo de nuevo.' }; });
   }
   function enlaceTienda(slug) { return origen() + '/t/' + slug; }
   /* Dirección pública de una foto guardada (el catálogo es público por enlace). */
@@ -160,5 +179,5 @@
 
   window.VL = { conCodigo: C.correoConCodigo === true, listo: !!(window.supabase && C.url && C.llave) && location.protocol !== 'file:', cliente: cliente, sesion: sesion, alCambiar: alCambiar, enviarCodigo: enviarCodigo, verificarCodigo: verificarCodigo,
     conGoogle: conGoogle, metodos: metodos, salir: salir, errorDeEnlace: errorDeEnlace, correoValido: correoValido, miTienda: miTienda, crearTienda: crearTienda, slugDe: slugDe, enlaceTienda: enlaceTienda, fotoUrl: fotoUrl,
-    miPlan: miPlan, esAdmin: esAdmin, irSinTienda: irSinTienda, iniciarPrueba: iniciarPrueba, _fallo: fallo };
+    miPlan: miPlan, esAdmin: esAdmin, irSinTienda: irSinTienda, iniciarPrueba: iniciarPrueba, aceptarLegal: aceptarLegal, borrarCuenta: borrarCuenta, _fallo: fallo };
 })();

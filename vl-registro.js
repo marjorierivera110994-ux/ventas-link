@@ -29,7 +29,9 @@
     var h = { apikey: C.llave, 'Content-Type': 'application/json' }, s = sesion(); if (s) h.Authorization = 'Bearer ' + s.access_token;
     try { fetch(C.url + '/rest/v1/rpc/' + fn, { method: 'POST', keepalive: true, headers: h, body: JSON.stringify(args) }).catch(function () { /* no importa */ }); } catch (e) { /* no importa */ }
   }
-  function evento(tipo, props) { rpc('registrar_evento', { p_tipo: tipo, p_anon: anonId(), p_props: props || {} }); }
+  /* La persona puede apagar la medición en Privacidad (vl-no-medir): entonces no se envían eventos ni el número al azar. */
+  function noMedir() { try { return localStorage.getItem('vl-no-medir') === '1'; } catch (e) { return false; } }
+  function evento(tipo, props) { if (noMedir()) return; rpc('registrar_evento', { p_tipo: tipo, p_anon: anonId(), p_props: props || {} }); }
   function unaVezPorVisita(tipo, props) { try { if (sessionStorage.getItem('vl-ev-' + tipo)) return; sessionStorage.setItem('vl-ev-' + tipo, '1'); } catch (e) { /* ok */ } evento(tipo, props); }
   function hoy() { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
   /* Un "día activo" por vendedora (para saber quién vuelve al día 1, 7 y 30). */
@@ -41,7 +43,7 @@
   var enviados = 0;
   function error(msg, pagina) {
     if (!activo || enviados >= 5) return; var m = String(msg || '').replace(/\s+/g, ' ').trim(); if (!m) return; enviados++;
-    rpc('registrar_error', { p_mensaje: m.slice(0, 300), p_pagina: String(pagina || location.pathname.split('/').pop() || 'inicio').slice(0, 80), p_anon: anonId() });
+    rpc('registrar_error', { p_mensaje: m.slice(0, 300), p_pagina: String(pagina || location.pathname.split('/').pop() || 'inicio').slice(0, 80), p_anon: noMedir() ? null : anonId() });
   }
   window.addEventListener('error', function (e) {
     if (!e || !e.message || /^Script error/i.test(e.message)) return;          /* errores de otros sitios: no se pueden leer */
@@ -49,6 +51,6 @@
   });
   window.addEventListener('unhandledrejection', function (e) { var r = e && e.reason; if (r && /AbortError|Load failed|Failed to fetch|NetworkError/i.test(String(r.name || '') + String(r.message || ''))) return; error('Promesa sin respuesta: ' + (r && r.message ? r.message : String(r)).slice(0, 240)); });
 
-  capturarFuente();
+  if (!noMedir()) capturarFuente();
   window.VL_REG = { evento: evento, unaVezPorVisita: unaVezPorVisita, sesionDiaria: sesionDiaria, error: error, fuente: fuente, anonId: anonId };
 })();

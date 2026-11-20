@@ -164,6 +164,12 @@
             background: color-mix(in oklab, var(--accent) 10%, var(--surface)); border: 1px solid color-mix(in oklab, var(--accent) 25%, transparent); }
   .cierre .cta { margin-top: 16px; }
   footer { margin-top: 32px; font-size: 12.5px; color: var(--text-2); text-align: center; }
+  /* marca legal1: pie legal y etiqueta Pronto (función que aún no está en la cuenta real) */
+  .pie-legal nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 18px; }
+  .pie-legal a { min-height: 44px; display: inline-flex; align-items: center; color: var(--text-1); font-weight: 600; font-size: 13.5px; text-underline-offset: 3px; }
+  .pie-legal p { margin-top: 6px; }
+  .pronto { display: inline-block; font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; line-height: 1; padding: 4px 8px; border-radius: 999px; vertical-align: 1px; margin-left: 4px;
+            color: #7a3a07; background: color-mix(in oklab, #ff7a1a 18%, white); border: 1px solid color-mix(in oklab, #ff7a1a 45%, white); white-space: nowrap; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 
   /* Estilo moderno: logo animado, stickers y botón flotante */
@@ -265,10 +271,10 @@
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Hasta 3 secciones</span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Pedidos por WhatsApp sin límite</span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Descripción y stock opcional</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Camino de éxito y meta semanal</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Camino de éxito y meta semanal <em class="pronto">Pronto</em></span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mensajes positivos que animan a tus clientes a comprar</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>1 videoclip de hasta 15 segundos</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Programa de invitados: 30 días de Emprendedor por cada vendedor que invites</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>1 videoclip de hasta 15 segundos <em class="pronto">Pronto</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Programa de invitados: 30 días de Emprendedor por cada vendedor que invites <em class="pronto">Pronto</em></span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Guía de ayuda y preguntas frecuentes</span></li>
         </ul>
         <a class="cta" href="onboarding-demo.html">Empezar gratis</a>
@@ -282,12 +288,12 @@
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Todo lo del plan Gratis</b></span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Hasta 300 productos y 30 secciones</span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Ofertas y descuentos con fecha de fin</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Textos listos para compartir en redes</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>10 plantillas para personalizar tu tienda: nombre, colores y decoración</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Estadísticas básicas: visitas y pedidos</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Edita los mensajes motivadores que ven tus clientes</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Hasta 300 videoclips de 15 segundos</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Sin la marca de Ventas Link en tu tienda</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Textos listos para compartir en redes <em class="pronto">Pronto</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>10 plantillas para personalizar tu tienda: nombre, colores y decoración <em class="pronto">Pronto</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Estadísticas básicas: visitas y pedidos <em class="pronto">Pronto</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Edita los mensajes motivadores que ven tus clientes <em class="pronto">Pronto</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Hasta 300 videoclips de 15 segundos <em class="pronto">Pronto</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Sin la marca de Ventas Link en tu tienda <em class="pronto">Pronto</em></span></li>
         </ul>
         <a class="cta" href="onboarding-demo.html">Probar 7 días gratis</a>
       </article>
@@ -298,19 +304,19 @@
         <ul>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Todo lo del plan Emprendedor</b></span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Productos y secciones sin límite*</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Estadísticas completas y reporte mensual</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Estadísticas completas y reporte mensual <em class="pronto">Pronto</em></span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mejora de fotos: más luz, fondo blanco y recorte (en tu celular)</span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>8 plantillas para tus fotos: precio, oferta, nuevo y más (cuadrada, vertical e historia)</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>50 plantillas y combinaciones profesionales</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Paleta amplia: colores elegantes, matizados, brillantes, dorado y plateado</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Tu logo y tu foto de portada</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Hasta 1.000 videoclips de hasta 20 segundos</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>50 plantillas y combinaciones profesionales <em class="pronto">Pronto</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Paleta amplia: colores elegantes, matizados, brillantes, dorado y plateado <em class="pronto">Pronto</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Tu logo y tu foto de portada <em class="pronto">Pronto</em></span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Hasta 1.000 videoclips de hasta 20 segundos <em class="pronto">Pronto</em></span></li>
         </ul>
         <a class="cta" href="onboarding-demo.html">Probar 7 días gratis</a>
       </article>
     </div>
     <p class="nota-planes">* Sin límite para un negocio normal: tenemos un tope técnico muy alto solo para evitar abusos. Los videoclips sí tienen un tope (1.000) porque ocupan más espacio.</p>
-    <p class="nota-planes">Precios de lanzamiento en dólares, por mes. Son precios de prueba y los confirmamos antes de abrir los cobros. Empiezas con 7 días de funciones premium y luego pasas al plan gratis, sin cobro automático. Cancelas cuando quieras. Los impuestos se definen según tu país.</p>
+    <p class="nota-planes">Precios de lanzamiento en dólares, por mes. Son precios de prueba y los confirmamos antes de abrir los cobros. Empiezas con 7 días de funciones premium y luego pasas al plan gratis, sin cobro automático. Las funciones marcadas «Pronto» todavía no están en tu cuenta y no se cobrarán mientras no funcionen. Los impuestos se definen según tu país. <a href="reembolsos.html">Cancelación y reembolsos</a>.</p>
   </section>
 
   <section id="logros" aria-labelledby="t-logros">
@@ -356,13 +362,13 @@
       <details><summary>¿Puedo usarla en otro país, idioma o moneda?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
         <p>Sí. Eliges tu <b>país</b> y al instante se activan la <b>bandera</b> (tus clientes siempre ven desde dónde vendes) y tu <b>moneda</b>. También eliges el idioma, y tus clientes pueden ver el catálogo en español, inglés o portugués. Tú escribes tus precios en tu moneda: la app no convierte monedas. El cobro de los planes de pago empieza en Ecuador y se abrirá a otros países por etapas.</p></details>
       <details><summary>¿Qué es el camino de éxito?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
-        <p>Es tu avance semana a semana: sumas cuando compartes tu enlace, actualizas productos o atiendes pedidos. También ves tu meta de ventas y tus mejores semanas. <b>Nunca se rompe por vender poco</b>: premia tu constancia, no la suerte.</p></details>
+        <p>Es tu avance semana a semana: sumas cuando compartes tu enlace, actualizas productos o atiendes pedidos. También ves tu meta de ventas y tus mejores semanas. <b>Nunca se rompe por vender poco</b>: premia tu constancia, no la suerte. <em class="pronto">Pronto</em> en tu cuenta.</p></details>
       <details><summary>¿Puedo mejorar las fotos de mis productos?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
         <p>Sí. En el plan Profesional puedes darle más luz a tus fotos, poner fondo blanco y usar 8 plantillas para compartirlas (precio, oferta, nuevo…). Se hace en tu celular y tus fotos no se suben a ningún lado. Funciona mejor con fondo liso; si el recorte no queda bien, puedes ajustarlo o usar la foto original. <a href="foto-demo.html">Míralo funcionando</a>.</p></details>
       <details><summary>¿Mis datos están seguros?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
-        <p>Cada vendedor ve solo su información. No guardamos datos de tarjetas, y puedes pedir que eliminemos tu cuenta y tus datos cuando quieras.</p></details>
+        <p>Cada vendedor ve solo su información. No vendemos tus datos ni usamos publicidad de otras empresas, y no guardamos datos de tarjetas. Puedes eliminar tu cuenta y tus datos tú mismo, cuando quieras, desde <b>Mi cuenta</b>. Todo el detalle está en la <a href="privacidad.html">Política de privacidad</a>.</p></details>
       <details><summary>¿Puedo cancelar cuando quiera?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
-        <p>Sí. Si tienes un plan de pago, lo cancelas en un toque desde tu cuenta y vuelves al plan gratis sin perder tu tienda.</p></details>
+        <p>Sí. Hoy no hay cobros: la prueba termina sola, sin cobro automático. Cuando abramos los planes de pago, los cancelarás en un toque desde tu cuenta y volverás al plan gratis sin perder tu tienda. Mira <a href="reembolsos.html">planes, cancelación y reembolsos</a>.</p></details>
     </div>
   </section>
 
@@ -371,7 +377,7 @@
     <p class="sub" style="margin-inline:auto">Crea tu tienda, comparte tu enlace y recibe tu primer pedido claro.</p>
     <a class="cta" href="onboarding-demo.html">Crear mi tienda gratis</a>
   </div>
-  <footer>Borrador de diseño · el texto final se ajusta con tu cliente ideal antes de publicar.</footer>
+  <footer class="pie-legal"><nav aria-label="Documentos legales"><a href="terminos.html">Términos y condiciones</a><a href="privacidad.html">Privacidad</a><a href="reembolsos.html">Planes, cancelación y reembolsos</a><a href="privacidad.html#contacto">Contacto</a></nav><p>© 2026 Ventas Link · Hecho en Ecuador. Ventas Link no es parte de WhatsApp ni de Meta.</p></footer>
 </main>
 
 <dialog id="guia" aria-labelledby="guia-t">
@@ -381,15 +387,15 @@
     <li><div><h3>Crea tu tienda</h3><p>Escribe el nombre de tu negocio, qué ofreces, tu horario y tu número de WhatsApp con el código de tu país.</p></div></li>
     <li><div><h3>Elige tu país, idioma y moneda</h3><p>Al elegir tu país se activan la bandera y la moneda de tu tienda, y tus clientes ven siempre desde dónde vendes. Escribe tus precios en tu moneda: la app no convierte monedas. Tus clientes pueden ver el catálogo en español, inglés o portugués.</p></div></li>
     <li><div><h3>Crea tus secciones</h3><p>Ordena tu mercadería, por ejemplo Aretes, Collares y Ropa. Cada sección tiene su propio catálogo.</p></div></li>
-    <li><div><h3>Sube tus productos</h3><p>Agrega foto, nombre, precio y descripción. Si quieres, controla el stock: la tienda marca "Agotado" sola cuando llegan a cero. También puedes subir un videoclip corto (hasta 15 segundos) para mostrar la tela y el caído: tu cliente lo ve al tocar "Ver videoclip".</p></div></li>
+    <li><div><h3>Sube tus productos</h3><p>Agrega foto, nombre, precio y descripción. Si quieres, controla el stock: la tienda marca "Agotado" sola cuando llegan a cero. Pronto también podrás subir un videoclip corto (hasta 15 segundos) para mostrar la tela y el caído.</p></div></li>
     <li><div><h3>Pon ofertas reales</h3><p>Elige un descuento y la app calcula el nuevo precio. Tu cliente ve tu precio anterior, el precio nuevo y cuándo termina. El precio anterior siempre es el real.</p></div></li>
-    <li><div><h3>Comparte tu enlace en redes</h3><p>Copia tu enlace y usa los textos listos para WhatsApp, Instagram, Facebook y TikTok. Los ajustas a tu gusto antes de publicar.</p></div></li>
+    <li><div><h3>Comparte tu enlace en redes</h3><p>Copia tu enlace y compártelo en WhatsApp, Instagram, Facebook y TikTok. Pronto: textos listos para cada red, que ajustas a tu gusto antes de publicar.</p></div></li>
     <li><div><h3>Recibe pedidos por WhatsApp</h3><p>Tu cliente abre tu enlace y ve mensajes positivos que lo animan a comprar. Arma su carrito y el mensaje te llega listo, con productos, cantidades, total, entrega y forma de pago. Tú confirmas disponibilidad, pago y entrega por el chat.</p></div></li>
-    <li><div><h3>Guarda tus datos de cobro y confirma pedidos</h3><p>Guarda una sola vez cómo te pagan (cuenta bancaria, billetera de tu país o efectivo). Cuando llega un pedido, tocas "Confirmar pedido" y tu respuesta sale lista por WhatsApp, con el total, los datos para pagar y la entrega. Cuando veas el dinero, marcas "Pagado" y luego "Entregado": así se actualizan tu stock y tus ventas.</p></div></li>
-    <li><div><h3>Sigue tu camino de éxito</h3><p>Suma semana a semana al compartir tu enlace, actualizar productos y atender pedidos. Fija tu meta de ventas y celebra tus logros.</p></div></li>
-    <li><div><h3>Invita a otros vendedores y gana</h3><p>Comparte tu enlace de invitación. Cuando tu invitado publique su primer producto, tú ganas 30 días de plan Emprendedor y él también recibe 30 días. Puedes ganar hasta 12 premios.</p></div></li>
-    <li><div><h3>Personaliza tu tienda (planes de pago)</h3><p>Elige una plantilla, cambia el color de tu marca y agrega decoración. Los botones y el carrito ya vienen listos, no necesitas tocarlos. Emprendedor incluye 10 plantillas. Profesional incluye 50, una paleta amplia con colores elegantes, dorado y plateado, y te deja subir tu logo y tu foto de portada.</p></div></li>
-    <li><div><h3>¿Tienes dudas?</h3><p>Abre este botón "Cómo usar" y las preguntas frecuentes: ahí están las respuestas a lo más común. No ofrecemos atención directa con personas.</p></div></li>
+    <li><div><h3>Guarda tus datos de cobro y confirma pedidos <em class="pronto">Pronto</em></h3><p>Guarda una sola vez cómo te pagan (cuenta bancaria, billetera de tu país o efectivo). Cuando llega un pedido, tocas "Confirmar pedido" y tu respuesta sale lista por WhatsApp, con el total, los datos para pagar y la entrega. Cuando veas el dinero, marcas "Pagado" y luego "Entregado": así se actualizan tu stock y tus ventas.</p></div></li>
+    <li><div><h3>Sigue tu camino de éxito <em class="pronto">Pronto</em></h3><p>Suma semana a semana al compartir tu enlace, actualizar productos y atender pedidos. Fija tu meta de ventas y celebra tus logros.</p></div></li>
+    <li><div><h3>Invita a otros vendedores y gana <em class="pronto">Pronto</em></h3><p>Comparte tu enlace de invitación. Cuando tu invitado publique su primer producto, tú ganas 30 días de plan Emprendedor y él también recibe 30 días. Puedes ganar hasta 12 premios.</p></div></li>
+    <li><div><h3>Personaliza tu tienda (planes de pago) <em class="pronto">Pronto</em></h3><p>Elige una plantilla, cambia el color de tu marca y agrega decoración. Los botones y el carrito ya vienen listos, no necesitas tocarlos. Emprendedor incluye 10 plantillas. Profesional incluye 50, una paleta amplia con colores elegantes, dorado y plateado, y te deja subir tu logo y tu foto de portada.</p></div></li>
+    <li><div><h3>¿Tienes dudas?</h3><p>Abre este botón "Cómo usar" y las preguntas frecuentes: ahí están las respuestas a lo más común. No ofrecemos atención directa con personas; para temas de tus datos personales o legales, escríbenos desde <a href="privacidad.html#contacto">Privacidad</a>.</p></div></li>
   </ol>
 </dialog>
 

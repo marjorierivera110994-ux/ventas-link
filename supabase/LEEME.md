@@ -3,7 +3,7 @@
 Proyecto: `vqhkbijlnpjtklnlvvuf` (us-west-2, Postgres 17). Las migraciones de `migrations/` se aplican en orden por su fecha; una base vacía se reconstruye solo con ellas.
 
 ## Regla de oro
-- **El público (sin cuenta) no tiene permiso sobre ninguna tabla** (salvo leer `planes`). Entra solo por 4 funciones: `tienda_publica`, `crear_pedido`, `registrar_visita`, `slug_disponible`.
+- **El público (sin cuenta) no tiene permiso sobre ninguna tabla** (salvo leer `planes`). Entra solo por funciones: `tienda_publica`, `crear_pedido`, `registrar_visita`, `slug_disponible` (y `registrar_evento` / `registrar_error` para medición y errores).
 - **Cada vendedora ve y edita solo lo suyo** (RLS por `tiendas.owner_id = auth.uid()`), con permisos por columna.
 - Lo que cuesta dinero o define el plan (`suscripciones`, `pedidos`, `contador_pedidos`) **no se escribe desde el navegador**: solo por funciones o por el servidor (`service_role`).
 
@@ -36,3 +36,11 @@ Proyecto: `vqhkbijlnpjtklnlvvuf` (us-west-2, Postgres 17). Las migraciones de `m
 ## Panel de la dueña
 Funciones admin_* (resumen, vendedoras, costos, config, bitácora) solo responden a la cuenta que está en private.admins. Para agregar a la dueña: insert into private.admins (user_id) select id from auth.users where email = 'CORREO';
 Función de servidor admin-usuarios: crea cuentas y enlaces de entrada (supabase/functions/admin-usuarios). Prueba: pruebas/panel.sql.
+
+## Capa legal (2026-11-20)
+- `consentimientos`: la vendedora acepta Términos + Privacidad con `registrar_consentimiento(p_version, p_origen)` (solo su cuenta; versión no futura).
+- Función de servidor `borrar-cuenta` (supabase/functions/borrar-cuenta): la vendedora borra SU cuenta (pide `confirmo: ELIMINAR`); usa `cuenta_para_borrar(uid)` (solo servidor) para saber qué fotos borrar; la dueña no se borra desde ahí.
+- Al borrar una tienda, su enlace queda retirado (`private.slugs_retirados`, solo huella sha256): `slug_disponible` dice no y crear la tienda da 23505.
+- Al borrar una cuenta (`auth.users`), un disparador quita su correo de la bitácora del panel y deja un evento anónimo `cuenta_eliminada`.
+- Retención (pg_cron `ventaslink-retencion`, diario 08:17 UTC): datos de contacto de compradores a los 12 meses, eventos 25 meses, errores 90 días, bitácora 25 meses (`private.aplicar_retencion()`).
+- Prueba: pruebas/legal.sql (18 de 18).
