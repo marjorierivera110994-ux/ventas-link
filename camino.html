@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi camino al éxito — Ventas Link</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4ecdb">
+<link rel="icon" href="logo/ventas-link-icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vl-app.css">
+<style>
+  /* Tarjeta principal: el degradé de la píldora del logo */
+  .hero { position: relative; margin-top: 16px; border-radius: 28px; padding: 20px 18px 18px; color: #fff; overflow: hidden;
+          background: radial-gradient(260px 160px at 100% 0%, rgb(255 200 61 / .45), transparent 70%), linear-gradient(135deg, #5a22e8 0%, #a91fdb 45%, #ff2f86 78%, #ff8a2a 100%);
+          box-shadow: inset 0 4px 0 rgb(255 255 255 / .25), inset 0 -6px 0 rgb(0 0 0 / .12), 0 10px 0 #45109a, 0 30px 36px -18px rgb(69 16 154 / .7); }
+  .hero::after { content: ''; position: absolute; right: -40px; bottom: -60px; width: 200px; height: 200px; border-radius: 50%; border: 22px solid rgb(255 255 255 / .1); pointer-events: none; }
+  .hero-top { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: center; }
+  .insignia { width: 64px; height: 64px; border-radius: 22px; display: grid; place-items: center; background: rgb(255 255 255 / .2); box-shadow: inset 0 3px 0 rgb(255 255 255 / .35), inset 0 0 0 2px rgb(255 255 255 / .35); }
+  .insignia svg { width: 32px; height: 32px; }
+  .hero small { display: block; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; opacity: .9; }
+  .hero h2 { font-size: 22px; line-height: 1.1; margin-top: 2px; }
+  .puntos { display: flex; align-items: baseline; gap: 8px; margin-top: 16px; }
+  .puntos b { font-family: var(--f-d); font-size: 52px; line-height: .95; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
+  .puntos span { font-weight: 700; font-size: 16px; opacity: .92; }
+  .hero .tubo { margin-top: 14px; background: rgb(255 255 255 / .25); box-shadow: inset 0 3px 6px rgb(0 0 0 / .2); height: 14px; }
+  .hero .tubo i { background: linear-gradient(90deg, #fff, #ffe08a); }
+  .hero .falta { font-size: 14px; margin-top: 10px; font-weight: 600; }
+  .hero .falta b { font-weight: 800; }
+
+  .niveles { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; margin-top: 18px; position: relative; }
+  .niveles::before { content: ''; position: absolute; left: 10%; right: 10%; top: 17px; height: 4px; border-radius: 4px; background: color-mix(in oklab, var(--tinta) 12%, transparent); }
+  .niveles li { position: relative; text-align: center; font-size: 11px; font-weight: 700; line-height: 1.2; color: var(--texto-2); }
+  .niveles li span { position: relative; z-index: 1; width: 38px; height: 38px; margin: 0 auto 6px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; font-size: 15px;
+                     background: var(--blanco); color: var(--texto-2); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(60 30 100 / .14); }
+  .niveles li.logrado span { background: linear-gradient(160deg, #b98cff, #6a1fd0); color: #fff; box-shadow: inset 0 3px 0 rgb(255 255 255 / .4), 0 4px 0 #45109a; }
+  .niveles li.actual span { background: linear-gradient(160deg, #ff7ad0, #e0179f); color: #fff; transform: scale(1.15); box-shadow: inset 0 3px 0 rgb(255 255 255 / .4), 0 4px 0 #9d0f6f, 0 0 0 5px rgb(224 23 159 / .18); }
+  .niveles li.actual, .niveles li.logrado { color: var(--tinta); }
+
+  .sec { margin-top: 26px; }
+  .sec-cab { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .sec-cab h2 { font-size: 21px; }
+  .sec-cab span { font-size: 13px; color: var(--texto-2); font-weight: 700; }
+  .retos { list-style: none; display: grid; gap: 12px; margin-top: 12px; }
+  .reto { background: var(--blanco); border-radius: 22px; padding: 14px; border: 1px solid rgb(255 255 255 / .95); box-shadow: var(--relieve); display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; }
+  .reto h3 { font-size: 16px; line-height: 1.2; }
+  .reto p { font-size: 13px; color: var(--texto-2); margin-top: 2px; }
+  .reto .tubo { height: 8px; margin-top: 10px; }
+  .reto-pie { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+  .estado { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; }
+  .estado.pendiente { background: #ece7f3; color: #5c5470; } .estado.en_progreso { background: #fff1c2; color: #7a4d00; } .estado.completado { background: #efe3ff; color: #5a17b8; }
+  .estado svg { width: 13px; height: 13px; }
+  .pts { font-family: var(--f-d); font-weight: 800; font-size: 14px; color: var(--morado); }
+  .reto .btn.chico { margin-left: auto; min-height: 40px; font-size: 13px; padding: 0 14px; }
+  .reto.hecho { opacity: .78; }
+  .ver-mas { margin-top: 10px; }
+
+  .meta-caja .fila { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-top: 10px; }
+  .meta-caja .fila b { font-family: var(--f-d); font-size: 28px; font-variant-numeric: tabular-nums; }
+  .meta-caja .fila span { font-size: 14px; color: var(--texto-2); }
+  .meta-caja .tubo { margin-top: 10px; }
+  .meta-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; margin-top: 12px; align-items: end; }
+  .meta-form .btn { width: auto; min-height: 52px; padding: 0 18px; font-size: 15px; }
+
+  .medallas { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+  .med { background: var(--blanco); border-radius: 22px; padding: 14px 10px 12px; text-align: center; border: 1px solid rgb(255 255 255 / .95); box-shadow: var(--relieve); }
+  .med .disco { width: 64px; height: 64px; margin: 0 auto; border-radius: 50%; display: grid; place-items: center; color: #fff;
+                background: conic-gradient(from 210deg, #7a2ff2, #e0179f, #ff8a1a, #ffc83d, #7a2ff2); box-shadow: inset 0 0 0 5px rgb(255 255 255 / .85), 0 5px 0 #45109a, 0 14px 16px -8px rgb(69 16 154 / .5); }
+  .med .disco svg { width: 30px; height: 30px; filter: drop-shadow(0 2px 0 rgb(0 0 0 / .2)); }
+  .med.bloq .disco { background: #ece7f3; color: #9a91ad; box-shadow: inset 0 0 0 5px #fff, inset 0 4px 8px rgb(0 0 0 / .12), 0 4px 0 #d6cfe2; }
+  .med h3 { font-size: 14px; line-height: 1.2; margin-top: 10px; }
+  .med small { display: block; font-size: 12px; color: var(--texto-2); margin-top: 4px; }
+
+  .ventas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+  .vta { background: var(--blanco); border-radius: 20px; padding: 12px; box-shadow: var(--relieve); }
+  .vta small { display: block; font-size: 12px; font-weight: 700; color: var(--texto-2); }
+  .vta b { display: block; font-family: var(--f-d); font-size: 22px; line-height: 1.1; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .vta em { display: block; font-style: normal; font-size: 13px; color: var(--morado); font-weight: 700; margin-top: 2px; }
+
+  .historial { list-style: none; margin-top: 12px; background: var(--blanco); border-radius: 22px; padding: 6px 14px; box-shadow: var(--relieve); }
+  .historial li { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid color-mix(in oklab, var(--tinta) 8%, transparent); }
+  .historial li:last-child { border-bottom: 0; }
+  .historial .ic-chip { width: 36px; height: 36px; flex-basis: 36px; border-radius: 12px; } .historial .ic-chip svg { width: 18px; height: 18px; }
+  .historial b { display: block; font-size: 14px; line-height: 1.25; overflow-wrap: anywhere; }
+  .historial small { font-size: 12px; color: var(--texto-2); }
+  .historial em { font-style: normal; font-family: var(--f-d); font-weight: 800; font-size: 15px; color: var(--morado); }
+  .historial em.menos { color: var(--error); }
+  .vacio-hist { text-align: center; padding: 16px 0; color: var(--texto-2); font-size: 14px; }
+  .reglas { font-size: 13px; color: var(--texto-2); margin-top: 20px; display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; }
+  .reglas svg { width: 18px; height: 18px; color: var(--morado); }
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="cab">
+    <span class="demo-etq" id="demo" hidden>Demostración · datos de ejemplo</span>
+    <h1 tabindex="-1">Mi camino al éxito</h1>
+    <p class="sub">Tus avances y logros. Solo tú los ves.</p>
+  </header>
+
+  <section id="v-carga" aria-label="Cargando"><div class="esq"><i style="height:200px"></i><i></i><i></i></div></section>
+  <section id="v-error" hidden>
+    <div class="tarj centro"><h2>No pudimos cargar tu camino</h2><p id="error-txt">Revisa tu internet e inténtalo de nuevo.</p>
+      <button type="button" class="btn" id="b-reintentar">Intentar de nuevo</button></div>
+  </section>
+
+  <div id="v-camino" hidden>
+    <section class="hero" aria-labelledby="h-nivel">
+      <div class="hero-top">
+        <span class="insignia" id="insignia"></span>
+        <div><small id="h-num">Nivel 1 de 5</small><h2 id="h-nivel">Emprendedor principiante</h2></div>
+      </div>
+      <div class="puntos"><b id="h-puntos">0</b><span>puntos</span></div>
+      <div class="tubo" role="progressbar" aria-label="Avance al siguiente nivel" aria-valuemin="0" aria-valuemax="100" id="h-tubo"><i id="h-barra"></i></div>
+      <p class="falta" id="h-falta"></p>
+    </section>
+    <ol class="niveles" id="niveles" aria-label="Niveles"></ol>
+
+    <section class="sec" aria-labelledby="t-hoy">
+      <div class="sec-cab"><h2 id="t-hoy">Retos de hoy</h2><span id="s-hoy"></span></div>
+      <ul class="retos" id="r-diario"></ul>
+    </section>
+
+    <section class="sec" aria-labelledby="t-sem">
+      <div class="sec-cab"><h2 id="t-sem">Retos de la semana</h2><span id="s-sem"></span></div>
+      <ul class="retos" id="r-semanal"></ul>
+    </section>
+
+    <section class="sec" aria-labelledby="t-meta">
+      <div class="sec-cab"><h2 id="t-meta">Mi meta de la semana</h2><span>+50 puntos</span></div>
+      <div class="tarj meta-caja" id="meta-caja" style="margin-top:12px">
+        <div class="fila"><b id="m-monto">$0</b><span id="m-de">sin meta todavía</span></div>
+        <div class="tubo" role="progressbar" aria-label="Avance de la meta" aria-valuemin="0" aria-valuemax="100" id="m-tubo"><i id="m-barra"></i></div>
+        <p class="nota" id="m-nota">Cuentan tus pedidos pagados de lunes a domingo.</p>
+        <form class="meta-form" id="m-form">
+          <div class="campo"><label for="m-in">Quiero vender esta semana</label><input id="m-in" type="number" inputmode="decimal" min="1" max="99999999" step="0.01" placeholder="Ej: 200" required></div>
+          <button type="submit" class="btn" id="m-guardar">Guardar</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="t-mis">
+      <div class="sec-cab"><h2 id="t-mis">Misiones</h2><span id="s-mis"></span></div>
+      <ul class="retos" id="r-mision"></ul>
+      <button type="button" class="link ver-mas" id="b-mis-hechas" hidden></button>
+    </section>
+
+    <section class="sec" aria-labelledby="t-med">
+      <div class="sec-cab"><h2 id="t-med">Medallas</h2><span id="s-med"></span></div>
+      <ul class="medallas" id="medallas"></ul>
+    </section>
+
+    <section class="sec" aria-labelledby="t-vta">
+      <div class="sec-cab"><h2 id="t-vta">Mis ventas</h2><span>pedidos pagados</span></div>
+      <div class="ventas" id="ventas"></div>
+    </section>
+
+    <section class="sec" aria-labelledby="t-his">
+      <div class="sec-cab"><h2 id="t-his">Historial de logros</h2><span id="s-his"></span></div>
+      <ul class="historial" id="historial"></ul>
+      <button type="button" class="link ver-mas" id="b-his-mas" hidden>Ver todo mi historial</button>
+    </section>
+
+    <p class="reglas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span>Los puntos son <b>simbólicos</b>: muestran tu avance, no tienen valor en dinero. Se ganan con hechos reales de tu tienda (una venta cuenta cuando la marcas como pagada) y nadie más ve tu camino.</span></p>
+  </div>
+</main>
+
+<dialog id="dlg-perfil" aria-labelledby="p-t">
+  <button type="button" class="cerrar-x" id="p-cerrar" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <h2 id="p-t">Completa el perfil de tu tienda</h2>
+  <p>Así tus clientes saben qué vendes y cuándo atiendes.</p>
+  <form id="p-form" style="display:grid;gap:14px;margin-top:14px">
+    <div class="campo"><label for="p-desc">Descripción corta</label><textarea id="p-desc" maxlength="200" placeholder="Ej: Ropa y accesorios hechos a mano en Quito." required></textarea><p class="ayuda">Mínimo 10 letras · máximo 200.</p></div>
+    <div class="campo"><label for="p-hor">Horario de atención</label><input id="p-hor" type="text" maxlength="80" placeholder="Ej: Lunes a sábado, 9:00 a 18:00" required></div>
+    <p class="aviso" id="p-error" role="alert" hidden></p>
+    <button type="submit" class="btn" id="p-guardar">Guardar perfil</button>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="vendor/supabase.js"></script>
+<script src="vl-config.js"></script>
+<script src="vl-datos.js"></script>
+<script src="vl-camino.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var VL = window.VL, sb = null, D = null, demo = false, tienda = null, verMisHechas = false, verHistTodo = false;
+  var I = function (tipo, t) { return window.VLC.icono(tipo, t); };
+  var ICONO_RETO = { comparte_hoy: 'compartir', compartir_catalogo: 'compartir', mejora_hoy: 'producto', primer_producto: 'producto', diez_productos: 'producto', sube_3: 'producto',
+                     completar_perfil: 'tienda', primer_pedido: 'pedido', pedidos_3: 'pedido', nuevos_clientes: 'clientes', primera_venta: 'venta', venta_semana: 'venta', meta_semanal: 'meta' };
+  var SVG = {
+    compartir: '<path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/>', producto: '<path d="M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/>',
+    tienda: '<path d="M3 9l1.5-5h15L21 9M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 12v8h14v-8"/>', pedido: '<path d="M9 4h6l1 2h3a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3zM8 12h8M8 16h5"/>',
+    clientes: '<path d="M16 21a6 6 0 0 0-12 0M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21a5 5 0 0 0-5-5M17 3a4 4 0 0 1 0 8"/>',
+    check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', reloj: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', candado: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'
+  };
+  function svg(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (SVG[n] || '') + '</svg>'; }
+  function el(tag, a, hijos) {
+    var e = document.createElement(tag);
+    Object.keys(a || {}).forEach(function (k) { if (k === 'class') e.className = a[k]; else if (k === 'text') e.textContent = a[k]; else if (k === 'html') e.innerHTML = a[k]; else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), a[k]); else e.setAttribute(k, a[k]); });
+    (hijos || []).forEach(function (h) { if (h) e.appendChild(typeof h === 'string' ? document.createTextNode(h) : h); });
+    return e;
+  }
+  function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2600); }
+  function ver(id) { ['v-carga', 'v-error', 'v-camino'].forEach(function (v) { $(v).hidden = v !== id; }); }
+  function dinero(n) { try { return new Intl.NumberFormat('es-EC', { style: 'currency', currency: (D && D.tienda && D.tienda.moneda) || 'USD', maximumFractionDigits: n % 1 ? 2 : 0 }).format(n || 0); } catch (e) { return '$' + n; } }
+  function fecha(iso) { return iso ? new Date(iso).toLocaleDateString('es-EC', { day: 'numeric', month: 'short', year: new Date(iso).getFullYear() === new Date().getFullYear() ? undefined : 'numeric' }) : ''; }
+  function app() { try { return window.parent !== window ? window.parent.__app : null; } catch (e) { return null; } }
+  function irA(tab, archivo) { var a = app(); if (a) a.ir(tab); else location.href = archivo; }
+  function reducido() { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+  function contar(nodo, hasta) {
+    if (reducido()) { nodo.textContent = hasta; return; }
+    var ini = performance.now(), dur = 900;
+    (function paso(t) { var k = Math.min(1, (t - ini) / dur), e = 1 - Math.pow(1 - k, 3); nodo.textContent = Math.round(hasta * e); if (k < 1) requestAnimationFrame(paso); })(ini);
+  }
+  function llenar(barra, pct) { requestAnimationFrame(function () { requestAnimationFrame(function () { barra.style.width = Math.max(0, Math.min(100, pct)) + '%'; }); }); }
+
+  /* ---------- Cargar ---------- */
+  function cargar(silencioso) {
+    if (!silencioso) ver('v-carga');
+    if (!VL || !VL.listo) { mostrarDemo(); return Promise.resolve(); }
+    sb = VL.cliente();
+    return VL.sesion().then(function (s) {
+      if (!s) { mostrarDemo(); return; }
+      return Promise.all([sb.rpc('mi_camino'), tienda ? Promise.resolve({ ok: true, tienda: tienda }) : VL.miTienda()]).then(function (r) {
+        if (r[0].error) throw r[0].error;
+        if (r[1].ok && r[1].tienda) tienda = r[1].tienda;
+        D = r[0].data; demo = false; $('demo').hidden = true;
+        pintar(); ver('v-camino');
+        if (D.nuevos && D.nuevos.length) setTimeout(function () { window.VLC.celebrar(D.nuevos); }, 450);
+      });
+    }).catch(function (e) {
+      if (e && /SIN_TIENDA/.test(e.message || '')) { window.top.location.href = 'onboarding-demo.html'; return; }
+      if (silencioso) return;
+      $('error-txt').textContent = (VL && VL._fallo) ? VL._fallo(e).mensaje : 'Revisa tu internet e inténtalo de nuevo.'; ver('v-error');
+    });
+  }
+
+  /* ---------- Pintar ---------- */
+  function pintar() {
+    var nv = D.nivel, sig = D.siguiente;
+    $('insignia').innerHTML = I('nivel', 32);
+    $('h-num').textContent = 'Nivel ' + nv.n + ' de 5';
+    $('h-nivel').textContent = nv.nombre;
+    contar($('h-puntos'), D.puntos);
+    var pct = sig ? Math.round((D.puntos - nv.desde) / (sig.desde - nv.desde) * 100) : 100;
+    $('h-tubo').setAttribute('aria-valuenow', String(pct)); llenar($('h-barra'), pct);
+    $('h-falta').innerHTML = '';
+    if (sig) $('h-falta').append('Te faltan ', el('b', { text: D.faltan + ' puntos' }), ' para ser ', el('b', { text: sig.nombre }), '.');
+    else $('h-falta').textContent = '¡Llegaste al nivel más alto! Sigue sumando logros.';
+
+    var ol = $('niveles'); ol.textContent = '';
+    D.niveles.forEach(function (n) {
+      ol.appendChild(el('li', { class: n.n < nv.n ? 'logrado' : n.n === nv.n ? 'actual' : '', 'aria-current': n.n === nv.n ? 'step' : null }, [el('span', { text: String(n.n) }), n.nombre.replace('Emprendedor ', '')]));
+    });
+    [].slice.call(ol.querySelectorAll('[aria-current="null"]')).forEach(function (x) { x.removeAttribute('aria-current'); });
+
+    var grupos = { diario: [], semanal: [], mision: [] }, metaReto = null;
+    D.retos.forEach(function (r) { if (r.grupo === 'meta') metaReto = r; else grupos[r.grupo].push(r); });
+    pintarRetos('r-diario', grupos.diario, 's-hoy', true);
+    pintarRetos('r-semanal', grupos.semanal, 's-sem', true);
+    var hechas = grupos.mision.filter(function (r) { return r.estado === 'completado'; });
+    var faltan = grupos.mision.filter(function (r) { return r.estado !== 'completado'; });
+    pintarRetos('r-mision', faltan.concat(verMisHechas ? hechas : []), null, false);
+    $('s-mis').textContent = hechas.length + ' de ' + grupos.mision.length;
+    $('b-mis-hechas').hidden = !hechas.length;
+    $('b-mis-hechas').textContent = verMisHechas ? 'Ocultar misiones completadas' : 'Ver ' + hechas.length + (hechas.length === 1 ? ' misión completada' : ' misiones completadas');
+    pintarMeta(metaReto);
+
+    var ul = $('medallas'); ul.textContent = '';
+    var ganadas = 0;
+    D.medallas.forEach(function (m) {
+      if (m.ganada) ganadas++;
+      ul.appendChild(el('li', { class: 'med' + (m.ganada ? '' : ' bloq') }, [
+        el('div', { class: 'disco', html: m.ganada ? I('medalla', 30) : svg('candado') }),
+        el('h3', { text: m.titulo }),
+        el('small', { text: m.ganada ? 'Ganada el ' + fecha(m.fecha) : (m.meta > 1 ? m.avance + ' de ' + m.meta + ' · ' : '') + m.descripcion })
+      ]));
+    });
+    $('s-med').textContent = ganadas + ' de ' + D.medallas.length;
+
+    var v = D.ventas, cont = $('ventas'); cont.textContent = '';
+    [['Esta semana', v.semana, v.monto_semana], ['Este mes', v.mes, v.monto_mes], ['En total', v.total, v.monto_total]].forEach(function (x) {
+      cont.appendChild(el('div', { class: 'vta' }, [el('small', { text: x[0] }), el('b', { text: String(x[1] || 0) }), el('em', { text: dinero(Number(x[2] || 0)) })]));
+    });
+
+    var h = $('historial'); h.textContent = '';
+    var lista = verHistTodo ? D.historial : D.historial.slice(0, 8);
+    $('s-his').textContent = D.historial.length ? D.historial.length + (D.historial.length === 1 ? ' logro' : ' logros') : '';
+    if (!lista.length) h.appendChild(el('li', { class: 'vacio-hist', style: 'display:block', text: 'Tus logros aparecerán aquí, con su fecha.' }));
+    lista.forEach(function (x) {
+      var color = { venta: 'fucsia', nivel: 'naranja', medalla: '', meta: 'ambar', reto: 'cielo' }[x.tipo] || '';
+      var menos = x.puntos < 0;
+      h.appendChild(el('li', {}, [
+        el('span', { class: 'ic-chip ' + (menos ? 'gris' : color), html: I(x.tipo, 18) }),
+        el('div', {}, [el('b', { text: x.titulo }), el('small', { text: fecha(x.fecha) + ' · ' + ({ venta: menos ? 'Ajuste' : 'Venta', nivel: 'Nivel', medalla: 'Medalla', meta: 'Meta', reto: 'Reto' }[x.tipo] || '') })]),
+        x.puntos ? el('em', { class: menos ? 'menos' : '', text: (menos ? '' : '+') + x.puntos }) : null
+      ]));
+    });
+    $('b-his-mas').hidden = verHistTodo || D.historial.length <= 8;
+  }
+
+  var ACCION = {
+    comparte_hoy: ['Compartir', compartir], compartir_catalogo: ['Compartir', compartir], primer_pedido: ['Compartir', compartir], pedidos_3: ['Compartir', compartir], nuevos_clientes: ['Compartir', compartir],
+    primer_producto: ['Subir producto', function () { irA('productos', 'productos.html'); }], diez_productos: ['Ir a productos', function () { irA('productos', 'productos.html'); }],
+    sube_3: ['Ir a productos', function () { irA('productos', 'productos.html'); }], mejora_hoy: ['Ir a productos', function () { irA('productos', 'productos.html'); }],
+    primera_venta: ['Ver pedidos', function () { irA('pedidos', 'pedidos.html'); }], venta_semana: ['Ver pedidos', function () { irA('pedidos', 'pedidos.html'); }],
+    completar_perfil: ['Completar', abrirPerfil]
+  };
+  var ESTADO_TXT = { pendiente: 'Pendiente', en_progreso: 'En progreso', completado: 'Completado' };
+  function pintarRetos(id, lista, idSub, contarHechos) {
+    var ul = $(id); ul.textContent = '';
+    var hechos = 0;
+    lista.forEach(function (r) {
+      if (r.estado === 'completado') hechos++;
+      var pct = r.meta > 0 ? Math.round(Math.min(r.avance, r.meta) / r.meta * 100) : 0;
+      var acc = ACCION[r.codigo], tubo = el('div', { class: 'tubo', role: 'progressbar', 'aria-label': 'Avance', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(pct) }, [el('i')]);
+      var color = { diario: 'ambar', semanal: 'fucsia', mision: '' }[r.grupo] || '';
+      ul.appendChild(el('li', { class: 'reto' + (r.estado === 'completado' ? ' hecho' : '') }, [
+        el('span', { class: 'ic-chip ' + (r.estado === 'completado' ? 'cielo' : color), html: r.estado === 'completado' ? svg('check') : svg(ICONO_RETO[r.codigo] || 'check') }),
+        el('div', {}, [
+          el('h3', { text: r.titulo }), el('p', { text: r.descripcion }),
+          r.meta > 1 && r.estado !== 'completado' ? tubo : null,
+          el('div', { class: 'reto-pie' }, [
+            el('span', { class: 'estado ' + r.estado, html: (r.estado === 'completado' ? svg('check') : r.estado === 'en_progreso' ? svg('reloj') : '') + ESTADO_TXT[r.estado] + (r.meta > 1 && r.estado !== 'completado' ? ' · ' + r.avance + '/' + r.meta : '') }),
+            el('span', { class: 'pts', text: '+' + r.puntos + ' pts' }),
+            acc && r.estado !== 'completado' && !demo ? el('button', { type: 'button', class: 'btn chico', text: acc[0], onclick: acc[1] }) : null
+          ])
+        ])
+      ]));
+      var i = tubo.querySelector('i'); if (i) llenar(i, pct);
+    });
+    if (idSub && contarHechos) $(idSub).textContent = hechos + ' de ' + lista.length;
+  }
+  function pintarMeta(r) {
+    var meta = Number(D.ventas.meta_semana || 0), monto = Number(D.ventas.monto_semana || 0);
+    $('m-monto').textContent = dinero(monto);
+    $('m-de').textContent = meta > 0 ? 'de ' + dinero(meta) : 'sin meta todavía';
+    var pct = meta > 0 ? Math.round(monto / meta * 100) : 0;
+    $('m-tubo').setAttribute('aria-valuenow', String(Math.min(100, pct))); llenar($('m-barra'), pct);
+    $('m-nota').textContent = r && r.estado === 'completado' ? '¡Meta cumplida esta semana! Ganaste 50 puntos.' : (meta > 0 ? (meta - monto > 0 ? 'Te faltan ' + dinero(meta - monto) + '. Cuentan tus pedidos pagados de lunes a domingo.' : '') : 'Ponte una meta realista: cuentan tus pedidos pagados de lunes a domingo.');
+    if (!$('m-in').matches(':focus')) $('m-in').value = meta > 0 ? String(meta) : '';
+    $('m-guardar').textContent = meta > 0 ? 'Cambiar' : 'Guardar';
+    $('m-in').disabled = $('m-guardar').disabled = demo;
+  }
+
+  /* ---------- Acciones ---------- */
+  function revisarNuevos(ms) {
+    setTimeout(function () { cargar(true); }, ms || 1200);
+  }
+  function compartir() { if (demo) return; window.VLC.compartirTienda(tienda).then(function (r) { if (r !== 'cancelado') revisarNuevos(1500); }); }
+  function abrirPerfil() {
+    $('p-desc').value = (D.tienda && D.tienda.descripcion) || ''; $('p-hor').value = (D.tienda && D.tienda.horario) || '';
+    $('p-error').hidden = true; $('dlg-perfil').showModal();
+  }
+  $('p-cerrar').addEventListener('click', function () { $('dlg-perfil').close(); });
+  $('p-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = $('p-desc').value.trim(), h = $('p-hor').value.trim(), b = $('p-guardar');
+    if (d.length < 10) { $('p-error').textContent = 'Escribe una descripción de al menos 10 letras.'; $('p-error').hidden = false; $('p-desc').focus(); return; }
+    if (h.length < 3) { $('p-error').textContent = 'Escribe tu horario de atención.'; $('p-error').hidden = false; $('p-hor').focus(); return; }
+    b.disabled = true; b.textContent = 'Guardando…';
+    sb.from('tiendas').update({ descripcion: d, horario: h }).eq('id', tienda.id).then(function (r) {
+      b.disabled = false; b.textContent = 'Guardar perfil';
+      if (r.error) { $('p-error').textContent = VL._fallo(r.error).mensaje; $('p-error').hidden = false; return; }
+      tienda.descripcion = d; tienda.horario = h; $('dlg-perfil').close(); toast('Perfil guardado'); cargar(true);
+    });
+  });
+  $('m-form').addEventListener('submit', function (e) {
+    e.preventDefault(); if (demo) return;
+    var v = parseFloat(String($('m-in').value).replace(',', '.')), b = $('m-guardar');
+    if (!(v > 0) || v > 99999999) { toast('Escribe un monto mayor que cero'); $('m-in').focus(); return; }
+    b.disabled = true;
+    sb.rpc('guardar_meta_semanal', { p_meta: Math.round(v * 100) / 100 }).then(function (r) {
+      b.disabled = false;
+      if (r.error) { toast(VL._fallo(r.error).mensaje); return; }
+      toast('Meta guardada'); $('m-in').blur(); cargar(true);
+    });
+  });
+  $('b-mis-hechas').addEventListener('click', function () { verMisHechas = !verMisHechas; pintar(); });
+  $('b-his-mas').addEventListener('click', function () { verHistTodo = true; pintar(); });
+  $('b-reintentar').addEventListener('click', function () { cargar(); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && D && !demo) cargar(true); });
+  if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', function (e) { if (e.data && e.data.tipo === 'vl-aviso' && D && !demo) cargar(true); });
+  window.__camino = { recargar: function () { return cargar(true); } };
+
+  /* ---------- Demostración (sin sesión): datos de ejemplo realistas ---------- */
+  function mostrarDemo() {
+    demo = true; $('demo').hidden = false;
+    var hace = function (d) { return new Date(Date.now() - d * 86400000).toISOString(); };
+    var R = function (g, c, t, ds, p, e, a, m) { return { grupo: g, codigo: c, titulo: t, descripcion: ds, puntos: p, estado: e, avance: a, meta: m }; };
+    D = {
+      tienda: { nombre: 'Boutique Luna', moneda: 'USD' }, puntos: 245, faltan: 55,
+      nivel: { n: 2, nombre: 'Emprendedor activo', desde: 100 }, siguiente: { n: 3, nombre: 'Emprendedor destacado', desde: 300 },
+      niveles: [{ n: 1, nombre: 'Emprendedor principiante', desde: 0 }, { n: 2, nombre: 'Emprendedor activo', desde: 100 }, { n: 3, nombre: 'Emprendedor destacado', desde: 300 }, { n: 4, nombre: 'Emprendedor avanzado', desde: 700 }, { n: 5, nombre: 'Experto en ventas', desde: 1500 }],
+      retos: [
+        R('diario', 'comparte_hoy', 'Comparte tu tienda hoy', 'Un estado de WhatsApp con tu enlace basta.', 5, 'completado', 1, 1),
+        R('diario', 'mejora_hoy', 'Agrega o mejora un producto hoy', 'Una mejor foto o descripción también cuenta.', 5, 'pendiente', 0, 1),
+        R('semanal', 'sube_3', 'Sube 3 productos nuevos', 'Esta semana, de lunes a domingo.', 20, 'en_progreso', 2, 3),
+        R('semanal', 'pedidos_3', 'Recibe 3 pedidos', 'Esta semana, sin contar los cancelados.', 25, 'completado', 3, 3),
+        R('semanal', 'venta_semana', 'Consigue una venta', 'Un pedido pagado esta semana.', 30, 'completado', 1, 1),
+        R('meta', 'meta_semanal', 'Alcanza tu meta de la semana', '', 50, 'en_progreso', 184, 200),
+        R('mision', 'completar_perfil', 'Completa el perfil de tu tienda', 'Escribe una descripción corta y tu horario de atención.', 30, 'completado', 1, 1),
+        R('mision', 'primer_producto', 'Sube tu primer producto', 'Con tu primer producto, tu tienda ya puede recibir pedidos.', 20, 'completado', 1, 1),
+        R('mision', 'diez_productos', 'Publica 10 productos', 'Un catálogo variado vende más.', 40, 'en_progreso', 8, 10),
+        R('mision', 'compartir_catalogo', 'Comparte tu catálogo', 'Envía el enlace de tu tienda a tus clientes.', 15, 'completado', 1, 1),
+        R('mision', 'primer_pedido', 'Recibe tu primer pedido', 'Cuando un cliente te pida desde tu tienda.', 25, 'completado', 1, 1),
+        R('mision', 'primera_venta', 'Haz tu primera venta', 'Marca como pagado un pedido que ya cobraste.', 50, 'completado', 1, 1),
+        R('mision', 'nuevos_clientes', 'Consigue 3 clientes', 'Recibe pedidos de 3 clientes distintos.', 40, 'en_progreso', 2, 3)
+      ],
+      medallas: [
+        { codigo: 'tienda_creada', titulo: 'Primera tienda creada', descripcion: 'Diste el primer paso.', ganada: true, fecha: hace(12), avance: 1, meta: 1 },
+        { codigo: 'primer_producto', titulo: 'Primer producto publicado', descripcion: '', ganada: true, fecha: hace(12), avance: 1, meta: 1 },
+        { codigo: 'catalogo_completo', titulo: 'Catálogo completo', descripcion: '10 productos con foto.', ganada: false, avance: 8, meta: 10 },
+        { codigo: 'primera_solicitud', titulo: 'Primera solicitud de pedido', descripcion: '', ganada: true, fecha: hace(9), avance: 1, meta: 1 },
+        { codigo: 'primera_venta', titulo: 'Primera venta realizada', descripcion: '', ganada: true, fecha: hace(8), avance: 1, meta: 1 },
+        { codigo: 'cinco_ventas', titulo: 'Cinco ventas', descripcion: 'Tu negocio ya está en marcha.', ganada: false, avance: 4, meta: 5 },
+        { codigo: 'diez_ventas', titulo: 'Diez ventas', descripcion: 'Diez clientes confiaron en ti.', ganada: false, avance: 4, meta: 10 },
+        { codigo: 'vendedor_constante', titulo: 'Vendedor constante', descripcion: 'Ventas en 4 semanas distintas.', ganada: false, avance: 2, meta: 4 }
+      ],
+      ventas: { semana: 3, monto_semana: 184, meta_semana: 200, mes: 4, monto_mes: 236, total: 4, monto_total: 236 },
+      historial: [
+        { tipo: 'reto', titulo: 'Comparte tu tienda hoy', puntos: 5, fecha: hace(0) }, { tipo: 'reto', titulo: 'Consigue una venta', puntos: 30, fecha: hace(1) },
+        { tipo: 'venta', titulo: 'Venta del pedido #7', puntos: 10, fecha: hace(1) }, { tipo: 'reto', titulo: 'Recibe 3 pedidos', puntos: 25, fecha: hace(2) },
+        { tipo: 'nivel', titulo: 'Emprendedor activo', puntos: 0, fecha: hace(8) }, { tipo: 'medalla', titulo: 'Primera venta realizada', puntos: 0, fecha: hace(8) },
+        { tipo: 'reto', titulo: 'Haz tu primera venta', puntos: 50, fecha: hace(8) }, { tipo: 'venta', titulo: 'Venta del pedido #2', puntos: 10, fecha: hace(8) },
+        { tipo: 'reto', titulo: 'Recibe tu primer pedido', puntos: 25, fecha: hace(9) }, { tipo: 'medalla', titulo: 'Primera tienda creada', puntos: 10, fecha: hace(12) }
+      ], nuevos: []
+    };
+    pintar(); ver('v-camino');
+  }
+
+  cargar();
+})();
+</script>
+</body>
+</html>

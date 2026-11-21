@@ -89,7 +89,20 @@ ${LINK(634, 204, 1.62, '#fff', 1.78)}`;
   return svg({ vb: '8 30 892 228', w: 892, h: 228, animado: false, cuerpo: m + t });
 }
 
+// Ícono de pantalla completa (Android "maskable" y iPhone): fondo blanco hasta el borde y el carrito dentro de la zona segura.
+function iconoCompleto() {
+  const fondo = `<rect x="-55" y="-35" width="760" height="760" fill="#fff"/>`;
+  return svg({ vb: '-55 -35 760 760', w: 512, h: 512, animado: false, fondo, cuerpo: `<g transform="translate(325 345) scale(.78) translate(-325 -345)">${marca(false)}</g>` });
+}
+// Insignia de la barra de notificaciones de Android: silueta blanca del carrito sobre fondo transparente.
+function insignia() {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96"><g fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+<path d="M8 20h12l10 40h40l8-30H26"/></g><path d="M50 34l0 14 5-4 3 7 3-1-3-7 6-1z" fill="#fff"/><circle cx="36" cy="76" r="7" fill="#fff"/><circle cx="64" cy="76" r="7" fill="#fff"/></svg>\n`;
+}
+
 const SALIDAS = {
+  'logo/ventas-link-icono-completo.svg': iconoCompleto(),
+  'logo/ventas-link-insignia.svg': insignia(),
   'logo/ventas-link-logo.svg': completo(true),
   'logo/ventas-link-logo-estatico.svg': completo(false),
   'logo/ventas-link-logo-sinfondo.svg': completo(false),

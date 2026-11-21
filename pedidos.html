@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mis pedidos — Ventas Link</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4ecdb">
+<link rel="icon" href="logo/ventas-link-icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vl-app.css">
+<style>
+  .resumen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
+  .res { background: var(--blanco); border-radius: 20px; padding: 12px; box-shadow: var(--relieve); border: 1px solid rgb(255 255 255 / .95); }
+  .res small { display: block; font-size: 12px; font-weight: 700; color: var(--texto-2); }
+  .res b { display: block; font-family: var(--f-d); font-size: 24px; line-height: 1.1; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .res.nuevo b { color: #c2410c; } .res.venta b { color: var(--morado); }
+  .avisa { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; text-align: left; }
+  .avisa .btn { grid-column: 1 / -1; margin-top: 4px; }
+  .regla { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--texto-2); margin-top: 12px; }
+  .regla svg { width: 18px; height: 18px; flex: 0 0 18px; color: var(--morado); margin-top: 1px; }
+  .lista { list-style: none; display: grid; gap: 12px; margin-top: 4px; }
+  .ped { width: 100%; text-align: left; background: var(--blanco); border-radius: 22px; padding: 14px; border: 1px solid rgb(255 255 255 / .95); box-shadow: var(--relieve); display: grid; gap: 6px; }
+  .ped:active { transform: translateY(2px); }
+  .ped .fila { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .ped h3 { font-size: 18px; }
+  .ped .cuando { font-size: 13px; color: var(--texto-2); }
+  .ped .items { font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+  .ped .total { font-family: var(--f-d); font-weight: 800; font-size: 19px; font-variant-numeric: tabular-nums; }
+  .ped .meta { font-size: 13px; color: var(--texto-2); display: flex; gap: 6px; align-items: center; }
+  .ped .meta svg { width: 16px; height: 16px; }
+  .ped.nuevo { box-shadow: var(--relieve), inset 0 0 0 2px #ff8a1a; }
+  .est { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; white-space: nowrap; }
+  .est i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .est.solicitado { background: #ffe6d1; color: #9a3412; } .est.confirmado { background: #fff1c2; color: #7a4d00; }
+  .est.pagado { background: #efe3ff; color: #5a17b8; } .est.entregado { background: #d6f1ff; color: #0b4a75; } .est.cancelado { background: #ece7f3; color: #6b6280; }
+  .vacio .ic-chip { width: 72px; height: 72px; border-radius: 24px; margin: 0 auto 12px; } .vacio .ic-chip svg { width: 34px; height: 34px; }
+
+  /* Detalle */
+  .pasos { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin-top: 16px; }
+  .pasos li { text-align: center; font-size: 11px; font-weight: 700; color: var(--texto-2); position: relative; }
+  .pasos li::before { content: ''; display: block; width: 24px; height: 24px; margin: 0 auto 4px; border-radius: 50%; background: color-mix(in oklab, var(--tinta) 10%, white); box-shadow: inset 0 2px 4px rgb(0 0 0 / .12); }
+  .pasos li.hecho { color: var(--tinta); }
+  .pasos li.hecho::before { background: var(--grad-marca); box-shadow: inset 0 2px 0 rgb(255 255 255 / .5), 0 3px 0 #45109a; }
+  .pasos li small { display: block; font-weight: 500; font-size: 10px; }
+  .det-items { list-style: none; display: grid; gap: 8px; margin-top: 16px; background: var(--blanco); border-radius: 18px; padding: 12px; box-shadow: var(--hundido); }
+  .det-items li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; font-size: 14px; }
+  .det-items li b { font-variant-numeric: tabular-nums; }
+  .det-items .sub { border-top: 1px dashed color-mix(in oklab, var(--tinta) 20%, transparent); padding-top: 8px; font-weight: 800; font-size: 16px; }
+  .det-datos { display: grid; gap: 10px; margin-top: 14px; font-size: 14px; }
+  .det-datos div { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; align-items: start; }
+  .det-datos svg { width: 20px; height: 20px; color: var(--morado); margin-top: 1px; }
+  .det-datos b { display: block; font-size: 12px; color: var(--texto-2); font-weight: 700; }
+  .ayuda-acc { font-size: 13px; color: var(--texto-2); text-align: center; margin-top: -4px; }
+  .completo { text-align: center; font-weight: 800; color: var(--morado); padding: 8px; }
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="cab">
+    <h1 tabindex="-1" id="t">Mis pedidos</h1>
+    <p class="sub" id="sub">Tus pedidos reales, del más nuevo al más antiguo.</p>
+  </header>
+
+  <section id="v-carga" aria-label="Cargando pedidos"><div class="esq"><i></i><i></i><i></i></div></section>
+
+  <section id="v-sin" hidden>
+    <div class="tarj centro">
+      <h2>Entra para ver tus pedidos</h2>
+      <p>Aquí aparecen los pedidos reales que te hacen desde tu tienda.</p>
+      <a class="btn" href="entrar.html" target="_top">Entrar a mi tienda</a>
+      <a class="link" href="cobro-demo.html">Ver un ejemplo</a>
+    </div>
+  </section>
+
+  <section id="v-error" hidden>
+    <div class="tarj centro">
+      <h2>No pudimos cargar tus pedidos</h2>
+      <p id="error-txt">Revisa tu internet e inténtalo de nuevo.</p>
+      <button type="button" class="btn" id="b-reintentar">Intentar de nuevo</button>
+    </div>
+  </section>
+
+  <section id="v-lista" hidden>
+    <div class="resumen" aria-label="Resumen">
+      <div class="res nuevo"><small>Por confirmar</small><b id="r-nuevos">0</b></div>
+      <div class="res venta"><small>Ventas del mes</small><b id="r-ventas">0</b></div>
+      <div class="res"><small>Vendido este mes</small><b id="r-monto">$0</b></div>
+    </div>
+
+    <div class="tarj avisa" id="c-avisos" hidden>
+      <span class="ic-chip fucsia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7zM10 20a2 2 0 0 0 4 0"/></svg></span>
+      <div><h2 style="font-size:17px">Entérate al instante</h2><p style="margin-top:2px;font-size:14px">Te avisamos en tu celular cada vez que llegue un pedido, aunque la app esté cerrada.</p></div>
+      <button type="button" class="btn marca" id="b-avisos">Activar avisos</button>
+    </div>
+
+    <p class="regla"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg>
+      <span>Una <b>solicitud</b> todavía no es una venta. Cuenta como venta cuando la marcas como <b>pagada</b>.</span></p>
+
+    <div class="chips" id="chips" role="group" aria-label="Filtrar pedidos"></div>
+    <ul class="lista" id="lista" aria-live="polite"></ul>
+
+    <div class="tarj centro vacio" id="vacio" hidden>
+      <span class="ic-chip ambar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l1 2h3a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3zM8 12h8M8 16h5"/></svg></span>
+      <h2 id="vacio-t">Aún no tienes pedidos</h2>
+      <p id="vacio-p">Cuando un cliente te pida desde tu tienda, aparecerá aquí y te avisaremos.</p>
+      <button type="button" class="btn" id="b-compartir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg>Compartir mi tienda</button>
+    </div>
+  </section>
+</main>
+
+<dialog id="dlg" aria-labelledby="d-t">
+  <button type="button" class="cerrar-x" id="d-cerrar" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <h2 id="d-t">Pedido</h2>
+  <p id="d-cuando" style="margin-top:2px"></p>
+  <ol class="pasos" id="d-pasos" aria-label="Avance del pedido"></ol>
+  <ul class="det-items" id="d-items"></ul>
+  <div class="det-datos" id="d-datos"></div>
+  <div class="acciones" id="d-acc"></div>
+  <p class="aviso" id="d-error" role="alert" hidden></p>
+</dialog>
+
+<dialog id="dlg-cancelar" aria-labelledby="c-t">
+  <h2 id="c-t">¿Cancelar este pedido?</h2>
+  <p id="c-p">El pedido queda cancelado y ya no se puede cambiar.</p>
+  <div class="acciones">
+    <button type="button" class="btn peligro" id="c-si">Sí, cancelar el pedido</button>
+    <button type="button" class="btn claro" id="c-no">No, volver</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="vendor/supabase.js"></script>
+<script src="vl-config.js"></script>
+<script src="vl-datos.js"></script>
+<script src="vl-avisos.js"></script>
+<script src="vl-camino.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var VL = window.VL, sb = null, D = { tienda: null, pedidos: [] }, filtro = null, abierto = null, trabajando = false;
+  var VISTAS = ['v-carga', 'v-sin', 'v-error', 'v-lista'];
+  var ESTADOS = { solicitado: 'Nuevo', confirmado: 'Confirmado', pagado: 'Pagado', entregado: 'Entregado', cancelado: 'Cancelado' };
+  var FILTROS = [['solicitado', 'Nuevos'], ['confirmado', 'Confirmados'], ['pagado', 'Pagados'], ['entregado', 'Entregados'], ['cancelado', 'Cancelados'], ['todos', 'Todos']];
+  var SIGUE = {
+    solicitado: { estado: 'confirmado', txt: 'Confirmar pedido', ayuda: 'Confírmalo cuando acuerden por WhatsApp la disponibilidad y la entrega.' },
+    confirmado: { estado: 'pagado', txt: 'Marcar como pagado', ayuda: 'Solo cuando ya recibiste el dinero. Desde aquí cuenta como venta.' },
+    pagado: { estado: 'entregado', txt: 'Marcar como entregado', ayuda: 'Al entregarlo se descuenta del stock de tus productos.' }
+  };
+  var IC = {
+    cliente: '<path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/>',
+    retiro: '<path d="M3 9l1.5-5h15L21 9M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 12v8h14v-8"/>',
+    domicilio: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7M7 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>',
+    pago: '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h3"/>',
+    nota: '<path d="M4 4h16v12H8l-4 4z"/>',
+    wa: '<path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c.5 2 2 3.6 4 4.3l1.2-1.1 2 .9-.5 1.6c-3.5.3-7-3.2-6.8-6.7l1.6-.6.9 2z"/>'
+  };
+  var PAGOS = { transferencia: 'Transferencia', efectivo: 'Efectivo', tarjeta: 'Tarjeta', billetera: 'Billetera digital' };
+  function svg(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + IC[n] + '</svg>'; }
+  function ver(id) { VISTAS.forEach(function (v) { $(v).hidden = v !== id; }); }
+  function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2800); }
+  function el(tag, a, hijos) {
+    var e = document.createElement(tag);
+    Object.keys(a || {}).forEach(function (k) { if (k === 'class') e.className = a[k]; else if (k === 'text') e.textContent = a[k]; else if (k === 'html') e.innerHTML = a[k]; else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), a[k]); else e.setAttribute(k, a[k]); });
+    (hijos || []).forEach(function (h) { if (h) e.appendChild(typeof h === 'string' ? document.createTextNode(h) : h); });
+    return e;
+  }
+  function dinero(n, mon) { try { return new Intl.NumberFormat('es-EC', { style: 'currency', currency: mon || (D.tienda && D.tienda.moneda) || 'USD' }).format(n || 0); } catch (e) { return '$' + Number(n || 0).toFixed(2); } }
+  function cuando(iso) {
+    var d = new Date(iso), ahora = new Date(), min = Math.round((ahora - d) / 60000);
+    var hora = d.toLocaleTimeString('es-EC', { hour: '2-digit', minute: '2-digit' });
+    if (min < 1) return 'ahora';
+    if (min < 60) return 'hace ' + min + ' min';
+    var hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate()), dia = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var dias = Math.round((hoy - dia) / 86400000);
+    if (dias === 0) return 'hoy ' + hora;
+    if (dias === 1) return 'ayer ' + hora;
+    return d.toLocaleDateString('es-EC', { day: 'numeric', month: 'short' }) + ' ' + hora;
+  }
+  function resumenItems(p) {
+    var it = p.pedido_items || []; if (!it.length) return 'Pedido';
+    var a = it[0].nombre + (it[0].cantidad > 1 ? ' ×' + it[0].cantidad : '');
+    return it.length > 1 ? a + ' y ' + (it.length - 1) + (it.length === 2 ? ' producto más' : ' productos más') : a;
+  }
+  /* El comprador escribe su número como lo conoce (ej. 0991234567): se le pone el código del país de la tienda. */
+  var COD = { EC: '593', CO: '57', PE: '51', MX: '52', CL: '56', AR: '54', BO: '591', VE: '58', GT: '502', CR: '506', PA: '507', DO: '1', US: '1', ES: '34', BR: '55', PY: '595', UY: '598', SV: '503', HN: '504', NI: '505' };
+  function telInternacional(t) {
+    var n = String(t || '').replace(/\D/g, ''), c = COD[(D.tienda && D.tienda.pais) || 'EC'] || '';
+    if (!c || n.indexOf(c) === 0 && n.length > 10) return n;
+    return c + n.replace(/^0+/, '');
+  }
+  function fallo(e) { return (VL && VL._fallo) ? VL._fallo(e).mensaje : 'Algo salió mal. Inténtalo de nuevo.'; }
+  function app() { try { return window.parent !== window ? window.parent.__app : null; } catch (e) { return null; } }
+
+  /* ---------- Cargar ---------- */
+  function cargar(silencioso) {
+    if (!silencioso) ver('v-carga');
+    if (!VL || !VL.listo) { ver('v-sin'); return Promise.resolve(); }
+    sb = VL.cliente();
+    return VL.sesion().then(function (s) {
+      if (!s) { ver('v-sin'); return; }
+      return Promise.all([
+        D.tienda ? Promise.resolve({ ok: true, tienda: D.tienda }) : VL.miTienda(),
+        sb.from('pedidos').select('id, numero, estado, comprador_nombre, comprador_tel, entrega_modo, direccion, pago_preferido, nota, moneda, subtotal, created_at, confirmado_at, pagado_at, entregado_at, cancelado_at, pedido_items(nombre, variante, cantidad, precio_unitario, total)')
+          .order('created_at', { ascending: false }).limit(300)
+      ]).then(function (r) {
+        if (!r[0].ok) throw r[0];
+        if (!r[0].tienda) { window.top.location.href = 'onboarding-demo.html'; return; }
+        if (r[1].error) throw r[1].error;
+        D.tienda = r[0].tienda; D.pedidos = r[1].data || [];
+        if (filtro === null) filtro = D.pedidos.some(function (p) { return p.estado === 'solicitado'; }) ? 'solicitado' : 'todos';
+        pintar(); ver('v-lista');
+        if (abierto) { var p = buscar(abierto); if (p && $('dlg').open) pintarDetalle(p); }
+      });
+    }).catch(function (e) { if (silencioso) return; $('error-txt').textContent = (e && e.mensaje) || fallo(e); ver('v-error'); });
+  }
+  function buscar(id) { for (var i = 0; i < D.pedidos.length; i++) if (D.pedidos[i].id === id) return D.pedidos[i]; return null; }
+
+  /* ---------- Lista ---------- */
+  function pintar() {
+    $('sub').textContent = D.tienda.nombre + ' · tus pedidos reales';
+    var ini = new Date(); ini = new Date(ini.getFullYear(), ini.getMonth(), 1);
+    var nuevos = 0, ventas = 0, monto = 0, cuenta = {};
+    D.pedidos.forEach(function (p) {
+      cuenta[p.estado] = (cuenta[p.estado] || 0) + 1;
+      if (p.estado === 'solicitado') nuevos++;
+      if ((p.estado === 'pagado' || p.estado === 'entregado') && p.pagado_at && new Date(p.pagado_at) >= ini) { ventas++; monto += Number(p.subtotal); }
+    });
+    $('r-nuevos').textContent = nuevos; $('r-ventas').textContent = ventas; $('r-monto').textContent = dinero(monto);
+    var chips = $('chips'); chips.textContent = '';
+    FILTROS.forEach(function (f) {
+      var n = f[0] === 'todos' ? D.pedidos.length : (cuenta[f[0]] || 0);
+      if (f[0] !== 'todos' && f[0] !== 'solicitado' && !n) return;
+      chips.appendChild(el('button', { type: 'button', class: 'chip', 'aria-pressed': String(filtro === f[0]), onclick: function () { filtro = f[0]; pintar(); } }, [f[1] + ' ', el('b', { text: String(n) })]));
+    });
+    var lista = $('lista'); lista.textContent = '';
+    var vis = D.pedidos.filter(function (p) { return filtro === 'todos' || p.estado === filtro; });
+    vis.forEach(function (p) {
+      var b = el('button', { type: 'button', class: 'ped' + (p.estado === 'solicitado' ? ' nuevo' : ''), onclick: function () { abrir(p.id); },
+        'aria-label': 'Pedido número ' + p.numero + ', ' + ESTADOS[p.estado] + ', ' + dinero(p.subtotal, p.moneda) }, [
+        el('div', { class: 'fila' }, [el('h3', { text: '#' + p.numero }), el('span', { class: 'est ' + p.estado, html: '<i></i>' + ESTADOS[p.estado] })]),
+        el('p', { class: 'items', text: resumenItems(p) }),
+        el('div', { class: 'fila' }, [el('span', { class: 'meta', html: svg(p.entrega_modo === 'domicilio' ? 'domicilio' : 'retiro') + (p.entrega_modo === 'domicilio' ? 'A domicilio' : 'Retiro') + ' · ' + cuando(p.created_at) }),
+                                      el('span', { class: 'total', text: dinero(p.subtotal, p.moneda) })])
+      ]);
+      lista.appendChild(el('li', {}, [b]));
+    });
+    var vacio = !vis.length; $('vacio').hidden = !vacio;
+    if (vacio) {
+      var sinNada = !D.pedidos.length;
+      $('vacio-t').textContent = sinNada ? 'Aún no tienes pedidos' : (filtro === 'solicitado' ? '¡Estás al día!' : 'Nada por aquí');
+      $('vacio-p').textContent = sinNada ? 'Cuando un cliente te pida desde tu tienda, aparecerá aquí y te avisaremos.' : (filtro === 'solicitado' ? 'No tienes pedidos nuevos por confirmar. Comparte tu tienda para recibir más.' : 'No hay pedidos con este estado.');
+    }
+  }
+
+  /* ---------- Detalle ---------- */
+  function abrir(id) { var p = buscar(id); if (!p) return; abierto = id; $('d-error').hidden = true; pintarDetalle(p); if (!$('dlg').open) $('dlg').showModal(); }
+  function pintarDetalle(p) {
+    $('d-t').textContent = 'Pedido #' + p.numero;
+    $('d-cuando').textContent = ESTADOS[p.estado] + ' · recibido ' + cuando(p.created_at);
+    var pasos = $('d-pasos'); pasos.textContent = '';
+    [['Solicitado', p.created_at], ['Confirmado', p.confirmado_at], ['Pagado', p.pagado_at], ['Entregado', p.entregado_at]].forEach(function (x) {
+      pasos.appendChild(el('li', { class: x[1] ? 'hecho' : '' }, [x[0], x[1] ? el('small', { text: cuando(x[1]) }) : null]));
+    });
+    if (p.estado === 'cancelado') pasos.appendChild(el('li', { class: 'hecho', style: 'grid-column:1/-1' }, ['Cancelado ', el('small', { text: cuando(p.cancelado_at) })]));
+    var ul = $('d-items'); ul.textContent = '';
+    (p.pedido_items || []).forEach(function (i) {
+      ul.appendChild(el('li', {}, [el('span', { text: i.cantidad + ' × ' + i.nombre + (i.variante ? ' (' + i.variante + ')' : '') }), el('b', { text: dinero(i.total, p.moneda) })]));
+    });
+    ul.appendChild(el('li', { class: 'sub' }, [el('span', { text: 'Total' }), el('b', { text: dinero(p.subtotal, p.moneda) })]));
+    var datos = $('d-datos'); datos.textContent = '';
+    var fila = function (ic, titulo, txt) { if (!txt) return; datos.appendChild(el('div', { html: svg(ic) }, [el('span', {}, [el('b', { text: titulo }), document.createTextNode(txt)])])); };
+    fila('cliente', 'Cliente', p.comprador_nombre + (p.comprador_tel ? ' · ' + p.comprador_tel : ''));
+    fila(p.entrega_modo === 'domicilio' ? 'domicilio' : 'retiro', 'Entrega', p.entrega_modo === 'domicilio' ? 'A domicilio · ' + (p.direccion || '') : 'Retira en tu tienda');
+    fila('pago', 'Pago que prefiere', PAGOS[p.pago_preferido] || p.pago_preferido);
+    fila('nota', 'Nota', p.nota);
+    var acc = $('d-acc'); acc.textContent = '';
+    var s = SIGUE[p.estado];
+    if (s) {
+      acc.appendChild(el('button', { type: 'button', class: 'btn' + (s.estado === 'pagado' ? ' marca' : ''), text: s.txt, onclick: function () { cambiar(p, s.estado, this); } }));
+      acc.appendChild(el('p', { class: 'ayuda-acc', text: s.ayuda }));
+    } else if (p.estado === 'entregado') acc.appendChild(el('p', { class: 'completo', text: '✓ Venta completada' }));
+    if (p.comprador_tel && p.estado !== 'cancelado') {
+      var msj = 'Hola ' + p.comprador_nombre.split(' ')[0] + ', te escribo de ' + D.tienda.nombre + ' por tu pedido #' + p.numero + '.';
+      acc.appendChild(el('a', { class: 'btn claro', href: 'https://wa.me/' + telInternacional(p.comprador_tel) + '?text=' + encodeURIComponent(msj), target: '_blank', rel: 'noopener', html: svg('wa') + 'Escribir por WhatsApp' }));
+    }
+    if (p.estado !== 'entregado' && p.estado !== 'cancelado') acc.appendChild(el('button', { type: 'button', class: 'link', style: 'justify-self:center;color:var(--error)', text: 'Cancelar pedido', onclick: function () { pedirCancelar(p); } }));
+  }
+  function pedirCancelar(p) {
+    $('c-p').textContent = p.estado === 'pagado' ? 'Este pedido ya estaba pagado: al cancelarlo deja de contar como venta y se descuentan sus puntos. No se puede deshacer.' : 'El pedido #' + p.numero + ' queda cancelado y ya no se puede cambiar.';
+    $('c-si').onclick = function () { $('dlg-cancelar').close(); cambiar(p, 'cancelado', $('c-si')); };
+    $('dlg-cancelar').showModal();
+  }
+  function cambiar(p, estado, boton) {
+    if (trabajando) return; trabajando = true;
+    var txt = boton.textContent; boton.disabled = true; boton.textContent = 'Guardando…'; $('d-error').hidden = true;
+    sb.rpc('actualizar_estado_pedido', { p_pedido: p.id, p_estado: estado }).then(function (r) {
+      if (r.error) throw r.error;
+      var agotados = (r.data && r.data.agotados) || [];
+      toast(estado === 'cancelado' ? 'Pedido #' + p.numero + ' cancelado' : 'Pedido #' + p.numero + ': ' + ESTADOS[estado].toLowerCase());
+      if (agotados.length) setTimeout(function () { toast('Se agotó: ' + agotados.map(function (a) { return a.nombre; }).join(', ')); }, 3000);
+      return cargar(true).then(function () { return sb.rpc('camino_nuevos'); });
+    }).then(function (r) {
+      trabajando = false;
+      if (r && !r.error && r.data && r.data.nuevos && r.data.nuevos.length) {
+        $('dlg').close();
+        window.VLC.celebrar(r.data.nuevos, { verCamino: app() ? function () { app().ir('camino'); } : null });
+      }
+    }).catch(function (e) {
+      trabajando = false; boton.disabled = false; boton.textContent = txt;
+      var m = e && /CAMBIO_NO_PERMITIDO/.test(e.message || '') ? 'Este pedido ya cambió de estado. Actualizamos la lista.' : fallo(e);
+      $('d-error').textContent = m; $('d-error').hidden = false; cargar(true);
+    });
+  }
+
+  /* ---------- Avisos ---------- */
+  function revisarAvisos() {
+    if (!window.VLAvisos) return;
+    VLAvisos.estado().then(function (e) { $('c-avisos').hidden = !(e === 'inactivo' || e === 'ios_instalar'); });
+  }
+  $('b-avisos').addEventListener('click', function () {
+    var a = app(); if (a && a.abrirAvisos) { a.abrirAvisos(); return; }
+    location.href = 'avisos.html';
+  });
+  $('b-compartir').addEventListener('click', function () { window.VLC.compartirTienda(D.tienda); });
+  $('b-reintentar').addEventListener('click', function () { cargar(); });
+  $('d-cerrar').addEventListener('click', function () { $('dlg').close(); });
+  $('dlg').addEventListener('close', function () { abierto = null; });
+  $('c-no').addEventListener('click', function () { $('dlg-cancelar').close(); });
+
+  /* Pedidos al día: al volver a la app, cada 45 s mientras se ve, y al instante cuando llega un aviso. */
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && D.tienda) { cargar(true); revisarAvisos(); } });
+  setInterval(function () { if (!document.hidden && D.tienda && !trabajando) cargar(true); }, 45000);
+  if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', function (e) { if (e.data && e.data.tipo === 'vl-aviso' && D.tienda) cargar(true); });
+  window.__pedidos = { recargar: function () { return cargar(true); }, revisarAvisos: revisarAvisos };
+  cargar().then(revisarAvisos);
+})();
+</script>
+</body>
+</html>

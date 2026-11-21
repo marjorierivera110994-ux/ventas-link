@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ventas Link — tu app de vendedor (demostración)</title>
 <link rel="icon" href="logo/ventas-link-icono.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="logo/ventas-link-icono-180.png">
+<meta name="theme-color" content="#f4ecdb">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ventas Link">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
@@ -110,6 +117,10 @@
   .t3d svg { position: relative; width: 24px; height: 24px; stroke-width: 2.6; filter: drop-shadow(0 2px 0 rgb(0 0 0 / .28)); }
   .t3d.verde { --a: #b98cff; --b: #6a1fd0; --sh: #45109a; } .t3d.naranja { --a: #ffb83a; --b: #ff6a00; --sh: #b34700; }
   .t3d.lima { --a: #ffe08a; --b: #ffb81a; --sh: #b97800; color: #22104f; } .t3d.lima svg { filter: drop-shadow(0 2px 0 rgb(255 255 255 / .5)); }
+  .t3d.fucsia { --a: #ff8ad8; --b: #e0179f; --sh: #9d0f6f; } .banner.marca { background: linear-gradient(120deg, #7a2ff2, #e0179f 60%, #ff8a1a) !important; color: #fff !important; }
+  .banner.marca span { color: rgb(255 255 255 / .92) !important; }
+  .ver-camino { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; margin-top: 6px; font-weight: 800; font-size: 14px; color: var(--verde-texto); }
+  .ver-camino svg { width: 16px; height: 16px; }
   .t3d.cielo { --a: #86d4ff; --b: #2f9bea; --sh: #1b6aa8; } .t3d.tinta { --a: #e6f7ff; --b: #8fd3fa; --sh: #4b9fd4; color: #0b2a40; } .t3d.tinta svg { filter: drop-shadow(0 2px 0 rgb(255 255 255 / .55)); }
   @keyframes bob3d { 0%, 100% { transform: translateY(var(--y)) scale(var(--s)); } 50% { transform: translateY(calc(var(--y) - 4px)) scale(var(--s)); } }
   .nav { overflow: visible; height: 74px; padding: 0 6px;
@@ -297,17 +308,20 @@
     <aside class="tarj oscura" aria-label="Frase para ti" id="arte"><canvas class="arte-fondo" id="arte-fondo" width="720" height="560" aria-hidden="true"></canvas><small id="arte-cat">Para ti, hoy</small><p id="frase"></p>
       <div class="arte-acc"><button type="button" class="arte-btn" id="arte-comp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg>Compartir</button><button type="button" class="arte-btn solo" id="arte-otra" aria-label="Ver otra frase con otro fondo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div></aside>
 
-    <section class="tarj" aria-labelledby="t-meta">
-      <div class="meta-cab"><h2 id="t-meta">Tu camino de éxito</h2><span>Meta de la semana</span></div>
-      <div class="meta-cab" style="margin-top:6px"><b>$184</b><span>de $200</span></div>
-      <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="200" aria-valuenow="184" aria-label="Ventas de la semana"><i id="barra"></i></div>
-      <div class="hitos"><span>$0</span><span>$100</span><span>$200</span></div>
+    <section class="tarj" aria-labelledby="t-meta" id="camino-caja">
+      <div class="meta-cab"><h2 id="t-meta">Tu camino de éxito</h2><span id="cm-etq">Meta de la semana</span></div>
+      <div class="meta-cab" style="margin-top:6px"><b id="cm-valor">$184</b><span id="cm-de">de $200</span></div>
+      <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="92" aria-label="Avance" id="cm-progreso"><i id="barra"></i></div>
+      <div class="hitos" id="cm-hitos"><span>$0</span><span>$100</span><span>$200</span></div>
+      <button type="button" class="ver-camino" data-ir="camino">Ver mi camino al éxito<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </section>
 
+    <button type="button" class="banner marca" id="banner-avisos" hidden><div><b>Entérate al instante de cada pedido</b><span>Activa los avisos en tu celular</span></div><svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+
     <div class="stats">
-      <div class="stat"><small>Pedidos nuevos</small><b>3</b><em>+2 hoy</em></div>
-      <div class="stat"><small>Visitas</small><b>126</b><em>+18%</em></div>
-      <div class="stat"><small>Producto top</small><b style="font-size:16px;line-height:1.2;margin-top:4px">Blusa de seda</b></div>
+      <div class="stat" id="st-nuevos"><small>Pedidos nuevos</small><b>3</b><em>+2 hoy</em></div>
+      <div class="stat" id="st-visitas"><small>Visitas</small><b>126</b><em>+18%</em></div>
+      <div class="stat" id="st-top"><small>Producto top</small><b style="font-size:16px;line-height:1.2;margin-top:4px">Blusa de seda</b></div>
     </div>
 
 
@@ -335,14 +349,14 @@
 <section class="panel marco" id="p-productos" role="tabpanel" aria-label="Productos" hidden><iframe data-src="producto-demo.html" title="Productos"></iframe></section>
 <section class="panel marco" id="p-pedidos" role="tabpanel" aria-label="Pedidos" hidden><iframe data-src="cobro-demo.html" title="Pedidos"></iframe></section>
 <section class="panel marco" id="p-compartir" role="tabpanel" aria-label="Compartir" hidden><iframe data-src="compartir-demo.html" title="Compartir"></iframe></section>
-<section class="panel marco" id="p-plan" role="tabpanel" aria-label="Mi plan" hidden><iframe data-src="mi-plan-demo.html" title="Mi plan"></iframe></section>
+<section class="panel marco" id="p-camino" role="tabpanel" aria-label="Mi camino al éxito" hidden><iframe data-src="camino.html" title="Mi camino al éxito"></iframe></section>
 
 <nav class="nav" id="nav" aria-label="Menú principal">
   <button type="button" data-t="inicio" aria-current="page"><span class="t3d verde"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span><span class="lbl">Inicio</span></button>
   <button type="button" data-t="productos"><span class="t3d naranja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg></span><span class="lbl">Productos</span></button>
   <button type="button" data-t="pedidos" class="nuevo"><span class="t3d lima"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l1 2h3a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3zM8 12h8M8 16h5"/></svg></span><span class="lbl">Pedidos</span></button>
   <button type="button" data-t="compartir"><span class="t3d cielo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></span><span class="lbl">Compartir</span></button>
-  <button type="button" data-t="plan"><span class="t3d tinta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.6 6.9L22 9.3l-5.4 4.6 1.8 7.1L12 17l-6.4 4 1.8-7.1L2 9.3l7.4-.4z"/></svg></span><span class="lbl">Mi plan</span></button>
+  <button type="button" data-t="camino"><span class="t3d fucsia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></svg></span><span class="lbl">Mi camino</span></button>
 </nav>
 
 <div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-t">
@@ -357,6 +371,8 @@
   <p class="cuenta-enlace" id="cuenta-enlace" hidden></p>
   <button type="button" class="cuenta-btn" id="cuenta-ver" hidden>Ver mi tienda</button>
   <button type="button" class="cuenta-btn" id="cuenta-entrar" hidden>Entrar a mi tienda</button>
+  <button type="button" class="cuenta-btn claro" id="cuenta-avisos">Notificaciones</button>
+  <button type="button" class="cuenta-btn claro" id="cuenta-plan">Mi plan y prueba gratis</button>
   <button type="button" class="cuenta-btn claro" id="cuenta-pers">Personalizar mi tienda</button>
   <button type="button" class="cuenta-btn salir" id="cuenta-salir" hidden>Cerrar sesión</button>
   <button type="button" class="cuenta-btn claro" id="cuenta-cerrar">Cerrar</button>
@@ -383,6 +399,8 @@
 <script src="vl-config.js"></script>
 <script src="vl-datos.js"></script>
 <script src="vl-registro.js"></script>
+<script src="vl-avisos.js"></script>
+<script src="vl-camino.js"></script>
 <script>
 (function () {
   'use strict';
@@ -416,8 +434,10 @@
 
   function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2400); }
 
-  var tabs = ['inicio', 'productos', 'pedidos', 'compartir', 'plan'];
+  var tabs = ['inicio', 'productos', 'pedidos', 'compartir', 'camino'];
   function ir(t) {
+    if (t === 'plan') { abrirHoja('mi-plan-demo.html', 'Mi plan'); return; }   /* "Mi plan" ahora se abre como hoja (la pestaña es "Mi camino") */
+    if (tabs.indexOf(t) < 0) t = 'inicio';
     tabs.forEach(function (k) { var p = $('p-' + k); p.hidden = k !== t; });
     [].slice.call($('nav').querySelectorAll('button')).forEach(function (b) { if (b.dataset.t === t) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
     var f = $('p-' + t).querySelector('iframe'); if (f && !f.src) f.src = f.dataset.src;
@@ -488,9 +508,99 @@
       }, true);
     }
     $('cuenta-salir').hidden = false; $('cuenta-entrar').hidden = true; $('cuenta-borrar').hidden = false;
-    var d = document.querySelector('.inicio .demo'); if (d) d.textContent = 'Tu cuenta es real · números de ejemplo';
+    var d = document.querySelector('.inicio .demo'); if (d) d.hidden = true;
     document.title = t.nombre + ' — Ventas Link';
+    /* marca: camino1 — con sesión: pedidos reales, "Mi camino al éxito" real, inicio con números reales y avisos */
+    var fpe = document.querySelector('#p-pedidos iframe'); fpe.dataset.src = 'pedidos.html'; if (fpe.src && !/pedidos.html/.test(fpe.src)) fpe.src = 'pedidos.html';
+    var comp = document.querySelector('.accion[data-ir="compartir"]');
+    if (comp && !comp.dataset.real) {
+      comp.dataset.real = '1';
+      comp.addEventListener('click', function (ev) { ev.stopImmediatePropagation(); VLC.compartirTienda(t).then(function (r) { if (r !== 'cancelado') setTimeout(inicioReal, 1500); }); }, true);
+    }
+    TIENDA = t;
+    inicioReal();
+    if (window.VLAvisos) VLAvisos.sincronizar();
   }
+
+  /* ---------- Inicio con datos reales (cuenta con sesión) ---------- */
+  var TIENDA = null, pctBarra = 92;
+  function dinero(n) { try { return new Intl.NumberFormat('es-EC', { style: 'currency', currency: (TIENDA && TIENDA.moneda) || 'USD', maximumFractionDigits: n % 1 ? 2 : 0 }).format(n || 0); } catch (e) { return '$' + n; } }
+  function stat(id, valor, nota) { var s = $(id); if (!s) return; s.querySelector('b').textContent = valor; var em = s.querySelector('em'); if (em) { em.textContent = nota || ''; em.hidden = !nota; } }
+  function inicioReal() {
+    if (!TIENDA || !VL || !VL.listo) return;
+    var sb = VL.cliente(), hace30 = new Date(Date.now() - 30 * 86400000).toISOString(), hoy0 = new Date(); hoy0.setHours(0, 0, 0, 0);
+    var dia7 = new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10);
+    Promise.all([
+      sb.rpc('mi_camino'),
+      sb.from('pedidos').select('estado, created_at, pedido_items(nombre, cantidad)').gte('created_at', hace30).limit(500),
+      sb.from('visitas_dia').select('visitas').gte('dia', dia7)
+    ]).then(function (r) {
+      var c = r[0].data, peds = r[1].data || [], vis = r[2].error ? null : (r[2].data || []);
+      if (c) {
+        var nv = c.nivel, sig = c.siguiente;
+        $('cm-etq').textContent = nv.nombre;
+        $('cm-valor').textContent = c.puntos + ' puntos';
+        $('cm-de').textContent = sig ? 'de ' + sig.desde + ' para subir' : 'nivel máximo';
+        pctBarra = sig ? Math.max(2, Math.min(100, Math.round((c.puntos - nv.desde) / (sig.desde - nv.desde) * 100))) : 100;
+        $('cm-progreso').setAttribute('aria-valuenow', String(pctBarra)); $('cm-progreso').setAttribute('aria-label', 'Avance al siguiente nivel');
+        var h = $('cm-hitos'); h.textContent = '';
+        [nv.nombre.replace('Emprendedor ', ''), sig ? 'Faltan ' + c.faltan : '¡Lo lograste!', sig ? sig.nombre.replace('Emprendedor ', '') : ''].forEach(function (x) { var s = document.createElement('span'); s.textContent = x; h.appendChild(s); });
+        animarBarra();
+        if (c.nuevos && c.nuevos.length) setTimeout(function () { VLC.celebrar(c.nuevos, { verCamino: function () { ir('camino'); } }); }, $('splash').classList.contains('fuera') ? 300 : 3000);
+      }
+      var nuevos = peds.filter(function (p) { return p.estado === 'solicitado'; }), deHoy = nuevos.filter(function (p) { return new Date(p.created_at) >= hoy0; }).length;
+      stat('st-nuevos', String(nuevos.length), deHoy ? '+' + deHoy + ' hoy' : (nuevos.length ? 'por confirmar' : 'al día'));
+      if (vis) stat('st-visitas', String(vis.reduce(function (s, x) { return s + (x.visitas || 0); }, 0)), 'últimos 7 días'); else $('st-visitas').hidden = true;
+      var cuenta = {};
+      peds.forEach(function (p) { if (p.estado === 'cancelado') return; (p.pedido_items || []).forEach(function (i) { cuenta[i.nombre] = (cuenta[i.nombre] || 0) + i.cantidad; }); });
+      var top = Object.keys(cuenta).sort(function (a, b) { return cuenta[b] - cuenta[a]; })[0];
+      stat('st-top', top || 'Aún sin pedidos', '');
+      consejosReales(c, nuevos.length, top);
+      revisarBannerAvisos(c);
+    }).catch(function () { /* sin conexión: se queda lo que había */ });
+  }
+  function consejosReales(c, pendientes, top) {
+    var lista = $('consejos'); if (!lista || !c) return;
+    var t = [], v = c.ventas, meta = Number(v.meta_semana || 0), monto = Number(v.monto_semana || 0);
+    if (pendientes > 0) t.push({ c: 'n', icono: 'M6 7h12l-1 13H7zM9 7a3 3 0 0 1 6 0', t: 'Tienes ' + pendientes + (pendientes === 1 ? ' pedido por confirmar' : ' pedidos por confirmar'), d: 'Contestar rápido hace que más clientes compren.', ir: 'pedidos' });
+    if (meta > 0 && monto < meta) t.push({ c: 'v', icono: 'M3 17l6-6 4 4 8-8M15 7h6v6', t: 'Te faltan ' + dinero(meta - monto) + ' para tu meta', d: top ? 'Comparte hoy ' + top + ' en tus estados.' : 'Comparte tu tienda hoy en tus estados.', ir: 'camino' });
+    else if (meta > 0) t.push({ c: 'v', icono: 'M5 13l4 4L19 7', t: '¡Cumpliste tu meta de la semana!', d: 'Súbela un poquito para la próxima semana.', ir: 'camino' });
+    else t.push({ c: 'v', icono: 'M3 17l6-6 4 4 8-8M15 7h6v6', t: 'Ponte una meta de ventas', d: 'Una meta semanal te ayuda a avanzar y suma 50 puntos al cumplirla.', ir: 'camino' });
+    var reto = (c.retos || []).filter(function (r) { return (r.grupo === 'diario' || r.grupo === 'semanal') && r.estado !== 'completado'; })[0];
+    if (reto) t.push({ c: 'c', icono: 'M5 12.5l4.5 4.5L19 7.5', t: 'Reto: ' + reto.titulo, d: 'Cúmplelo y gana ' + reto.puntos + ' puntos en tu camino al éxito.', ir: 'camino' });
+    lista.textContent = '';
+    t.slice(0, 3).forEach(function (x) {
+      var li = document.createElement('li'), b = document.createElement('button'); b.type = 'button'; b.className = 'consejo';
+      b.innerHTML = '<span class="ic ' + x.c + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + x.icono + '"/></svg></span><span><b></b><span class="d"></span></span>';
+      b.querySelector('b').textContent = x.t; b.querySelector('.d').textContent = x.d;
+      b.addEventListener('click', function () { ir(x.ir); });
+      li.appendChild(b); lista.appendChild(li);
+    });
+    var sub = document.querySelector('#consejos-caja .cons-sub'); if (sub) sub.textContent = 'Con tus pedidos y retos reales. Cambian solos cuando cambian tus números.';
+  }
+  /* El permiso de avisos se ofrece DESPUÉS del primer logro (primer producto), nunca al entrar. */
+  function revisarBannerAvisos(c) {
+    var b = $('banner-avisos'); if (!window.VLAvisos || !c) return;
+    var yaTieneProducto = (c.retos || []).some(function (r) { return r.codigo === 'primer_producto' && r.estado === 'completado'; });
+    VLAvisos.estado().then(function (e) { b.hidden = !(yaTieneProducto && (e === 'inactivo' || e === 'ios_instalar')); });
+  }
+  function abrirAvisos() { abrirHoja('avisos.html', 'Notificaciones'); }
+  $('banner-avisos').addEventListener('click', abrirAvisos);
+  $('cuenta-avisos').addEventListener('click', function () { cerrarCuenta(); abrirAvisos(); });
+  $('cuenta-plan').addEventListener('click', function () { cerrarCuenta(); ir('plan'); });
+
+  /* Al tocar una notificación con la app abierta, o cuando llega un aviso: ir a la sección y actualizar. */
+  function irDesdeUrl(u) { var m = String(u || '').match(/#([a-z]+)/); if (m) ir(m[1]); }
+  if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (d.tipo === 'vl-ir') { cerrarHoja(); irDesdeUrl(d.url); }
+    if (d.tipo === 'vl-aviso') {
+      try { var w = document.querySelector('#p-pedidos iframe').contentWindow; if (w && w.__pedidos) w.__pedidos.recargar(); } catch (x) { /* ok */ }
+      try { var w2 = document.querySelector('#p-camino iframe').contentWindow; if (w2 && w2.__camino) w2.__camino.recargar(); } catch (x) { /* ok */ }
+      inicioReal();
+    }
+  });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && TIENDA) inicioReal(); });
   if (VL && VL.listo) {
     $('cuenta-entrar').hidden = false;
     VL.sesion().then(function (s) {
@@ -505,7 +615,7 @@
     VL.alCambiar(function (evento) { if (evento === 'SIGNED_OUT') location.replace('entrar.html'); });
   }
 
-  function animarBarra() { var b = $('barra'); b.style.width = '0'; requestAnimationFrame(function () { requestAnimationFrame(function () { b.style.width = '92%'; }); }); }
+  function animarBarra() { var b = $('barra'); b.style.width = '0'; requestAnimationFrame(function () { requestAnimationFrame(function () { b.style.width = pctBarra + '%'; }); }); }
 
 
   /* Consejos: reglas simples sobre los datos reales de la semana (sin IA de pago, sin inventar cifras). */
@@ -532,7 +642,7 @@
   setTimeout(quitarSplash, quieto ? 600 : 2800);
   var hh = (location.hash || '').slice(1); if (tabs.indexOf(hh) > 0) { ir(hh); } if (hh) { quitarSplash(); }
   window.__cuenta = { ponerTienda: ponerTienda, abrir: abrirCuenta, cerrar: cerrarCuenta };
-  window.__app = { ir: ir, abrirHoja: abrirHoja, cerrarHoja: cerrarHoja, quitarSplash: quitarSplash };
+  window.__app = { ir: ir, abrirHoja: abrirHoja, cerrarHoja: cerrarHoja, quitarSplash: quitarSplash, abrirAvisos: abrirAvisos, recargarInicio: inicioReal };
 })();
 </script>
 </body>

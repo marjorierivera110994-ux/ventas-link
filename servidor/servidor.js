@@ -10,7 +10,7 @@ const RAIZ = path.resolve(AQUI, '..');
 const PUERTO = Number(process.env.PORT) || 3000;
 const LIMITE_HORA = { gratis: 5, emprendedor: 30, pro: 100 }; // pedidos por hora y por visitante (HIPÓTESIS: ajustar con costo real)
 const LIMITE_DIA_GLOBAL = Number(process.env.IA_MAX_DIARIO) || 200; // freno de emergencia de costo: pedidos de IA por día entre todos
-const TIPOS_ARCHIVO = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.json': 'application/json' };
+const TIPOS_ARCHIVO = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.json': 'application/json', '.webmanifest': 'application/manifest+json' };
 
 const porVisitante = new Map();
 let dia = new Date().toISOString().slice(0, 10), usadosHoy = 0;

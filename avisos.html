@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Notificaciones — Ventas Link</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4ecdb">
+<link rel="icon" href="logo/ventas-link-icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vl-app.css">
+<style>
+  .estado-c { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 14px; align-items: center; }
+  .estado-c .ic-chip { width: 56px; height: 56px; border-radius: 18px; } .estado-c .ic-chip svg { width: 28px; height: 28px; }
+  .estado-c h2 { font-size: 19px; } .estado-c p { margin-top: 2px; font-size: 14px; }
+  .estado-c .btn { grid-column: 1 / -1; }
+  .pasos-ios { list-style: none; display: grid; gap: 10px; margin-top: 14px; counter-reset: p; }
+  .pasos-ios li { counter-increment: p; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 10px; align-items: center; font-size: 15px; font-weight: 600; }
+  .pasos-ios li::before { content: counter(p); width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; color: #fff; background: linear-gradient(160deg, #b98cff, #6a1fd0); box-shadow: 0 3px 0 #45109a; }
+  .pasos-ios svg { width: 18px; height: 18px; vertical-align: -3px; }
+  .grupo { margin-top: 16px; background: var(--blanco); border-radius: 24px; padding: 6px 16px; box-shadow: var(--relieve); border: 1px solid rgb(255 255 255 / .95); }
+  .grupo .interruptor { padding: 10px 0; border-bottom: 1px solid color-mix(in oklab, var(--tinta) 8%, transparent); }
+  .grupo .interruptor:last-of-type { border-bottom: 0; }
+  .hora { display: grid; grid-template-columns: minmax(0, 1fr) 132px; gap: 12px; align-items: center; padding: 4px 0 14px; }
+  .hora label { font-size: 14px; font-weight: 700; } .hora small { display: block; font-size: 13px; color: var(--texto-2); font-weight: 500; }
+  .hora input { min-height: 48px; border-radius: 14px; border: 2px solid transparent; background: color-mix(in oklab, var(--beige) 60%, white); padding: 8px 10px; font-size: 16px; font-weight: 700; box-shadow: var(--hundido); width: 100%; }
+  .guardado { font-size: 13px; color: var(--morado); font-weight: 700; min-height: 20px; margin-top: 8px; text-align: center; }
+  .priv { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; font-size: 13px; color: var(--texto-2); margin-top: 16px; }
+  .priv svg { width: 18px; height: 18px; color: var(--morado); }
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="cab">
+    <h1 tabindex="-1">Notificaciones</h1>
+    <p class="sub">Elige qué avisos quieres recibir en tu celular, aunque la app esté cerrada.</p>
+  </header>
+
+  <section id="v-carga" aria-label="Cargando"><div class="esq"><i></i><i style="height:240px"></i></div></section>
+  <section id="v-sin" hidden><div class="tarj centro"><h2>Entra para activar tus avisos</h2><p>Los avisos son de tu tienda: necesitas entrar a tu cuenta.</p><a class="btn" href="entrar.html" target="_top">Entrar a mi tienda</a></div></section>
+
+  <div id="v-ok" hidden>
+    <section class="tarj estado-c" aria-live="polite">
+      <span class="ic-chip" id="e-ic"></span>
+      <div><h2 id="e-t">Avisos</h2><p id="e-p"></p></div>
+      <button type="button" class="btn marca" id="b-activar" hidden>Activar avisos en este celular</button>
+      <button type="button" class="btn" id="b-probar" hidden>Enviarme un aviso de prueba</button>
+    </section>
+
+    <section class="tarj" id="c-ios" hidden>
+      <h2>En iPhone: instala la app primero</h2>
+      <p>Apple solo deja enviar avisos a las apps agregadas a la pantalla de inicio (iOS 16.4 o más nuevo).</p>
+      <ol class="pasos-ios">
+        <li><span>Abre esta página en <b>Safari</b>.</span></li>
+        <li><span>Toca <b>Compartir</b> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-label="ícono de compartir"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg>.</span></li>
+        <li><span>Elige <b>Agregar a pantalla de inicio</b>.</span></li>
+        <li><span>Abre <b>Ventas Link</b> desde el ícono, entra a tu cuenta y vuelve aquí para activar los avisos.</span></li>
+      </ol>
+    </section>
+
+    <section class="tarj" id="c-bloq" hidden>
+      <h2>Los avisos están bloqueados</h2>
+      <p>Diste "No permitir" en este celular. Para activarlos: abre los ajustes del navegador o del celular, busca este sitio y cambia Notificaciones a <b>Permitir</b>. Luego vuelve aquí.</p>
+    </section>
+
+    <form id="f" aria-labelledby="t-pref">
+      <h2 id="t-pref" style="font-size:20px;margin-top:26px">Qué quieres recibir</h2>
+      <div class="grupo">
+        <label class="interruptor"><span><b>Pedidos nuevos</b><small>Cuando un cliente te pida desde tu tienda. Recomendado.</small></span><input type="checkbox" id="p-pedidos"><span class="sw"></span></label>
+        <label class="interruptor"><span><b>Preguntas de clientes</b><small>Cuando alguien toca "Preguntar por WhatsApp" en un producto.</small></span><input type="checkbox" id="p-consultas"><span class="sw"></span></label>
+        <label class="interruptor"><span><b>Felicitaciones y logros</b><small>Ventas, retos cumplidos, metas, niveles y medallas.</small></span><input type="checkbox" id="p-felicitaciones"><span class="sw"></span></label>
+        <label class="interruptor"><span><b>Recordatorio diario</b><small>Una frase motivadora y lo que te conviene hacer hoy. Máximo uno al día y solo si no entraste.</small></span><input type="checkbox" id="p-recordatorio"><span class="sw"></span></label>
+        <div class="hora" id="fila-hora"><label for="p-hora">Hora del recordatorio<small>Hora de Ecuador</small></label><input type="time" id="p-hora" value="19:00" step="900"></div>
+        <label class="interruptor"><span><b>Cambios de estado de pedidos</b><small>Confirmado, pagado, entregado o cancelado. Útil si atienden tu tienda desde varios celulares.</small></span><input type="checkbox" id="p-estados"><span class="sw"></span></label>
+      </div>
+      <p class="guardado" id="guardado" role="status"></p>
+    </form>
+
+    <p class="priv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>
+      <span>Los avisos nunca muestran el nombre, el teléfono ni la dirección de tus clientes: solo el número de pedido, los productos y el total. Solo te llegan a ti, de tu tienda.</span></p>
+    <button type="button" class="link" id="b-desactivar" hidden style="display:block;margin:12px auto 0;color:var(--error)">Desactivar los avisos en este celular</button>
+  </div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="vendor/supabase.js"></script>
+<script src="vl-config.js"></script>
+<script src="vl-datos.js"></script>
+<script src="vl-avisos.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var VL = window.VL, A = window.VLAvisos, sb = null, guardando = null, cargado = false;
+  var IC = { campana: '<path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7zM10 20a2 2 0 0 0 4 0"/>', ok: '<path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7zM10 20a2 2 0 0 0 4 0"/><path d="M9.5 10.5l2 2 3.5-3.5"/>', no: '<path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7zM10 20a2 2 0 0 0 4 0M3 3l18 18"/>' };
+  function svg(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + IC[n] + '</svg>'; }
+  function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 3200); }
+  function ver(id) { ['v-carga', 'v-sin', 'v-ok'].forEach(function (v) { $(v).hidden = v !== id; }); }
+  function fallo(e) { return (VL && VL._fallo) ? VL._fallo(e).mensaje : 'Algo salió mal. Inténtalo de nuevo.'; }
+
+  function pintarEstado(e) {
+    var ic = $('e-ic'), act = $('b-activar'), probar = $('b-probar');
+    $('c-ios').hidden = e !== 'ios_instalar'; $('c-bloq').hidden = e !== 'bloqueado';
+    act.hidden = e !== 'inactivo'; probar.hidden = e !== 'activo'; $('b-desactivar').hidden = e !== 'activo';
+    ic.className = 'ic-chip ' + (e === 'activo' ? 'fucsia' : e === 'inactivo' ? '' : 'gris');
+    ic.innerHTML = svg(e === 'activo' ? 'ok' : e === 'inactivo' ? 'campana' : 'no');
+    var T = {
+      activo: ['Avisos activados en este celular', 'Te avisaremos al instante, aunque la app esté cerrada.'],
+      inactivo: ['Activa los avisos en este celular', 'Entérate de cada pedido en el momento. El celular te pedirá permiso.'],
+      bloqueado: ['Avisos bloqueados', 'Este celular no deja mostrar avisos de Ventas Link.'],
+      ios_instalar: ['Falta un paso en tu iPhone', 'Agrega Ventas Link a tu pantalla de inicio para recibir avisos.'],
+      no_soportado: ['Este navegador no recibe avisos', 'Usa Chrome en Android, o Safari en iPhone con la app agregada a la pantalla de inicio.']
+    }[e];
+    $('e-t').textContent = T[0]; $('e-p').textContent = T[1];
+  }
+  function pintarPref(p) {
+    ['pedidos', 'consultas', 'felicitaciones', 'recordatorio', 'estados'].forEach(function (k) { $('p-' + k).checked = !!p[k]; });
+    $('p-hora').value = p.hora || '19:00'; $('fila-hora').hidden = !p.recordatorio;
+  }
+  function cargar() {
+    ver('v-carga');
+    if (!VL || !VL.listo) { ver('v-sin'); return; }
+    sb = VL.cliente();
+    VL.sesion().then(function (s) {
+      if (!s) { ver('v-sin'); return; }
+      return Promise.all([sb.rpc('avisos_mias'), A.estado()]).then(function (r) {
+        if (r[0].error) throw r[0].error;
+        pintarPref(r[0].data); pintarEstado(r[1]); cargado = true; ver('v-ok');
+      });
+    }).catch(function (e) { ver('v-ok'); pintarEstado('inactivo'); toast(fallo(e)); });
+  }
+
+  /* Guardar preferencias (al tocar cada interruptor, sin botón extra). */
+  function guardar() {
+    if (!cargado) return;
+    $('fila-hora').hidden = !$('p-recordatorio').checked;
+    clearTimeout(guardando);
+    guardando = setTimeout(function () {
+      $('guardado').textContent = 'Guardando…';
+      sb.rpc('avisos_guardar', { p_pedidos: $('p-pedidos').checked, p_consultas: $('p-consultas').checked, p_estados: $('p-estados').checked,
+        p_felicitaciones: $('p-felicitaciones').checked, p_recordatorio: $('p-recordatorio').checked, p_hora: $('p-hora').value || '19:00', p_zona: 'America/Guayaquil' })
+        .then(function (r) { $('guardado').textContent = r.error ? '' : 'Cambios guardados'; if (r.error) toast(fallo(r.error)); setTimeout(function () { $('guardado').textContent = ''; }, 2200); });
+    }, 350);
+  }
+  ['p-pedidos', 'p-consultas', 'p-felicitaciones', 'p-recordatorio', 'p-estados', 'p-hora'].forEach(function (id) { $(id).addEventListener('change', guardar); });
+
+  $('b-activar').addEventListener('click', function () {
+    var b = this; b.disabled = true; b.textContent = 'Activando…';
+    A.activar().then(function () {
+      b.disabled = false; b.textContent = 'Activar avisos en este celular';
+      pintarEstado('activo'); toast('¡Listo! Te enviamos un aviso de prueba.');
+      return sb.rpc('avisos_probar');
+    }).catch(function (e) {
+      b.disabled = false; b.textContent = 'Activar avisos en este celular';
+      var c = e && e.codigo;
+      if (c === 'bloqueado') pintarEstado('bloqueado');
+      else if (c === 'sin_permiso') toast('No diste permiso. Puedes activarlos cuando quieras.');
+      else if (c === 'ios_instalar') pintarEstado('ios_instalar');
+      else toast(c === 'servidor' ? 'El servicio de avisos no respondió. Inténtalo en un momento.' : fallo(e));
+    });
+  });
+  $('b-probar').addEventListener('click', function () {
+    var b = this; b.disabled = true;
+    sb.rpc('avisos_probar').then(function (r) {
+      setTimeout(function () { b.disabled = false; }, 4000);
+      if (r.error) { toast(fallo(r.error)); return; }
+      toast(r.data ? 'Listo: en unos segundos te llega el aviso.' : 'Espera un minuto para enviar otra prueba.');
+    });
+  });
+  $('b-desactivar').addEventListener('click', function () {
+    A.desactivar().then(function () { pintarEstado('inactivo'); toast('Avisos desactivados en este celular.'); }).catch(function (e) { toast(fallo(e)); });
+  });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && cargado) A.estado().then(pintarEstado); });
+  window.__avisos = { recargar: cargar };
+  cargar();
+})();
+</script>
+</body>
+</html>

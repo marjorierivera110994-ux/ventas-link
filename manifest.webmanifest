@@ -1,0 +1,17 @@
+{
+  "name": "Ventas Link",
+  "short_name": "Ventas Link",
+  "description": "Tu tienda con enlace, pedidos por WhatsApp y tu camino al éxito.",
+  "lang": "es",
+  "start_url": "app-vendedor.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4ecdb",
+  "theme_color": "#f4ecdb",
+  "icons": [
+    { "src": "logo/ventas-link-icono-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "logo/ventas-link-icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "logo/ventas-link-icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

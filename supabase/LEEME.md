@@ -44,3 +44,10 @@ Función de servidor admin-usuarios: crea cuentas y enlaces de entrada (supabase
 - Al borrar una cuenta (`auth.users`), un disparador quita su correo de la bitácora del panel y deja un evento anónimo `cuenta_eliminada`.
 - Retención (pg_cron `ventaslink-retencion`, diario 08:17 UTC): datos de contacto de compradores a los 12 meses, eventos 25 meses, errores 90 días, bitácora 25 meses (`private.aplicar_retencion()`).
 - Prueba: pruebas/legal.sql (18 de 18).
+
+## Mi camino al éxito + avisos push (2026-11-21)
+- Migraciones `camino_avisos` y `camino_avisos_ajuste_texto`. Tablas: `camino_logros`, `camino_puntos`, `avisos_preferencias`, `push_suscripciones` (todas con RLS: cada vendedor solo LEE lo suyo), `private.avisos` (bandeja), `private.push_config` (llaves de firma y contraseña interna), `private.actividad`.
+- Funciones para la app (con sesión): `mi_camino()`, `camino_nuevos()`, `camino_visto(ids)`, `guardar_meta_semanal(meta)`, `push_clave_publica()`, `push_guardar(...)`, `push_borrar(endpoint)`, `avisos_mias()`, `avisos_guardar(...)`, `avisos_probar()`. Para compradores: `registrar_consulta(slug, producto)`.
+- Solo para la función de envío (service_role): `push_config_servidor()`, `push_guardar_llaves(...)`, `avisos_tomar(n)`, `avisos_resultado(...)`.
+- Edge Function `enviar-avisos` (verify_jwt = false: se protege con la contraseña interna `x-vl-token`). Cron `ventaslink-avisos` cada minuto.
+- Pruebas: `supabase/pruebas/camino_avisos.sql` y `node herramientas/prueba-webpush.mjs`.
