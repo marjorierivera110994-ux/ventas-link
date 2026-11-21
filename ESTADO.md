@@ -387,4 +387,4 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - Paleta del logo aplicada con herramientas/colores-logo.mjs a 14 pantallas + vl-legal.css (ver FICHA-ARTE). NO tocado: colores que elige el vendedor para su tienda (personalizar-demo: solo cambió el marco de la app), WhatsApp, banderas, botón de Google, fondos de estudio del editor de fotos, estilos B/C/D del selector de la página de ventas.
 - Quitada la estrellita naranja junto al ícono en entrar.html. Esferas decorativas verdes → moradas.
 - Verificado: revisión automática de contraste en 14 pantallas → 0 problemas; capturas docs/revisiones/marca-*-375.png. Sin revisor visual (cambio de marca pedido; las pantallas no cambiaron de estructura).
-- Pendiente opcional: imagen de vista previa del enlace (logo/compartir-tienda.png) con el logo nuevo.
+- Vista previa del enlace (logo/compartir-tienda.png, 1200x630) rehecha el 21-nov-2026 con el logo nuevo, fondo claro y el texto "Mira esta tienda y pide por WhatsApp". Fuente editable: herramientas/compartir-tienda.html (captura a 1200x630 con Edge sin ventana). Probada en simulación de WhatsApp (grande y miniatura cuadrada).
