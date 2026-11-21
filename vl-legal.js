@@ -7,12 +7,15 @@
     version: '2026-11-20',                 // versión vigente de Términos + Privacidad (la que se acepta al crear la tienda)
     fecha: '20 de noviembre de 2026',
     marca: 'Ventas Link',
-    responsable: '',                       // nombre completo como en la cédula (persona natural) — PENDIENTE
-    ciudad: '',                            // ciudad de domicilio — PENDIENTE
+    responsable: 'Marjorie Xiomara Rivera Narvaez', // persona natural, como en la cédula
+    ciudad: '',                            // opcional: si se llena, las páginas dicen "Ciudad, Ecuador"
     pais: 'Ecuador',
-    correo: ''                             // correo para temas legales y de datos — PENDIENTE
+    correo: 'marjorierivera110994@gmail.com' // correo para temas legales, de datos y reembolsos
   };
-  L.completo = function () { return !!(L.responsable && L.correo && L.ciudad); };
+  /* Las páginas legales traen estos mismos textos escritos (por si el navegador no corre JavaScript):
+     si cambias un dato aquí, cámbialo también en privacidad.html, terminos.html y reembolsos.html. */
+  L.lugar = L.ciudad ? L.ciudad + ', ' + L.pais : L.pais;
+  L.completo = function () { return !!(L.responsable && L.correo); };
 
   /* Medición de uso (eventos con un número al azar). Lo necesario para que la app funcione no se apaga. */
   L.medicionApagada = function () { try { return localStorage.getItem('vl-no-medir') === '1'; } catch (e) { return false; } };

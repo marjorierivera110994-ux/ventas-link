@@ -82,7 +82,7 @@ h1, h2, h3 { font-family: var(--f-d); letter-spacing: -.02em; line-height: 1.12;
 .pasos li::before { content: counter(p); width: 32px; height: 32px; border-radius: 999px; background: var(--tinta); color: var(--lima); display: grid; place-items: center; font-weight: 800; font-size: 14px; }
 
 .contacto { text-align: left; }
-.contacto .correo { display: inline-flex; align-items: center; min-height: 48px; margin-top: 12px; padding: 0 18px; border-radius: 999px; background: var(--tinta); color: var(--lima); text-decoration: none; font-weight: 700; overflow-wrap: anywhere; }
+.contacto .correo { display: inline-flex; align-items: center; min-height: 48px; max-width: 100%; margin-top: 12px; padding: 8px 18px; border-radius: 24px; background: var(--tinta); color: var(--lima); text-decoration: none; font-weight: 700; overflow-wrap: anywhere; }
 
 .pie-legal { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--linea); display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; }
 .pie-legal a { color: var(--tinta); min-height: 44px; display: inline-flex; align-items: center; }
