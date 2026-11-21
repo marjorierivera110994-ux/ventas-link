@@ -134,13 +134,14 @@
     ]
   };
 
-  /* [color 1, color 2, acento, 1 = fondo oscuro (letra blanca) / 0 = fondo claro (letra oscura)] */
+  /* [color 1, color 2, acento, 1 = fondo oscuro (letra blanca) / 0 = fondo claro (letra oscura)]
+     Pedido del 20-nov-2026: las frases NUNCA salen en caja oscura; las 20 paletas oscuras pasaron a celeste. */
   var PALETAS = [
-    ['#0f2a47', '#17508a', '#ffd166', 1], ['#1b1340', '#5b2a86', '#ff9ecd', 1], ['#0b3d2e', '#0f6348', '#e6ee4a', 1], ['#3a0f2c', '#8a1c5a', '#ffc371', 1],
-    ['#10243a', '#0c5a68', '#7ef0d2', 1], ['#2b1a12', '#7a3e1d', '#ffd28a', 1], ['#111827', '#374151', '#a5dc5b', 1], ['#3b1024', '#9c2138', '#ffe08a', 1],
-    ['#0d2b3e', '#145a6e', '#ffb347', 1], ['#221a4d', '#3d3bb3', '#8fe3ff', 1], ['#0a2f2a', '#0c5952', '#ffd9a0', 1], ['#33113d', '#6d2a8c', '#f9f871', 1],
-    ['#1a2238', '#8a3152', '#ffd6a5', 1], ['#14213d', '#2a4d8f', '#fca311', 1], ['#2d1b0e', '#5e3b17', '#f6e27a', 1], ['#0e3b43', '#166155', '#fff3b0', 1],
-    ['#2a0f4a', '#8c2478', '#ffe66d', 1], ['#121212', '#3a2a1a', '#ff7a1a', 1], ['#0b2545', '#13506b', '#ffcad4', 1], ['#27123a', '#4a2b7a', '#a5f0c5', 1],
+    ['#e3f5ff', '#a9dcfb', '#ff7a1a', 0], ['#eaf8ff', '#bfe6ff', '#2f9bea', 0], ['#dff3ff', '#9fd6f7', '#4fae12', 0], ['#f0faff', '#c6e9fc', '#e0457b', 0],
+    ['#e6f6ff', '#b3e0fa', '#f08c00', 0], ['#dcf1fe', '#97d1f4', '#1c5d99', 0], ['#eef9ff', '#cdeefe', '#6741d9', 0], ['#e1f4fd', '#a3d9f5', '#0b7285', 0],
+    ['#e9f7ff', '#b8e3fb', '#d6336c', 0], ['#e4f6ff', '#acdffb', '#5c940d', 0], ['#ecf8ff', '#c2e7fc', '#ff6a00', 0], ['#ddf2fe', '#9bd3f5', '#3b5bdb', 0],
+    ['#e7f7ff', '#b5e2fb', '#ae3ec9', 0], ['#f2fbff', '#d3f0ff', '#2f9bea', 0], ['#e2f4fe', '#a6daf8', '#e8590c', 0], ['#eaf7fd', '#bde4f7', '#0ca678', 0],
+    ['#e5f6ff', '#afe0fa', '#c92a2a', 0], ['#dff4ff', '#a1d8f8', '#b5651d', 0], ['#edf9ff', '#c9ebfd', '#4fae12', 0], ['#e0f3ff', '#a0d6f6', '#ff7a1a', 0],
     ['#fff1e6', '#ffd7ba', '#ff7a1a', 0], ['#e8f7ff', '#bfe6ff', '#2f9bea', 0], ['#f1ffe0', '#d4f5a8', '#4fae12', 0], ['#fff0f6', '#ffd1e3', '#e0457b', 0],
     ['#fffbe0', '#ffec99', '#f08c00', 0], ['#f3f0ff', '#d9d0ff', '#6741d9', 0], ['#e6fcf5', '#b8f2df', '#0ca678', 0], ['#fdf6ec', '#f1dfc3', '#b5651d', 0],
     ['#eef3f8', '#d3dee9', '#1c5d99', 0], ['#fff4e6', '#ffd8a8', '#e8590c', 0], ['#f8f0fc', '#eebefa', '#ae3ec9', 0], ['#e3fafc', '#b2ebf2', '#0b7285', 0],

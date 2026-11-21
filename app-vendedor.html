@@ -37,13 +37,13 @@
   .panel iframe { width: 100%; height: 100%; border: 0; display: block; background: transparent; }
   .panel.marco { bottom: 96px; }
   .inicio { max-width: 520px; margin: 0 auto; padding: 8px 16px 130px; }
-  .demo { display: inline-flex; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700; }
+  .demo { display: inline-flex; background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700; }
   .saludo { position: relative; margin-top: 12px; }
   .saludo small { font-weight: 600; color: var(--texto-2); font-size: 14px; }
   .saludo h1 { font-size: 30px; font-weight: 800; line-height: 1.05; }
   .tarj { background: var(--blanco); border-radius: 26px; padding: 16px; margin-top: 14px; box-shadow: 0 16px 30px -22px rgb(40 60 40 / .55); position: relative; }
-  .tarj.oscura { background: var(--tinta); color: #fff; overflow: hidden; }
-  .tarj.oscura small { color: var(--lima); font-weight: 700; font-size: 12px; }
+  .tarj.oscura { background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; overflow: hidden; }
+  .tarj.oscura small { color: #0b2a40; font-weight: 700; font-size: 12px; }
   .tarj.oscura p { font-family: var(--f-d); font-weight: 700; font-size: 19px; line-height: 1.25; margin-top: 6px; padding-right: 64px; }
   .meta-cab { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
   .meta-cab h2 { font-size: 17px; font-weight: 800; }
@@ -81,7 +81,7 @@
   .nav button { border-radius: 26px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 11px; font-weight: 700; color: var(--texto-2); min-height: 52px; transition: background .25s ease, color .25s ease, transform .12s ease; position: relative; }
   .nav button svg { width: 23px; height: 23px; transition: transform .25s cubic-bezier(.3, 1.6, .5, 1); }
   .nav button:active { transform: scale(.94); }
-  .nav button[aria-current="page"] { background: var(--tinta); color: var(--lima); }
+  .nav button[aria-current="page"] { background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; }
   .nav button[aria-current="page"] svg { transform: translateY(-1px) scale(1.12); }
   .nav .nuevo::after { content: ''; position: absolute; top: 6px; right: 14px; width: 9px; height: 9px; border-radius: 999px; background: var(--naranja); border: 2px solid #fff; }
 
@@ -97,7 +97,7 @@
   .splash.fuera { opacity: 0; visibility: hidden; }
   .splash img { width: min(62vw, 280px); height: auto; display: block; }
   .splash p { position: absolute; bottom: 12%; font-weight: 600; color: var(--texto-2); font-size: 14px; }
-  .toast { position: fixed; left: 50%; bottom: 100px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 60; max-width: 90vw; text-align: center; }
+  .toast { position: fixed; left: 50%; bottom: 100px; transform: translateX(-50%); background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; display: none; z-index: 60; max-width: 90vw; text-align: center; }
   .toast.on { display: block; }
   @media (prefers-reduced-motion: reduce) { .stk { animation: none; } .barra i, .hoja, .splash { transition: none; } }
 
@@ -110,7 +110,7 @@
   .t3d svg { position: relative; width: 24px; height: 24px; stroke-width: 2.6; filter: drop-shadow(0 2px 0 rgb(0 0 0 / .28)); }
   .t3d.verde { --a: #b8ee62; --b: #4fae12; --sh: #2f7d0f; } .t3d.naranja { --a: #ffb83a; --b: #ff6a00; --sh: #b34700; }
   .t3d.lima { --a: #f7fa86; --b: #d6de1c; --sh: #8a9100; color: #131313; } .t3d.lima svg { filter: drop-shadow(0 2px 0 rgb(255 255 255 / .5)); }
-  .t3d.cielo { --a: #86d4ff; --b: #2f9bea; --sh: #1b6aa8; } .t3d.tinta { --a: #4a4a4a; --b: #131313; --sh: #000; color: #e6ee4a; }
+  .t3d.cielo { --a: #86d4ff; --b: #2f9bea; --sh: #1b6aa8; } .t3d.tinta { --a: #e6f7ff; --b: #8fd3fa; --sh: #4b9fd4; color: #0b2a40; } .t3d.tinta svg { filter: drop-shadow(0 2px 0 rgb(255 255 255 / .55)); }
   @keyframes bob3d { 0%, 100% { transform: translateY(var(--y)) scale(var(--s)); } 50% { transform: translateY(calc(var(--y) - 4px)) scale(var(--s)); } }
   .nav { overflow: visible; height: 74px; padding: 0 6px;
          background: linear-gradient(180deg, rgb(255 255 255 / .92), rgb(244 250 238 / .86));
@@ -131,7 +131,7 @@
   body::before { width: 260px; height: 260px; right: -90px; top: 120px; background: radial-gradient(circle at 32% 28%, #fff 0, #ffc46b 22%, #ff7a1a 70%, #d95a00 100%); opacity: .28; }
   body::after { width: 220px; height: 220px; left: -90px; top: 520px; background: radial-gradient(circle at 32% 28%, #fff 0, #c9f08a 22%, #6cc424 70%, #3f9a10 100%); opacity: .28; }
   .tarj, .stat, .accion { border: 1px solid rgb(255 255 255 / .95); box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -4px 0 rgb(0 0 0 / .05) inset, 0 6px 0 rgb(40 70 20 / .09), 0 24px 30px -18px rgb(30 60 20 / .5); }
-  .tarj.oscura { background: linear-gradient(160deg, #343434, #131313); border-color: #3a3a3a; box-shadow: 0 3px 0 rgb(255 255 255 / .14) inset, 0 -5px 0 rgb(0 0 0 / .35) inset, 0 7px 0 #000, 0 24px 30px -14px rgb(0 0 0 / .6); }
+  .tarj.oscura { background: linear-gradient(160deg, #d6f1ff, #94d5fa); border-color: #7cc8f3; box-shadow: 0 3px 0 rgb(255 255 255 / .14) inset, 0 -5px 0 rgb(16 90 140 / 0.24) inset, 0 7px 0 #4b9fd4, 0 24px 30px -14px rgb(16 90 140 / 0.42); }
   .accion { transition: transform .1s ease, box-shadow .1s ease; } .accion:active { transform: translateY(4px); box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 1px 0 rgb(40 70 20 / .09), 0 8px 12px -8px rgb(30 60 20 / .5); }
   .accion .chip { border-radius: 16px; box-shadow: inset 0 3px 0 rgb(255 255 255 / .6), inset 0 -4px 0 rgb(0 0 0 / .14), 0 5px 0 rgb(0 0 0 / .18), 0 10px 10px -4px rgb(20 40 10 / .4); }
   .accion .c1 { background: linear-gradient(160deg, #b8ee62, #4fae12); } .accion .c2 { background: linear-gradient(160deg, #ffb83a, #ff6a00); } .accion .c3 { background: linear-gradient(160deg, #f7fa86, #d6de1c); } .accion .c4 { background: linear-gradient(160deg, #86d4ff, #2f9bea); }
@@ -159,7 +159,7 @@
   .nav .nuevo::after { top: -36px; right: 8px; width: 12px; height: 12px; }
   .panel.marco { bottom: 128px; } .inicio { padding-bottom: 170px; } .app { padding-bottom: 170px; }
   .tarj, .stat, .accion, .prod { box-shadow: 0 4px 0 rgb(255 255 255 / .95) inset, 0 -5px 0 rgb(0 0 0 / .06) inset, 0 10px 0 rgb(40 70 20 / .13), 0 30px 36px -18px rgb(30 60 20 / .55); }
-  .tarj.oscura { box-shadow: 0 4px 0 rgb(255 255 255 / .16) inset, 0 -6px 0 rgb(0 0 0 / .4) inset, 0 10px 0 #000, 0 30px 36px -14px rgb(0 0 0 / .65); }
+  .tarj.oscura { box-shadow: 0 4px 0 rgb(255 255 255 / .16) inset, 0 -6px 0 rgb(16 90 140 / 0.28) inset, 0 10px 0 #4b9fd4, 0 30px 36px -14px rgb(16 90 140 / 0.45); }
   .accion .chip { box-shadow: inset 0 4px 0 rgb(255 255 255 / .7), inset 0 -6px 0 rgb(0 0 0 / .16), 0 7px 0 rgb(0 0 0 / .22), 0 14px 12px -4px rgb(20 40 10 / .45); }
   .mas { box-shadow: inset 0 4px 0 rgb(255 255 255 / .7), inset 0 -5px 0 rgb(0 0 0 / .16), 0 7px 0 #8a9100, 0 14px 12px -4px rgb(20 40 10 / .45); }
   .banner { box-shadow: 0 4px 0 rgb(255 255 255 / .45) inset, 0 -5px 0 rgb(0 0 0 / .14) inset, 0 10px 0 #c25000, 0 28px 30px -12px rgb(180 80 0 / .65); }
@@ -227,9 +227,9 @@
   .cuenta-cab p { font-size: 14px; color: var(--texto-2); overflow-wrap: anywhere; }
   .cuenta-enlace { background: var(--blanco); border-radius: 16px; padding: 12px 14px; font-size: 14px; font-weight: 700; overflow-wrap: anywhere; box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(40 70 20 / .1); }
   .cuenta-enlace small { display: block; font-weight: 500; color: var(--texto-2); font-size: 13px; margin-top: 2px; }
-  .cuenta-btn { min-height: 52px; border-radius: 999px; font-weight: 800; font-size: 16px; background: var(--tinta); color: var(--lima);
-                box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), inset 0 -4px 0 rgb(0 0 0 / .5), 0 6px 0 #000, 0 16px 18px -10px rgb(19 19 19 / .55); transition: transform .1s ease, box-shadow .1s ease; }
-  .cuenta-btn:active { transform: translateY(4px); box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), 0 2px 0 #000; }
+  .cuenta-btn { min-height: 52px; border-radius: 999px; font-weight: 800; font-size: 16px; background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40;
+                box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), inset 0 -4px 0 rgb(16 90 140 / 0.35), 0 6px 0 #4b9fd4, 0 16px 18px -10px rgb(16 90 140 / 0.39); transition: transform .1s ease, box-shadow .1s ease; }
+  .cuenta-btn:active { transform: translateY(4px); box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), 0 2px 0 #4b9fd4; }
   .cuenta-btn.claro, .cuenta-btn.salir { background: var(--blanco); color: var(--tinta); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -4px 0 rgb(0 0 0 / .06), 0 6px 0 rgb(40 70 20 / .16), 0 16px 18px -10px rgb(30 60 20 / .45); }
   .cuenta-btn.claro:active, .cuenta-btn.salir:active { box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 2px 0 rgb(40 70 20 / .16); }
   .cuenta-btn.salir { color: #9a3412; }
@@ -295,8 +295,7 @@
     <div class="saludo"><small id="hora">Buenos días</small><h1>Boutique Luna</h1></div>
 
     <aside class="tarj oscura" aria-label="Frase para ti" id="arte"><canvas class="arte-fondo" id="arte-fondo" width="720" height="560" aria-hidden="true"></canvas><small id="arte-cat">Para ti, hoy</small><p id="frase"></p>
-      <div class="arte-acc"><button type="button" class="arte-btn" id="arte-comp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg>Compartir</button><button type="button" class="arte-btn solo" id="arte-otra" aria-label="Ver otra frase con otro fondo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div>
-      <svg class="stk" style="right:8px;bottom:6px;width:104px;height:70px;--r:-6deg;animation-delay:.6s" aria-hidden="true"><use href="#st-fugaz"/></svg></aside>
+      <div class="arte-acc"><button type="button" class="arte-btn" id="arte-comp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"/></svg>Compartir</button><button type="button" class="arte-btn solo" id="arte-otra" aria-label="Ver otra frase con otro fondo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div></aside>
 
     <section class="tarj" aria-labelledby="t-meta">
       <div class="meta-cab"><h2 id="t-meta">Tu camino de éxito</h2><span>Meta de la semana</span></div>

@@ -5,6 +5,7 @@
 - Extracción: Modo CLARO · Fondo beige #F4ECDB · Superficie blanco #FFFFFF · Texto 1º negro #131313 / 2º #5A5648
   - Acentos: verde pistacho #A5DC5B (tarjetas importantes) · amarillo verdoso #E6EE4A (avance/logros/botones "+") · naranja #FF7A1A (avisos, llama, estrellas) · negro #131313 (botones principales y tarjeta de meta)
   - Ajuste pedido por el usuario el 2026-11-14: "colores más vivos, verde pistacho, naranja, negro" sobre la paleta original (menta #A8DCC5 / amarillo verdoso #D5DF70 / beige #F2E9D8 / blanco; coral #EF8767)
+  - Ajuste pedido el 2026-11-20: las CAJAS y BOTONES que eran negros #131313 pasan a CELESTE CIELO (degradé #D6F1FF→#94D5FA, texto #0B2A40, borde #7CC8F3, canto 3D #4B9FD4). El negro queda solo para TEXTO. Logo sin el visto naranja (ni su puntito); sin stickers de estrella/corazón/chat alrededor del logo ni estrellas junto a las cajas de frases; las frases nunca salen en fondo oscuro.
   - Radio: 24px tarjetas · botones píldora (999px) · Espaciado: medio · Sombras: suaves tintadas
 - Prohibiciones anti-IA que la referencia levanta: ninguna
 
@@ -19,7 +20,7 @@
 
 ## Brand kit final
 - Fondo #F4ECDB · Superficie #FFFFFF · Texto 1º #131313 / 2º #5A5648 · Verde de texto #2F6A10 (texto verde sobre beige/blanco)
-- Acento principal: verde pistacho #A5DC5B · 2ª nota: amarillo verdoso #E6EE4A · aviso/energía: naranja #FF7A1A · negro #131313 en botones
+- Acento principal: verde pistacho #A5DC5B · 2ª nota: amarillo verdoso #E6EE4A · aviso/energía: naranja #FF7A1A · celeste cielo en botones y cajas (antes negro #131313; cambio del 2026-11-20)
 - Texto sobre pistacho/amarillo/naranja: SIEMPRE negro (contrastes medidos 11.5 / 14.8 / 7.1)
 - Semánticos: éxito pistacho · aviso naranja · error #9A3412 (texto) · botón WhatsApp #25D366 (color de marca de WhatsApp, solo en el botón de enviar)
 - Display: Bricolage Grotesque · Body: Instrument Sans · Escala: display 32px / title 22px / body 14-16px / label 11-12px

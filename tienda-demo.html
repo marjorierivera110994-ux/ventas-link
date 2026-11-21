@@ -36,7 +36,7 @@
   .pais-barra { position: sticky; top: 0; z-index: 4; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; margin: 0 -16px; padding: 6px 16px; background: color-mix(in oklab, var(--beige) 92%, transparent); backdrop-filter: blur(8px); font-size: 13px; font-weight: 700; border-bottom: 1px solid rgb(0 0 0 / .08); }
   .pais-barra svg { flex-shrink: 0; }
   .top { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
-  .demo { display: flex; gap: 8px; align-items: center; background: var(--tinta); color: var(--lima); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; min-height: 44px; }
+  .demo { display: flex; gap: 8px; align-items: center; background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; min-height: 44px; }
   .region { min-height: 44px; border-radius: 999px; background: var(--blanco); padding: 0 14px; font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 6px; white-space: nowrap; box-shadow: 0 6px 16px -10px rgb(40 60 40 / .5); }
   .cab { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
   .logo { width: 52px; height: 52px; border-radius: 999px; background: var(--pistacho); display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; font-size: 19px; flex-shrink: 0; }
@@ -51,12 +51,12 @@
   .buscar:focus-within { outline: 3px solid var(--tinta); outline-offset: 2px; }
   .cats { display: flex; gap: 8px; margin-top: 12px; overflow-x: auto; padding-bottom: 4px; }
   .chip { min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--blanco); font-weight: 700; font-size: 14px; white-space: nowrap; }
-  .chip[aria-pressed="true"] { background: var(--tinta); color: var(--blanco); }
+  .chip[aria-pressed="true"] { background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; }
 
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
   .prod { background: var(--blanco); border-radius: 22px; padding: 10px; box-shadow: 0 12px 26px -16px rgb(40 60 40 / .5); display: flex; flex-direction: column; }
   .foto { height: 108px; border-radius: 16px; display: grid; place-items: center; position: relative; }
-  .agotado { position: absolute; top: 8px; left: 8px; background: var(--tinta); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+  .agotado { position: absolute; top: 8px; left: 8px; background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
   .prod h3 { margin-top: 9px; font-size: 15px; font-weight: 800; line-height: 1.2; }
   .prod .meta { font-size: 12px; color: var(--texto-2); margin-top: 2px; }
   .fila { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto; padding-top: 8px; }
@@ -84,7 +84,7 @@
 
   .barra { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 16px calc(14px + env(safe-area-inset-bottom)); display: none; justify-content: center; z-index: 5; pointer-events: none; }
   .barra.on { display: flex; }
-  .barra button { pointer-events: auto; width: 100%; max-width: 428px; min-height: 58px; border-radius: 999px; background: var(--tinta); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 20px; font-weight: 700; box-shadow: 0 18px 34px -12px rgb(19 19 19 / .6); }
+  .barra button { pointer-events: auto; width: 100%; max-width: 428px; min-height: 58px; border-radius: 999px; background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 20px; font-weight: 700; box-shadow: 0 18px 34px -12px rgb(16 90 140 / 0.42); }
   .barra .cuenta { display: flex; align-items: center; gap: 10px; }
   .badge { background: var(--naranja); color: var(--tinta); min-width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; font-size: 13px; font-weight: 800; }
   .barra .ver { background: var(--lima); color: var(--tinta); border-radius: 999px; padding: 12px 18px; font-weight: 800; }
@@ -104,10 +104,10 @@
   .cant button { width: 44px; height: 44px; border-radius: 999px; background: var(--beige); display: grid; place-items: center; font-weight: 800; font-size: 18px; }
   .cant span { min-width: 24px; text-align: center; font-weight: 800; }
   .quitar { font-size: 12px; font-weight: 700; color: var(--texto-2); text-decoration: underline; min-height: 44px; padding: 0 6px; }
-  .total { margin-top: 16px; background: var(--tinta); color: #fff; border-radius: 22px; padding: 16px; }
+  .total { margin-top: 16px; background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; border-radius: 22px; padding: 16px; }
   .total div { display: flex; justify-content: space-between; font-size: 14px; }
-  .total small { display: block; margin-top: 6px; font-size: 12px; color: #cfcabb; }
-  .btn { margin-top: 14px; width: 100%; min-height: 54px; border-radius: 999px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--tinta); color: var(--lima); }
+  .total small { display: block; margin-top: 6px; font-size: 12px; color: #1d4a68; }
+  .btn { margin-top: 14px; width: 100%; min-height: 54px; border-radius: 999px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; }
   .btn.wa { background: var(--wa); color: var(--tinta); }
   .btn.claro { background: var(--blanco); color: var(--tinta); }
   .campo { margin-top: 14px; }
@@ -122,14 +122,14 @@
   .opc { position: relative; }
   .opc input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; cursor: pointer; }
   .opc span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--blanco); font-weight: 700; font-size: 14px; border: 2px solid transparent; }
-  .opc input:checked + span { background: var(--tinta); color: #fff; }
+  .opc input:checked + span { background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; }
   .opc input:focus-visible + span { outline: 3px solid var(--naranja); outline-offset: 2px; }
   .aviso { margin-top: 12px; font-size: 13px; color: var(--texto-2); background: color-mix(in oklab, var(--lima) 45%, white); border-radius: 16px; padding: 10px 14px; }
   .vista-msg { white-space: pre-wrap; background: var(--blanco); border-radius: 16px; padding: 12px 14px; font-size: 13px; margin-top: 10px; max-height: 240px; overflow-y: auto; }
   .ok { width: 64px; height: 64px; border-radius: 999px; background: var(--pistacho); display: grid; place-items: center; margin: 6px auto 8px; }
   .centro { text-align: center; }
   .frase { font-weight: 800; font-family: var(--f-d); font-size: 19px; }
-  .toast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); background: var(--tinta); color: var(--lima); padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; z-index: 20; display: none; max-width: 90vw; }
+  .toast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; z-index: 20; display: none; max-width: 90vw; }
   .toast.on { display: block; }
 
   /* Estilo moderno: barra flotante y stickers */
@@ -144,7 +144,7 @@
          background: color-mix(in oklab, #fff 82%, transparent); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); border: 1px solid rgb(255 255 255 / .8); box-shadow: 0 18px 40px -14px rgb(20 50 10 / .45), 0 2px 0 rgb(255 255 255 / .6) inset; }
   .nav button { border-radius: 26px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 11px; font-weight: 700; color: var(--texto-2); min-height: 52px; position: relative; transition: background .25s ease, color .25s ease, transform .12s ease; }
   .nav button svg { width: 23px; height: 23px; } .nav button:active { transform: scale(.94); }
-  .nav button.act { background: var(--tinta); color: var(--lima); }
+  .nav button.act { background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; }
   .nav .ped { background: var(--lima); color: var(--tinta); } .nav .ped.vacio-c { background: transparent; color: var(--texto-2); }
   .nav .cuenta-n { position: absolute; top: 3px; right: 14px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--naranja); color: var(--tinta); font-size: 11px; font-weight: 800; display: grid; place-items: center; border: 2px solid #fff; }
   .nav .cuenta-n[hidden] { display: none; }
@@ -161,7 +161,7 @@
   .t3d svg { position: relative; width: 24px; height: 24px; stroke-width: 2.6; filter: drop-shadow(0 2px 0 rgb(0 0 0 / .28)); }
   .t3d.verde { --a: #b8ee62; --b: #4fae12; --sh: #2f7d0f; } .t3d.naranja { --a: #ffb83a; --b: #ff6a00; --sh: #b34700; }
   .t3d.lima { --a: #f7fa86; --b: #d6de1c; --sh: #8a9100; color: #131313; } .t3d.lima svg { filter: drop-shadow(0 2px 0 rgb(255 255 255 / .5)); }
-  .t3d.cielo { --a: #86d4ff; --b: #2f9bea; --sh: #1b6aa8; } .t3d.tinta { --a: #4a4a4a; --b: #131313; --sh: #000; color: #e6ee4a; }
+  .t3d.cielo { --a: #86d4ff; --b: #2f9bea; --sh: #1b6aa8; } .t3d.tinta { --a: #e6f7ff; --b: #8fd3fa; --sh: #4b9fd4; color: #0b2a40; } .t3d.tinta svg { filter: drop-shadow(0 2px 0 rgb(255 255 255 / .55)); }
   @keyframes bob3d { 0%, 100% { transform: translateY(var(--y)) scale(var(--s)); } 50% { transform: translateY(calc(var(--y) - 4px)) scale(var(--s)); } }
   .nav { overflow: visible; height: 74px; padding: 0 6px;
          background: linear-gradient(180deg, rgb(255 255 255 / .92), rgb(244 250 238 / .86));
@@ -189,10 +189,10 @@
   .mas:active { transform: translateY(4px); box-shadow: inset 0 3px 0 rgb(255 255 255 / .5), 0 1px 0 #8a9100; }
   .mas[disabled] { background: #e4e0d4; box-shadow: none; }
   .chip { box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -3px 0 rgb(0 0 0 / .06) inset, 0 4px 0 rgb(40 70 20 / .1); }
-  .chip[aria-pressed="true"] { box-shadow: 0 2px 0 rgb(255 255 255 / .2) inset, 0 -3px 0 rgb(0 0 0 / .4) inset, 0 4px 0 #000; }
+  .chip[aria-pressed="true"] { box-shadow: 0 2px 0 rgb(255 255 255 / .2) inset, 0 -3px 0 rgb(16 90 140 / 0.28) inset, 0 4px 0 #4b9fd4; }
   .bienvenida, .buscar, .region, .hecho { box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -3px 0 rgb(0 0 0 / .05) inset, 0 5px 0 rgb(40 70 20 / .09), 0 18px 22px -14px rgb(30 60 20 / .5); }
-  .btn { box-shadow: 0 3px 0 rgb(255 255 255 / .2) inset, 0 -4px 0 rgb(0 0 0 / .3) inset, 0 6px 0 #000, 0 18px 24px -10px rgb(0 0 0 / .5); transition: transform .1s ease, box-shadow .1s ease; }
-  .btn:active { transform: translateY(4px); box-shadow: 0 3px 0 rgb(255 255 255 / .2) inset, 0 2px 0 #000; }
+  .btn { box-shadow: 0 3px 0 rgb(255 255 255 / .2) inset, 0 -4px 0 rgb(16 90 140 / 0.21) inset, 0 6px 0 #4b9fd4, 0 18px 24px -10px rgb(16 90 140 / 0.35); transition: transform .1s ease, box-shadow .1s ease; }
+  .btn:active { transform: translateY(4px); box-shadow: 0 3px 0 rgb(255 255 255 / .2) inset, 0 2px 0 #4b9fd4; }
   .btn.wa { box-shadow: 0 3px 0 rgb(255 255 255 / .45) inset, 0 -4px 0 rgb(0 0 0 / .14) inset, 0 6px 0 #138a45, 0 18px 24px -10px rgb(19 138 69 / .55); }
   .btn.wa:active { box-shadow: 0 3px 0 rgb(255 255 255 / .45) inset, 0 2px 0 #138a45; }
   .btn.claro { box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -3px 0 rgb(0 0 0 / .06) inset, 0 5px 0 rgb(40 70 20 / .14); }
@@ -261,7 +261,6 @@
   <header class="cab">
     <span class="logo" aria-hidden="true">BL</span>
     <div><h1>Boutique Luna</h1><p class="abierto" data-i="abierto"></p></div>
-    <svg class="stk" style="right:2px;top:-4px;--r:8deg" aria-hidden="true"><use href="#st-estrella"/></svg>
   </header>
   <p class="desc" data-i="desc"></p>
   <div class="bienv-arte" id="bienv-arte"><canvas id="bienv-fondo" width="720" height="320" aria-hidden="true"></canvas><p class="bienvenida" id="bienv"></p></div>
