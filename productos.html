@@ -10,9 +10,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --verde-texto: #2f6a10; --cielo: #d6f0ff; --error: #9a3412;
+  :root { --pistacho: #c9a7ff; --lima: #ffc83d; --naranja: #ff7a1a; --tinta: #22104f; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5c5470; --verde-texto: #6a1fd0; --cielo: #d6f0ff; --error: #9a3412;
           --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; --ease: cubic-bezier(.16, 1, .3, 1);
-          --relieve: inset 0 4px 0 rgb(255 255 255 / .95), inset 0 -5px 0 rgb(0 0 0 / .06), 0 8px 0 rgb(40 70 20 / .12), 0 26px 30px -18px rgb(30 60 20 / .5);
+          --relieve: inset 0 4px 0 rgb(255 255 255 / .95), inset 0 -5px 0 rgb(0 0 0 / .06), 0 8px 0 rgb(60 30 100 / .12), 0 26px 30px -18px rgb(50 24 90 / .5);
           --hundido: inset 0 4px 8px rgb(60 50 20 / .16), inset 0 -2px 0 rgb(255 255 255 / .9); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   [hidden] { display: none !important; }
@@ -31,8 +31,8 @@
          box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), inset 0 -5px 0 rgb(16 90 140 / 0.39), 0 7px 0 #4b9fd4, 0 20px 24px -12px rgb(16 90 140 / 0.42); transition: transform .1s ease, box-shadow .1s ease, opacity .2s ease; }
   .btn:active { transform: translateY(5px); box-shadow: inset 0 3px 0 rgb(255 255 255 / .18), 0 2px 0 #000; }
   .btn[disabled] { opacity: .5; cursor: not-allowed; }
-  .btn.claro { background: var(--blanco); color: var(--tinta); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -4px 0 rgb(0 0 0 / .06), 0 6px 0 rgb(40 70 20 / .16), 0 16px 18px -10px rgb(30 60 20 / .45); }
-  .btn.claro:active { box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 1px 0 rgb(40 70 20 / .16); }
+  .btn.claro { background: var(--blanco); color: var(--tinta); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -4px 0 rgb(0 0 0 / .06), 0 6px 0 rgb(60 30 100 / .16), 0 16px 18px -10px rgb(50 24 90 / .45); }
+  .btn.claro:active { box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 1px 0 rgb(60 30 100 / .16); }
   .btn.peligro { background: var(--blanco); color: var(--error); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -4px 0 rgb(0 0 0 / .06), 0 6px 0 rgb(154 52 18 / .25), 0 16px 18px -10px rgb(154 52 18 / .35); }
   .btn svg { width: 22px; height: 22px; flex: 0 0 22px; }
   .link { min-height: 44px; padding: 0 4px; font-weight: 700; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; }
@@ -45,7 +45,7 @@
   .cupo .fila { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 14px; color: var(--texto-2); }
   .cupo .fila b { font-family: var(--f-d); font-size: 24px; color: var(--tinta); font-variant-numeric: tabular-nums; }
   .tubo { height: 12px; border-radius: 999px; background: color-mix(in oklab, var(--tinta) 8%, transparent); margin-top: 10px; overflow: hidden; box-shadow: inset 0 3px 6px rgb(0 0 0 / .18); }
-  .tubo i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--pistacho), var(--lima)); box-shadow: inset 0 3px 0 rgb(255 255 255 / .55); transition: width .6s var(--ease); }
+  .tubo i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #7a2ff2, #e0179f, #ff8a1a); box-shadow: inset 0 3px 0 rgb(255 255 255 / .55); transition: width .6s var(--ease); }
   .tubo.lleno i { background: linear-gradient(90deg, #ffb83a, var(--naranja)); }
   .cupo .nota { font-size: 13px; margin-top: 8px; color: var(--texto-2); }
   .cupo .nota a { font-weight: 800; color: var(--tinta); }
@@ -55,7 +55,7 @@
   .chips { display: flex; gap: 8px; overflow-x: auto; margin: 16px -16px 0; padding: 4px 16px 10px; scrollbar-width: none; }
   .chips::-webkit-scrollbar { display: none; }
   .chip { flex: 0 0 auto; min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--blanco); font-weight: 700; font-size: 14px;
-          box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(40 70 20 / .12); }
+          box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(60 30 100 / .12); }
   .chip[aria-pressed="true"] { background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; box-shadow: inset 0 3px 0 rgb(255 255 255 / .2), 0 4px 0 #4b9fd4; }
 
   /* ---------- Lista de productos ---------- */
@@ -72,7 +72,7 @@
   .item .meta { font-size: 13px; color: var(--texto-2); overflow-wrap: anywhere; }
   .etq { display: inline-block; font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 999px; margin-left: 4px; vertical-align: 1px; }
   .etq.of { background: var(--naranja); color: var(--tinta); } .etq.ag { background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; } .etq.oc { background: color-mix(in oklab, var(--tinta) 10%, transparent); }
-  .ojo { width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; background: color-mix(in oklab, var(--beige) 70%, white); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(40 70 20 / .12); }
+  .ojo { width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; background: color-mix(in oklab, var(--beige) 70%, white); box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(60 30 100 / .12); }
   .ojo svg { width: 20px; height: 20px; }
 
   /* ---------- Estados ---------- */
@@ -81,7 +81,7 @@
   .tarj p { font-size: 15px; color: var(--texto-2); margin-top: 8px; }
   .tarj .btn { margin-top: 16px; }
   .vacio-ilus { position: relative; width: 120px; height: 120px; margin: 0 auto 8px; }
-  .vacio-ilus img { width: 120px; height: 120px; filter: drop-shadow(0 12px 10px rgb(30 60 20 / .25)); animation: flota 4s ease-in-out infinite; }
+  .vacio-ilus img { width: 120px; height: 120px; filter: drop-shadow(0 12px 10px rgb(50 24 90 / .25)); animation: flota 4s ease-in-out infinite; }
   .vacio-pasos { list-style: none; display: grid; gap: 8px; margin-top: 16px; text-align: left; }
   .vacio-pasos li { display: flex; gap: 10px; align-items: center; font-size: 14px; font-weight: 600; }
   .vacio-pasos .n { width: 28px; height: 28px; flex: 0 0 28px; border-radius: 999px; background: var(--lima); display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; box-shadow: inset 0 2px 0 rgb(255 255 255 / .6), 0 3px 0 #8a9100; }
@@ -93,7 +93,7 @@
   /* ---------- Formulario ---------- */
   .form-cab { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; }
   .form-cab h1 { font-size: 26px; line-height: 1.1; }
-  .volver { width: 44px; height: 44px; border-radius: 999px; background: var(--blanco); display: grid; place-items: center; box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(40 70 20 / .12), 0 12px 14px -8px rgb(30 60 20 / .5); }
+  .volver { width: 44px; height: 44px; border-radius: 999px; background: var(--blanco); display: grid; place-items: center; box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), 0 4px 0 rgb(60 30 100 / .12), 0 12px 14px -8px rgb(50 24 90 / .5); }
   .volver svg { width: 20px; height: 20px; }
   .bloque { margin-top: 16px; background: var(--blanco); border-radius: 24px; padding: 16px; border: 1px solid rgb(255 255 255 / .95); box-shadow: var(--relieve); display: grid; gap: 16px; }
   .bloque > h2 { font-size: 17px; }
@@ -153,7 +153,7 @@
 
   /* ---------- Confirmar y celebrar ---------- */
   dialog { border: 0; border-radius: 24px; padding: 24px 16px 16px; width: min(calc(100% - 32px), 420px); background: var(--beige); color: var(--tinta); box-shadow: 0 30px 60px -20px rgb(0 0 0 / .5); margin: auto; }
-  dialog::backdrop { background: rgb(19 19 19 / .5); }
+  dialog::backdrop { background: rgb(34 16 79 / .5); }
   dialog h2 { font-size: 21px; line-height: 1.2; overflow-wrap: anywhere; } dialog p { font-size: 15px; color: var(--texto-2); margin-top: 8px; }
   dialog .acciones { display: grid; gap: 12px; margin-top: 20px; }
   .celebra { text-align: center; }
@@ -316,7 +316,7 @@
   var guardando = false, borrando = false;
   var VISTAS = ['v-carga', 'v-sin', 'v-error', 'v-lista', 'v-form'];
   var NOMBRE_PLAN = { gratis: 'Gratis', emprendedor: 'Emprendedor', profesional: 'Profesional' };
-  var ICONO_BOLSO = '<svg viewBox="0 0 24 24" fill="none" stroke="#2f6a10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7zM9 7a3 3 0 0 1 6 0"/></svg>';
+  var ICONO_BOLSO = '<svg viewBox="0 0 24 24" fill="none" stroke="#6a1fd0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7zM9 7a3 3 0 0 1 6 0"/></svg>';
 
   function ver(id) { VISTAS.forEach(function (v) { $(v).hidden = v !== id; }); window.scrollTo(0, 0); }
   function toast(m) { var x = $('toast'); x.textContent = m; x.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { x.classList.remove('on'); }, 2600); }

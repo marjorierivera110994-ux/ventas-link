@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
 <style>
-  :root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648; --verde-texto: #2f6a10; --wa: #25d366;
+  :root { --pistacho: #c9a7ff; --lima: #ffc83d; --naranja: #ff7a1a; --tinta: #22104f; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5c5470; --verde-texto: #6a1fd0; --wa: #25d366;
           --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: var(--f-b); color: var(--tinta); background: var(--beige); min-height: 100dvh; line-height: 1.45;
@@ -37,7 +37,7 @@
   .caja small { display: block; font-size: 12px; font-weight: 600; color: var(--texto-2); }
   .caja b { font-family: var(--f-d); font-size: 28px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
   .caja.lima { background: var(--lima); } .caja.pist { background: var(--pistacho); }
-  .caja.lima small, .caja.pist small { color: #2b3a12; }
+  .caja.lima small, .caja.pist small { color: #3a1d6b; }
   .medidor { height: 10px; border-radius: 999px; background: color-mix(in oklab, var(--tinta) 14%, transparent); overflow: hidden; margin-top: 10px; }
   .medidor i { display: block; height: 100%; width: 0; background: linear-gradient(160deg, #d6f1ff, #94d5fa); border-radius: 999px; transition: width .4s ease-out; }
   .hasta { font-size: 14px; margin-top: 6px; } .hasta b { font-family: var(--f-d); }
@@ -69,24 +69,24 @@
   body { position: relative; }
   body::before, body::after { content: ''; position: fixed; z-index: -1; border-radius: 50%; pointer-events: none; }
   body::before { width: 230px; height: 230px; right: -90px; top: 150px; background: radial-gradient(circle at 32% 28%, #fff 0, #ffc46b 22%, #ff7a1a 70%, #d95a00 100%); opacity: .3; }
-  body::after { width: 200px; height: 200px; left: -90px; top: 560px; background: radial-gradient(circle at 32% 28%, #fff 0, #c9f08a 22%, #6cc424 70%, #3f9a10 100%); opacity: .3; }
+  body::after { width: 200px; height: 200px; left: -90px; top: 560px; background: radial-gradient(circle at 32% 28%, #fff 0, #e9b8ff 22%, #b13ee8 70%, #6a1fd0 100%); opacity: .3; }
   .btn, .btn-s { box-shadow: 0 4px 0 rgb(255 255 255 / .2) inset, 0 -5px 0 rgb(16 90 140 / 0.21) inset, 0 8px 0 #4b9fd4, 0 22px 26px -10px rgb(16 90 140 / 0.39) !important; transition: transform .1s ease, box-shadow .1s ease; }
   .btn:active, .btn-s:active { transform: translateY(6px); box-shadow: 0 4px 0 rgb(255 255 255 / .2) inset, 0 2px 0 #4b9fd4 !important; }
   .btn.wa { box-shadow: 0 4px 0 rgb(255 255 255 / .45) inset, 0 -5px 0 rgb(0 0 0 / .14) inset, 0 8px 0 #138a45, 0 22px 26px -10px rgb(19 138 69 / .55) !important; }
-  .btn.claro, .btn.peligro { box-shadow: 0 4px 0 rgb(255 255 255 / .95) inset, 0 -4px 0 rgb(0 0 0 / .07) inset, 0 7px 0 rgb(40 70 20 / .16) !important; }
+  .btn.claro, .btn.peligro { box-shadow: 0 4px 0 rgb(255 255 255 / .95) inset, 0 -4px 0 rgb(0 0 0 / .07) inset, 0 7px 0 rgb(60 30 100 / .16) !important; }
   .btn.peligro { box-shadow: none !important; }
   .btn[disabled], .btn[aria-disabled="true"] { box-shadow: none !important; }
-  .op { box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -3px 0 rgb(0 0 0 / .07) inset, 0 6px 0 rgb(40 70 20 / .13), 0 12px 14px -8px rgb(30 60 20 / .45); transition: transform .1s ease, box-shadow .1s ease; }
+  .op { box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -3px 0 rgb(0 0 0 / .07) inset, 0 6px 0 rgb(60 30 100 / .13), 0 12px 14px -8px rgb(50 24 90 / .45); transition: transform .1s ease, box-shadow .1s ease; }
   .op[aria-pressed="true"] { box-shadow: 0 3px 0 rgb(255 255 255 / .2) inset, 0 -4px 0 rgb(0 0 0 / .4) inset, 0 6px 0 #000, 0 12px 14px -6px rgb(0 0 0 / .5); }
   .op:active { transform: translateY(4px); }
-  .caja, .tarj, .tarjeta, .pais, .control, .mapa, .med, .lienzo-caja, .preview, .medidor, .enlace, .inv, .combo, .resumen .caja, .dos .tarj, .campo, .estado, .hoja, .video-zona, .marco { box-shadow: 0 4px 0 rgb(255 255 255 / .95) inset, 0 -5px 0 rgb(0 0 0 / .06) inset, 0 9px 0 rgb(40 70 20 / .11), 0 26px 32px -18px rgb(30 60 20 / .5); }
+  .caja, .tarj, .tarjeta, .pais, .control, .mapa, .med, .lienzo-caja, .preview, .medidor, .enlace, .inv, .combo, .resumen .caja, .dos .tarj, .campo, .estado, .hoja, .video-zona, .marco { box-shadow: 0 4px 0 rgb(255 255 255 / .95) inset, 0 -5px 0 rgb(0 0 0 / .06) inset, 0 9px 0 rgb(60 30 100 / .11), 0 26px 32px -18px rgb(50 24 90 / .5); }
   .campo { box-shadow: none; }
   .caja.negra, .hero, .frase-dia, .total { box-shadow: 0 4px 0 rgb(255 255 255 / .16) inset, 0 -6px 0 rgb(0 0 0 / .4) inset, 0 9px 0 #000, 0 26px 32px -14px rgb(0 0 0 / .6); }
   .campo input, .campo select, .campo textarea, input[type=text], textarea, select { box-shadow: inset 0 4px 8px rgb(0 0 0 / .13), 0 3px 0 rgb(255 255 255 / .9) !important; }
-  .opc span, .sw, .chip { box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -3px 0 rgb(0 0 0 / .07) inset, 0 6px 0 rgb(40 70 20 / .13); }
+  .opc span, .sw, .chip { box-shadow: 0 3px 0 rgb(255 255 255 / .95) inset, 0 -3px 0 rgb(0 0 0 / .07) inset, 0 6px 0 rgb(60 30 100 / .13); }
   .opc input:checked + span { box-shadow: 0 3px 0 rgb(255 255 255 / .2) inset, 0 -4px 0 rgb(0 0 0 / .4) inset, 0 6px 0 #000; }
-  .aviso, .nota { box-shadow: 0 3px 0 rgb(255 255 255 / .8) inset, 0 5px 0 rgb(40 70 20 / .08); }
-  .cerrar, .ic-btn { box-shadow: 0 4px 0 rgb(255 255 255 / .95) inset, 0 -4px 0 rgb(0 0 0 / .07) inset, 0 6px 0 rgb(40 70 20 / .14), 0 14px 14px -8px rgb(30 60 20 / .5); }
+  .aviso, .nota { box-shadow: 0 3px 0 rgb(255 255 255 / .8) inset, 0 5px 0 rgb(60 30 100 / .08); }
+  .cerrar, .ic-btn { box-shadow: 0 4px 0 rgb(255 255 255 / .95) inset, 0 -4px 0 rgb(0 0 0 / .07) inset, 0 6px 0 rgb(60 30 100 / .14), 0 14px 14px -8px rgb(50 24 90 / .5); }
   .pestanas button[aria-selected="true"] { box-shadow: 0 3px 0 rgb(255 255 255 / .2) inset, 0 -4px 0 rgb(0 0 0 / .4) inset, 0 5px 0 #000; }
   .barra, .tubo, .pasos i { box-shadow: inset 0 3px 6px rgb(0 0 0 / .2); }
   .barra i, .tubo i, .pasos i.on { box-shadow: inset 0 3px 0 rgb(255 255 255 / .55), inset 0 -3px 0 rgb(0 0 0 / .14); }
@@ -187,7 +187,7 @@
   }
   function celebrar() {
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var c = document.createElement('div'); c.className = 'confeti'; c.setAttribute('aria-hidden', 'true'); document.body.appendChild(c); var cols = ['#a5dc5b', '#e6ee4a', '#ff7a1a', '#131313'];
+    var c = document.createElement('div'); c.className = 'confeti'; c.setAttribute('aria-hidden', 'true'); document.body.appendChild(c); var cols = ['#c9a7ff', '#ffc83d', '#ff7a1a', '#22104f'];
     for (var i = 0; i < 22; i++) { var p = document.createElement('i'); p.style.background = cols[i % 4]; c.appendChild(p); var a = Math.PI * 2 * i / 22, d = 70 + Math.random() * 80; p.animate([{ transform: 'translate(0,0)', opacity: 1 }, { transform: 'translate(' + Math.cos(a) * d + 'px,' + (Math.sin(a) * d + 90) + 'px) rotate(300deg)', opacity: 0 }], { duration: 1100, easing: 'cubic-bezier(.2,.8,.3,1)', fill: 'forwards' }); }
     setTimeout(function () { c.remove(); }, 1500);
   }

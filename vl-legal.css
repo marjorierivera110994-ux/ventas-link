@@ -1,6 +1,6 @@
 /* Ventas Link — estilo de las páginas legales (privacidad, términos, planes y reembolsos). Mismos colores y letras de la app. */
-:root { --pistacho: #a5dc5b; --lima: #e6ee4a; --naranja: #ff7a1a; --tinta: #131313; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5a5648;
-        --verde-texto: #2f6a10; --cielo: #d6f0ff; --error: #9a3412; --linea: rgb(19 19 19 / .1);
+:root { --pistacho: #c9a7ff; --lima: #ffc83d; --naranja: #ff7a1a; --tinta: #22104f; --beige: #f4ecdb; --blanco: #fff; --texto-2: #5c5470;
+        --verde-texto: #6a1fd0; --cielo: #d6f0ff; --error: #9a3412; --linea: rgb(34 16 79 / .1);
         --f-d: 'Bricolage Grotesque', monospace; --f-b: 'Instrument Sans', monospace; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 [hidden] { display: none !important; }
@@ -17,7 +17,7 @@ h1, h2, h3 { font-family: var(--f-d); letter-spacing: -.02em; line-height: 1.12;
 .tope { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; }
 .tope img { height: 34px; width: auto; display: block; }
 .volver { min-height: 44px; display: inline-flex; align-items: center; gap: 6px; padding: 0 16px; border-radius: 999px; background: var(--blanco); color: var(--tinta); font-weight: 700; font-size: 14px; text-decoration: none;
-          box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -3px 0 rgb(0 0 0 / .06), 0 5px 0 rgb(40 70 20 / .12), 0 14px 16px -10px rgb(30 60 20 / .5); transition: transform .1s ease; }
+          box-shadow: inset 0 3px 0 rgb(255 255 255 / .95), inset 0 -3px 0 rgb(0 0 0 / .06), 0 5px 0 rgb(60 30 100 / .12), 0 14px 16px -10px rgb(50 24 90 / .5); transition: transform .1s ease; }
 .volver:active { transform: translateY(3px); }
 .volver svg { width: 18px; height: 18px; }
 
@@ -31,7 +31,7 @@ h1, h2, h3 { font-family: var(--f-d); letter-spacing: -.02em; line-height: 1.12;
 .meta b { color: var(--tinta); font-weight: 600; }
 
 .tarj { margin-top: 24px; background: var(--blanco); border-radius: 24px; padding: 24px 16px; border: 1px solid rgb(255 255 255 / .95);
-        box-shadow: inset 0 4px 0 rgb(255 255 255 / .95), inset 0 -5px 0 rgb(0 0 0 / .05), 0 8px 0 rgb(40 70 20 / .1), 0 26px 32px -20px rgb(30 60 20 / .45); }
+        box-shadow: inset 0 4px 0 rgb(255 255 255 / .95), inset 0 -5px 0 rgb(0 0 0 / .05), 0 8px 0 rgb(60 30 100 / .1), 0 26px 32px -20px rgb(50 24 90 / .45); }
 @media (min-width: 600px) { .tarj { padding: 32px; } }
 .resumen { border: 2px solid transparent; background: linear-gradient(var(--blanco), var(--blanco)) padding-box, linear-gradient(120deg, var(--pistacho), var(--lima) 55%, var(--naranja)) border-box; }
 .resumen h2 { font-size: 20px; font-weight: 800; }

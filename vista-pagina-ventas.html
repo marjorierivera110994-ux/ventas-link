@@ -13,9 +13,9 @@
      El texto es provisional: el copy final se deriva de la ficha del cliente ideal (Sesión 1). */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root[data-estilo="a"] {
-    --bg: #f7f3ea; --surface: #fffdf8; --text-1: #1f2a24; --text-2: #5b675e; --accent: #0e6b4f;
+    --bg: #f6f1ea; --surface: #fffdfa; --text-1: #22104f; --text-2: #5c5470; --accent: #6a1fd0;
     --radius-card: 16px; --radius-btn: 12px; --font-display: 'Figtree', monospace; --font-body: 'Figtree', monospace;
-    --shadow-tinta: 20 60 45; --on-accent: #f7f3ea;
+    --shadow-tinta: 50 20 90; --on-accent: #ffffff;
   }
   :root[data-estilo="b"] {
     --bg: #0f1715; --surface: #16211e; --text-1: #e8f1ec; --text-2: #93a59d; --accent: #34d399;
@@ -29,9 +29,9 @@
   }
   :root { --accent-text: var(--accent); --soft: color-mix(in oklab, var(--accent) 12%, transparent); }
   :root[data-estilo="d"] {
-    --bg: #f4ecdb; --surface: #ffffff; --text-1: #131313; --text-2: #5a5648; --accent: #e6ee4a; --accent-text: #2f6a10;
-    --soft: #a5dc5b; --radius-card: 24px; --radius-btn: 999px; --font-display: 'Bricolage Grotesque', monospace; --font-body: 'Instrument Sans', monospace;
-    --shadow-tinta: 40 60 40; --on-accent: #131313;
+    --bg: #f4ecdb; --surface: #ffffff; --text-1: #22104f; --text-2: #5a5648; --accent: #ffc83d; --accent-text: #6a1fd0;
+    --soft: #c9a7ff; --radius-card: 24px; --radius-btn: 999px; --font-display: 'Bricolage Grotesque', monospace; --font-body: 'Instrument Sans', monospace;
+    --shadow-tinta: 40 60 40; --on-accent: #22104f;
   }
   :root[data-estilo="d"] .cta { background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; box-shadow: 0 12px 26px -10px rgb(16 90 140 / 0.39); }
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -111,15 +111,15 @@
   .logro-c p { margin-top: 6px; font-family: var(--font-display); font-size: 18px; font-weight: 800; line-height: 1.2; }
   :root[data-estilo="d"] .logro-c:nth-child(2) { background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; }
   :root[data-estilo="d"] .logro-c:nth-child(2) small { color: #0b2a40; }
-  :root[data-estilo="d"] .logro-c:nth-child(3) { background: #ff7a1a; color: #131313; }
-  :root[data-estilo="d"] .logro-c:nth-child(3) small { color: #131313; }
+  :root[data-estilo="d"] .logro-c:nth-child(3) { background: #ff7a1a; color: #22104f; }
+  :root[data-estilo="d"] .logro-c:nth-child(3) small { color: #22104f; }
   .nav { display: flex; align-items: center; gap: 8px; padding: 12px 0 0; overflow-x: auto; }
   .nav .marca { font-family: var(--font-display); font-weight: 800; font-size: 17px; margin-right: auto; white-space: nowrap; }
   .nav a, .nav button { min-height: 44px; padding: 0 16px; border-radius: 999px; font: inherit; font-weight: 700; font-size: 14px; text-decoration: none; color: var(--text-1); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; cursor: pointer;
                         border: 1px solid color-mix(in oklab, var(--text-2) 30%, transparent); background: var(--surface); }
   .nav .como { background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; border-color: #7cc8f3; }
   dialog { border: 0; border-radius: var(--radius-card); background: var(--bg); color: var(--text-1); width: min(92vw, 560px); max-height: 88dvh; padding: 0; font-family: var(--font-body); }
-  dialog::backdrop { background: rgb(19 19 19 / .55); }
+  dialog::backdrop { background: rgb(34 16 79 / .55); }
   .dlg-cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 18px 18px 8px; position: sticky; top: 0; background: var(--bg); }
   .dlg-cab h2 { font-size: 22px; }
   .dlg-x { width: 44px; height: 44px; border-radius: 999px; border: 0; background: var(--surface); cursor: pointer; display: grid; place-items: center; color: var(--text-1); }
@@ -174,9 +174,9 @@
 
   /* Estilo moderno: logo animado, stickers y botón flotante */
   #inicio { position: relative; }
-  .hero-logo { position: relative; width: 168px; height: 168px; margin: 4px 0 6px; }
+  .hero-logo { position: relative; width: min(100%, 340px); margin: 8px 0 10px; }
   .hero-logo img { display: block; width: 100%; height: auto; }
-  .stk { position: absolute; width: 44px; height: 44px; pointer-events: none; filter: drop-shadow(0 6px 6px rgb(20 40 10 / .22)); animation: flota 4s ease-in-out infinite; }
+  .stk { position: absolute; width: 44px; height: 44px; pointer-events: none; filter: drop-shadow(0 6px 6px rgb(40 16 80 / .22)); animation: flota 4s ease-in-out infinite; }
   @keyframes flota { 0%, 100% { transform: translateY(0) rotate(var(--r, -6deg)); } 50% { transform: translateY(-6px) rotate(calc(var(--r, -6deg) * -1)); } }
   .flota-cta { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 40; display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 22px 0 10px; border-radius: 999px; background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; font-weight: 800; font-size: 15px; text-decoration: none; white-space: nowrap; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 18px 36px -12px rgb(16 90 140 / 0.42); }
   .flota-cta img { width: 38px; height: 38px; border-radius: 12px; display: block; }
@@ -194,7 +194,7 @@
   .cta { box-shadow: 0 4px 0 rgb(255 255 255 / .3) inset, 0 -5px 0 rgb(0 0 0 / .24) inset, 0 9px 0 rgb(0 0 0 / .4), 0 26px 30px -12px rgb(0 0 0 / .5) !important; }
   .cta:active { transform: translateY(7px); box-shadow: 0 4px 0 rgb(255 255 255 / .3) inset, 0 2px 0 rgb(0 0 0 / .4) !important; }
   .flota-cta { box-shadow: 0 4px 0 rgb(255 255 255 / .18) inset, 0 -5px 0 rgb(16 90 140 / 0.28) inset, 0 9px 0 #4b9fd4, 0 28px 34px -12px rgb(16 90 140 / 0.42); }
-  .hero-logo img { filter: drop-shadow(0 14px 12px rgb(20 40 10 / .35)); }
+  .hero-logo img { filter: drop-shadow(0 10px 10px rgb(60 16 120 / .18)); }
 </style>
 </head>
 <body>
@@ -216,7 +216,7 @@
   </nav>
 
   <section id="inicio">
-    <div class="hero-logo"><picture><source media="(prefers-reduced-motion: reduce)" srcset="logo/ventas-link-logo-estatico.svg"><img src="logo/ventas-link-logo.svg" alt="Ventas Link" width="168" height="168"></picture></div>
+    <div class="hero-logo"><picture><source media="(prefers-reduced-motion: reduce)" srcset="logo/ventas-link-logo-estatico.svg"><img src="logo/ventas-link-logo.svg" alt="Ventas Link: compra, vende, crece" width="340" height="168"></picture></div>
     <span class="badge">Ventas Link · para emprendedores</span>
     <h1>Recibe pedidos <em>claros</em> por WhatsApp</h1>
     <p class="sub"><b>Crea tu tienda y comparte tu enlace.</b> Tus clientes eligen sus productos y el pedido te llega armado a tu WhatsApp, sin chats desordenados.</p>
