@@ -883,6 +883,8 @@
   }
   function aplicarDatos(d) {
     var t0 = d.tienda; TIENDA = t0; NEGOCIO.nombre = t0.nombre; NEGOCIO.whatsapp = t0.whatsapp;
+    /* Plan Emprendedor o superior: la tienda no muestra la marca "Tienda creada con Ventas Link" (función real del plan). */
+    if ($('hecho')) $('hecho').hidden = !!(t0.plan && t0.plan !== 'gratis');
     if (PAISES[t0.pais]) estado.pais = t0.pais; estado.moneda = t0.moneda || PAISES[estado.pais].moneda; estado.idioma = I[t0.idioma] ? t0.idioma : 'es';
     var billetera = PAISES[estado.pais].pagos.filter(function (k) { return ['transfer', 'cash', 'card'].indexOf(k) < 0; })[0] || null;
     var MAPA = { transferencia: 'transfer', efectivo: 'cash', tarjeta: 'card', billetera: billetera };
