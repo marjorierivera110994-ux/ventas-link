@@ -400,3 +400,32 @@ Documento fuente del usuario: C:\Users\User\Downloads\Prompt_maestro_app_tiendas
 - NO probado (hay que probarlo en un celular real): que el aviso aparezca en la pantalla con la app cerrada en Android y iPhone.
 - ⚠️ iPhone: los avisos solo funcionan con la app agregada a la pantalla de inicio (iOS 16.4+) y la sesión dentro de esa app. Hoy se entra con enlace por correo, que abre Safari (otra sesión): para entrar DENTRO de la app instalada falta activar el CÓDIGO de 6 dígitos en el correo (plantilla de Supabase con {{ .Token }} + VL_CONFIG.correoConCodigo = true) o activar Google. Android no tiene este problema.
 - Sin revisor visual (pantallas internas nuevas; pendiente correr revisor-visual sobre camino.html antes del lanzamiento).
+
+## PENDIENTES PARA RETOMAR (22-nov-2026) — dejado por la dueña para mañana
+Último commit publicado: 5d3ff46 (notificaciones, Mi camino, pedidos reales). Hay cambios SIN guardar en git (ver abajo).
+
+### Cambios sin guardar en git (hacer commit cuando se revisen)
+- vl-editor-foto.js (NUEVO): editor de fotos real, en el celular. Mejora inteligente (1 toque), luz y color, fondo (Original, Blanco, Crema, Lila, Estudio, Rosa, Celeste, Menta, Atardecer, Aurora, Mármol, Madera), recorte (Cuadrada / Vertical / Original, acercar y arrastrar), Antes/Después. Entrega webp de 1280 px máx.
+- productos.html: botón "Editar foto" (junto a Cambiar/Quitar foto), chip PRO si el plan no lo incluye, ventana "Editar fotos es del plan Profesional" con "Probar Profesional gratis 7 días" (usa iniciar_prueba) o "Ver los planes".
+- vista-pagina-ventas.html: textos de planes actualizados (camino al éxito, avisos, editor de fotos, estadísticas) y se quitó "Pronto" de lo que ya es real.
+- Capturas: docs/revisiones/editor-*.jpg, producto-editar-foto-375.jpg.
+
+### Pedido de la dueña (IMPORTANTE, mensaje del 21-nov)
+Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar la etiqueta "Pronto". Revisar uno por uno:
+- Plan Emprendedor: textos listos para compartir en redes; 10 plantillas para personalizar (nombre, colores, decoración); estadísticas básicas (visitas, pedidos, ventas); editar los mensajes motivadores; hasta 300 videoclips; quitar la marca Ventas Link.
+- Plan Profesional: estadísticas completas y reporte mensual; 50 plantillas y combinaciones; paleta amplia de colores; tu logo y foto de portada; hasta 1.000 videoclips; editor de fotos (ya hecho, falta prueba en celular); 8 plantillas para fotos (precio, oferta, nuevo, cuadrada/vertical/historia).
+- Plan Gratis: programa de invitados (30 días); videoclip de 15 s (1 gratis).
+- Para cada una: o se construye de verdad, o se marca "Pronto" en la página de ventas y en el mapa del plan (mi-plan-demo.html).
+- Botón "Editar" en la sección de productos: ya existe "Editar foto". Revisar que TODO lo que el plan ofrece aparezca con su botón real.
+
+### Subida de fotos de productos
+- Probado en la base (con rollback): sube a su propia carpeta, NO puede subir a carpeta ajena, no puede poner foto de otra tienda, plan Gratis = 40 fotos máx. (2 × 10 productos + 20), la tienda pública muestra la foto.
+- Probado en navegador: procesamiento de foto (4000 px → 1280 px webp, PNG transparente, vertical, muy pequeña y no-foto rechazadas).
+- PENDIENTE: probar la subida real desde un celular.
+
+### Otros pendientes técnicos
+- Notificaciones push: probar en celular real (Android con Chrome; iPhone con app agregada a pantalla de inicio, iOS 16.4+).
+- iPhone: entrar dentro de la app instalada requiere código de 6 dígitos en el correo (plantilla de Supabase + VL_CONFIG.correoConCodigo = true).
+- Revisor visual (revisor-visual) de camino.html y pedidos.html antes del lanzamiento.
+- Advisors de seguridad: avisos de funciones SECURITY DEFINER expuestas a authenticated son intencionales (cada una revisa quién llama); revisar tablas de private sin policies (intencional: solo service_role/funciones).
+- Imagen de vista previa del enlace ya actualizada (logo/compartir-tienda.png).
