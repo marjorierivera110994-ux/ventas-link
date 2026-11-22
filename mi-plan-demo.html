@@ -193,7 +193,7 @@
 
     var dos = $('dos'); dos.textContent = '';
     var mant = ['Tu tienda y su enlace', 'Todos tus productos y pedidos', 'Tu camino de éxito y frases', 'Tus ventas anteriores'];
-    var paus = ['Agregar más de ' + LIM.productos + ' productos', 'Más de 1 videoclip', 'Mejora de fotos y plantillas', 'Estadísticas detalladas'];
+    var paus = ['Agregar más de ' + LIM.productos + ' productos', 'Más de 1 videoclip', 'Editor de fotos: luz, fondo y recorte', 'Estadísticas detalladas'];
     dos.appendChild(el('div', { class: 'tarj' }, [el('h3', { text: 'Se mantiene' }), el('ul', {}, mant.map(function (x) { return el('li', { text: x }); }))]));
     dos.appendChild(el('div', { class: 'tarj pausa' }, [el('h3', { text: 'Se pausa' }), el('ul', {}, paus.map(function (x) { return el('li', { text: x }); }))]));
     [].slice.call($('esc').querySelectorAll('button')).forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.k === actual)); });
