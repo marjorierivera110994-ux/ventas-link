@@ -289,6 +289,12 @@
       <label class="interruptor"><span><b>Visible en mi tienda</b><small>Si lo apagas, el producto queda guardado pero tus clientes no lo ven.</small></span><input type="checkbox" id="f-activo" checked><span class="sw" aria-hidden="true"></span></label>
     </div>
 
+    <div class="bloque" id="zona-redes" hidden>
+      <h2>Para redes</h2>
+      <p class="ayuda-editar">Un texto listo con el nombre, el precio y tu enlace. Lo pegas en WhatsApp, Instagram o Facebook.</p>
+      <button type="button" class="btn claro" id="b-redes">Compartir texto del producto</button>
+    </div>
+
     <div class="bloque" id="zona-borrar" hidden><button type="button" class="btn peligro" id="b-borrar">Borrar este producto</button></div>
     <p class="aviso" id="e-guardar" role="alert" hidden></p>
     <div class="guardar-fijo"><div class="in"><button type="button" class="btn" id="b-guardar">Guardar producto</button></div></div>
@@ -480,7 +486,7 @@
     $('f-pct').value = conOferta ? String(p.oferta_pct) : '20'; if (!$('f-pct').value) $('f-pct').value = '20';
     $('f-hasta').min = mañana(); $('f-hasta').value = conOferta ? fechaLocal(new Date(p.oferta_hasta)) : enDias(7);
     $('f-activo').checked = p ? p.activo : true;
-    $('zona-borrar').hidden = !p; $('b-guardar').textContent = p ? 'Guardar cambios' : 'Publicar producto'; $('b-guardar').disabled = false;
+    $('zona-borrar').hidden = !p; $('zona-redes').hidden = !p; $('b-guardar').textContent = p ? 'Guardar cambios' : 'Publicar producto'; $('b-guardar').disabled = false;
     ['c-nombre', 'c-precio', 'c-stock', 'c-hasta', 'c-seccion'].forEach(function (c) { $(c).classList.remove('err'); });
     aviso('e-foto', ''); aviso('e-guardar', ''); aviso('e-var', ''); $('sug-nota').textContent = 'Se arma con tus datos. Tú la revisas.';
     pintarFoto(); pintarVariantes(); vistaOferta(); ver('v-form'); $('form-t').focus({ preventScroll: true });
@@ -637,6 +643,27 @@
     $('dlg-pro').showModal();
   }
   $('b-editar').addEventListener('click', editarFoto);
+
+  /* Texto listo para redes: nombre, precio, descripción y enlace real de la tienda. */
+  function textoRedes() {
+    var nombre = $('f-nombre').value.replace(/\s+/g, ' ').trim() || (F && F.prod ? F.prod.nombre : '') || 'mi producto';
+    var pr = numero($('f-precio').value), desc = $('f-desc').value.replace(/\s+/g, ' ').trim();
+    var lineas = ['✨ ' + nombre + (pr > 0 ? ' · ' + dinero(pr) : '')];
+    if (desc) lineas.push(desc);
+    lineas.push('Pide el tuyo aquí: ' + VL.enlaceTienda(D.tienda.slug));
+    return lineas.join('\n');
+  }
+  $('b-redes').addEventListener('click', function () {
+    if (!D || !D.tienda) return;
+    var texto = textoRedes();
+    if (navigator.share) {
+      navigator.share({ text: texto }).catch(function () { /* cancelado: no pasa nada */ });
+      return;
+    }
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(texto).then(function () { toast('Texto copiado. Pégalo donde quieras.'); }, function () { toast('No pudimos copiarlo. Intenta otra vez.'); });
+    } else { toast('Tu celular no permite copiar aquí.'); }
+  });
   $('b-pro-no').addEventListener('click', function () { $('dlg-pro').close(); });
   $('a-pro-planes').addEventListener('click', function (e) { $('dlg-pro').close(); irPlan(e); });
   $('b-probar-pro').addEventListener('click', function () {
