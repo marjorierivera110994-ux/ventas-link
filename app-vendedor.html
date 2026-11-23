@@ -340,10 +340,7 @@
     </div>
 
     <button type="button" class="banner" data-ir="plan"><div><b>Te queda 1 día de prueba</b><span>Mira tu mapa del plan</span></div><svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      <svg class="stk" style="right:50px;top:50%;margin-top:-26px;--r:10deg;animation-delay:1s" aria-hidden="true"><use href="#st-etiqueta"/></svg></button>
-    <button type="button" class="banner verde" data-hoja="invita-demo.html|Invita y gana"><div><b>Invita y gana 30 días</b><span>Plan Emprendedor gratis por cada amigo</span></div><svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      <svg class="stk" style="right:50px;top:50%;margin-top:-26px;--r:-8deg;animation-delay:1.6s" aria-hidden="true"><use href="#st-regalo"/></svg></button>
-  </div>
+      <svg class="stk" style="right:50px;top:50%;margin-top:-26px;--r:10deg;animation-delay:1s" aria-hidden="true"><use href="#st-etiqueta"/></svg></button>  </div>
 </main>
 
 <section class="panel marco" id="p-productos" role="tabpanel" aria-label="Productos" hidden><iframe data-src="producto-demo.html" title="Productos"></iframe></section>
@@ -374,9 +371,7 @@
   <button type="button" class="cuenta-btn claro" id="cuenta-avisos">Notificaciones</button>
   <button type="button" class="cuenta-btn claro" id="cuenta-plan">Mi plan y prueba gratis</button>
   <button type="button" class="cuenta-btn claro" id="cuenta-pers">Personalizar mi tienda</button>
-  <button type="button" class="cuenta-btn claro" id="cuenta-reporte">Reporte mensual</button>
-  <button type="button" class="cuenta-btn claro" id="cuenta-invitar">Invita y gana</button>
-  <button type="button" class="cuenta-btn salir" id="cuenta-salir" hidden>Cerrar sesión</button>
+  <button type="button" class="cuenta-btn claro" id="cuenta-reporte">Reporte mensual</button>  <button type="button" class="cuenta-btn salir" id="cuenta-salir" hidden>Cerrar sesión</button>
   <button type="button" class="cuenta-btn claro" id="cuenta-cerrar">Cerrar</button>
   <nav class="cuenta-legal" aria-label="Documentos legales"><a href="terminos.html">Términos</a><a href="privacidad.html">Privacidad</a><a href="reembolsos.html">Planes y reembolsos</a></nav>
   <button type="button" class="cuenta-borrar" id="cuenta-borrar" hidden>Eliminar mi cuenta</button>
@@ -487,9 +482,7 @@
   $('cuenta-cerrar').addEventListener('click', cerrarCuenta); $('cuenta-fondo').addEventListener('click', cerrarCuenta);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('cuenta').hidden) cerrarCuenta(); });
   $('cuenta-pers').addEventListener('click', function () { cerrarCuenta(); abrirHoja('personalizar-demo.html', 'Mi tienda y mi perfil'); });
-  $('cuenta-reporte').addEventListener('click', function () { cerrarCuenta(); abrirHoja('reporte-mensual.html', 'Reporte mensual'); });
-  $('cuenta-invitar').addEventListener('click', function () { cerrarCuenta(); abrirHoja('invitar.html', 'Invita y gana'); });
-  $('cuenta-entrar').addEventListener('click', function () { location.href = 'entrar.html'; });
+  $('cuenta-reporte').addEventListener('click', function () { cerrarCuenta(); abrirHoja('reporte-mensual.html', 'Reporte mensual'); });  $('cuenta-entrar').addEventListener('click', function () { location.href = 'entrar.html'; });
   $('cuenta-salir').addEventListener('click', function () { var b = this; b.disabled = true; b.textContent = 'Cerrando sesión…'; VL.salir().then(function () { location.replace('entrar.html'); }); });
   function ponerTienda(t, correo) {
     var ini = iniciales(t.nombre); MARCA = t.nombre;
