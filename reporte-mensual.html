@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reporte mensual — Ventas Link</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4ecdb">
+<link rel="icon" href="logo/ventas-link-icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vl-app.css">
+<style>
+  .mes { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; gap: 8px; align-items: center; margin-top: 14px; }
+  .mes button { width: 48px; height: 48px; border-radius: 16px; background: #fff; font-size: 22px; font-weight: 800; box-shadow: 0 4px 0 rgb(60 30 100 / .12); }
+  .mes button:disabled { opacity: .35; }
+  .mes b { text-align: center; font-family: var(--f-d); font-size: 19px; }
+  .pagina { max-width: 460px; margin: 0 auto; padding: 14px 16px 40px; }
+  .hero { margin-top: 14px; border-radius: 26px; padding: 20px 18px; color: #0b3b33; background: linear-gradient(160deg, #d5fbf1, #7fe0cc); box-shadow: inset 0 4px 0 rgb(255 255 255 / .8), 0 10px 0 #3fb9a0; }
+  .hero small { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+  .hero .n { font-family: var(--f-d); font-size: 46px; font-weight: 800; line-height: 1; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .hero .d { margin-top: 8px; font-weight: 700; font-size: 15px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .dato { background: #fff; border-radius: 20px; padding: 14px; box-shadow: 0 4px 0 rgb(60 30 100 / .1); }
+  .dato small { font-size: 12px; font-weight: 800; color: #5c5470; text-transform: uppercase; letter-spacing: .04em; }
+  .dato b { display: block; font-family: var(--f-d); font-size: 26px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .dato span { font-size: 13px; font-weight: 700; }
+  .sube { color: #1f7a4d; } .baja { color: #a23b2a; } .igual { color: #5c5470; }
+  .bloque { background: #fff; border-radius: 22px; padding: 16px; margin-top: 12px; box-shadow: 0 4px 0 rgb(60 30 100 / .1); }
+  .bloque h2 { font-size: 17px; font-family: var(--f-d); }
+  .barras { display: flex; align-items: flex-end; gap: 3px; height: 130px; margin-top: 14px; }
+  .barras i { flex: 1 1 0; min-width: 4px; border-radius: 4px 4px 2px 2px; background: linear-gradient(180deg, #7fe0cc, #3fb9a0); }
+  .barras i.cero { background: #ece8f3; min-height: 3px; }
+  .ejes { display: flex; justify-content: space-between; font-size: 12px; color: #5c5470; font-weight: 700; margin-top: 6px; }
+  .top { list-style: none; margin-top: 10px; display: grid; gap: 8px; }
+  .top li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; font-weight: 700; font-size: 15px; }
+  .top li span { width: 28px; height: 28px; border-radius: 10px; display: grid; place-items: center; background: #d5fbf1; color: #0b3b33; font-size: 13px; }
+  .top li em { font-style: normal; font-size: 13px; color: #5c5470; }
+  .vacio { text-align: center; color: #5c5470; font-weight: 700; padding: 16px 0; font-size: 15px; }
+  .candado { text-align: center; padding: 24px 16px; }
+  .candado h2 { font-family: var(--f-d); font-size: 22px; }
+  .candado p { color: #5c5470; margin-top: 8px; }
+  .candado .btn { margin-top: 16px; }
+  .demo-tag { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 800; background: #d6f1ff; color: #0b2a40; border-radius: 999px; padding: 6px 12px; }
+</style>
+</head>
+<body>
+<main class="pagina" aria-labelledby="t">
+  <a class="volver" href="app-vendedor.html" aria-label="Volver">‹ Volver</a>
+  <h1 id="t">Reporte mensual</h1>
+  <p class="sub">Cómo le fue a tu tienda cada mes: ventas, dinero, visitas y tus productos estrella.</p>
+
+  <div class="mes" role="group" aria-label="Elegir mes">
+    <button type="button" id="mes-ant" aria-label="Mes anterior">‹</button>
+    <b id="mes-txt">…</b>
+    <button type="button" id="mes-sig" aria-label="Mes siguiente">›</button>
+  </div>
+
+  <div id="cargando" class="vacio">Preparando tu reporte…</div>
+
+  <section id="reporte" hidden>
+    <div class="hero">
+      <small>Ventas del mes</small>
+      <p class="n" id="r-ventas">0</p>
+      <p class="d" id="r-comp-ventas"></p>
+    </div>
+    <div class="grid">
+      <div class="dato"><small>Dinero recibido</small><b id="r-ingresos">$0</b><span id="r-comp-ingresos"></span></div>
+      <div class="dato"><small>Pedidos recibidos</small><b id="r-pedidos">0</b><span id="r-comp-pedidos"></span></div>
+      <div class="dato"><small>Visitas</small><b id="r-visitas">0</b><span id="r-comp-visitas"></span></div>
+      <div class="dato"><small>Canceladas</small><b id="r-canceladas">0</b><span>&nbsp;</span></div>
+    </div>
+    <div class="bloque">
+      <h2>Ventas por día</h2>
+      <div class="barras" id="barras" role="img" aria-label="Ventas por día del mes"></div>
+      <div class="ejes"><span>1</span><span id="eje-fin"></span></div>
+    </div>
+    <div class="bloque">
+      <h2>Tus productos estrella</h2>
+      <ol class="top" id="top"></ol>
+      <p class="vacio" id="top-vacio" hidden>Todavía no hay ventas de productos en este mes.</p>
+    </div>
+    <p class="sub" style="margin-top:12px">Las ventas cuentan los pedidos pagados o entregados, en el mes de su pago.</p>
+  </section>
+
+  <section id="candado" class="bloque candado" hidden>
+    <h2>El reporte mensual es del plan Profesional</h2>
+    <p>Con Profesional ves cuánto vendiste cada mes, tus productos estrella y cómo vas frente al mes anterior.</p>
+    <a class="btn" href="mi-plan-demo.html">Ver los planes</a>
+  </section>
+
+  <p id="demo" class="demo-tag" hidden>Demostración · datos de ejemplo</p>
+</main>
+
+<script src="vl-config.js"></script>
+<script src="vl-datos.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var VL = window.VL, sb = null, mes = null, primerMes = null, moneda = 'USD', demo = false;
+  var DEMO = {
+    mes: '', moneda: 'USD', primer_mes: '',
+    actual: { ventas: 14, ingresos: 486.5, pedidos: 19, canceladas: 1, visitas: 412 },
+    anterior: { ventas: 10, ingresos: 350, pedidos: 15, canceladas: 2, visitas: 330 },
+    top_productos: [{ nombre: 'Aretes de plata', unidades: 9, ingresos: 252 }, { nombre: 'Camisa de lino', unidades: 4, ingresos: 96 }, { nombre: 'Bolso tejido', unidades: 2, ingresos: 70 }],
+    por_dia: []
+  };
+  for (var k = 1; k <= 30; k++) DEMO.por_dia.push({ dia: '', ventas: (k * 7) % 5 === 0 ? 0 : (k * 13) % 4, ingresos: 0 });
+
+  function dinero(n) { try { return new Intl.NumberFormat('es-EC', { style: 'currency', currency: moneda }).format(n || 0); } catch (e) { return '$' + (n || 0); } }
+  function mesActual() { var h = new Date(); return h.getFullYear() + '-' + String(h.getMonth() + 1).padStart(2, '0'); }
+  function nombreMes(s) { var p = s.split('-'), t = new Date(+p[0], +p[1] - 1, 1).toLocaleDateString('es-EC', { month: 'long', year: 'numeric' }); return t.charAt(0).toUpperCase() + t.slice(1); }
+  function cambio(ahora, antes) {
+    if (!antes && !ahora) return { t: 'Igual que el mes pasado', c: 'igual' };
+    if (!antes) return { t: 'Primer mes con ventas', c: 'sube' };
+    var p = Math.round((ahora - antes) / antes * 100);
+    if (p === 0) return { t: 'Igual que el mes pasado', c: 'igual' };
+    return p > 0 ? { t: '↑ ' + p + '% vs el mes pasado', c: 'sube' } : { t: '↓ ' + Math.abs(p) + '% vs el mes pasado', c: 'baja' };
+  }
+  function poner(id, comp, a, b) { var c = cambio(a, b); var x = $(id); x.textContent = c.t; x.className = c.c; }
+
+  function pintar(d) {
+    var a = d.actual, b = d.anterior;
+    $('r-ventas').textContent = a.ventas;
+    poner('r-comp-ventas', 0, a.ventas, b.ventas);
+    $('r-ingresos').textContent = dinero(a.ingresos); poner('r-comp-ingresos', 0, a.ingresos, b.ingresos);
+    $('r-pedidos').textContent = a.pedidos; poner('r-comp-pedidos', 0, a.pedidos, b.pedidos);
+    $('r-visitas').textContent = a.visitas; poner('r-comp-visitas', 0, a.visitas, b.visitas);
+    $('r-canceladas').textContent = a.canceladas;
+    var dias = d.por_dia || [], max = 1, i;
+    dias.forEach(function (x) { if (x.ventas > max) max = x.ventas; });
+    var barras = $('barras'); barras.textContent = '';
+    dias.forEach(function (x, j) {
+      var s = document.createElement('i'); var alto = Math.round(x.ventas / max * 100);
+      s.style.height = Math.max(alto, 0) + '%'; if (!x.ventas) s.className = 'cero';
+      s.title = 'Día ' + (j + 1) + ': ' + x.ventas + ' venta(s)';
+      barras.appendChild(s);
+    });
+    $('eje-fin').textContent = dias.length || '';
+    var ol = $('top'); ol.textContent = '';
+    (d.top_productos || []).forEach(function (p, j) {
+      var li = document.createElement('li');
+      var n = document.createElement('span'); n.textContent = j + 1;
+      var t = document.createElement('div'); t.textContent = p.nombre;
+      var e = document.createElement('em'); e.textContent = p.unidades + ' vendidos';
+      li.appendChild(n); li.appendChild(t); li.appendChild(e); ol.appendChild(li);
+    });
+    $('top-vacio').hidden = (d.top_productos || []).length > 0;
+    $('mes-txt').textContent = nombreMes(d.mes || mes || mesActual());
+    $('mes-sig').disabled = (d.mes || mes) >= mesActual();
+    $('mes-ant').disabled = !!(primerMes && (d.mes || mes) <= primerMes);
+    $('cargando').hidden = true; $('candado').hidden = true; $('reporte').hidden = false;
+  }
+
+  function ver(d) { demo = false; $('demo').hidden = true; $('reporte').hidden = true; $('candado').hidden = true; if (d) pintar(d); }
+
+  function cargar(m) {
+    mes = m || null; $('cargando').hidden = false; $('reporte').hidden = true; $('candado').hidden = true;
+    if (!VL || !VL.listo) return mostrarDemo();
+    sb = VL.cliente();
+    VL.sesion().then(function (s) {
+      if (!s) return mostrarDemo();
+      return sb.rpc('reporte_mensual', { p_mes: mes }).then(function (r) {
+        if (r.error) {
+          if (/PLAN_REQUERIDO/.test(r.error.message || '')) { $('cargando').hidden = true; $('candado').hidden = false; return; }
+          throw r.error;
+        }
+        moneda = r.data.moneda || 'USD'; primerMes = r.data.primer_mes || null; mes = r.data.mes;
+        ver(r.data);
+      });
+    }).catch(function () {
+      $('cargando').hidden = true; $('reporte').hidden = true;
+      $('mes-txt').textContent = 'Sin conexión';
+      $('demo').hidden = false; $('demo').textContent = 'Revisa tu internet e inténtalo de nuevo.';
+    });
+  }
+  function mostrarDemo() {
+    demo = true; $('cargando').hidden = true; $('demo').hidden = false;
+    var d = JSON.parse(JSON.stringify(DEMO)); d.mes = mesActual(); d.por_dia = d.por_dia.map(function (x, j) { return { dia: j + 1, ventas: x.ventas, ingresos: 0 }; });
+    primerMes = null; $('mes-ant').disabled = true; $('mes-sig').disabled = true;
+    pintar(d);
+  }
+
+  $('mes-ant').addEventListener('click', function () {
+    var p = (mes || mesActual()).split('-'), y = +p[0], m = +p[1] - 1; if (m < 1) { m = 12; y--; }
+    cargar(y + '-' + String(m).padStart(2, '0'));
+  });
+  $('mes-sig').addEventListener('click', function () {
+    var p = (mes || mesActual()).split('-'), y = +p[0], m = +p[1] + 1; if (m > 12) { m = 1; y++; }
+    cargar(y + '-' + String(m).padStart(2, '0'));
+  });
+  cargar(null);
+})();
+</script>
+</body>
+</html>
