@@ -429,3 +429,8 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - Revisor visual (revisor-visual) de camino.html y pedidos.html antes del lanzamiento.
 - Advisors de seguridad: avisos de funciones SECURITY DEFINER expuestas a authenticated son intencionales (cada una revisa quién llama); revisar tablas de private sin policies (intencional: solo service_role/funciones).
 - Imagen de vista previa del enlace ya actualizada (logo/compartir-tienda.png).
+
+## TEXTO PARA REDES POR PRODUCTO (23-nov-2026) — commit 9436da5
+- productos.html: botón "Compartir texto del producto" (sección "Para redes", solo al editar un producto). Arma nombre · precio, descripción y enlace real de la tienda; usa compartir del celular o copia al portapapeles.
+- vista-pagina-ventas.html: quitada la etiqueta "Pronto" de "Textos listos para compartir en redes" (Emprendedor) y de la guía.
+- Pendiente: probar en celular real (compartir y copiar). Sin revisor visual (cambio pequeño dentro de una pantalla ya revisada).
