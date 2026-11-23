@@ -459,3 +459,12 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - Prueba real en la base (con deshacer): ventas, dinero, visitas, comparación con el mes anterior, productos estrella, días del mes, bloqueo a plan gratis, a mes futuro, a mes inválido y a visitantes sin sesión: todo correcto.
 - reporte-mensual.html: pantalla con navegación ‹ › entre meses, tarjetas con comparación, barras por día y top 5. Gratis ve "es del plan Profesional". Entrada en Mi cuenta → Reporte mensual.
 - Pendiente: probar con tu sesión real en tu celular.
+
+## PROGRAMA DE INVITADOS (23-nov-2026)
+- Migración 20261123110000_programa_invitados.sql, aplicada en la base. Tablas invitaciones (código de 8 letras por tienda) e invitados. Columnas de regalo en suscripciones (regalo_plan, regalo_hasta). plan_efectivo: pagado > prueba > regalo > gratis.
+- Premio: al publicar la invitada su PRIMER producto activo (disparador productos_invitacion). Ambas reciben 30 días de Emprendedor. Quien invita tiene tope de 12 premios; la invitada recibe sus 30 días siempre.
+- Canje: enlace onboarding-demo.html?invita=codigo. vl-datos guarda el código y lo canjea al crear la tienda (solo una vez; no se puede canjear el propio).
+- invitar.html: muestra el código, invitadas, premios y Te quedan. Entrada en Mi cuenta → Invita y gana.
+- Prueba en la base (con deshacer): código, canje único, código propio bloqueado, código malo, premio a ambas, segundo producto sin sumar, tope de 12. Todo correcto.
+- Riesgo a vigilar: alguien podría crear tiendas falsas para acumular premios; el tope de 12 lo limita.
+- Pendiente: probar con tu cuenta real y con un celular.
