@@ -468,3 +468,11 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - Prueba en la base (con deshacer): código, canje único, código propio bloqueado, código malo, premio a ambas, segundo producto sin sumar, tope de 12. Todo correcto.
 - Riesgo a vigilar: alguien podría crear tiendas falsas para acumular premios; el tope de 12 lo limita.
 - Pendiente: probar con tu cuenta real y con un celular.
+
+## VIDEOCLIPS (23-nov-2026)
+- Migraciones 20261123120000_videoclips.sql y 20261123120100_tienda_publica_videos.sql, aplicadas en la base. Bucket "videos" (público para ver, 12 MB, MP4/WebM/MOV). Columnas productos.video_path y video_segundos. Disparador private.video_limite: máximo por plan (Gratis 1, Emprendedor 300, Profesional 1.000) y segundos por plan (15, 15, 20).
+- Prueba en la base (con deshacer): límite de segundos, límite de videos, quitar y subir otro, plan Profesional de 20 s. Todo correcto.
+- productos.html: bloque "Videoclip (opcional)" en el formulario del producto: revisa tipo, tamaño (12 MB), duración y el límite del plan antes de subir.
+- tienda-demo.html: el cliente ve el video en la ficha del producto (tienda_publica ya lo entrega).
+- Límite de duración: la app la mide en el celular y la declara; el servidor la compara con el plan. Un celular modificado podría declarar otra duración (riesgo bajo, solo afecta al límite de segundos).
+- Pendiente: probar subir un video real desde tu celular (requiere tu sesión). Pesos y costo de almacenamiento: vigilar el uso del bucket "videos".
