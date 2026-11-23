@@ -453,3 +453,9 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - Color de las frases positivas: verde agua (#d5fbf1 → #7fe0cc, texto #0b3b33). Aplicado a la frase de la tienda y a la frase del día de la app del vendedor.
 - Pendiente: probar con tu sesión real (guardar mensajes y verlos en tu tienda pública).
 - Pendiente del plan: reporte mensual, programa de invitados y videoclips.
+
+## REPORTE MENSUAL (23-nov-2026) — plan Profesional
+- Migración 20261123100000_reporte_mensual.sql, ya aplicada en la base: public.reporte_mensual(p_mes) (solo dueño con plan profesional; mes en hora de Ecuador). Ventas = pedidos pagados o entregados, en el mes de su pago. Pedidos solicitados no cuentan como venta.
+- Prueba real en la base (con deshacer): ventas, dinero, visitas, comparación con el mes anterior, productos estrella, días del mes, bloqueo a plan gratis, a mes futuro, a mes inválido y a visitantes sin sesión: todo correcto.
+- reporte-mensual.html: pantalla con navegación ‹ › entre meses, tarjetas con comparación, barras por día y top 5. Gratis ve "es del plan Profesional". Entrada en Mi cuenta → Reporte mensual.
+- Pendiente: probar con tu sesión real en tu celular.
