@@ -6,6 +6,19 @@
 (function () {
   'use strict';
   var C = window.VL_CONFIG || {}, sb = null;
+  /* Enlace de invitación: ?invita=codigo se guarda en este navegador hasta que se crea la tienda. */
+  try {
+    var invita = new URLSearchParams(location.search).get('invita');
+    if (invita && /^[a-hj-np-z2-9]{8}$/i.test(invita)) localStorage.setItem('vl-invita', invita.toLowerCase());
+  } catch (e) { /* sin almacenamiento: no hay invitación que guardar */ }
+  function canjearInvitacionPendiente() {
+    var codigo = null; try { codigo = localStorage.getItem('vl-invita'); } catch (e) { codigo = null; }
+    if (!codigo) return;
+    var c = cliente(); if (!c) return;
+    c.rpc('canjear_invitacion', { p_codigo: codigo }).then(function (r) {
+      if (!r.error) { try { localStorage.removeItem('vl-invita'); } catch (e) { /* ok */ } }
+    }, function () { /* se intentará de nuevo en otra visita */ });
+  }
   var COLUMNAS = 'id, slug, nombre, descripcion, tipo, whatsapp, pais, moneda, idioma, horario, publicada, logo_path, portada_path, estilo, created_at';
 
   function cliente() {
@@ -138,7 +151,11 @@
     }
     return intentar(0).then(function (res) {
       /* Aceptación de Términos + Privacidad (la casilla que la vendedora marcó): queda registrada con su versión. */
-      return (d.legal ? aceptarLegal(d.legal, 'recorrido') : Promise.resolve()).then(function () { return res; });
+      return (d.legal ? aceptarLegal(d.legal, 'recorrido') : Promise.resolve()).then(function () {
+        /* Programa de invitados: si llegó con un enlace de invitación, se canjea una sola vez (el servidor decide). */
+        if (res.nueva) canjearInvitacionPendiente();
+        return res;
+      });
     }).then(function (res) {
       var secs = (d.secciones || []).slice(0, 3);
       if (!res.nueva || !secs.length) return res;

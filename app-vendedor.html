@@ -375,6 +375,7 @@
   <button type="button" class="cuenta-btn claro" id="cuenta-plan">Mi plan y prueba gratis</button>
   <button type="button" class="cuenta-btn claro" id="cuenta-pers">Personalizar mi tienda</button>
   <button type="button" class="cuenta-btn claro" id="cuenta-reporte">Reporte mensual</button>
+  <button type="button" class="cuenta-btn claro" id="cuenta-invitar">Invita y gana</button>
   <button type="button" class="cuenta-btn salir" id="cuenta-salir" hidden>Cerrar sesión</button>
   <button type="button" class="cuenta-btn claro" id="cuenta-cerrar">Cerrar</button>
   <nav class="cuenta-legal" aria-label="Documentos legales"><a href="terminos.html">Términos</a><a href="privacidad.html">Privacidad</a><a href="reembolsos.html">Planes y reembolsos</a></nav>
@@ -487,6 +488,7 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('cuenta').hidden) cerrarCuenta(); });
   $('cuenta-pers').addEventListener('click', function () { cerrarCuenta(); abrirHoja('personalizar-demo.html', 'Mi tienda y mi perfil'); });
   $('cuenta-reporte').addEventListener('click', function () { cerrarCuenta(); abrirHoja('reporte-mensual.html', 'Reporte mensual'); });
+  $('cuenta-invitar').addEventListener('click', function () { cerrarCuenta(); abrirHoja('invitar.html', 'Invita y gana'); });
   $('cuenta-entrar').addEventListener('click', function () { location.href = 'entrar.html'; });
   $('cuenta-salir').addEventListener('click', function () { var b = this; b.disabled = true; b.textContent = 'Cerrando sesión…'; VL.salir().then(function () { location.replace('entrar.html'); }); });
   function ponerTienda(t, correo) {
