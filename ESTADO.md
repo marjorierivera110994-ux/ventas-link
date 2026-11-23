@@ -439,3 +439,10 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - vl-editor-foto.js: pestaña "Etiqueta" con 8 plantillas (Nuevo, Oferta, Precio especial, Envío gratis, Últimas unidades, Hecho a mano, Lo más vendido, Temporada) + texto opcional de 22 caracteres. Se dibuja sobre la foto final (cuadrada, vertical u original).
 - vista-pagina-ventas.html: quitada la etiqueta "Pronto" de "8 etiquetas para tus fotos".
 - Probado: render de las 9 opciones en navegador (captura correcta). Pendiente: probarlo en la pantalla real de productos en el celular.
+
+## DISEÑO REAL DE LA TIENDA (23-nov-2026)
+- vl-diseno.js (nuevo): plantillas, paletas, colores, decoración, combinaciones. VLD.estiloEfectivo(estilo, plan) aplica los límites de cada plan y VLD.css(...) pinta la tienda pública.
+- personalizar-demo.html: si hay sesión, carga TU tienda y TU plan; "Guardar mi tienda" guarda nombre, frase, diseño (tiendas.estilo), y sube logo y portada a tu carpeta del almacenamiento (solo plan Profesional). Sin sesión sigue la demostración. No deja guardar si estás viendo otro plan.
+- tienda-demo.html: aplica el diseño guardado y muestra logo y portada solo en plan Profesional.
+- Pendiente de prueba: guardar con sesión real (requiere tu correo) y ver la tienda pública con un diseño guardado.
+- Duplicado a vigilar: personalizar-demo.html conserva sus propias copias de plantillas/paletas (no se refactorizó).
