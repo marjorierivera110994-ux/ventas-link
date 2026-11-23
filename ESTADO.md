@@ -446,3 +446,10 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - tienda-demo.html: aplica el diseño guardado y muestra logo y portada solo en plan Profesional.
 - Pendiente de prueba: guardar con sesión real (requiere tu correo) y ver la tienda pública con un diseño guardado.
 - Duplicado a vigilar: personalizar-demo.html conserva sus propias copias de plantillas/paletas (no se refactorizó).
+
+## MENSAJES PARA TUS CLIENTES + FONDO VERDE AGUA (23-nov-2026)
+- personalizar-demo.html: sección "Mensajes para tus clientes" (5 partes: al entrar, al elegir, en el carrito, antes de enviar, al terminar). Hasta 5 frases por parte, 120 letras. Se guarda en tiendas.estilo.mensajes. Con plan Gratis queda bloqueado y se ve el aviso.
+- tienda-demo.html: usa esos mensajes solo en español y solo con plan Emprendedor o Profesional. Se guardan en la misma columna del diseño.
+- Color de las frases positivas: verde agua (#d5fbf1 → #7fe0cc, texto #0b3b33). Aplicado a la frase de la tienda y a la frase del día de la app del vendedor.
+- Pendiente: probar con tu sesión real (guardar mensajes y verlos en tu tienda pública).
+- Pendiente del plan: reporte mensual, programa de invitados y videoclips.
