@@ -241,6 +241,15 @@
       <input type="file" id="in-galeria" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden>
     </div>
 
+    <div class="bloque" id="zona-video">
+      <h2>Videoclip (opcional)</h2>
+      <p class="ayuda-editar" id="video-ayuda"></p>
+      <div id="video-vista" hidden><video id="video-prev" controls playsinline preload="metadata" style="width:100%;border-radius:16px;background:#000;margin-top:8px"></video></div>
+      <div class="foto-acc" style="margin-top:12px"><button type="button" class="btn claro" id="b-video">Subir videoclip</button><button type="button" class="btn peligro" id="b-video-quitar" hidden>Quitar videoclip</button></div>
+      <p class="aviso" id="e-video" role="alert" hidden></p>
+      <input type="file" id="in-video" accept="video/mp4,video/webm,video/quicktime" hidden>
+    </div>
+
     <div class="bloque">
       <h2>Datos</h2>
       <div class="campo" id="c-nombre"><label for="f-nombre">Nombre del producto</label><input type="text" id="f-nombre" maxlength="80" autocomplete="off" placeholder="Ej.: Blusa de lino"><p class="error">Escribe el nombre del producto.</p></div>
@@ -379,7 +388,7 @@
       return Promise.all([
         VL.miTienda(), VL.miPlan(),
         sb.from('secciones').select('id, nombre, orden').order('orden').order('created_at'),
-        sb.from('productos').select('id, seccion_id, nombre, descripcion, precio, oferta_pct, oferta_hasta, variante_tipo, variantes, stock, activo, foto_path, orden, created_at').order('orden').order('created_at', { ascending: false })
+        sb.from('productos').select('id, seccion_id, nombre, descripcion, precio, oferta_pct, oferta_hasta, variante_tipo, variantes, stock, activo, foto_path, video_path, video_segundos, orden, created_at').order('orden').order('created_at', { ascending: false })
       ]).then(function (r) {
         if (!r[0].ok) throw r[0];
         if (!r[0].tienda) { window.top.location.href = 'onboarding-demo.html'; return; }
@@ -473,7 +482,8 @@
   function enDias(n) { var d = new Date(); d.setDate(d.getDate() + n); return fechaLocal(d); }
   function mañana() { return enDias(1); }
   function abrirForm(p) {
-    F = { prod: p, foto: null, quitarFoto: false, variantes: p && p.variantes ? p.variantes.slice() : [] };
+    F = { prod: p, foto: null, quitarFoto: false, vid: null, quitarVideo: false, variantes: p && p.variantes ? p.variantes.slice() : [] };
+    aviso('e-video', ''); pintarVideo();
     $('form-t').textContent = p ? 'Editar producto' : 'Nuevo producto';
     $('f-nombre').value = p ? p.nombre : ''; $('f-precio').value = p ? Number(p.precio).toFixed(2).replace('.', ',') : '';
     $('f-desc').value = p ? p.descripcion : ''; $('cont-desc').textContent = $('f-desc').value.length + ' / 300';
@@ -578,19 +588,57 @@
     return sb.storage.from('media').upload(ruta, f.blob, { contentType: f.tipo, cacheControl: '31536000', upsert: false }).then(function (r) { if (r.error) throw r.error; return ruta; });
   }
   function borrarFoto(ruta) { if (ruta) sb.storage.from('media').remove([ruta]).catch(function () { /* queda una foto sin usar: no afecta a la tienda */ }); }
+
+  /* ---------- Videoclip del producto: el plan marca cuántos videos y cuántos segundos ---------- */
+  var SEG_PLAN = { gratis: 15, emprendedor: 15, profesional: 20 }, VIDEOS_PLAN = { gratis: 1, emprendedor: 300, profesional: 1000 };
+  function planClave() { return D.plan || 'gratis'; }
+  function videoUrl(ruta) { return (window.VL_CONFIG || {}).url + '/storage/v1/object/public/videos/' + String(ruta).split('/').map(encodeURIComponent).join('/'); }
+  function subirVideo(v) {
+    var ruta = D.tienda.id + '/v/' + (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2)) + '.' + v.ext;
+    return sb.storage.from('videos').upload(ruta, v.blob, { contentType: v.tipo, cacheControl: '31536000', upsert: false }).then(function (r) { if (r.error) throw r.error; return ruta; });
+  }
+  function borrarVideo(ruta) { if (ruta) sb.storage.from('videos').remove([ruta]).catch(function () { /* el video sin usar no afecta a la tienda */ }); }
+  function videosUsados() { return D.productos.filter(function (p) { return p.video_path && (!F || !F.prod || p.id !== F.prod.id); }).length; }
+  function pintarVideo() {
+    var url = F && F.vid ? F.vid.url : (F && !F.quitarVideo && F.prod && F.prod.video_path ? videoUrl(F.prod.video_path) : '');
+    $('video-prev').src = url || ''; $('video-vista').hidden = !url; $('b-video-quitar').hidden = !url;
+    $('video-ayuda').textContent = 'Un clip corto muestra la tela, el caído o cómo se usa. Máximo ' + SEG_PLAN[planClave()] + ' segundos y MP4, WebM o MOV de hasta 12 MB. Usados: ' + videosUsados() + ' de ' + VIDEOS_PLAN[planClave()] + '.';
+  }
+  $('b-video').addEventListener('click', function () { $('in-video').click(); });
+  $('in-video').addEventListener('change', function (e) {
+    var f = e.target.files[0]; e.target.value = ''; aviso('e-video', ''); if (!f || !F) return;
+    if (['video/mp4', 'video/webm', 'video/quicktime'].indexOf(f.type) < 0) { aviso('e-video', 'Ese video no sirve. Usa MP4, WebM o MOV.'); return; }
+    if (f.size > 12 * 1048576) { aviso('e-video', 'El video pesa demasiado. El máximo es 12 MB. Grábalo más corto o con menos calidad.'); return; }
+    if (videosUsados() >= VIDEOS_PLAN[planClave()]) { aviso('e-video', 'Ya usaste tus ' + VIDEOS_PLAN[planClave()] + ' videoclips del plan. Quita uno o sube de plan.'); return; }
+    var url = URL.createObjectURL(f), v = document.createElement('video');
+    v.preload = 'metadata'; v.muted = true;
+    v.onloadedmetadata = function () {
+      var seg = Math.ceil(v.duration || 0);
+      if (!(seg > 0)) { URL.revokeObjectURL(url); aviso('e-video', 'No pudimos leer la duración del video. Prueba con otro archivo.'); return; }
+      if (seg > SEG_PLAN[planClave()]) { URL.revokeObjectURL(url); aviso('e-video', 'Tu video dura ' + seg + ' segundos. Con tu plan el máximo es ' + SEG_PLAN[planClave()] + '.'); return; }
+      if (F.vid) URL.revokeObjectURL(F.vid.url);
+      F.vid = { blob: f, tipo: f.type, ext: f.type === 'video/webm' ? 'webm' : (f.type === 'video/quicktime' ? 'mov' : 'mp4'), seg: seg, url: url };
+      F.quitarVideo = false; pintarVideo();
+    };
+    v.onerror = function () { URL.revokeObjectURL(url); aviso('e-video', 'No pudimos abrir ese video. Prueba con otro archivo.'); };
+    v.src = url;
+  });
+  $('b-video-quitar').addEventListener('click', function () { if (F.vid) { URL.revokeObjectURL(F.vid.url); F.vid = null; } F.quitarVideo = true; pintarVideo(); });
   function guardar() {
     if (guardando || !F) return; var datos = validar(); if (!datos) return;
     guardando = true; var b = $('b-guardar'), antes = b.textContent, eraPrimero = !F.prod && D.productos.length === 0; b.disabled = true; aviso('e-guardar', '');
-    var vieja = F.prod ? F.prod.foto_path : null, nueva = null;
-    b.textContent = F.foto ? 'Subiendo foto…' : 'Guardando…';
-    (F.foto ? subirFoto(F.foto) : Promise.resolve(null)).then(function (ruta) {
+    var vieja = F.prod ? F.prod.foto_path : null, nueva = null, vidaVieja = F.prod ? F.prod.video_path : null, nuevoVideo = null;
+    b.textContent = (F.foto || F.vid) ? 'Subiendo…' : 'Guardando…';
+    (F.vid ? subirVideo(F.vid) : Promise.resolve(null)).then(function (rv) { nuevoVideo = rv; return F.foto ? subirFoto(F.foto) : null; }).then(function (ruta) {
       nueva = ruta; b.textContent = 'Guardando…';
       if (ruta) datos.foto_path = ruta; else if (F.quitarFoto) datos.foto_path = null;
+      if (nuevoVideo) { datos.video_path = nuevoVideo; datos.video_segundos = F.vid.seg; } else if (F.quitarVideo) { datos.video_path = null; datos.video_segundos = null; }
       var q = F.prod ? sb.from('productos').update(datos).eq('id', F.prod.id) : sb.from('productos').insert(Object.assign({ tienda_id: D.tienda.id }, datos));
-      return q.select('id, seccion_id, nombre, descripcion, precio, oferta_pct, oferta_hasta, variante_tipo, variantes, stock, activo, foto_path, orden, created_at').single();
+      return q.select('id, seccion_id, nombre, descripcion, precio, oferta_pct, oferta_hasta, variante_tipo, variantes, stock, activo, foto_path, video_path, video_segundos, orden, created_at').single();
     }).then(function (r) {
       if (r.error) throw r.error;
       if (vieja && (nueva || F.quitarFoto)) borrarFoto(vieja);
+      if (vidaVieja && (nuevoVideo || F.quitarVideo)) borrarVideo(vidaVieja);
       if (F.prod) { var i = D.productos.indexOf(F.prod); D.productos[i] = r.data; } else D.productos.unshift(r.data);
       guardando = false; b.textContent = antes; var editado = !!F.prod; cerrarForm();
       if (eraPrimero) { $('a-ver-tienda').href = VL.enlaceTienda(D.tienda.slug); $('dlg-primero').showModal(); }
@@ -598,6 +646,7 @@
       VL.miPlan().then(function (p) { if (p.ok) { D.plan = p.plan; pintarLista(); } });
     }).catch(function (e) {
       if (nueva) borrarFoto(nueva);           /* si el producto no se guardó, no dejamos la foto suelta */
+      if (nuevoVideo) borrarVideo(nuevoVideo);
       guardando = false; b.disabled = false; b.textContent = antes;
       var m = fallo(e); if (e && /LIMITE_PRODUCTOS/.test(e.message || '')) m = 'Llegaste al máximo de ' + limite() + ' productos de tu plan. Puedes ocultar o borrar uno, o subir de plan.';
       aviso('e-guardar', m); $('e-guardar').scrollIntoView({ block: 'center', behavior: 'smooth' });
