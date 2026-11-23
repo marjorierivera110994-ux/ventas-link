@@ -476,3 +476,7 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - tienda-demo.html: el cliente ve el video en la ficha del producto (tienda_publica ya lo entrega).
 - Límite de duración: la app la mide en el celular y la declara; el servidor la compara con el plan. Un celular modificado podría declarar otra duración (riesgo bajo, solo afecta al límite de segundos).
 - Pendiente: probar subir un video real desde tu celular (requiere tu sesión). Pesos y costo de almacenamiento: vigilar el uso del bucket "videos".
+
+## DIFERENCIA CON WHATSAPP BUSINESS (23-nov-2026)
+- vista-pagina-ventas.html: nueva pregunta frecuente "Ya tengo el catálogo de WhatsApp Business. ¿Para qué Ventas Link?" (pedidos ordenados, stock, avisos, reporte en Profesional, enlace sin instalar).
+- Pendiente para retención: medir cuántas vendedoras vuelven cada semana (con tu cuenta real).
