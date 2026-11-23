@@ -77,6 +77,8 @@
   .v-banner { position: relative; border-radius: var(--r); background: var(--brand-bg, var(--brand)); color: var(--on-brand); padding: 18px 16px; overflow: hidden; background-position: center; }
   .v-banner > * { position: relative; }
   .v-logo { width: 46px; height: 46px; border-radius: 999px; background: var(--sur); color: var(--txt); display: grid; place-items: center; font-family: var(--fd); font-weight: 800; font-size: 16px; overflow: hidden; flex-shrink: 0; box-shadow: 0 0 0 2px rgba(255,255,255,.7); }
+  .area { display: block; width: 100%; min-height: 84px; border-radius: 14px; border: 1px solid #d9d2e6; padding: 10px 12px; font: inherit; font-size: 15px; color: inherit; background: #fff; margin-bottom: 8px; resize: vertical; }
+  .area:disabled { opacity: .6; }
   .v-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .v-nombre { font-size: 22px; font-weight: 800; line-height: 1.1; margin-top: 8px; font-family: var(--fd); }
   .v-lema { font-size: 13px; margin-top: 2px; }
@@ -200,6 +202,20 @@
 
     <h2 id="h-deco">Decoración</h2>
     <div class="opciones" id="decos" role="group" aria-labelledby="h-deco"></div>
+
+    <h2 id="h-msj">Mensajes para tus clientes</h2>
+    <p class="sub" id="t-msj">Lo que ven tus clientes al entrar, al elegir, en el carrito y al terminar su pedido. Escribe una frase por línea (hasta 5 por parte, 120 letras cada una).</p>
+    <p class="aviso" id="msj-plan" hidden></p>
+    <label class="campo" for="m-bienvenida">Al entrar a tu tienda</label>
+    <textarea id="m-bienvenida" rows="3" maxlength="700" class="area" placeholder="Hoy es un buen día para regalarte algo bonito."></textarea>
+    <label class="campo" for="m-eleccion">Al elegir un producto</label>
+    <textarea id="m-eleccion" rows="3" maxlength="700" class="area" placeholder="Buena elección. Te va a quedar increíble."></textarea>
+    <label class="campo" for="m-carrito">En el carrito</label>
+    <textarea id="m-carrito" rows="3" maxlength="700" class="area" placeholder="Ya casi es tuyo. Revisa tu pedido."></textarea>
+    <label class="campo" for="m-ultimo">Antes de enviar el pedido</label>
+    <textarea id="m-ultimo" rows="3" maxlength="700" class="area" placeholder="Un último paso y listo."></textarea>
+    <label class="campo" for="m-gracias">Al terminar el pedido</label>
+    <textarea id="m-gracias" rows="3" maxlength="700" class="area" placeholder="Gracias por tu compra. Nos alegra mucho atenderte."></textarea>
 
     <p class="aviso" id="aviso"></p>
     <button type="button" class="btn" id="guardar">Guardar mi tienda</button>
@@ -478,6 +494,22 @@
   $('in-logo').addEventListener('change', function (e) { subirImagen('logo', e.target.files[0]); e.target.value = ''; });
   $('in-port').addEventListener('change', function (e) { subirImagen('portada', e.target.files[0]); e.target.value = ''; });
   $('q-logo').addEventListener('click', function () { quitarImagen('logo'); }); $('q-port').addEventListener('click', function () { quitarImagen('portada'); });
+  /* Mensajes para tus clientes: 5 partes, hasta 5 frases por parte, 120 letras cada una (Emprendedor y Profesional) */
+  var PARTES_MSJ = ['bienvenida', 'eleccion', 'carrito', 'ultimo', 'gracias'];
+  function pintarMensajes() {
+    var m = (REAL && REAL.estilo && REAL.estilo.mensajes) || {}, pagado = estado.plan !== 'gratis';
+    PARTES_MSJ.forEach(function (k) { $('m-' + k).value = (m[k] || []).join('\n'); $('m-' + k).disabled = !pagado; });
+    $('msj-plan').hidden = pagado;
+    $('msj-plan').textContent = 'Editar los mensajes de tu tienda es del plan Emprendedor. Con el plan Gratis tus clientes ven los mensajes de Ventas Link.';
+  }
+  function leerMensajes() {
+    var o = {};
+    PARTES_MSJ.forEach(function (k) {
+      o[k] = $('m-' + k).value.split('\n').map(function (s) { return s.replace(/\s+/g, ' ').trim().slice(0, 120); }).filter(Boolean).slice(0, 5);
+    });
+    return o;
+  }
+
   /* Subir logo o portada a tu carpeta del almacenamiento y devolver la ruta que guarda la tienda */
   function subir(cual, f) {
     var ext = f.type === 'image/png' ? 'png' : f.type === 'image/jpeg' ? 'jpg' : 'webp';
@@ -501,6 +533,8 @@
     });
     cadena.then(function () {
       var patch = { nombre: nombre, descripcion: lema, estilo: { plantilla: estado.plantilla, color: estado.color, deco: estado.deco, combo: estado.combo } };
+      if (estado.plan !== 'gratis') patch.estilo.mensajes = leerMensajes();
+      else if (REAL.estilo && REAL.estilo.mensajes) patch.estilo.mensajes = REAL.estilo.mensajes;
       if ('logo' in rutas) patch.logo_path = rutas.logo; else if (quitar.logo) patch.logo_path = null;
       if ('portada' in rutas) patch.portada_path = rutas.portada; else if (quitar.portada) patch.portada_path = null;
       return SB.from('tiendas').update(patch).eq('id', REAL.id).select('id').single();
@@ -529,7 +563,7 @@
       estado.logo = t.logo_path ? VL.fotoUrl(t.logo_path) : null;
       estado.portada = t.portada_path ? VL.fotoUrl(t.portada_path) : null;
       $('i-nombre').value = t.nombre || ''; $('i-lema').value = t.descripcion || '';
-      pintarTodo();
+      pintarTodo(); pintarMensajes();
     }).catch(function () { /* sin conexión: se queda la vista de demostración */ });
   }
   cargarReal();

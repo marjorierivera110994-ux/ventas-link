@@ -39,6 +39,9 @@
   .demo { display: flex; gap: 8px; align-items: center; background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; min-height: 44px; }
   .region { min-height: 44px; border-radius: 999px; background: var(--blanco); padding: 0 14px; font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 6px; white-space: nowrap; box-shadow: 0 6px 16px -10px rgb(40 60 40 / .5); }
   .cab { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+  .bienv-arte.on { background: linear-gradient(160deg, #d5fbf1, #7fe0cc) !important; box-shadow: 0 4px 0 rgb(255 255 255 / .8) inset, 0 -6px 0 rgb(30 150 130 / .2) inset, 0 10px 0 #3fb9a0, 0 26px 30px -14px rgb(30 130 115 / .5) !important; border-color: #ecfffb !important; }
+  .bienv-arte.on canvas { display: none !important; }
+  .bienv-arte.on .bienvenida { color: #0b3b33 !important; }
   .portada { height: 150px; margin-top: 14px; background-size: cover; background-position: center; background-color: var(--pistacho); }
   .logo { width: 52px; height: 52px; border-radius: 999px; background: var(--pistacho); display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; font-size: 19px; flex-shrink: 0; }
   .cab h1 { font-size: 22px; font-weight: 800; line-height: 1.1; }
@@ -500,7 +503,11 @@
   };
   var arteB = null;
   var rot = { eleccion: 0, carrito: 0, ultimo: 0, gracias: 0, bienvenida: Math.floor(Math.random() * 8) };
+  /* Mensajes que el vendedor escribió (Emprendedor o Profesional). Solo se usan en español; el resto usa los de Ventas Link. */
+  var MENSAJES = null, VERDE_TINTA = '#0b3b33';
+  function propias(tipo) { return MENSAJES && estado.idioma === 'es' && MENSAJES[tipo] && MENSAJES[tipo].length ? MENSAJES[tipo] : null; }
   function frase(tipo) {
+    var pr = propias(tipo); if (pr) { rot[tipo] = (rot[tipo] || 0) + 1; return pr[rot[tipo] % pr.length]; }
     var lista = (FRASES[estado.idioma] || FRASES.es)[tipo]; var i = rot[tipo] % lista.length; if (tipo !== 'bienvenida') rot[tipo] += 1; return lista[i];
   }
 
@@ -595,9 +602,9 @@
     var A = window.VL_ARTE;
     if (A) {
       if (!arteB) arteB = { semilla: A.nuevaSemilla(), es: A.frase(['vida'], 'vl-frase-cliente').texto };
-      var eB = A.pintarFondo($('bienv-fondo'), arteB.semilla);
-      $('bienv').textContent = estado.idioma === 'es' ? arteB.es : frase('bienvenida');
-      $('bienv').style.color = eB.tinta; $('bienv-arte').classList.add('on');
+      var pb = propias('bienvenida');
+      $('bienv').textContent = pb ? pb[Math.floor(Math.random() * pb.length)] : (estado.idioma === 'es' ? arteB.es : frase('bienvenida'));
+      $('bienv').style.color = VERDE_TINTA; $('bienv-arte').classList.add('on');
     } else $('bienv').textContent = frase('bienvenida');
     var hc = $('hecho'); hc.innerHTML = '<img src="logo/ventas-link-icono.svg" alt="" width="26" height="26" style="display:block;border-radius:8px"><span></span>';
     hc.querySelector('span').textContent = t('hechoCon') + ' · '; var cb = document.createElement('b'); cb.textContent = t('creaLa'); hc.querySelector('span').appendChild(cb);
@@ -885,6 +892,8 @@
     var est = document.getElementById('vl-diseno');
     if (!est) { est = document.createElement('style'); est.id = 'vl-diseno'; document.head.appendChild(est); }
     est.textContent = window.VLD ? VLD.css(t0.estilo, t0.plan, !!(t0.portada_path && pro)) : '';
+    var pagoMsj = t0.plan === 'emprendedor' || t0.plan === 'profesional' || t0.plan === 'pro';
+    MENSAJES = pagoMsj && t0.estilo && t0.estilo.mensajes ? t0.estilo.mensajes : null;
     document.querySelector('.cab h1').textContent = t0.nombre;
     var ab = document.querySelector('.cab .abierto'); ab.removeAttribute('data-i'); ab.textContent = t0.horario || ''; ab.hidden = !t0.horario;
     var ds = document.querySelector('p.desc'); ds.removeAttribute('data-i'); ds.textContent = t0.descripcion || ''; ds.hidden = !t0.descripcion;
