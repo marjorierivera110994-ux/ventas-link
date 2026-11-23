@@ -486,3 +486,8 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - Quitado de: página de planes (plan gratis, preguntas y guía), inicio de la app (banner y botón del menú) y recorrido de inicio (banner de invitación, botón "Invita y gana", enlace por #ref).
 - Sigue en el código (no visible desde el menú): invitar.html, tablas invitaciones/invitados, disparador de premio y canje al crear tienda. Si se quiere apagar del todo: desactivar el disparador productos_invitacion en la base (pendiente, requiere confirmación).
 - Pendiente: mi-plan-demo.html todavía muestra un ejemplo "30 días por invitación" (solo demostración).
+
+## RETIRO COMPLETO DE LA OFERTA DE INVITADOS (23-nov-2026)
+- mi-plan-demo.html: quitado el ejemplo "Invitado, día 12" y su texto "por invitación".
+- Base de datos: disparador productos_invitacion DESACTIVADO (no se dan premios nuevos). Para volver a activarlo: alter table public.productos enable trigger productos_invitacion;
+- Tablas y funciones de invitación siguen creadas; no se borraron.
