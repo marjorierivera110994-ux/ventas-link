@@ -434,3 +434,8 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - productos.html: botón "Compartir texto del producto" (sección "Para redes", solo al editar un producto). Arma nombre · precio, descripción y enlace real de la tienda; usa compartir del celular o copia al portapapeles.
 - vista-pagina-ventas.html: quitada la etiqueta "Pronto" de "Textos listos para compartir en redes" (Emprendedor) y de la guía.
 - Pendiente: probar en celular real (compartir y copiar). Sin revisor visual (cambio pequeño dentro de una pantalla ya revisada).
+
+## ETIQUETAS PARA LA FOTO (23-nov-2026)
+- vl-editor-foto.js: pestaña "Etiqueta" con 8 plantillas (Nuevo, Oferta, Precio especial, Envío gratis, Últimas unidades, Hecho a mano, Lo más vendido, Temporada) + texto opcional de 22 caracteres. Se dibuja sobre la foto final (cuadrada, vertical u original).
+- vista-pagina-ventas.html: quitada la etiqueta "Pronto" de "8 etiquetas para tus fotos".
+- Probado: render de las 9 opciones en navegador (captura correcta). Pendiente: probarlo en la pantalla real de productos en el celular.
