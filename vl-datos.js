@@ -6,7 +6,7 @@
 (function () {
   'use strict';
   var C = window.VL_CONFIG || {}, sb = null;
-  var COLUMNAS = 'id, slug, nombre, descripcion, tipo, whatsapp, pais, moneda, idioma, horario, publicada, logo_path, created_at';
+  var COLUMNAS = 'id, slug, nombre, descripcion, tipo, whatsapp, pais, moneda, idioma, horario, publicada, logo_path, portada_path, estilo, created_at';
 
   function cliente() {
     if (sb) return sb;

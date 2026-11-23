@@ -3,7 +3,7 @@
 import { cpSync, rmSync, mkdirSync, readdirSync } from 'node:fs';
 rmSync('dist', { recursive: true, force: true });
 mkdirSync('dist');
-for (const f of readdirSync('.')) if (f.endsWith('.html') || ['ia-cliente.js', 'frases-arte.js', 'vl-config.js', 'vl-datos.js', 'vl-registro.js', 'vl-legal.js', 'vl-legal.css', 'vl-app.css', 'vl-camino.js', 'vl-avisos.js', 'vl-editor-foto.js', 'sw.js', 'manifest.webmanifest'].includes(f)) cpSync(f, 'dist/' + f);
+for (const f of readdirSync('.')) if (f.endsWith('.html') || ['ia-cliente.js', 'frases-arte.js', 'vl-config.js', 'vl-datos.js', 'vl-registro.js', 'vl-legal.js', 'vl-legal.css', 'vl-app.css', 'vl-camino.js', 'vl-avisos.js', 'vl-editor-foto.js', 'vl-diseno.js', 'sw.js', 'manifest.webmanifest'].includes(f)) cpSync(f, 'dist/' + f);
 cpSync('logo', 'dist/logo', { recursive: true });
 cpSync('vendor', 'dist/vendor', { recursive: true });
 console.log('dist listo');

@@ -15,7 +15,7 @@
 <link rel="icon" href="logo/ventas-link-icono.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&family=Figtree:wght@400..800&family=Nunito:wght@400..900&family=Fraunces:opsz,wght@9..144,500..800&display=swap" rel="stylesheet">
 <style>
   :root {
     --pistacho: #c9a7ff; --lima: #ffc83d; --naranja: #ff7a1a; --tinta: #22104f; --beige: #f4ecdb; --blanco: #fff;
@@ -39,6 +39,7 @@
   .demo { display: flex; gap: 8px; align-items: center; background: linear-gradient(160deg, #d6f1ff, #94d5fa); color: #0b2a40; border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; min-height: 44px; }
   .region { min-height: 44px; border-radius: 999px; background: var(--blanco); padding: 0 14px; font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 6px; white-space: nowrap; box-shadow: 0 6px 16px -10px rgb(40 60 40 / .5); }
   .cab { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+  .portada { height: 150px; margin-top: 14px; background-size: cover; background-position: center; background-color: var(--pistacho); }
   .logo { width: 52px; height: 52px; border-radius: 999px; background: var(--pistacho); display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; font-size: 19px; flex-shrink: 0; }
   .cab h1 { font-size: 22px; font-weight: 800; line-height: 1.1; }
   .abierto { font-size: 12px; font-weight: 700; color: var(--verde-texto); }
@@ -258,6 +259,7 @@
     <button type="button" class="region" id="region"></button>
   </div>
 
+  <div class="portada" id="portada" hidden></div>
   <header class="cab">
     <span class="logo" aria-hidden="true">BL</span>
     <div><h1>Boutique Luna</h1><p class="abierto" data-i="abierto"></p></div>
@@ -287,6 +289,7 @@
 <div class="fondo" id="fondo"><div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-t"></div></div>
 <div class="toast" id="toast" role="status"></div>
 
+<script src="vl-diseno.js"></script>
 <script src="vl-config.js"></script>
 <script src="vl-registro.js"></script>
 <script src="frases-arte.js"></script>
@@ -874,7 +877,14 @@
   function pintarCabecera() {
     var t0 = TIENDA, ini = String(t0.nombre).trim().split(/\s+/).slice(0, 2).map(function (w) { return w.charAt(0).toUpperCase(); }).join('');
     var logo = document.querySelector('.cab .logo'); logo.textContent = ini || 'T';
-    if (t0.logo_path) { logo.textContent = ''; logo.appendChild(el('img', { src: fotoUrl(t0.logo_path), alt: '' })); }
+    /* Logo, portada y diseño son del plan Profesional (colores, plantillas y decoración también llegan con Emprendedor). */
+    var pro = t0.plan === 'profesional' || t0.plan === 'pro';
+    if (t0.logo_path && pro) { logo.textContent = ''; logo.appendChild(el('img', { src: fotoUrl(t0.logo_path), alt: '' })); }
+    var pt = document.getElementById('portada');
+    if (pt) { pt.hidden = !(t0.portada_path && pro); if (!pt.hidden) pt.style.backgroundImage = 'url("' + fotoUrl(t0.portada_path) + '")'; }
+    var est = document.getElementById('vl-diseno');
+    if (!est) { est = document.createElement('style'); est.id = 'vl-diseno'; document.head.appendChild(est); }
+    est.textContent = window.VLD ? VLD.css(t0.estilo, t0.plan, !!(t0.portada_path && pro)) : '';
     document.querySelector('.cab h1').textContent = t0.nombre;
     var ab = document.querySelector('.cab .abierto'); ab.removeAttribute('data-i'); ab.textContent = t0.horario || ''; ab.hidden = !t0.horario;
     var ds = document.querySelector('p.desc'); ds.removeAttribute('data-i'); ds.textContent = t0.descripcion || ''; ds.hidden = !t0.descripcion;

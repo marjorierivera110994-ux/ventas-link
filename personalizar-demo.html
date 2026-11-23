@@ -207,6 +207,9 @@
 </main>
 <div class="toast" id="toast" role="status"></div>
 
+<script src="vl-config.js"></script>
+<script src="vl-datos.js"></script>
+<script src="vl-diseno.js"></script>
 <script>
 (function () {
   'use strict';
@@ -269,6 +272,7 @@
     return r;
   }
   var estado = { plan: 'pro', plantilla: { d: 0, p: 0 }, pagina: 0, color: null, deco: null, combo: null, logo: null, portada: null };
+  var archivos = {}, quitar = {}, REAL = null, SB = null, REAL_PLAN = null;   /* REAL: tu tienda de verdad (null = vista de demostración) */
 
   function lum(hex) { var c = [1, 3, 5].map(function (i) { return parseInt(hex.slice(i, i + 2), 16) / 255; }).map(function (v) { return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
   function contraste(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
@@ -441,7 +445,7 @@
   var TIPOS = ['image/jpeg', 'image/png', 'image/webp'];
   function quitarImagen(cual, silencioso) {
     if (estado[cual]) { try { URL.revokeObjectURL(estado[cual]); } catch (e) { /* ok */ } }
-    estado[cual] = null; if (!silencioso) { $('err-img').textContent = ''; pintarImagenes(); pintarVista(); }
+    estado[cual] = null; archivos[cual] = null; quitar[cual] = !silencioso; if (!silencioso) { $('err-img').textContent = ''; pintarImagenes(); pintarVista(); }
   }
   function subirImagen(cual, archivo) {
     var err = $('err-img'); err.textContent = '';
@@ -450,7 +454,7 @@
     if (TIPOS.indexOf(archivo.type) < 0) { err.textContent = 'Ese archivo no sirve. Usa una imagen JPG, PNG o WebP.'; return; }
     if (archivo.size > LIMITES[cual]) { err.textContent = 'La imagen pesa demasiado. El máximo es ' + (LIMITES[cual] / 1048576) + ' MB.'; return; }
     if (estado[cual]) { try { URL.revokeObjectURL(estado[cual]); } catch (e) { /* ok */ } }
-    estado[cual] = URL.createObjectURL(archivo); pintarImagenes(); pintarVista(); aviso(cual === 'logo' ? 'Logo cargado' : 'Portada cargada');
+    estado[cual] = URL.createObjectURL(archivo); archivos[cual] = archivo; quitar[cual] = false; pintarImagenes(); pintarVista(); aviso(cual === 'logo' ? 'Logo cargado' : 'Portada cargada');
   }
   function pintarImagenes() {
     var pro = estado.plan === 'pro';
@@ -474,11 +478,61 @@
   $('in-logo').addEventListener('change', function (e) { subirImagen('logo', e.target.files[0]); e.target.value = ''; });
   $('in-port').addEventListener('change', function (e) { subirImagen('portada', e.target.files[0]); e.target.value = ''; });
   $('q-logo').addEventListener('click', function () { quitarImagen('logo'); }); $('q-port').addEventListener('click', function () { quitarImagen('portada'); });
+  /* Subir logo o portada a tu carpeta del almacenamiento y devolver la ruta que guarda la tienda */
+  function subir(cual, f) {
+    var ext = f.type === 'image/png' ? 'png' : f.type === 'image/jpeg' ? 'jpg' : 'webp';
+    var ruta = REAL.id + '/' + cual + '-' + Date.now() + '.' + ext;
+    return SB.storage.from('media').upload(ruta, f, { contentType: f.type, cacheControl: '31536000', upsert: false }).then(function (r) { if (r.error) throw r.error; return ruta; });
+  }
   $('guardar').addEventListener('click', function () {
-    try { localStorage.setItem('tienda-personalizada', JSON.stringify({ plan: estado.plan, plantilla: estado.plantilla, color: estado.color, deco: estado.deco, combo: estado.combo, nombre: $('i-nombre').value, lema: $('i-lema').value })); } catch (e) { /* sin almacenamiento en esta vista */ }
-    aviso('Tienda guardada (demostración)');
+    var b = this;
+    if (!REAL || !SB) {
+      try { localStorage.setItem('tienda-personalizada', JSON.stringify({ plan: estado.plan, plantilla: estado.plantilla, color: estado.color, deco: estado.deco, combo: estado.combo, nombre: $('i-nombre').value, lema: $('i-lema').value })); } catch (e) { /* sin almacenamiento en esta vista */ }
+      aviso('Tienda guardada (demostración)');
+      return;
+    }
+    var nombre = $('i-nombre').value.trim(), lema = $('i-lema').value.trim();
+    if (nombre.length < 2) { aviso('Escribe el nombre de tu tienda.'); return; }
+    if (estado.plan !== REAL_PLAN) { aviso('Estás viendo cómo se ve con otro plan. Vuelve a tu plan para guardar.'); return; }
+    b.disabled = true; aviso('Guardando tu tienda…');
+    var esPro = estado.plan === 'pro', rutas = {}, cadena = Promise.resolve();
+    ['logo', 'portada'].forEach(function (cual) {
+      if (esPro && archivos[cual]) cadena = cadena.then(function () { return subir(cual, archivos[cual]).then(function (ruta) { rutas[cual] = ruta; }); });
+    });
+    cadena.then(function () {
+      var patch = { nombre: nombre, descripcion: lema, estilo: { plantilla: estado.plantilla, color: estado.color, deco: estado.deco, combo: estado.combo } };
+      if ('logo' in rutas) patch.logo_path = rutas.logo; else if (quitar.logo) patch.logo_path = null;
+      if ('portada' in rutas) patch.portada_path = rutas.portada; else if (quitar.portada) patch.portada_path = null;
+      return SB.from('tiendas').update(patch).eq('id', REAL.id).select('id').single();
+    }).then(function (r) {
+      if (r.error) throw r.error;
+      REAL.nombre = nombre; archivos = {}; quitar = {};
+      aviso('Tienda guardada. Así la verán tus clientes.');
+    }).catch(function () {
+      aviso('No pudimos guardar. Revisa tu conexión e intenta de nuevo.');
+    }).then(function () { b.disabled = false; });
   });
-  pintarTodo();
+
+  /* Carga TU tienda y tu plan. Sin sesión (o sin conexión) se queda la vista de demostración. */
+  var PLAN_PAGINA = { gratis: 'gratis', emprendedor: 'emprendedor', profesional: 'pro' };
+  function cargarReal() {
+    pintarTodo();
+    var VL = window.VL; if (!VL || !VL.listo || !window.VLD) return;
+    VL.sesion().then(function (s) { return s ? Promise.all([VL.miTienda(), VL.miPlan()]) : null; }).then(function (r) {
+      if (!r || !r[0] || !r[0].ok || !r[0].tienda) return;
+      var t = r[0].tienda, planReal = r[1] && r[1].ok ? r[1].plan : 'gratis';
+      REAL = t; SB = VL.cliente(); if (!SB) { REAL = null; return; }
+      var dem = document.querySelector('.col-vista .demo'); if (dem) dem.hidden = true;
+      estado.plan = PLAN_PAGINA[planReal] || 'gratis'; REAL_PLAN = estado.plan;
+      var e = VLD.estiloEfectivo(t.estilo, planReal);
+      estado.plantilla = e.plantilla; estado.color = e.color; estado.deco = e.deco; estado.combo = e.combo;
+      estado.logo = t.logo_path ? VL.fotoUrl(t.logo_path) : null;
+      estado.portada = t.portada_path ? VL.fotoUrl(t.portada_path) : null;
+      $('i-nombre').value = t.nombre || ''; $('i-lema').value = t.descripcion || '';
+      pintarTodo();
+    }).catch(function () { /* sin conexión: se queda la vista de demostración */ });
+  }
+  cargarReal();
   window.__pers = { relleno: relleno, sobre: sobre, contraste: contraste, resolverColor: resolverColor, METALES: METALES, GRUPOS: GRUPOS, COMBOS: COMBOS, COLORES_BASICOS: COLORES_BASICOS, estado: estado, plantillasDe: plantillasDe, cambiarPlan: cambiarPlan, pintarTodo: pintarTodo, subirImagen: subirImagen, DISENOS: DISENOS, PALETAS: PALETAS };
 })();
 </script>
