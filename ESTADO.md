@@ -491,3 +491,8 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - mi-plan-demo.html: quitado el ejemplo "Invitado, día 12" y su texto "por invitación".
 - Base de datos: disparador productos_invitacion DESACTIVADO (no se dan premios nuevos). Para volver a activarlo: alter table public.productos enable trigger productos_invitacion;
 - Tablas y funciones de invitación siguen creadas; no se borraron.
+
+## AYUDA Y CANCELACIÓN EN MI CUENTA (23-nov-2026)
+- app-vendedor.html → Mi cuenta: "Ayuda y soporte" (abre correo a la dirección legal ya pública) y "Cancelar o reembolsos" (reembolsos.html en la hoja).
+- No se publicó el celular personal: el soporte es por correo.
+- Pendiente: botón de soporte en las pantallas de planes y recorrido de inicio; medir los primeros 3 minutos.
