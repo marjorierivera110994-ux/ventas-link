@@ -16,6 +16,23 @@
     ['marmol', 'Mármol', fMarmol, '#efefec'], ['madera', 'Madera', fMadera, '#e8cfa8']];
   var FORMATOS = [['1:1', 'Cuadrada'], ['4:5', 'Vertical'], ['orig', 'Original']];
 
+  /* ---------- Etiquetas (8 plantillas para la foto): [id, nombre, texto por defecto, color del texto, color de la etiqueta] ---------- */
+  var ETIQUETAS = [['nuevo', 'Nuevo', 'NUEVO', '#0b2a40', '#94d5fa'], ['oferta', 'Oferta', '-20%', '#ffffff', '#e0179f'],
+    ['precio', 'Precio especial', 'PRECIO ESPECIAL', '#0b2a40', '#ffd166'], ['envio', 'Envío gratis', 'ENVÍO GRATIS', '#ffffff', '#2e7d5b'],
+    ['ultimas', 'Últimas unidades', 'ÚLTIMAS UNIDADES', '#ffffff', '#c2410c'], ['hecho', 'Hecho a mano', 'HECHO A MANO', '#0b2a40', '#fde68a'],
+    ['top', 'Lo más vendido', 'LO MÁS VENDIDO', '#ffffff', '#6a1fd0'], ['temporada', 'Temporada', 'NUEVA TEMPORADA', '#ffffff', '#0b2a40']];
+  function dibujarEtiqueta(x, W, H, e) {
+    var t = ETIQUETAS.filter(function (z) { return z[0] === e.plantilla; })[0]; if (!t) return;
+    var txt = String(e.texto || '').replace(/\s+/g, ' ').trim().slice(0, 22) || t[2];
+    var fs = Math.round(W * .058), alto = Math.round(fs * 1.9), pad = Math.round(fs * .9);
+    x.save(); x.font = '800 ' + fs + 'px "Bricolage Grotesque", "Instrument Sans", Arial, sans-serif';
+    var ancho = Math.min(W * .9, x.measureText(txt).width + pad * 2), cx = W / 2, cy = H * .9, rx = cx - ancho / 2, ry = cy - alto / 2, r = alto / 2;
+    x.shadowColor = 'rgba(0,0,0,.18)'; x.shadowBlur = fs * .4; x.shadowOffsetY = fs * .15;
+    x.fillStyle = t[4]; x.beginPath(); x.moveTo(rx + r, ry); x.arcTo(rx + ancho, ry, rx + ancho, ry + alto, r); x.arcTo(rx + ancho, ry + alto, rx, ry + alto, r); x.arcTo(rx, ry + alto, rx, ry, r); x.arcTo(rx, ry, rx + ancho, ry, r); x.closePath(); x.fill();
+    x.shadowColor = 'transparent'; x.fillStyle = t[3]; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(txt, cx, cy + fs * .05);
+    x.restore();
+  }
+
   /* ---------- Luz y color ---------- */
   function mejorar(src, o) {
     var d = new ImageData(new Uint8ClampedArray(src.data), src.width, src.height), p = d.data, lo = 0, hi = 255, gamma = 1;
@@ -99,6 +116,7 @@
       var ox = Math.max(-mx, Math.min(mx, e.dx * W)), oy = Math.max(-my, Math.min(my, e.dy * H));
       x.drawImage(s.canvas, (W - cw) / 2 + ox, (H - ch) / 2 + oy, cw, ch);
     }
+    if (e.plantilla && e.plantilla !== 'ninguna') dibujarEtiqueta(x, W, H, e);
     return out;
   }
   function claveLuz(e) { return [e.auto, e.brillo, e.contraste, e.color].join('|'); }
@@ -119,8 +137,10 @@
     + '.vle-magia{width:100%;min-height:52px;border-radius:999px;font-weight:800;font-size:16px;color:#fff !important;display:flex;align-items:center;justify-content:center;gap:8px;'
     + 'background:linear-gradient(90deg,#7a2ff2,#e0179f 60%,#ff8a1a) !important;box-shadow:inset 0 3px 0 rgb(255 255 255 / .3),0 6px 0 #45109a}'
     + '.vle-magia:active{transform:translateY(4px);box-shadow:0 2px 0 #45109a}.vle-magia svg{width:20px;height:20px}'
-    + '.vle-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px;background:#f1eaf8;border-radius:16px;padding:4px}'
-    + '.vle-tabs button{min-height:40px;border-radius:12px;font-weight:800;font-size:14px}'
+    + '.vle-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px;background:#f1eaf8;border-radius:16px;padding:4px}'
+    + '.vle-tabs button{min-height:40px;border-radius:12px;font-weight:800;font-size:13px;padding:0 4px}'
+    + '.vle-tpl{grid-template-columns:1fr 1fr}'
+    + '.vle-txt{width:100%;min-height:44px;border:0;border-radius:14px;padding:0 12px;font:inherit;font-size:15px;font-weight:700;color:#22104f;background:#fff;box-shadow:inset 0 0 0 1px rgb(34 16 79 / .12)}'
     + '.vle-tabs button[aria-selected=true]{background:#fff;box-shadow:0 3px 0 rgb(60 30 100 / .12)}'
     + '.vle-sec{margin-top:12px;display:grid;gap:10px}'
     + '.vle-rango{display:grid;grid-template-columns:96px 1fr 44px;gap:10px;align-items:center;font-size:14px;font-weight:700}'
@@ -162,7 +182,7 @@
   function abrir(fuente) {
     ponerCss();
     return cargarImagen(fuente).then(function (im) {
-      var srcPrev = datosDe(im, PREV), srcFull = null, cachePrev = {}, INICIAL = { auto: false, brillo: 0, contraste: 0, color: 100, fondo: 'original', tol: 45, sombra: true, formato: '1:1', zoom: 1, dx: 0, dy: 0 };
+      var srcPrev = datosDe(im, PREV), srcFull = null, cachePrev = {}, INICIAL = { auto: false, brillo: 0, contraste: 0, color: 100, fondo: 'original', tol: 45, sombra: true, formato: '1:1', zoom: 1, dx: 0, dy: 0, plantilla: 'ninguna', texto: '' };
       var e = Object.assign({}, INICIAL), verAntes = false, tab = 'mejorar', foco = document.activeElement;
       var raiz = el('div', { class: 'vle', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'vle-t' });
       var lienzo = el('div', { class: 'vle-lienzo' }), cv = document.createElement('canvas'); lienzo.appendChild(cv);
@@ -175,7 +195,7 @@
       var panel = el('div', { class: 'vle-panel' }), nota = el('p', { class: 'vle-nota', 'aria-live': 'polite' });
       var magia = el('button', { type: 'button', class: 'vle-magia', html: IC_MAGIA + 'Mejora inteligente (1 toque)' });
       var tabs = el('div', { class: 'vle-tabs', role: 'tablist' }), cont = el('div', { class: 'vle-sec' });
-      [['mejorar', 'Luz y color'], ['fondo', 'Fondo'], ['recortar', 'Recortar']].forEach(function (t) {
+      [['mejorar', 'Luz y color'], ['fondo', 'Fondo'], ['etiqueta', 'Etiqueta'], ['recortar', 'Recortar']].forEach(function (t) {
         tabs.appendChild(el('button', { type: 'button', role: 'tab', 'aria-selected': String(t[0] === tab), 'data-t': t[0], text: t[1], onclick: function () { tab = t[0]; pintarPanel(); } }));
       });
       var usar = el('button', { type: 'button', class: 'vle-usar', text: 'Usar esta foto' }), reset = el('button', { type: 'button', class: 'vle-reset', text: 'Deshacer todo' });
@@ -224,6 +244,16 @@
             var so = el('input', { type: 'checkbox' }); so.checked = e.sombra; so.addEventListener('change', function () { e.sombra = so.checked; pintar(); });
             cont.appendChild(el('label', { class: 'vle-sw' }, ['Sombra suave debajo del producto', so]));
           } else cont.appendChild(el('p', { class: 'vle-nota', text: 'Elige Blanco u otro fondo: recortamos tu producto y lo ponemos encima.' }));
+        } else if (tab === 'etiqueta') {
+          var tp = el('div', { class: 'vle-fmt vle-tpl', role: 'group', 'aria-label': 'Etiqueta' });
+          [['ninguna', 'Sin etiqueta', null, null, null]].concat(ETIQUETAS).forEach(function (t) {
+            tp.appendChild(el('button', { type: 'button', 'aria-pressed': String((e.plantilla || 'ninguna') === t[0]), text: t[1], onclick: function () { e.plantilla = t[0]; pintarPanel(); pintar(); } }));
+          });
+          cont.appendChild(tp);
+          var tx = el('input', { type: 'text', class: 'vle-txt', maxlength: '22', placeholder: 'Tu texto (opcional)', 'aria-label': 'Texto de la etiqueta', value: e.texto || '' });
+          tx.addEventListener('input', function () { e.texto = tx.value; pintar(); });
+          cont.appendChild(tx);
+          cont.appendChild(el('p', { class: 'vle-nota', text: 'Ejemplo: escribe "$12" en Precio especial, o "-20%" en Oferta. Si lo dejas vacío, sale la palabra de la etiqueta.' }));
         } else {
           var fm = el('div', { class: 'vle-fmt', role: 'group', 'aria-label': 'Formato' });
           FORMATOS.forEach(function (f) { fm.appendChild(el('button', { type: 'button', 'aria-pressed': String(e.formato === f[0]), text: f[1], onclick: function () { e.formato = f[0]; e.dx = 0; e.dy = 0; pintarPanel(); pintar(); } })); });
