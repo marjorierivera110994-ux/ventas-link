@@ -311,11 +311,13 @@
       <div class="redes-chips" id="redes-chips" role="group" aria-label="Estilo del texto"></div>
       <textarea id="redes-texto" maxlength="600" aria-label="Texto para redes"></textarea>
       <div class="redes-botones">
-        <button type="button" class="btn claro" id="b-redes-compartir">Compartir con la foto</button>
-        <button type="button" class="btn claro" id="b-redes-wa">Enviar por WhatsApp</button>
+        <button type="button" class="btn claro" id="b-redes-facebook">Compartir en Facebook</button>
+        <button type="button" class="btn claro" id="b-redes-instagram">Compartir en Instagram</button>
+        <button type="button" class="btn claro" id="b-redes-tiktok">Compartir en TikTok</button>
+        <button type="button" class="btn claro" id="b-redes-wa">Compartir en WhatsApp</button>
         <button type="button" class="btn claro" id="b-redes-copiar">Copiar texto</button>
       </div>
-      <p class="ayuda-editar">Instagram, Facebook y TikTok no dejan publicar desde esta página. Toca «Compartir con la foto», elige la app y pega el texto si hace falta.</p>
+      <p class="ayuda-editar">Facebook y WhatsApp abren con el texto y el enlace de tu tienda. Instagram y TikTok no dejan publicar desde esta página: se abre la foto con el texto y tú eliges la app para publicar.</p>
     </div>
 
     <div class="bloque" id="zona-borrar" hidden><button type="button" class="btn peligro" id="b-borrar">Borrar este producto</button></div>
@@ -746,24 +748,40 @@
     if (fuente instanceof Blob) return Promise.resolve(convertir(fuente));
     return fetch(fuente).then(function (r) { return r.blob(); }).then(convertir).catch(function () { return null; });
   }
-  $('b-redes-compartir').addEventListener('click', function () {
-    var texto = $('redes-texto').value.trim();
-    if (!texto) { toast('Escribe un texto primero.'); return; }
+  /* Un botón por red. Facebook y WhatsApp llevan texto y enlace; Instagram y TikTok no permiten
+     publicar desde la web, así que se comparte la foto con el texto y la dueña elige la app. */
+  function compartirFotoConTexto(texto, urlRespaldo) {
     fotoParaCompartir().then(function (file) {
       var datos = { text: texto };
       if (file && navigator.canShare && navigator.canShare({ files: [file] })) datos.files = [file];
-      if (!navigator.share) { copiarTexto(texto); return; }
+      if (!navigator.share) { copiarTexto(texto); window.open(urlRespaldo, '_blank', 'noopener'); return; }
       return navigator.share(datos).catch(function () { /* cancelado: no pasa nada */ });
     });
+  }
+  function textoActual() {
+    var texto = $('redes-texto').value.trim();
+    if (!texto) toast('Escribe un texto primero.');
+    return texto;
+  }
+  $('b-redes-facebook').addEventListener('click', function () {
+    var texto = textoActual(); if (!texto) return;
+    copiarTexto(texto);
+    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(VL.enlaceTienda(D.tienda.slug)), '_blank', 'noopener');
+  });
+  $('b-redes-instagram').addEventListener('click', function () {
+    var texto = textoActual(); if (!texto) return;
+    compartirFotoConTexto(texto, 'https://www.instagram.com/');
+  });
+  $('b-redes-tiktok').addEventListener('click', function () {
+    var texto = textoActual(); if (!texto) return;
+    compartirFotoConTexto(texto, 'https://www.tiktok.com/upload');
   });
   $('b-redes-wa').addEventListener('click', function () {
-    var texto = $('redes-texto').value.trim();
-    if (!texto) { toast('Escribe un texto primero.'); return; }
+    var texto = textoActual(); if (!texto) return;
     window.open('https://wa.me/?text=' + encodeURIComponent(texto), '_blank', 'noopener');
   });
   $('b-redes-copiar').addEventListener('click', function () {
-    var texto = $('redes-texto').value.trim();
-    if (!texto) { toast('Escribe un texto primero.'); return; }
+    var texto = textoActual(); if (!texto) return;
     copiarTexto(texto);
   });
   $('b-pro-no').addEventListener('click', function () { $('dlg-pro').close(); });
