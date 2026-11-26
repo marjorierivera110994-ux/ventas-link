@@ -496,3 +496,9 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - app-vendedor.html → Mi cuenta: "Ayuda y soporte" (abre correo a la dirección legal ya pública) y "Cancelar o reembolsos" (reembolsos.html en la hoja).
 - No se publicó el celular personal: el soporte es por correo.
 - Pendiente: botón de soporte en las pantallas de planes y recorrido de inicio; medir los primeros 3 minutos.
+
+## TEXTOS Y COMPARTIR PARA REDES (productos.html)
+- Sin IA de pago: 3 textos armados con nombre, precio, descripción y enlace real (Corto / Alegre / Directo). La dueña puede editar el texto antes de compartir.
+- Botones: "Compartir con la foto" (hoja del celular con la foto + texto; ahí elige Instagram, Facebook o TikTok), "Enviar por WhatsApp" y "Copiar texto".
+- NO publica sola en Instagram, Facebook ni TikTok: eso exige cuentas de desarrollador de cada red y revisión, y algunas piden cuenta de empresa.
+- Pendiente: probar "Compartir con la foto" en Android y iPhone con cuenta real.

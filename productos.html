@@ -299,9 +299,23 @@
     </div>
 
     <div class="bloque" id="zona-redes" hidden>
+      <style>
+        .redes-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+        .redes-chips button { min-height: 40px; padding: 8px 14px; border-radius: 999px; border: 2px solid #d9d2c4; background: #fff; font-weight: 700; font-size: 14px; }
+        .redes-chips button[aria-pressed="true"] { border-color: #0b3b33; background: #d5fbf1; }
+        #redes-texto { width: 100%; min-height: 120px; border-radius: 14px; border: 2px solid #d9d2c4; padding: 12px; font: inherit; font-size: 15px; box-sizing: border-box; }
+        .redes-botones { display: grid; gap: 8px; margin-top: 10px; }
+      </style>
       <h2>Para redes</h2>
-      <p class="ayuda-editar">Un texto listo con el nombre, el precio y tu enlace. Lo pegas en WhatsApp, Instagram o Facebook.</p>
-      <button type="button" class="btn claro" id="b-redes">Compartir texto del producto</button>
+      <p class="ayuda-editar">Elige un texto, cámbialo si quieres y compártelo con la foto del producto. Tú lo publicas en tus redes.</p>
+      <div class="redes-chips" id="redes-chips" role="group" aria-label="Estilo del texto"></div>
+      <textarea id="redes-texto" maxlength="600" aria-label="Texto para redes"></textarea>
+      <div class="redes-botones">
+        <button type="button" class="btn claro" id="b-redes-compartir">Compartir con la foto</button>
+        <button type="button" class="btn claro" id="b-redes-wa">Enviar por WhatsApp</button>
+        <button type="button" class="btn claro" id="b-redes-copiar">Copiar texto</button>
+      </div>
+      <p class="ayuda-editar">Instagram, Facebook y TikTok no dejan publicar desde esta página. Toca «Compartir con la foto», elige la app y pega el texto si hace falta.</p>
     </div>
 
     <div class="bloque" id="zona-borrar" hidden><button type="button" class="btn peligro" id="b-borrar">Borrar este producto</button></div>
@@ -496,7 +510,7 @@
     $('f-pct').value = conOferta ? String(p.oferta_pct) : '20'; if (!$('f-pct').value) $('f-pct').value = '20';
     $('f-hasta').min = mañana(); $('f-hasta').value = conOferta ? fechaLocal(new Date(p.oferta_hasta)) : enDias(7);
     $('f-activo').checked = p ? p.activo : true;
-    $('zona-borrar').hidden = !p; $('zona-redes').hidden = !p; $('b-guardar').textContent = p ? 'Guardar cambios' : 'Publicar producto'; $('b-guardar').disabled = false;
+    $('zona-borrar').hidden = !p; $('zona-redes').hidden = !p; if (p) pintarRedes(); $('b-guardar').textContent = p ? 'Guardar cambios' : 'Publicar producto'; $('b-guardar').disabled = false;
     ['c-nombre', 'c-precio', 'c-stock', 'c-hasta', 'c-seccion'].forEach(function (c) { $(c).classList.remove('err'); });
     aviso('e-foto', ''); aviso('e-guardar', ''); aviso('e-var', ''); $('sug-nota').textContent = 'Se arma con tus datos. Tú la revisas.';
     pintarFoto(); pintarVariantes(); vistaOferta(); ver('v-form'); $('form-t').focus({ preventScroll: true });
@@ -694,24 +708,63 @@
   $('b-editar').addEventListener('click', editarFoto);
 
   /* Texto listo para redes: nombre, precio, descripción y enlace real de la tienda. */
-  function textoRedes() {
+  /* Textos para redes SIN IA de pago: plantillas con el nombre, precio, descripción y enlace reales. */
+  function textosRedes() {
     var nombre = $('f-nombre').value.replace(/\s+/g, ' ').trim() || (F && F.prod ? F.prod.nombre : '') || 'mi producto';
-    var pr = numero($('f-precio').value), desc = $('f-desc').value.replace(/\s+/g, ' ').trim();
-    var lineas = ['✨ ' + nombre + (pr > 0 ? ' · ' + dinero(pr) : '')];
-    if (desc) lineas.push(desc);
-    lineas.push('Pide el tuyo aquí: ' + VL.enlaceTienda(D.tienda.slug));
-    return lineas.join('\n');
+    var pr = numero($('f-precio').value), desc = $('f-desc').value.replace(/\s+/g, ' ').trim().slice(0, 160);
+    var precio = pr > 0 ? dinero(pr) : '', enlace = VL.enlaceTienda(D.tienda.slug);
+    return [
+      { nombre: 'Corto', texto: ['✨ ' + nombre + (precio ? ' · ' + precio : ''), desc, 'Pide el tuyo aquí: ' + enlace].filter(Boolean).join('\n') },
+      { nombre: 'Alegre', texto: ['🛍️ ¡Nuevo en mi tienda! ' + nombre + (precio ? ' a ' + precio : '') + '.', desc, 'Escríbeme o pide aquí: ' + enlace].filter(Boolean).join('\n\n') },
+      { nombre: 'Directo', texto: [nombre + (precio ? ' — ' + precio : '') + '. ' + (desc || 'Pedidos fáciles por WhatsApp.'), enlace].join('\n') }
+    ];
   }
-  $('b-redes').addEventListener('click', function () {
+  function pintarRedes() {
     if (!D || !D.tienda) return;
-    var texto = textoRedes();
-    if (navigator.share) {
-      navigator.share({ text: texto }).catch(function () { /* cancelado: no pasa nada */ });
-      return;
-    }
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(texto).then(function () { toast('Texto copiado. Pégalo donde quieras.'); }, function () { toast('No pudimos copiarlo. Intenta otra vez.'); });
-    } else { toast('Tu celular no permite copiar aquí.'); }
+    var opciones = textosRedes(), chips = $('redes-chips');
+    chips.textContent = '';
+    opciones.forEach(function (o, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = o.nombre; b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+      b.addEventListener('click', function () {
+        $('redes-texto').value = o.texto;
+        Array.prototype.forEach.call(chips.children, function (c) { c.setAttribute('aria-pressed', c === b ? 'true' : 'false'); });
+      });
+      chips.appendChild(b);
+    });
+    $('redes-texto').value = opciones[0].texto;
+  }
+  function copiarTexto(texto) {
+    if (!navigator.clipboard) { toast('Tu celular no permite copiar aquí.'); return; }
+    navigator.clipboard.writeText(texto).then(function () { toast('Texto copiado. Pégalo donde quieras.'); }, function () { toast('No pudimos copiarlo. Intenta otra vez.'); });
+  }
+  /* La foto actual (la que se ve en el formulario) como archivo para compartir. */
+  function fotoParaCompartir() {
+    var fuente = F && F.foto ? F.foto.blob : (F && !F.quitarFoto && F.prod && F.prod.foto_path ? VL.fotoUrl(F.prod.foto_path) : null);
+    if (!fuente) return Promise.resolve(null);
+    var convertir = function (b) { return new File([b], 'producto.jpg', { type: b.type || 'image/jpeg' }); };
+    if (fuente instanceof Blob) return Promise.resolve(convertir(fuente));
+    return fetch(fuente).then(function (r) { return r.blob(); }).then(convertir).catch(function () { return null; });
+  }
+  $('b-redes-compartir').addEventListener('click', function () {
+    var texto = $('redes-texto').value.trim();
+    if (!texto) { toast('Escribe un texto primero.'); return; }
+    fotoParaCompartir().then(function (file) {
+      var datos = { text: texto };
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) datos.files = [file];
+      if (!navigator.share) { copiarTexto(texto); return; }
+      return navigator.share(datos).catch(function () { /* cancelado: no pasa nada */ });
+    });
+  });
+  $('b-redes-wa').addEventListener('click', function () {
+    var texto = $('redes-texto').value.trim();
+    if (!texto) { toast('Escribe un texto primero.'); return; }
+    window.open('https://wa.me/?text=' + encodeURIComponent(texto), '_blank', 'noopener');
+  });
+  $('b-redes-copiar').addEventListener('click', function () {
+    var texto = $('redes-texto').value.trim();
+    if (!texto) { toast('Escribe un texto primero.'); return; }
+    copiarTexto(texto);
   });
   $('b-pro-no').addEventListener('click', function () { $('dlg-pro').close(); });
   $('a-pro-planes').addEventListener('click', function (e) { $('dlg-pro').close(); irPlan(e); });
