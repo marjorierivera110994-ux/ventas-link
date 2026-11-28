@@ -502,3 +502,10 @@ Todo lo que prometen los planes en la página de ventas debe ser REAL o llevar l
 - Botones: "Compartir con la foto" (hoja del celular con la foto + texto; ahí elige Instagram, Facebook o TikTok), "Enviar por WhatsApp" y "Copiar texto".
 - NO publica sola en Instagram, Facebook ni TikTok: eso exige cuentas de desarrollador de cada red y revisión, y algunas piden cuenta de empresa.
 - Pendiente: probar "Compartir con la foto" en Android y iPhone con cuenta real.
+
+## PLAN ÚNICO (28-nov-2026)
+- Un solo plan "Ventas Link": $4.99 al mes o $59.88 al año (Hotmart; el anual no tiene descuento). Todas las funciones.
+- Sin plan gratis. Cada tienda nueva empieza con 7 días de prueba (una sola vez). Cuentas que nunca usaron prueba recibieron 7 días al aplicar la migración.
+- Al vencer sin pago: solo lectura. La base bloquea crear o editar productos y secciones (excepto bajar stock al vender). Triggers: productos_exigir_plan, secciones_exigir_plan.
+- Migraciones: 20261128100000_plan_unico.sql y plan_unico_prueba_al_crear (aplicadas y probadas en transacción con rollback).
+- Pendiente: aviso automático de Hotmart (función que activa el pago): falta un aviso de prueba real de Hotmart y la clave secreta configurada por la dueña. Pendiente también el enlace de pago de Hotmart en la app y actualizar onboarding-demo y mi-plan-demo, que aún muestran tres planes.

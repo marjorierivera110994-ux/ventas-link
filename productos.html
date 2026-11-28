@@ -340,7 +340,7 @@
 </dialog>
 
 <dialog id="dlg-pro" aria-labelledby="dlg-pro-t">
-  <h2 id="dlg-pro-t">Editar fotos es del plan Profesional</h2>
+  <h2 id="dlg-pro-t">Activa tu plan para seguir editando</h2>
   <p>Deja tus fotos listas para vender, en tu celular:</p>
   <ul class="pro-lista">
     <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Más luz y mejor color en 1 toque</li>
@@ -702,9 +702,8 @@
     }, function (e) { aviso('e-foto', (e && e.message) || 'No pudimos abrir la foto para editarla.'); });
   }
   function abrirPro() {
-    var disp = D.plan && D.plan.prueba_disponible;
-    $('b-probar-pro').hidden = !disp; $('pro-error').hidden = true;
-    $('pro-nota').textContent = disp ? 'Pruébalo gratis 7 días, sin tarjeta. Al terminar vuelves al plan Gratis sin perder nada.' : 'Ya usaste tu prueba gratis. Pronto podrás contratar el plan Profesional desde Mi plan.';
+    $('b-probar-pro').hidden = true; $('pro-error').hidden = true;
+    $('pro-nota').textContent = 'Tu prueba de 7 días ya terminó. Con el plan Ventas Link ($4.99 al mes o $59.88 al año) sigues editando tu tienda, tus fotos y tus productos.';
     $('dlg-pro').showModal();
   }
   $('b-editar').addEventListener('click', editarFoto);
